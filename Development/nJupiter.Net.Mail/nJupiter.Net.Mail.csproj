@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{519A0905-F0A1-4BA1-B511-0AC8626722E3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nJupiter.Net.Mail</RootNamespace>
+    <AssemblyName>nJupiter.Net.Mail</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Shared Resources\Libraries\Log4Net\Compile Version\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Attachment.cs" />
+    <Compile Include="Src\AttachmentCollection.cs" />
+    <Compile Include="Src\Exceptions.cs" />
+    <Compile Include="Src\Mail.cs" />
+    <Compile Include="Src\MailAddress.cs" />
+    <Compile Include="Src\MailAddressCollection.cs" />
+    <Compile Include="Src\MailCollection.cs" />
+    <Compile Include="Src\MailSender.cs" />
+    <Compile Include="Src\SmtpClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
+      <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
+      <Name>nJupiter.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.IO\nJupiter.IO.csproj">
+      <Project>{8C758019-57ED-441C-B6BF-8E5543D49F05}</Project>
+      <Name>nJupiter.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Text\nJupiter.Text.csproj">
+      <Project>{00A1BB7C-3D6A-4B30-8D40-5F910C8E4CAA}</Project>
+      <Name>nJupiter.Text</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
+      <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
+      <Name>nJupiter.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>
