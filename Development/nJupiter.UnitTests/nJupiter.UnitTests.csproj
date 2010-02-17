@@ -23,6 +23,15 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <SpecificVersion>False</SpecificVersion>
