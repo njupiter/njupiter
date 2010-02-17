@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31C621CB-94F9-4CFA-B49C-4FCBF5BD148F}"
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.txt = ChangeLog.txt
-		CustomDictionary.xml = CustomDictionary.xml
 		nJupiter.BuildAll.bat = nJupiter.BuildAll.bat
 		nJupiter.CSharp.targets = nJupiter.CSharp.targets
 		nJupiter.Deployment.targets = nJupiter.Deployment.targets
