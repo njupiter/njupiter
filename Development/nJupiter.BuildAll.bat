@@ -12,3 +12,5 @@ if "%2" == "Debug" goto end
 %DOTNETPATH%\MSBuild.exe nJupiter.sln /v:m /t:Rebuild /p:Configuration="Release"
 %DOTNETPATH%\MSBuild.exe nJupiter.sln /v:m /t:Rebuild /p:Configuration="Release Signed"
 
+:copyerror
+echo Failed to copy log4net
