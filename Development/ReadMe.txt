@@ -14,8 +14,8 @@ http://code.google.com/p/njupiter/
 
 Prerequisities
 ---------------------------------------------------------------------------------
-If you use any of the webfiles URLScan (part of IIS Lockdown tool) is used on the
-website, the property AllowDotInPath must be set to 1 in URLScan.ini
+If you use any of the webfiles and URLScan (part of IIS Lockdown tool) is used on
+the website, the property AllowDotInPath must be set to 1 in URLScan.ini
 
 Bug reporting
 ---------------------------------------------------------------------------------
