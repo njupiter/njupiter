@@ -27,7 +27,7 @@ using System.Collections;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace nJupiter.Util.Collections {
+namespace nJupiter.Collections {
 
 	[Serializable]
 	public class ReadOnlyHashtable : Hashtable, ISerializable	{
