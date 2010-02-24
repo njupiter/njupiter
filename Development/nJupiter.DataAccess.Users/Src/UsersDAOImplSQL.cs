@@ -424,9 +424,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 		
 		public override PropertyCollection GetProperties(Context context) {
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-				return GetPropertiesFromDataRows(null, context, transaction);
-			}
+			return GetPropertiesFromDataRows(null, context, null);
 		}
 		
 		public override PropertyCollection GetProperties(User user, Context context) {
@@ -470,14 +468,12 @@ namespace nJupiter.DataAccess.Users {
 			lock(this.padlock){
 				if(this.contexts == null){
 					ContextCollection contextCollection = CreateContextCollectionInstance();
-					using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-						DataSet dsFunction = CurrentDB.ExecuteDataSet("dbo.USER_GetContexts", transaction);
-						if (dsFunction.Tables.Count > 0) {
-							foreach(DataRow row in dsFunction.Tables[0].Rows) {
-								string contextName = (string)row["ContextName"];
-								Context uc = CreateContextInstance(contextName, this.GetPropertySchemas(contextName, transaction));
-								AddContextToCollection(uc, contextCollection);
-							}
+					DataSet dsFunction = CurrentDB.ExecuteDataSet("dbo.USER_GetContexts");
+					if (dsFunction.Tables.Count > 0) {
+						foreach(DataRow row in dsFunction.Tables[0].Rows) {
+							string contextName = (string)row["ContextName"];
+							Context uc = CreateContextInstance(contextName, this.GetPropertySchemas(contextName, null));
+							AddContextToCollection(uc, contextCollection);
 						}
 					}
 					this.contexts = contextCollection;
@@ -529,9 +525,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override PropertySchemaTable GetPropertySchemas() {
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-				return GetPropertySchemas(string.Empty, transaction);
-			}
+			return GetPropertySchemas(string.Empty, null);
 		}
 
 		public override void SetPassword(User user, string password) {
@@ -656,16 +650,14 @@ namespace nJupiter.DataAccess.Users {
 		protected virtual PropertyCollection GetPropertiesByUserId(string userId, Context context) {
 			PropertyCollection upc = null;
 
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-				DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties", transaction, 
-					CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(userId)),
-					CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context == null ? null : context.Name));
-				// translate dataset
-				if (dsUser.Tables.Count > 0) {
-					dsUser.Tables[0].PrimaryKey = new[] { dsUser.Tables[0].Columns["PropertyName"] };
-					DataRowCollection rows = dsUser.Tables[0].Rows;
-					upc = GetPropertiesFromDataRows(rows, context, transaction);
-				}
+			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties", 
+				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(userId)),
+				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context == null ? null : context.Name));
+			// translate dataset
+			if (dsUser.Tables.Count > 0) {
+				dsUser.Tables[0].PrimaryKey = new[] { dsUser.Tables[0].Columns["PropertyName"] };
+				DataRowCollection rows = dsUser.Tables[0].Rows;
+				upc = GetPropertiesFromDataRows(rows, context, null);
 			}
 			return upc;
 		}
@@ -740,7 +732,13 @@ namespace nJupiter.DataAccess.Users {
 
 				IDataParameter[] prams = { CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName, true) };
 			
-				DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetPropertySchema", transaction, prams);
+				
+				DataSet dsUser;
+				if(transaction == null) {
+					dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetPropertySchema", prams);
+				} else {
+					dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetPropertySchema", transaction, prams);
+				}
 
 				// translate dataset
 				if (dsUser.Tables.Count > 0) {
