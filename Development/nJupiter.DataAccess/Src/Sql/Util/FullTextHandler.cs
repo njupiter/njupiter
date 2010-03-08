@@ -285,7 +285,11 @@ namespace nJupiter.DataAccess.Sql.Util {
 					case near:
 					case quote:
 						if(lastWasSpecialSign || (i > 0 && !insideQuotes && !lastWasWhitespace)) {
-							fixedSearchText.Insert(i++, separator);
+							if(!lastWasSpecialSign && character.Equals(minus)) {
+								goto default;
+							} else {
+								fixedSearchText.Insert(i++, separator);
+							}
 						}
 						if(character.Equals(quote)) {
 							fixedSearchText.Remove(i--, 1);

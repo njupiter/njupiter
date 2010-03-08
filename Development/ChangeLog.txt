@@ -9,6 +9,15 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for next version
+===============================================================================
+**** nJupiter.DataAccess
+BUG: When parsing search strings FullTextHandler incorrectly interpreted a 
+     minus sign without a preceding space as a search operator. A minus sign
+     is now interpreted as a search operator only if it is in the beginning of 
+     the search string or preceded by a space and not inside quotes.
+
+===============================================================================
 Changes for V3.14.0.0  - 2010-02-10
 ===============================================================================
 
