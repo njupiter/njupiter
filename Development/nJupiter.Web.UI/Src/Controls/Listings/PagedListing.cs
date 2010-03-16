@@ -169,7 +169,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		#endregion
 
 		#region Event Handlers
-		private void PagingChanged(object sender, PagingEventArgs e) {
+		protected void PagingChanged(object sender, PagingEventArgs e) {
 			this.CurrentPageNumber = e.PageNumber;
 		}
 		#endregion
