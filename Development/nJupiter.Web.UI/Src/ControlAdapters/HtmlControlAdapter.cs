@@ -34,7 +34,6 @@ namespace nJupiter.Web.UI.ControlAdapters {
 	public class HtmlControlAdapter : ControlAdapterBase {
 		private HtmlControl htmlControl;
 
-		#region Constants
 		private const string RenderIdAttributeName			= "RenderId";
 		private const string RenderOriginalIdAttributeName	= "RenderOriginalId";
 		private const string RenderContentOnlyAttributeName	= "RenderContentOnly";
@@ -47,9 +46,15 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		private const string True							= "true";
 
 		protected const string BrTag	= "<" + HtmlTag.Br + " />";
-		#endregion
 
-		#region Properties
+		bool renderId;
+		bool renderOriginalId;
+		bool renderContentOnly;
+		bool trailingLinefeed;
+		bool trailingBreak;
+		bool innerSpan;
+		string cssClass;
+
 		protected virtual HtmlControl HtmlControl {
 			get {
 				if(this.htmlControl == null) {
@@ -117,17 +122,17 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			return true;
 		}
 
-		protected bool RenderId				{ get { return string.Compare(this.HtmlControl.Attributes[RenderIdAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0; } }
-		protected bool RenderOriginalId		{ get { return string.Compare(this.HtmlControl.Attributes[RenderOriginalIdAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0; } }
-		protected bool RenderContentOnly	{ get { return string.Compare(this.HtmlControl.Attributes[RenderContentOnlyAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0; } }
-		protected bool TrailingLinefeed		{ get { return string.Compare(this.HtmlControl.Attributes[TrailingLinefeedAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0; } }
-		protected bool TrailingBreak		{ get { return string.Compare(this.HtmlControl.Attributes[TrailingBreakAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0; } }
-		protected bool InnerSpan			{ get { return string.Compare(this.HtmlControl.Attributes[InnerSpanAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0; } }
-		protected string CssClass			{ get { return this.HtmlControl.Attributes[CssClassAttributeName]; } }
-		#endregion
+		protected bool RenderId				{ get { return renderId; } }
+		protected bool RenderOriginalId		{ get { return renderOriginalId; } }
+		protected bool RenderContentOnly	{ get { return renderContentOnly; } }
+		protected bool TrailingLinefeed		{ get { return trailingLinefeed; } }
+		protected bool TrailingBreak		{ get { return trailingBreak; } }
+		protected bool InnerSpan			{ get { return innerSpan; } }
+		protected string CssClass			{ get { return cssClass; } }
 
 		protected override void Render(HtmlTextWriter writer) {
 			if(this.HtmlControl != null && this.AdapterEnabled) {
+				this.InitProperties();
 				if(this.RenderElement) {
 					if(!this.RenderContentOnly) {
 						this.RenderBeginTag(writer);
@@ -146,6 +151,16 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			} else {
 				base.Render(writer);
 			}
+		}
+
+		protected virtual void InitProperties() {
+			renderId = string.Compare(this.HtmlControl.Attributes[RenderIdAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			renderOriginalId = string.Compare(this.HtmlControl.Attributes[RenderOriginalIdAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			renderContentOnly = string.Compare(this.HtmlControl.Attributes[RenderContentOnlyAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			trailingLinefeed = string.Compare(this.HtmlControl.Attributes[TrailingLinefeedAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			trailingBreak = string.Compare(this.HtmlControl.Attributes[TrailingBreakAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			innerSpan =  string.Compare(this.HtmlControl.Attributes[InnerSpanAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			cssClass = this.HtmlControl.Attributes[CssClassAttributeName];
 		}
 
 		protected virtual void RenderBeginTag(HtmlTextWriter writer) {
