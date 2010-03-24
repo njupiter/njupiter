@@ -36,6 +36,7 @@ namespace nJupiter.Web.UI.Controls {
 		private const string RenderOriginalIDKey	= "v_RenderOriginalId";
 		private const string MaxWidthKey			= "v_MaxWidth";
 		private const string MaxHeightKey			= "v_MaxHeight";
+		private const string ForceStreamingKey		= "v_ForceStreaming";
 		private const string AllowEnlargingKey		= "v_AllowEnlarging";
 		private const string AllowStretchingKey		= "v_AllowStretching";
 		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
@@ -132,6 +133,17 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
+		public bool ForceStreaming{
+			get {
+				if(this.ViewState[ForceStreamingKey] == null)
+					return false;
+				return (bool)this.ViewState[ForceStreamingKey];
+			}
+			set {
+				this.ViewState[ForceStreamingKey] = value;
+			}
+		}
+
 		public virtual string StreamingPath {
 			get {
 				string streamingPath = (string)this.ViewState[StreamPagePathKey];
@@ -216,8 +228,12 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		public virtual string RenderImageUrl() {
-			if(this.MaxWidth > 0 || this.MaxHeight > 0){
-				return nJupiter.Web.UrlHandler.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl), "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
+			if(this.MaxWidth > 0 || this.MaxHeight > 0 || this.ForceStreaming){
+				string streamingPath = Creuna.Util.Web.UrlHandler.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl));
+				if(this.MaxWidth > 0 || this.MaxHeight > 0) {
+					streamingPath = Creuna.Util.Web.UrlHandler.AddQueryParams(streamingPath, "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
+				}
+				return streamingPath;
 			}
 			return this.ImageUrl;
 		}

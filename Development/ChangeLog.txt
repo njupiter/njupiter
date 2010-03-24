@@ -17,6 +17,11 @@ BUG: When parsing search strings FullTextHandler incorrectly interpreted a
      is now interpreted as a search operator only if it is in the beginning of 
      the search string or preceded by a space and not inside quotes.
 
+**** nJupiter.Web.UI
+ENH: Add possibility to force going through StreamingPath in WebImage even 
+     though we have not set MaxWidth or MaxHeight. This is done by setting the
+     ForceStreaming property on WebImage to true.
+
 ===============================================================================
 Changes for V3.14.0.0  - 2010-02-10
 ===============================================================================
