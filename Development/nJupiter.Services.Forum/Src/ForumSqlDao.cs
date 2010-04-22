@@ -992,31 +992,31 @@ namespace nJupiter.Services.Forum {
 				postLevels					= new Hashtable();
 			}
 			bool rankColumnExists			= dtPosts.Columns.Contains(ColNameRank);
-			foreach(DataRow row in dtPosts.Rows) {
-				Guid id				= (Guid)row[ColNameId];
-				bool parentIdEmpty	= row.IsNull(ColNameParentid);
-				Guid parentId		= parentIdEmpty ? Guid.Empty : (Guid)row[ColNameParentid];
+			foreach(DataRowView rowView in dtPosts.DefaultView) {
+				Guid id				= (Guid)rowView[ColNameId];
+				bool parentIdEmpty	= rowView.Row.IsNull(ColNameParentid);
+				Guid parentId		= parentIdEmpty ? Guid.Empty : (Guid)rowView[ColNameParentid];
 				Post post			= ForumDao.CreatePostInstance(
 					ForumDao.CreatePostIdInstance(id),
 					parentIdEmpty ? null : ForumDao.CreatePostIdInstance(parentId),
-					row.IsNull(ColNameCategoryid) ? null : ForumDao.CreateCategoryIdInstance((Guid)row[ColNameCategoryid]), 
-					ForumDao.CreatePostIdInstance((Guid)row[ColNameRootpostid]),
-					(string)row[ColNameRootposttitle],
-					ForumDao.CreateCategoryIdInstance((Guid)row[ColNameEffectivecategoryid]), 
-					(string)row[ColNameEffectivecategoryname], 
+					rowView.Row.IsNull(ColNameCategoryid) ? null : ForumDao.CreateCategoryIdInstance((Guid)rowView[ColNameCategoryid]),
+					ForumDao.CreatePostIdInstance((Guid)rowView[ColNameRootpostid]),
+					(string)rowView[ColNameRootposttitle],
+					ForumDao.CreateCategoryIdInstance((Guid)rowView[ColNameEffectivecategoryid]),
+					(string)rowView[ColNameEffectivecategoryname], 
 					dtAttributes == null ? null : ForumDao.CloneAttributeCollection(base.PostAttributes), 
-					addFlat || (!parentIdEmpty && (levels - 1).Equals(postLevels[parentId])) ? null : ForumDao.CreatePostCollectionInstance(sortProperty, sortAttributeName, sortAscending), 
-					(DateTime)row[ColNameTimeposted], 
-					(DateTime)row[ColNameTimelastpost], 
-					(int)row[ColNamePostcount],
-					!rankColumnExists || row.IsNull(ColNameRank) ? 0F : (short)row[ColNameRank] / 1000F,
-					(bool)row[ColNameEffectivelyvisible],
-					ToLongString((byte[])row[ColNameTimestamp]));
-				post.UserIdentity	= row.IsNull(ColNameUseridentity) ? null : (string)row[ColNameUseridentity];
-				post.Author			= row.IsNull(ColNameAuthor) ? null : (string)row[ColNameAuthor];
-				post.Title			= (string)row[ColNameTitle];
-				post.Body			= (string)row[ColNameBody];
-				post.Visible		= (bool)row[ColNameVisible];
+					addFlat || (!parentIdEmpty && (levels - 1).Equals(postLevels[parentId])) ? null : ForumDao.CreatePostCollectionInstance(sortProperty, sortAttributeName, sortAscending),
+					(DateTime)rowView[ColNameTimeposted],
+					(DateTime)rowView[ColNameTimelastpost],
+					(int)rowView[ColNamePostcount],
+					!rankColumnExists || rowView.Row.IsNull(ColNameRank) ? 0F : (short)rowView[ColNameRank] / 1000F,
+					(bool)rowView[ColNameEffectivelyvisible],
+					ToLongString((byte[])rowView[ColNameTimestamp]));
+				post.UserIdentity	= rowView.Row.IsNull(ColNameUseridentity) ? null : (string)rowView[ColNameUseridentity];
+				post.Author			= rowView.Row.IsNull(ColNameAuthor) ? null : (string)rowView[ColNameAuthor];
+				post.Title			= (string)rowView[ColNameTitle];
+				post.Body			= (string)rowView[ColNameBody];
+				post.Visible		= (bool)rowView[ColNameVisible];
 				if(postLookupTable != null && (dtAttributes != null || post.Posts != null)) {
 					postLookupTable.Add(id, post);
 				}
