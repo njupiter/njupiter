@@ -11,6 +11,13 @@ NEW - New feature
 ===============================================================================
 Changes for next version
 ===============================================================================
+**** nJupiter.DataAccess.Ldap
+NEW: New component containing a generic MembershipProvider and RoleProvider for
+     LDAP (nJupiter.DataAccess.Ldap.LdapMembershipProvider and
+     nJupiter.DataAccess.Ldap.LdapRoleProvider). These provicers had been
+     tested with Microsoft Active Directory, Novell eDirectory and
+     IBM Lotus Domino / IBM Tivoli Directory Server.
+
 **** nJupiter.DataAccess
 BUG: When parsing search strings FullTextHandler incorrectly interpreted a 
      minus sign without a preceding space as a search operator. A minus sign
@@ -19,9 +26,10 @@ BUG: When parsing search strings FullTextHandler incorrectly interpreted a
 
 **** nJupiter.DataAccess
 BUG: Fixed a bug that made the AddPostsToCollectionFromDataTables method crash 
-	 when trying to get nested sorted posts for a category. Now the customized view of the 
-	 table (DataTable.DefaultView) is used instead of the table,  because it's
-	 the in the customized view where the sorted collection is to be found.
+	 when trying to get nested sorted posts for a category. Now the customized
+	 view of the table (DataTable.DefaultView) is used instead of the table,
+	 because it's the in the customized view where the sorted collection is to
+	 be found.
 	 
 **** nJupiter.Web.UI
 ENH: Add possibility to force going through StreamingPath in WebImage even 

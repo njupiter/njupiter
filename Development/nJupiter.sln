@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Globalization", "n
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Security", "nJupiter.Security\nJupiter.Security.csproj", "{50603E07-48A7-4BA0-B61D-3F9928433220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Ldap", "nJupiter.DataAccess.Ldap\nJupiter.DataAccess.Ldap.csproj", "{6D989F7A-87CA-4CFC-B17D-21D486102C8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -221,6 +223,12 @@ Global
 		{50603E07-48A7-4BA0-B61D-3F9928433220}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
 		{50603E07-48A7-4BA0-B61D-3F9928433220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50603E07-48A7-4BA0-B61D-3F9928433220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release Signed|Any CPU.ActiveCfg = Release Signed|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,5 +258,6 @@ Global
 		{B7D3803A-6C86-43D3-B6E0-919641AB9DCE} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
 		{37BF44F7-41D3-4343-B217-B98034DB1F2D} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
 		{50603E07-48A7-4BA0-B61D-3F9928433220} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
 	EndGlobalSection
 EndGlobal
