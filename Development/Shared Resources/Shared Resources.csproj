@@ -33,6 +33,7 @@
     <Compile Include="SharedAssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Config\nJupiter.DataAccess.Ldap.config" />
     <None Include="Config\nJupiter.Services.Forum.UI.config" />
     <None Include="Config\nJupiter.Web.UI.config" />
     <None Include="Config\nJupiter.DataAccess.config" />
