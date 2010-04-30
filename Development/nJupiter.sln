@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess", "nJup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.DirectoryService", "nJupiter.DataAccess.DirectoryService\nJupiter.DataAccess.DirectoryService.csproj", "{C75DBB5E-4E52-4C74-A2CD-080D0F2B781D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Ldap", "nJupiter.DataAccess.Ldap\nJupiter.DataAccess.Ldap.csproj", "{6D989F7A-87CA-4CFC-B17D-21D486102C8D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Users", "nJupiter.DataAccess.Users\nJupiter.DataAccess.Users.csproj", "{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Users.DirectoryService", "nJupiter.DataAccess.Users.DirectoryService\nJupiter.DataAccess.Users.DirectoryService.csproj", "{C2327074-4BD3-42B8-915F-6100B804CBBD}"
@@ -66,8 +68,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Globalization", "nJupiter.Globalization\nJupiter.Globalization.csproj", "{37BF44F7-41D3-4343-B217-B98034DB1F2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Security", "nJupiter.Security\nJupiter.Security.csproj", "{50603E07-48A7-4BA0-B61D-3F9928433220}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Ldap", "nJupiter.DataAccess.Ldap\nJupiter.DataAccess.Ldap.csproj", "{6D989F7A-87CA-4CFC-B17D-21D486102C8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
