@@ -37,6 +37,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		private static string ConvertSchemeInPathToUpperCase(string path) {
 			if(path.StartsWith(LdapShemeLoweCase)) {
+				// DirectoryEntry object need ldap scheme in upper case
 				return path.Replace(LdapShemeLoweCase, LdapSheme);
 			}
 			return path;

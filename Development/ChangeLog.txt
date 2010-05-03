@@ -14,7 +14,7 @@ Changes for next version
 **** nJupiter.DataAccess.Ldap
 NEW: New component containing a generic MembershipProvider and RoleProvider for
      LDAP (nJupiter.DataAccess.Ldap.LdapMembershipProvider and
-     nJupiter.DataAccess.Ldap.LdapRoleProvider). These provicers had been
+     nJupiter.DataAccess.Ldap.LdapRoleProvider). These providers had been
      tested with Microsoft Active Directory, Novell eDirectory and
      IBM Lotus Domino / IBM Tivoli Directory Server.
 

@@ -187,7 +187,7 @@ namespace nJupiter.DataAccess.Ldap {
 				searcher.Filter = filterBuilder.CreateGroupFilter();
 
 				if(configuration.Server.RangeRetrievalSupport) {
-					//Inspired by http://www.netid.washington.edu/documentation/enumeratingLargeGroups.aspx
+					// Inspired by http://www.netid.washington.edu/documentation/enumeratingLargeGroups.aspx
 					// Shall be cleaned up later
 					uint rangeLow = 0;
 					uint rangeHigh = rangeLow;
@@ -238,7 +238,7 @@ namespace nJupiter.DataAccess.Ldap {
 		public override string[] GetAllRoles() {
 			using(DirectoryEntry entry = directoryEntryAdapter.GetGroupsEntry()) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
-					throw new ProviderException("Role list could not be reterived");
+					throw new ProviderException("Could not load role list.");
 				}
 				DirectorySearcher searcher = groupSeracher.Create(entry);
 				searcher.Filter = filterBuilder.CreateGroupFilter();
@@ -264,6 +264,8 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		private static string GetPropertyValue(object valueObject) {
+			// Properties are in some systems loaded as byte arrays instead of strings
+			// In thouse cases we convert them to strings
 			byte[] b = valueObject as byte[];
 			if(b != null) {
 				return System.Text.Encoding.UTF8.GetString(b);

@@ -51,12 +51,12 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		private string AttachUserNameAttributeFilters(string usernameToMatch, string userFilter) {
-			string preparedUsername = RemoveIllegalCharacters(usernameToMatch);
+			string escapedUsername = EscapeSearchFilter(usernameToMatch);
 			StringBuilder builder = new StringBuilder();
 			foreach(string nameAttributes in config.Users.NameAttributes) {
-				builder.Append(String.Format("({0}={1})", nameAttributes, preparedUsername));
+				builder.Append(String.Format("({0}={1})", nameAttributes, escapedUsername));
 			}
-			return String.Format("(&{0}(|({1}={2}){3}))", userFilter, config.Users.RdnAttribute, preparedUsername, builder) ;
+			return String.Format("(&{0}(|({1}={2}){3}))", userFilter, config.Users.RdnAttribute, escapedUsername, builder) ;
 		}
 
 		public string CreateUserEmailFilter(string emailToMatch) {
@@ -95,18 +95,47 @@ namespace nJupiter.DataAccess.Ldap {
 
 
 		public string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
-			string preparedValue = RemoveIllegalCharacters(valueToMatch);
-			return String.Format("(&{0}({1}={2}))", defaultFilter, attributeToMatch, preparedValue);
+			string escapedValue = EscapeSearchFilter(valueToMatch);
+			return String.Format("(&{0}({1}={2}))", defaultFilter, attributeToMatch, escapedValue);
 		}
 
 		public string AttachRdnFilter(string valueToMatch, string defaultFilter) {
-			string preparedValue = RemoveIllegalCharacters(valueToMatch);
-			return String.Format("(&{0}({1}))", defaultFilter, preparedValue);
+			string escapedValue = EscapeSearchFilter(valueToMatch);
+			return String.Format("(&{0}({1}))", defaultFilter, escapedValue);
 		}
 
-		private static string RemoveIllegalCharacters(string value) {
-			return Regex.Replace(value, "[(%|&)]", string.Empty);
+		private static string EscapeSearchFilter(string searchFilter) {
+			//http://stackoverflow.com/questions/649149/how-to-escape-a-string-in-c-for-use-in-an-ldap-query
+			StringBuilder escape = new StringBuilder();
+			for(int i = 0; i < searchFilter.Length; ++i) {
+				char current = searchFilter[i];
+				switch(current) {
+					case '\\':
+					escape.Append(@"\5c");
+					break;
+					case '*':
+					escape.Append(@"\2a");
+					break;
+					case '(':
+					escape.Append(@"\28");
+					break;
+					case ')':
+					escape.Append(@"\29");
+					break;
+					case '\u0000':
+					escape.Append(@"\00");
+					break;
+					case '/':
+					escape.Append(@"\2f");
+					break;
+					default:
+					escape.Append(current);
+					break;
+				}
+			}
 
+			return escape.ToString();
 		}
+
 	}
 }
