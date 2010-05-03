@@ -297,7 +297,6 @@ namespace nJupiter.DataAccess.Ldap {
 			public string LastPasswordChangedDateAttribute { get; internal set; }
 			public string DescriptionAttribute { get; internal set; }
 			public NameType NameType { get; internal set; }
-			public string AuthenticationHeader { get; internal set; }
 
 			internal UsersConfig() {
 			}
