@@ -133,8 +133,8 @@ namespace nJupiter.DataAccess.Ldap {
 						server.AuthenticationTypes = AuthenticationTypes.None;
 					}
 
-					if(configSection.ContainsKey("users", "objectClass")) {
-						users.ObjectClass = configSection.GetValue("users", "objectClass");
+					if(configSection.ContainsKey("users", "filter")) {
+						users.Filter = configSection.GetValue("users", "filter");
 					}
 
 					if(configSection.ContainsKey("users", "base")) {
@@ -193,8 +193,8 @@ namespace nJupiter.DataAccess.Ldap {
 						users.AuthenticationHeader = "sm_userdn";
 					}
 
-					if(configSection.ContainsKey("groups", "objectClass")) {
-						groups.ObjectClass = configSection.GetValue("groups", "objectClass");
+					if(configSection.ContainsKey("groups", "filter")) {
+						groups.Filter = configSection.GetValue("groups", "filter");
 					}
 
 					if(configSection.ContainsKey("groups", "base")) {
@@ -235,14 +235,14 @@ namespace nJupiter.DataAccess.Ldap {
 					switch(server.Type) {
 						case LdapType.Ad:
 						case LdapType.Adam:
-							if(string.IsNullOrEmpty(users.ObjectClass)) {
-								users.ObjectClass = "user";
+							if(string.IsNullOrEmpty(users.Filter)) {
+								users.Filter = "user";
 							}
 							if(string.IsNullOrEmpty(users.MembershipAttribute)) {
 								users.MembershipAttribute = "memberOf";
 							}
-							if(string.IsNullOrEmpty(groups.ObjectClass)) {
-								groups.ObjectClass = "group";
+							if(string.IsNullOrEmpty(groups.Filter)) {
+								groups.Filter = "group";
 							}
 							if(string.IsNullOrEmpty(groups.MembershipAttribute)) {
 								groups.MembershipAttribute = "member";
@@ -258,8 +258,8 @@ namespace nJupiter.DataAccess.Ldap {
 						users.MembershipAttribute = "groupMembership";
 					}
 
-					if(string.IsNullOrEmpty(groups.ObjectClass)) {
-						groups.ObjectClass = "groupOfNames";
+					if(string.IsNullOrEmpty(groups.Filter)) {
+						groups.Filter = "groupOfNames";
 					}
 
 					Uri userUri;
@@ -323,7 +323,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public class UsersConfig { 
 
-			public string ObjectClass { get; internal set; }
+			public string Filter { get; internal set; }
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
@@ -343,7 +343,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 		public class GroupsConfig { 
 
-			public string ObjectClass { get; internal set; }
+			public string Filter { get; internal set; }
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }

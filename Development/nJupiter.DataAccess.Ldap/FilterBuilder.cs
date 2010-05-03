@@ -42,7 +42,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public string CreateUserNameFilter(string usernameToMatch) {
-			string defaultFilter = CreateUserFilter();
+			string defaultFilter = config.Users.Filter;
 			if(config.Users.Attributes.Length > 0) {
 				return this.AttachUserAttributeFilters(usernameToMatch, defaultFilter);
 			}
@@ -70,28 +70,13 @@ namespace nJupiter.DataAccess.Ldap {
 			return String.Format("{0};range={1}-{2}", config.Groups.MembershipAttribute, startIndex, endIndex);
 		}
 
-		public string CreateStandaloneUserFilter() {
-			if(config.Server.Type.Equals(LdapType.Adam)) {
-				return "(objectClass=user)(objectCategory=person)";
-			}
-			return CreateUserFilter();
-		}
-
 		public string CreateUserFilter() {
-			switch(config.Server.Type) {
-				case LdapType.Ad:
-				return "(sAMAccountType=805306368)";
-
-				case LdapType.Adam:
-				return "(&(objectClass=user)(objectCategory=person))";
-			}
-			return String.Format("(objectClass={0})", config.Users.ObjectClass);
+			return config.Users.Filter;
 		}
 
 		public string CreateGroupFilter() {
-			return String.Format("(objectClass={0})", config.Groups.ObjectClass);
+			return config.Groups.Filter;
 		}
-
 
 		public string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
 			string escapedValue = this.EscapeSearchFilter(valueToMatch);

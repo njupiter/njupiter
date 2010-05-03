@@ -129,7 +129,7 @@ namespace nJupiter.DataAccess.Ldap {
 							return false;
 						}
 						DirectorySearcher searcher = userSeracher.Create(authenticatedUser, SearchScope.Base);
-						searcher.Filter = filterBuilder.CreateStandaloneUserFilter();
+						searcher.Filter = filterBuilder.CreateUserFilter();
 						SearchResult result = searcher.FindOne();
 						if(result != null && result.Properties.Contains(configuration.Users.RdnAttribute)) {
 							return result.Properties[configuration.Users.RdnAttribute].Count > 0;
@@ -160,7 +160,7 @@ namespace nJupiter.DataAccess.Ldap {
 					return null;
 				}
 				DirectorySearcher searcher = userSeracher.Create(entry, SearchScope.Base);
-				searcher.Filter = filterBuilder.CreateStandaloneUserFilter();
+				searcher.Filter = filterBuilder.CreateUserFilter();
 				return membershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
 			}
 		}
@@ -195,7 +195,7 @@ namespace nJupiter.DataAccess.Ldap {
 					return users;
 				}
 				DirectorySearcher searcher = userSeracher.Create(entry);
-				searcher.Filter = filterBuilder.CreateStandaloneUserFilter();
+				searcher.Filter = filterBuilder.CreateUserFilter();
 				searcher.PageSize = pageSize;
 				users = membershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);

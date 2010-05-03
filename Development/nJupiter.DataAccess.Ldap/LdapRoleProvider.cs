@@ -96,7 +96,7 @@ namespace nJupiter.DataAccess.Ldap {
 					}
 				} else {
 					DirectorySearcher searcher = this.userSeracher.Create(entry, SearchScope.Base);
-					searcher.Filter = filterBuilder.CreateStandaloneUserFilter();
+					searcher.Filter = filterBuilder.CreateUserFilter();
 					SearchResult result = searcher.FindOne();
 					if((result != null) && result.Properties.Contains(configuration.Users.MembershipAttribute)) {
 						foreach(object groupObject in result.Properties[configuration.Users.MembershipAttribute]) {
