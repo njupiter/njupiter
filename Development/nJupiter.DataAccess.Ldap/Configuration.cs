@@ -184,12 +184,6 @@ namespace nJupiter.DataAccess.Ldap {
 						users.NameType = NameType.Dn;
 					}
 
-					if(configSection.ContainsKey("users", "authenticationHeader")) {
-						users.AuthenticationHeader = configSection.GetValue("users", "authenticationHeader");
-					} else {
-						users.AuthenticationHeader = "sm_userdn";
-					}
-
 					if(configSection.ContainsKey("groups", "filter")) {
 						groups.Filter = configSection.GetValue("groups", "filter");
 					} else {
