@@ -42,7 +42,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public string CreateUserNameFilter(string usernameToMatch) {
-			string defaultFilter = config.Users.Filter;
+			string defaultFilter = CreateUserFilter();
 			if(config.Users.Attributes.Length > 0) {
 				return this.AttachUserAttributeFilters(usernameToMatch, defaultFilter);
 			}
