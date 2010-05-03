@@ -31,7 +31,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope) {
 			
-			DirectorySearcher searcher = base.CreateSearcher(entry, searchScope, this.Config.Users.RdnAttribute, this.Config.Users.NameAttributes);
+			DirectorySearcher searcher = base.CreateSearcher(entry, searchScope, this.Config.Users.RdnAttribute, this.Config.Users.Attributes);
 
 			searcher.PropertiesToLoad.Add(this.Config.Users.EmailAttribute);
 

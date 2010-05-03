@@ -30,7 +30,7 @@ namespace nJupiter.DataAccess.Ldap {
 		public GroupSearcher(Configuration config) : base(config) {}
 
 		public override DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope) {
-			DirectorySearcher searcher = CreateSearcher(entry, SearchScope.Subtree, this.Config.Groups.RdnAttribute, this.Config.Groups.NameAttributes);
+			DirectorySearcher searcher = CreateSearcher(entry, SearchScope.Subtree, this.Config.Groups.RdnAttribute, this.Config.Groups.Attributes);
 			searcher.PropertiesToLoad.Add(this.Config.Groups.MembershipAttribute);
 			return searcher;
 		}

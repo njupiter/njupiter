@@ -45,11 +45,11 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public abstract DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope);
 
-		protected DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute, string[] nameAttributes) {
+		protected DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute, string[] otherAttributes) {
 			DirectorySearcher searcher = CreateSearcher(entry, searchScope, rdnAttribute);
 			searcher.PropertiesToLoad.Clear();
 			searcher.PropertiesToLoad.Add(rdnAttribute);
-			foreach(string attribute in nameAttributes) {
+			foreach(string attribute in otherAttributes) {
 				searcher.PropertiesToLoad.Add(attribute);
 			}
 			return searcher;

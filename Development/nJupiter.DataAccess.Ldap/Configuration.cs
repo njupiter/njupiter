@@ -147,10 +147,10 @@ namespace nJupiter.DataAccess.Ldap {
 						users.RdnAttribute = "cn";
 					}
 
-					if(configSection.ContainsKey("users", "nameAttributes")) {
-						users.NameAttributes = configSection.GetValueArray("users/nameAttributes", "nameAttribute");
+					if(configSection.ContainsKey("users", "attributes")) {
+						users.Attributes = configSection.GetValueArray("users/attributes", "attribute");
 					} else {
-						users.NameAttributes = new string[0];
+						users.Attributes = new string[0];
 					}
 
 					if(configSection.ContainsKey("users", "membershipAttribute")) {
@@ -207,10 +207,10 @@ namespace nJupiter.DataAccess.Ldap {
 						groups.RdnAttribute = "cn";
 					}
 
-					if(configSection.ContainsKey("groups", "nameAttributes")) {
-						groups.NameAttributes = configSection.GetValueArray("groups/nameAttributes", "nameAttribute");
+					if(configSection.ContainsKey("groups", "attributes")) {
+						groups.Attributes = configSection.GetValueArray("groups/attributes", "attribute");
 					} else {
-						groups.NameAttributes = new[] { "cn" };
+						groups.Attributes = new[] { "cn" };
 					}
 
 					if(configSection.ContainsKey("groups", "membershipAttribute")) {
@@ -250,8 +250,8 @@ namespace nJupiter.DataAccess.Ldap {
 							break;
 					}
 
-					if(users.NameAttributes == null || users.NameAttributes.Length == 0) {
-						users.NameAttributes = new[] { "cn" };
+					if(users.Attributes == null || users.Attributes.Length == 0) {
+						users.Attributes = new[] { "cn" };
 					}
 
 					if(string.IsNullOrEmpty(users.MembershipAttribute)) {
@@ -327,7 +327,7 @@ namespace nJupiter.DataAccess.Ldap {
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
-			public string[] NameAttributes  { get; internal set; }
+			public string[] Attributes  { get; internal set; }
 			public string MembershipAttribute { get; internal set; }
 			public string EmailAttribute { get; internal set; }
 			public string CreationDateAttribute { get; internal set; }
@@ -347,7 +347,7 @@ namespace nJupiter.DataAccess.Ldap {
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
-			public string[] NameAttributes  { get; internal set; }
+			public string[] Attributes  { get; internal set; }
 			public string MembershipAttribute { get; internal set; }
 			public NameType NameType { get; internal set; }
 
