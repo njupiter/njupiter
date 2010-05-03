@@ -24,7 +24,6 @@
 
 using System;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace nJupiter.DataAccess.Ldap {
 	internal class FilterBuilder {
