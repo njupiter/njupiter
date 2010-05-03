@@ -76,8 +76,5 @@
       <Name>nJupiter.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>
