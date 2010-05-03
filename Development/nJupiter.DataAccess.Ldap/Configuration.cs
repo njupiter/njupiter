@@ -98,6 +98,10 @@ namespace nJupiter.DataAccess.Ldap {
 						server.Password = configSection.GetValue("password");
 					}
 
+					if(configSection.ContainsKey("allowWildcardSearch")) {
+						server.AllowWildcardSearch = configSection.GetBoolValue("allowWildcardSearch");
+					}
+
 					if(configSection.ContainsKey("ldapType")) {
 						string ldapType = configSection.GetValue("ldapType");
 						server.Type = (LdapType)Enum.Parse(typeof(LdapType), ldapType, true);
@@ -308,6 +312,7 @@ namespace nJupiter.DataAccess.Ldap {
 			public AuthenticationTypes AuthenticationTypes { get; internal set; }
 			public TimeSpan TimeLimit { get; internal set; }
 			public int PageSize { get; internal set; }
+			public bool AllowWildcardSearch;
 			public bool RangeRetrievalSupport { get; internal set; }
 
 			internal ServerConfig() {

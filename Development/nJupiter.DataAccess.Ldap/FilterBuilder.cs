@@ -50,7 +50,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		private string AttachUserNameAttributeFilters(string usernameToMatch, string userFilter) {
-			string escapedUsername = EscapeSearchFilter(usernameToMatch);
+			string escapedUsername = this.EscapeSearchFilter(usernameToMatch);
 			StringBuilder builder = new StringBuilder();
 			foreach(string nameAttributes in config.Users.NameAttributes) {
 				builder.Append(String.Format("({0}={1})", nameAttributes, escapedUsername));
@@ -94,16 +94,16 @@ namespace nJupiter.DataAccess.Ldap {
 
 
 		public string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
-			string escapedValue = EscapeSearchFilter(valueToMatch);
+			string escapedValue = this.EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}={2}))", defaultFilter, attributeToMatch, escapedValue);
 		}
 
 		public string AttachRdnFilter(string valueToMatch, string defaultFilter) {
-			string escapedValue = EscapeSearchFilter(valueToMatch);
+			string escapedValue = this.EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}))", defaultFilter, escapedValue);
 		}
 
-		private static string EscapeSearchFilter(string searchFilter) {
+		private string EscapeSearchFilter(string searchFilter) {
 			//http://stackoverflow.com/questions/649149/how-to-escape-a-string-in-c-for-use-in-an-ldap-query
 			StringBuilder escape = new StringBuilder();
 			for(int i = 0; i < searchFilter.Length; ++i) {
@@ -113,7 +113,11 @@ namespace nJupiter.DataAccess.Ldap {
 					escape.Append(@"\5c");
 					break;
 					case '*':
-					escape.Append(@"\2a");
+					if(this.config.Server.AllowWildcardSearch) {
+						escape.Append(current);
+					} else {
+						escape.Append(@"\2a");
+					}
 					break;
 					case '(':
 					escape.Append(@"\28");
