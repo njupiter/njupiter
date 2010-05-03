@@ -102,13 +102,6 @@ namespace nJupiter.DataAccess.Ldap {
 						server.AllowWildcardSearch = configSection.GetBoolValue("allowWildcardSearch");
 					}
 
-					if(configSection.ContainsKey("ldapType")) {
-						string ldapType = configSection.GetValue("ldapType");
-						server.Type = (LdapType)Enum.Parse(typeof(LdapType), ldapType, true);
-					} else {
-						server.Type = LdapType.Generic;
-					}
-
 					if(configSection.ContainsKey("timeLimit")) {
 						int timeLimit = configSection.GetIntValue("timeLimit");
 						server.TimeLimit = TimeSpan.FromSeconds(timeLimit);
@@ -135,6 +128,8 @@ namespace nJupiter.DataAccess.Ldap {
 
 					if(configSection.ContainsKey("users", "filter")) {
 						users.Filter = configSection.GetValue("users", "filter");
+					} else {
+						users.Filter = "(objectClass=person)";
 					}
 
 					if(configSection.ContainsKey("users", "base")) {
@@ -150,11 +145,13 @@ namespace nJupiter.DataAccess.Ldap {
 					if(configSection.ContainsKey("users", "attributes")) {
 						users.Attributes = configSection.GetValueArray("users/attributes", "attribute");
 					} else {
-						users.Attributes = new string[0];
+						users.Attributes = new[] { "cn" };
 					}
 
 					if(configSection.ContainsKey("users", "membershipAttribute")) {
 						users.MembershipAttribute = configSection.GetValue("users", "membershipAttribute");
+					} else {
+						users.MembershipAttribute = "person";
 					}
 
 					if(configSection.ContainsKey("users", "emailAttribute")) {
@@ -195,6 +192,8 @@ namespace nJupiter.DataAccess.Ldap {
 
 					if(configSection.ContainsKey("groups", "filter")) {
 						groups.Filter = configSection.GetValue("groups", "filter");
+					} else {
+						groups.Filter = "(objectClass=groupOfNames)";
 					}
 
 					if(configSection.ContainsKey("groups", "base")) {
@@ -216,7 +215,7 @@ namespace nJupiter.DataAccess.Ldap {
 					if(configSection.ContainsKey("groups", "membershipAttribute")) {
 						groups.MembershipAttribute = configSection.GetValue("groups", "membershipAttribute");
 					} else {
-						groups.MembershipAttribute = "member";
+						groups.MembershipAttribute = "groupMembership";
 					}
 
 					if(configSection.ContainsKey("groups", "nameType")) {
@@ -230,36 +229,6 @@ namespace nJupiter.DataAccess.Ldap {
 						server.RangeRetrievalSupport = configSection.GetBoolValue("rangeRetrievalSupport");
 					} else {
 						server.RangeRetrievalSupport = true;
-					}
-
-					switch(server.Type) {
-						case LdapType.Ad:
-						case LdapType.Adam:
-							if(string.IsNullOrEmpty(users.Filter)) {
-								users.Filter = "user";
-							}
-							if(string.IsNullOrEmpty(users.MembershipAttribute)) {
-								users.MembershipAttribute = "memberOf";
-							}
-							if(string.IsNullOrEmpty(groups.Filter)) {
-								groups.Filter = "group";
-							}
-							if(string.IsNullOrEmpty(groups.MembershipAttribute)) {
-								groups.MembershipAttribute = "member";
-							}
-							break;
-					}
-
-					if(users.Attributes == null || users.Attributes.Length == 0) {
-						users.Attributes = new[] { "cn" };
-					}
-
-					if(string.IsNullOrEmpty(users.MembershipAttribute)) {
-						users.MembershipAttribute = "groupMembership";
-					}
-
-					if(string.IsNullOrEmpty(groups.Filter)) {
-						groups.Filter = "groupOfNames";
 					}
 
 					Uri userUri;
@@ -308,7 +277,6 @@ namespace nJupiter.DataAccess.Ldap {
 			public Uri Url { get; internal set; }
 			public string Username { get; internal set; }
 			public string Password { get; internal set; }
-			public LdapType Type { get; internal set; }
 			public AuthenticationTypes AuthenticationTypes { get; internal set; }
 			public TimeSpan TimeLimit { get; internal set; }
 			public int PageSize { get; internal set; }

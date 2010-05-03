@@ -62,7 +62,6 @@
     <Compile Include="MembershipUserFactory.cs" />
     <Compile Include="NameType.cs" />
     <Compile Include="LdapRoleProvider.cs" />
-    <Compile Include="LdapType.cs" />
     <Compile Include="FilterBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NameParser\Rdn.cs" />
