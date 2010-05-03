@@ -266,6 +266,7 @@ namespace nJupiter.DataAccess.Ldap {
 		private static string GetPropertyValue(object valueObject) {
 			// Properties are in some systems loaded as byte arrays instead of strings
 			// In thouse cases we convert them to strings
+			// TODO: I do not realy know the reason of this behaviour, has to be investigate why and if I do something wrong.
 			byte[] b = valueObject as byte[];
 			if(b != null) {
 				return System.Text.Encoding.UTF8.GetString(b);
