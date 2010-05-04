@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 
@@ -7,11 +8,17 @@ namespace nJupiter.DataAccess.Ldap {
 		private readonly Dictionary<string, AttributeValueCollection> attributeCollection;
 
 		internal AttributeCollection(ResultPropertyCollection resultPropertyCollection) {
-			attributeCollection = new Dictionary<string, AttributeValueCollection>();
+			attributeCollection = new Dictionary<string, AttributeValueCollection>(StringComparer.InvariantCultureIgnoreCase);
 			foreach(string key in resultPropertyCollection.PropertyNames) {
 				ResultPropertyValueCollection values =  resultPropertyCollection[key];
 				AttributeValueCollection attributeValueCollection = new AttributeValueCollection(values);
 				attributeCollection.Add(key, attributeValueCollection);
+			}
+		}
+
+		public AttributeValueCollection this[string attributeName] {
+			get {
+				return attributeCollection[attributeName];
 			}
 		}
 
@@ -29,13 +36,13 @@ namespace nJupiter.DataAccess.Ldap {
 			return attributeCollection.ContainsValue(value);
 		}
 
-		public Dictionary<string, AttributeValueCollection>.KeyCollection Keys {
+		public IEnumerable<string> Keys {
 			get {
 				return attributeCollection.Keys;
 			}
 		}
 
-		public Dictionary<string, AttributeValueCollection>.ValueCollection Values {
+		public IEnumerable<AttributeValueCollection> Values {
 			get {
 				return attributeCollection.Values;
 			}

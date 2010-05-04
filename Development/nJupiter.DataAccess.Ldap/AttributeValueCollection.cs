@@ -14,6 +14,12 @@ namespace nJupiter.DataAccess.Ldap {
 
 		}
 
+		public object this[int index] {
+			get {
+				return attributeValueCollection[index];
+			}
+		}
+
 		public int Count {
 			get {
 				return attributeValueCollection.Count;
