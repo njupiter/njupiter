@@ -28,19 +28,19 @@ using System.Web.Security;
 
 namespace nJupiter.DataAccess.Ldap {
 	
-	internal class MembershipUserFactory {
+	internal class LdapMembershipUserFactory {
 
 		private readonly Configuration config;
 
-		public static MembershipUserFactory GetInstance(Configuration config) {
+		public static LdapMembershipUserFactory GetInstance(Configuration config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
 
-			return new MembershipUserFactory(config);
+			return new LdapMembershipUserFactory(config);
 		}
 
-		private MembershipUserFactory(Configuration config) {
+		private LdapMembershipUserFactory(Configuration config) {
 			this.config = config;
 		}
 		
@@ -83,7 +83,7 @@ namespace nJupiter.DataAccess.Ldap {
 			DateTime lastLockoutDate = creationDate;
 			DateTime lastActivitiyDate = DateTime.Now;
 
-			return new MembershipUser(providerName, name, id, email, String.Empty, description, true, false, creationDate, lastLoginDate, lastActivitiyDate, lastPasswordChangedDate, lastLockoutDate);
+			return new LdapMembershipUser(providerName, name, id, email, String.Empty, description, true, false, creationDate, lastLoginDate, lastActivitiyDate, lastPasswordChangedDate, lastLockoutDate, result.Properties, result.Path);
 		}
 
 		private static string GetStringAttributeFromSearchResult(string attribute, SearchResult result) {

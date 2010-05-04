@@ -41,17 +41,18 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AttributeCollection.cs" />
+    <Compile Include="AttributeValueCollection.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DirectoryEntryAdapter.cs" />
+    <Compile Include="LdapMembershipUser.cs" />
     <Compile Include="LdapPathHandler.cs" />
     <Compile Include="NameParser\DnParser.cs" />
     <Compile Include="Searcher.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="GroupSearcher.cs" />
     <Compile Include="LdapNameHandler.cs" />
     <Compile Include="LdapMembershipProvider.cs" />
-    <Compile Include="MembershipUserFactory.cs" />
+    <Compile Include="LdapMembershipUserFactory.cs" />
     <Compile Include="NameType.cs" />
     <Compile Include="LdapRoleProvider.cs" />
     <Compile Include="FilterBuilder.cs" />

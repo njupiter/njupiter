@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 	Copyright (c) 2005-2010 nJupiter
 
@@ -45,7 +45,7 @@ namespace nJupiter.DataAccess.Ldap {
 		private Searcher groupSeracher;
 		private FilterBuilder filterBuilder;
 		private DirectoryEntryAdapter directoryEntryAdapter;
-		private MembershipUserFactory membershipUserFactory;
+		private LdapMembershipUserFactory ldapMembershipUserFactory;
 
 		public override string ApplicationName { get { return this.appName; } set { this.appName = value; } }
 		public override string Name {
@@ -78,7 +78,7 @@ namespace nJupiter.DataAccess.Ldap {
 			this.userSeracher = SearcherFactory.GetSearcher("user", configuration);
 			this.groupSeracher = SearcherFactory.GetSearcher("group", configuration);
 			this.filterBuilder = FilterBuilder.GetInstance(this.configuration);
-			this.membershipUserFactory = MembershipUserFactory.GetInstance(this.configuration);
+			this.ldapMembershipUserFactory = LdapMembershipUserFactory.GetInstance(this.configuration);
 			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSeracher, this.groupSeracher, this.filterBuilder);
 
 			base.Initialize(this.providerName, config);
@@ -161,7 +161,7 @@ namespace nJupiter.DataAccess.Ldap {
 				}
 				DirectorySearcher searcher = userSeracher.Create(entry, SearchScope.Base);
 				searcher.Filter = filterBuilder.CreateUserFilter();
-				return membershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
+				return this.ldapMembershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
 			}
 		}
 
@@ -172,7 +172,7 @@ namespace nJupiter.DataAccess.Ldap {
 				}
 				DirectorySearcher searcher = this.userSeracher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserEmailFilter(email);
-				MembershipUser user = membershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
+				MembershipUser user = this.ldapMembershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
 				return user != null ? user.UserName : null;
 			}
 		}
@@ -197,7 +197,7 @@ namespace nJupiter.DataAccess.Ldap {
 				DirectorySearcher searcher = userSeracher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserFilter();
 				searcher.PageSize = pageSize;
-				users = membershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
+				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -227,7 +227,7 @@ namespace nJupiter.DataAccess.Ldap {
 				DirectorySearcher searcher = this.userSeracher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserNameFilter(usernameToMatch);
 				searcher.PageSize = pageSize;
-				users = membershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
+				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -254,7 +254,7 @@ namespace nJupiter.DataAccess.Ldap {
 				DirectorySearcher searcher = this.userSeracher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserEmailFilter(emailToMatch);
 				searcher.PageSize = pageSize;
-				users = membershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
+				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
