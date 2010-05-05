@@ -35,6 +35,8 @@ BUG: Fixed a bug that made the AddPostsToCollectionFromDataTables method crash
 ENH: Add possibility to force going through StreamingPath in WebImage even 
      though we have not set MaxWidth or MaxHeight. This is done by setting the
      ForceStreaming property on WebImage to true.
+BUG: Fixed a bug in HtmlControlAdapter that caused that the InnerSpan
+     attribute was ignored on HtmlControls.
 CHG: NavigationPageCollection in WebNavigation is now inheriting directly from
      List<INavigationPage> instead of SortableList<INavigationPage>
 
