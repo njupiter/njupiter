@@ -28,27 +28,27 @@ using System.Text;
 namespace nJupiter.Text {
 
 	public static class TextHandler {
-		public static bool IsAscii(string value){
-            if (value == null)
+		public static bool IsAscii(string value) {
+			if(value == null)
 				throw new ArgumentNullException("value");
 
-			foreach (char chr in value){
-				if (chr > '\x007f')
+			foreach(char chr in value) {
+				if(chr > '\x007f')
 					return false;
 			}
-            return true;
-        }
+			return true;
+		}
 
-		public static bool IsAnsi(string value){
-            if (value == null)
+		public static bool IsAnsi(string value) {
+			if(value == null)
 				throw new ArgumentNullException("value");
 
-			foreach (char chr in value){
-				if (chr > '\x00ff')
+			foreach(char chr in value) {
+				if(chr > '\x00ff')
 					return false;
 			}
-            return true;
-        }
+			return true;
+		}
 
 		/// <summary>
 		/// Encode a string to QuotedPrintable as explained in RFC2045
@@ -56,9 +56,9 @@ namespace nJupiter.Text {
 		/// <param name="value">The string that shall be encoded</param>
 		/// <returns>An encoded string</returns>
 		/// <seealso cref="http://en.wikipedia.org/wiki/Quoted-printable"/>
-		public static string EncodeToQuotedPrintable(string value){
-            return EncodeToQuotedPrintable(value, Encoding.UTF8, false);
-        }
+		public static string EncodeToQuotedPrintable(string value) {
+			return EncodeToQuotedPrintable(value, Encoding.UTF8, false);
+		}
 
 
 
@@ -69,9 +69,9 @@ namespace nJupiter.Text {
 		/// <param name="singleLineEncoding">If single line encoding, then replace all spaces with underscore</param>
 		/// <returns>An encoded string</returns>
 		/// <seealso cref="http://en.wikipedia.org/wiki/Quoted-printable"/>
-		public static string EncodeToQuotedPrintable(string value, bool singleLineEncoding){
-            return EncodeToQuotedPrintable(value, Encoding.UTF8, singleLineEncoding);
-        }
+		public static string EncodeToQuotedPrintable(string value, bool singleLineEncoding) {
+			return EncodeToQuotedPrintable(value, Encoding.UTF8, singleLineEncoding);
+		}
 
 		/// <summary>
 		/// Encode a string to QuotedPrintable as explained in RFC2045
@@ -79,9 +79,9 @@ namespace nJupiter.Text {
 		/// <param name="value">The string that shall be encoded</param>
 		/// <param name="encoding">The encoding of the source string</param>
 		/// <returns>An encoded string</returns>
-		public static string EncodeToQuotedPrintable(string value, Encoding encoding){
-            return EncodeToQuotedPrintable(value, encoding, false);
-        }
+		public static string EncodeToQuotedPrintable(string value, Encoding encoding) {
+			return EncodeToQuotedPrintable(value, encoding, false);
+		}
 
 		/// <summary>
 		/// Encode a string to QuotedPrintable as explained in RFC2045
@@ -90,24 +90,24 @@ namespace nJupiter.Text {
 		/// <param name="encoding">The encoding of the source string</param>
 		/// <param name="singleLineEncoding">If single line encoding, then replace all spaces with underscore</param>
 		/// <returns>An encoded string</returns>
-		public static string EncodeToQuotedPrintable(string value, Encoding encoding, bool singleLineEncoding){
-            if (value == null)
-                return null;
+		public static string EncodeToQuotedPrintable(string value, Encoding encoding, bool singleLineEncoding) {
+			if(value == null)
+				return null;
 			if(encoding == null)
 				encoding = Encoding.UTF8;
-            byte[] buffer = encoding.GetBytes(value);
-            return EncodeToQuotedPrintable(buffer, singleLineEncoding);
-        }
+			byte[] buffer = encoding.GetBytes(value);
+			return EncodeToQuotedPrintable(buffer, singleLineEncoding);
+		}
 
 		private static string EncodeToQuotedPrintable(byte[] bytes, bool singleLineEncoding) {
 			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i < bytes.Length; i++){
-				byte current	= bytes[i];
-				byte next		= (bytes.Length > (i + 1) ? bytes[i + 1] : (byte)0);
+			for(int i = 0; i < bytes.Length; i++) {
+				byte current = bytes[i];
+				byte next = (bytes.Length > (i + 1) ? bytes[i + 1] : (byte)0);
 				if(current >= 33 && current <= 126 && current != 61 && current != 95) { // do not encode visible charachters
 					sb.Append((char)current);
 				} else {
-					if(!singleLineEncoding && current == 95){ // If not single line encoding, no need to encode underscore
+					if(!singleLineEncoding && current == 95) { // If not single line encoding, no need to encode underscore
 						sb.Append((char)current);
 					} else if(current >= 10 && current <= 13) { // If line feed or return do not encode
 						sb.Append((char)current);
@@ -124,12 +124,12 @@ namespace nJupiter.Text {
 				}
 			}
 			return sb.ToString();
-        }
+		}
 
-		private static char IntToHex(int n){
-            if (n <= 9)
-                return (char) ((ushort) (n + 0x30));
-            return (char) ((ushort) ((n - 10) + 0x61));
-        }
+		private static char IntToHex(int n) {
+			if(n <= 9)
+				return (char)((ushort)(n + 0x30));
+			return (char)((ushort)((n - 10) + 0x61));
+		}
 	}
 }

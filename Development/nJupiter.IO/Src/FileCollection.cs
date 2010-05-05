@@ -28,6 +28,7 @@ using System.IO;
 
 namespace nJupiter.IO {
 
+	[Obsolete("User System.Collections.Generic.List<FileInfo> instead")]
 	public sealed class FileCollection : ICloneable, IList {
 
 		#region Members
@@ -36,6 +37,7 @@ namespace nJupiter.IO {
 		
 		#region Constructors
 		public FileCollection() {
+		
 			this.innerArray = new ArrayList();
 		}
 		#endregion

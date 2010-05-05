@@ -41,10 +41,6 @@
       <Name>System.Web</Name>
     </Reference>
     <Reference Include="System.Xml" />
-    <ProjectReference Include="..\nJupiter.Collections\nJupiter.Collections.csproj">
-      <Project>{F0A96296-9CBA-4DD2-9BF5-00DBA743597D}</Project>
-      <Name>nJupiter.Collections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
       <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
       <Name>nJupiter.Configuration</Name>
