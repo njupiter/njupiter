@@ -9,7 +9,7 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for next version
+Changes for V3.15.0.0  - 2010-05-05
 ===============================================================================
 **** nJupiter.DataAccess.Ldap
 NEW: New component containing a generic MembershipProvider and RoleProvider for
