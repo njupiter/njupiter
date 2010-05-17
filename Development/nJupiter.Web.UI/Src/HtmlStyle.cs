@@ -30,8 +30,8 @@ namespace nJupiter.Web.UI {
 		public const string BorderLeft		= "border-left";
 		public const string BorderRight		= "border-right";
 		public const string BorderTop		= "border-top";
+		public const string Height			= "height";
 		public const string Left			= "left";
-		public const string Right			= "right";
 		public const string Margin			= "margin";
 		public const string MarginBottom	= "margin-bottom";
 		public const string MarginLeft		= "margin-left";
@@ -42,6 +42,7 @@ namespace nJupiter.Web.UI {
 		public const string PaddingLeft		= "padding-left";
 		public const string PaddingRight	= "padding-right";
 		public const string PaddingTop		= "padding-top";
+		public const string Right			= "right";
 		public const string Top				= "top";
 		public const string Width			= "width";
 	}
