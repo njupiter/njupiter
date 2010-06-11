@@ -382,10 +382,20 @@ namespace nJupiter.Web.UI.Controls {
 				if(this.IncludeRootLevelInList) {
 					childNodes = new NavigationPageCollection();
 					childNodes.Add(this.NavPage);
-				} else {
+				} else if(this.NavPage.Id.Equals(this.RootPage.Id) ||
+					this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.Always) ||
+					this.FilterNavigation(new NavigationPageCollection(new[] { this.NavPage }), null).Count.Equals(1)) {
 					childNodes = this.GetChildren(this.NavPage);
+				} else {
+					childNodes = new NavigationPageCollection();
+					if(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.OnlyInSelectedPath)) {
+						foreach(INavigationPage child in this.GetChildren(this.NavPage)) {
+							if(this.IsPageInSelectedPath(this.RootPage, child, this.SelectedNavigationPage)) {
+								childNodes.Add(child);
+							}
+						}
+					}
 				}
-
 				NavigationPageCollection removedChildNodes = this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never ?
 					new NavigationPageCollection() : null;
 				childNodes = FilterNavigation(childNodes, removedChildNodes);

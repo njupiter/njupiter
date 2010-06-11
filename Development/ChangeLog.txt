@@ -9,6 +9,13 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for upcoming version
+===============================================================================
+**** nJupiter.Web.UI
+BUG: Fixed a bug in WebNavigation that caused IncludeChildrenOfRemovedNodesMode 
+     to not be honoured when StartLevelFromRoot > 0.
+
+===============================================================================
 Changes for V3.15.0.0  - 2010-05-05
 ===============================================================================
 **** nJupiter.DataAccess.Ldap
