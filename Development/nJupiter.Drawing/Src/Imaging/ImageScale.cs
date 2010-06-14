@@ -172,20 +172,23 @@ namespace nJupiter.Drawing.Imaging {
 				newSize = GetProportionalImageSize(originalSize, newWidth, newHeight, (resizeFlags & ResizeFlags.AllowEnlarging) > 0);
 			}
 
-			if(newSize.Equals(originalSize)) {
-				// Keep original size. Only make a copy
-				originalImage.Save(outputStream, new ImageFormat(originalImage.RawFormat.Guid));
-			} else {
-				// Create new pic.
-				using(Bitmap bitmap = new Bitmap(newSize.Width, newSize.Height)) {
-					using(Graphics graphics = Graphics.FromImage(bitmap)) {
-						graphics.SmoothingMode		= smoothingMode;
-						graphics.InterpolationMode	= interpolationMode;
-						graphics.PixelOffsetMode	= pixelOffsetMode;
-						graphics.DrawImage(originalImage, 0, 0, bitmap.Width, bitmap.Height);
-						bitmap.Save(outputStream, originalImage.RawFormat);
+			using(MemoryStream memoryStream = new MemoryStream()) {
+				if(newSize.Equals(originalSize)) {
+					// Keep original size. Only make a copy
+					originalImage.Save(memoryStream, new ImageFormat(originalImage.RawFormat.Guid));
+				} else {
+					// Create new pic.
+					using(Bitmap bitmap = new Bitmap(newSize.Width, newSize.Height)) {
+						using(Graphics graphics = Graphics.FromImage(bitmap)) {
+							graphics.SmoothingMode = smoothingMode;
+							graphics.InterpolationMode = interpolationMode;
+							graphics.PixelOffsetMode = pixelOffsetMode;
+							graphics.DrawImage(originalImage, 0, 0, bitmap.Width, bitmap.Height);
+							bitmap.Save(memoryStream, originalImage.RawFormat);
+						}
 					}
 				}
+				memoryStream.WriteTo(outputStream);
 			}
 		}
 

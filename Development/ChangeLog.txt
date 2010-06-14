@@ -15,6 +15,10 @@ Changes for upcoming version
 BUG: Fixed a bug in WebNavigation that caused IncludeChildrenOfRemovedNodesMode 
      to not be honoured when StartLevelFromRoot > 0.
 
+**** nJupiter.Drawing
+BUG: Fixed a bug in ImageScale that caused scaling of PNG images to crash with 
+     the exception message "A generic error occurred in GDI+."
+
 ===============================================================================
 Changes for V3.15.0.0  - 2010-05-05
 ===============================================================================
