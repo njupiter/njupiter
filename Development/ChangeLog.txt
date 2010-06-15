@@ -9,7 +9,7 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for upcoming version
+Changes for V3.15.1.0  - 2010-06-15
 ===============================================================================
 **** nJupiter.DataAccess.Ldap
 ENH: Added config and implementation so attributes that is loaded together
