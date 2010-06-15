@@ -142,11 +142,23 @@ namespace nJupiter.DataAccess.Ldap {
 						users.RdnAttribute = "cn";
 					}
 
+					List<AttributeDefinition> userAttributeDefinitionList = new List<AttributeDefinition>();
 					if(configSection.ContainsKey("users", "attributes")) {
-						users.Attributes = configSection.GetValueArray("users/attributes", "attribute");
+						string[] attributes = configSection.GetValueArray("users/attributes", "attribute");
+						foreach(string attribute in attributes) {
+							bool excludeFromNameSearch = false;
+							string attributeKey = string.Format("users/attributes/attribute[@value='{0}']", attribute);
+							if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
+								excludeFromNameSearch = configSection.GetBoolAttribute(attributeKey, "excludeFromNameSearch");
+							}
+							AttributeDefinition attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
+							userAttributeDefinitionList.Add(attributeDefinition);
+						}
 					} else {
-						users.Attributes = new[] { "cn" };
+						AttributeDefinition attributeDefinition = new AttributeDefinition("cn");
+						userAttributeDefinitionList.Add(attributeDefinition);
 					}
+					users.Attributes = userAttributeDefinitionList;
 
 					if(configSection.ContainsKey("users", "membershipAttribute")) {
 						users.MembershipAttribute = configSection.GetValue("users", "membershipAttribute");
@@ -200,11 +212,24 @@ namespace nJupiter.DataAccess.Ldap {
 						groups.RdnAttribute = "cn";
 					}
 
+					
+					List<AttributeDefinition> groupAttributeDefinitionList = new List<AttributeDefinition>();
 					if(configSection.ContainsKey("groups", "attributes")) {
-						groups.Attributes = configSection.GetValueArray("groups/attributes", "attribute");
+						string[] attributes = configSection.GetValueArray("groups/attributes", "attribute");
+						foreach(string attribute in attributes) {
+							bool excludeFromNameSearch = false;
+							string attributeKey = string.Format("groups/attributes/attribute[@value='{0}']", attribute);
+							if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
+								excludeFromNameSearch = configSection.GetBoolAttribute(attributeKey, "excludeFromNameSearch");
+							}
+							AttributeDefinition attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
+							groupAttributeDefinitionList.Add(attributeDefinition);
+						}
 					} else {
-						groups.Attributes = new[] { "cn" };
+						AttributeDefinition attributeDefinition = new AttributeDefinition("cn");
+						groupAttributeDefinitionList.Add(attributeDefinition);
 					}
+					groups.Attributes = groupAttributeDefinitionList;
 
 					if(configSection.ContainsKey("groups", "membershipAttribute")) {
 						groups.MembershipAttribute = configSection.GetValue("groups", "membershipAttribute");
@@ -289,7 +314,7 @@ namespace nJupiter.DataAccess.Ldap {
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
-			public string[] Attributes  { get; internal set; }
+			public List<AttributeDefinition> Attributes  { get; internal set; }
 			public string MembershipAttribute { get; internal set; }
 			public string EmailAttribute { get; internal set; }
 			public string CreationDateAttribute { get; internal set; }
@@ -308,7 +333,7 @@ namespace nJupiter.DataAccess.Ldap {
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
-			public string[] Attributes  { get; internal set; }
+			public List<AttributeDefinition> Attributes  { get; internal set; }
 			public string MembershipAttribute { get; internal set; }
 			public NameType NameType { get; internal set; }
 

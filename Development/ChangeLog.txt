@@ -11,6 +11,11 @@ NEW - New feature
 ===============================================================================
 Changes for upcoming version
 ===============================================================================
+**** nJupiter.DataAccess.Ldap
+ENH: Added config and implementation so attributes that is loaded together
+     with the LdapMembershipUser can be excluded from username search. Look in
+     nJupiter.DataAccess.Ldap.config for examples.
+
 **** nJupiter.Web.UI
 BUG: Fixed a bug in WebNavigation that caused IncludeChildrenOfRemovedNodesMode 
      to not be honoured when StartLevelFromRoot > 0.

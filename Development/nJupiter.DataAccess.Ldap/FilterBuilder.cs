@@ -43,7 +43,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public string CreateUserNameFilter(string usernameToMatch) {
 			string defaultFilter = CreateUserFilter();
-			if(config.Users.Attributes.Length > 0) {
+			if(config.Users.Attributes.Count > 0) {
 				return this.AttachUserAttributeFilters(usernameToMatch, defaultFilter);
 			}
 			return AttachFilter(config.Users.RdnAttribute, usernameToMatch, defaultFilter);
@@ -52,8 +52,10 @@ namespace nJupiter.DataAccess.Ldap {
 		private string AttachUserAttributeFilters(string usernameToMatch, string userFilter) {
 			string escapedUsername = this.EscapeSearchFilter(usernameToMatch);
 			StringBuilder builder = new StringBuilder();
-			foreach(string otherAttributes in config.Users.Attributes) {
-				builder.Append(String.Format("({0}={1})", otherAttributes, escapedUsername));
+			foreach(AttributeDefinition otherAttributes in config.Users.Attributes) {
+				if(!otherAttributes.ExcludeFromNameSearch) {
+					builder.Append(String.Format("({0}={1})", otherAttributes.Name, escapedUsername));
+				}
 			}
 			return String.Format("(&{0}(|({1}={2}){3}))", userFilter, config.Users.RdnAttribute, escapedUsername, builder) ;
 		}

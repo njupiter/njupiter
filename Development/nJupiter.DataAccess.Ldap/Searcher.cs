@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.DirectoryServices;
 
 namespace nJupiter.DataAccess.Ldap {
@@ -45,12 +46,12 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public abstract DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope);
 
-		protected DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute, string[] otherAttributes) {
+		protected DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute, List<AttributeDefinition> otherAttributes) {
 			DirectorySearcher searcher = CreateSearcher(entry, searchScope, rdnAttribute);
 			searcher.PropertiesToLoad.Clear();
 			searcher.PropertiesToLoad.Add(rdnAttribute);
-			foreach(string attribute in otherAttributes) {
-				searcher.PropertiesToLoad.Add(attribute);
+			foreach(AttributeDefinition attribute in otherAttributes) {
+				searcher.PropertiesToLoad.Add(attribute.Name);
 			}
 			return searcher;
 		}

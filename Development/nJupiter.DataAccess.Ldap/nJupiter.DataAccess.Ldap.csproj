@@ -49,6 +49,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AttributeCollection.cs" />
+    <Compile Include="AttributeDefinition.cs" />
     <Compile Include="AttributeValueCollection.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DirectoryEntryAdapter.cs" />
