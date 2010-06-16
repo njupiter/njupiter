@@ -131,7 +131,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 					# region If not, are we looking at a digit?
 
-					else if(IsDigit(rdnString[position])) {
+ else if(IsDigit(rdnString[position])) {
 						// If we're looking at a digit, that means we're looking at an OID.
 						// We'll set the state to GetTypeByOId.
 						state = ParserState.GetTypeByOId;
@@ -141,7 +141,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 					# region If not, we're looking at something that shouldn't be there.
 
-					else {
+ else {
 						// If it's not a letter or a digit, then it's a wacky and invalid character,
 						// and we'd do well to freak out.
 						throw new ArgumentException("Invalid Rdn: Invalid character in attribute name", rdnString);

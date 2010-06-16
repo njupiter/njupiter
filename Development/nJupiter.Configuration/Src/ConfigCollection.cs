@@ -34,13 +34,13 @@ namespace nJupiter.Configuration {
 	[Serializable]
 	public sealed class ConfigCollection : IEnumerable {
 		#region Members
-		private readonly Dictionary<String, Config>	innerHash;
+		private readonly Dictionary<String, Config> innerHash;
 		private readonly object padLock = new object();
 		#endregion
-		
+
 		#region Constructors
 		internal ConfigCollection() {
-			this.innerHash  = new Dictionary<String, Config>(StringComparer.InvariantCultureIgnoreCase);
+			this.innerHash = new Dictionary<String, Config>(StringComparer.InvariantCultureIgnoreCase);
 		}
 		#endregion
 
@@ -50,10 +50,10 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <value></value>
 		public Config this[string configKey] {
-			get{
+			get {
 				return this.InnerHash[configKey];
 			}
-			internal set{
+			internal set {
 				Config config = this.InnerHash[configKey];
 				if(config != null) {
 					InnerHash[configKey] = value;
@@ -66,7 +66,7 @@ namespace nJupiter.Configuration {
 		#endregion
 
 		#region Properties
-		internal	Dictionary<String, Config>	InnerHash	{ get { return this.innerHash; } }
+		internal Dictionary<String, Config> InnerHash { get { return this.innerHash; } }
 		#endregion
 
 		#region Internal Methods
@@ -91,7 +91,7 @@ namespace nJupiter.Configuration {
 		/// 	<c>true</c> if the collection contains the specified config; otherwise, <c>false</c>.
 		/// </returns>
 		public bool Contains(Config config) {
-			return(InnerHash.ContainsValue(config));
+			return (InnerHash.ContainsValue(config));
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace nJupiter.Configuration {
 		/// 	<c>true</c> if the collection contains the specified config; otherwise, <c>false</c>.
 		/// </returns>
 		public bool Contains(string configKey) {
-			return(InnerHash.ContainsKey(configKey));
+			return (InnerHash.ContainsKey(configKey));
 		}
 
 		/// <summary>
@@ -126,26 +126,26 @@ namespace nJupiter.Configuration {
 			return new ConfigCollectionEnumerator(this);
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
 		/// <summary>
 		/// Gets the number of elements actually contained in the collection.
 		/// </summary>
 		/// <value>The number of elements actually contained in the collection.</value>
-		public		int		Count			{ get { return InnerHash.Count; } }
-		internal	object	SyncRoot		{ get { return this.padLock; } }
+		public int Count { get { return InnerHash.Count; } }
+		internal object SyncRoot { get { return this.padLock; } }
 		#endregion
 	}
-	
+
 	#region ConfigCollectionEnumerator
 	[Serializable]
 	internal class ConfigCollectionEnumerator : IEnumerator {
 		private readonly IEnumerator innerEnumerator;
-		
-		internal ConfigCollectionEnumerator (ConfigCollection enumerable) {
+
+		internal ConfigCollectionEnumerator(ConfigCollection enumerable) {
 			innerEnumerator = enumerable.InnerHash.GetEnumerator();
 		}
-	
+
 		#region Implementation of IEnumerator
 		/// <summary>
 		/// Sets the enumerator to its initial position, which is before the first element in the collection.

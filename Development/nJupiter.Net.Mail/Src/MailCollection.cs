@@ -30,9 +30,9 @@ namespace nJupiter.Net.Mail {
 	public sealed class MailCollection : ICollection {
 
 		#region Members
-		private		ArrayList		innerArray;
+		private ArrayList innerArray;
 		#endregion
-		
+
 		#region Constructors
 		public MailCollection() {
 			this.innerArray = new ArrayList();
@@ -40,7 +40,7 @@ namespace nJupiter.Net.Mail {
 		#endregion
 
 		#region Indexers
-		public Mail this[int index] { get { return (Mail) InnerArray[index]; } }
+		public Mail this[int index] { get { return (Mail)InnerArray[index]; } }
 		#endregion
 
 		#region Properties
@@ -59,11 +59,11 @@ namespace nJupiter.Net.Mail {
 		public Mail[] ToArray() {
 			return (Mail[])InnerArray.ToArray(typeof(Mail));
 		}
-		
+
 		public bool Contains(Mail mail) {
-			return(InnerArray.Contains(mail));
+			return (InnerArray.Contains(mail));
 		}
-		
+
 		public void CopyTo(Array array, int index) {
 			InnerArray.CopyTo(array, index);
 		}
@@ -91,11 +91,11 @@ namespace nJupiter.Net.Mail {
 			return this.innerArray.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerArray.IsSynchronized; } }
-		public int		Count			{ get { return InnerArray.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerArray.IsSynchronized; } }
+		public int Count { get { return InnerArray.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 
 	}

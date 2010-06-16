@@ -26,13 +26,13 @@ namespace nJupiter.Services.Forum {
 
 	public sealed class CategoryResultConfiguration {
 		#region Constants
-		private const bool	DefaultLoadAttributes	= true;
+		private const bool DefaultLoadAttributes = true;
 		#endregion
 
 		#region Constructors
-		public CategoryResultConfiguration() : this(DefaultLoadAttributes) {}
+		public CategoryResultConfiguration() : this(DefaultLoadAttributes) { }
 		public CategoryResultConfiguration(bool loadAttributes) {
-			this.LoadAttributes	= loadAttributes;
+			this.LoadAttributes = loadAttributes;
 		}
 		#endregion
 

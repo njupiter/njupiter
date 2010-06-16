@@ -30,39 +30,39 @@ using System.Globalization;
 
 namespace nJupiter.Messaging {
 
-	[XmlTypeAttribute(Namespace="urn:njupiter:messaging:messagedestination")]
+	[XmlTypeAttribute(Namespace = "urn:njupiter:messaging:messagedestination")]
 	[Serializable]
 	public class MessageDestination {
 
 		#region Private instance members
-		private		string	name;
+		private string name;
 		#endregion
 
 		#region Properties - Xml serializable
 		[XmlAttribute(DataType = "string", AttributeName = "name")]
-		public string	Name	{ get {return this.name;}  set { this.name	= value;}}
+		public string Name { get { return this.name; } set { this.name = value; } }
 		#endregion
 
-		#region Constructs 
+		#region Constructs
 		/// <summary>
 		/// Public construct, used for Xml serialization.
 		/// </summary>
-		public MessageDestination() {}
-		
+		public MessageDestination() { }
+
 		internal MessageDestination(string name) {
-			if (name == null)
+			if(name == null)
 				throw new ArgumentNullException("name");
 
-			this.name	= name;
+			this.name = name;
 		}
 		#endregion
 
 		#region Methods
 		public override bool Equals(object obj) {
 			MessageDestination msgDest = obj as MessageDestination;
-			if (msgDest == null)
+			if(msgDest == null)
 				return false;
-			
+
 			return this.Name.Equals(msgDest.Name);
 		}
 
@@ -94,14 +94,14 @@ namespace nJupiter.Messaging {
 			XmlTextReader xmlReader = new XmlTextReader(stringReader);
 			return (MessageDestination)serializer.Deserialize(xmlReader);
 		}
-		
+
 		static public MessageDestination Deserialize(string xml) {
 			if(xml == null)
 				throw new ArgumentNullException("xml");
 
 			XmlDocument xmlDoc = new XmlDocument();
 			xmlDoc.LoadXml(xml);
-			
+
 			return Deserialize(xmlDoc);
 		}
 		#endregion

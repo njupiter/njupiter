@@ -29,8 +29,8 @@ namespace nJupiter.DataAccess.DirectoryService {
 	public class Property {
 
 		#region Variables
-		private string		name;
-		private string		value;
+		private string name;
+		private string value;
 		#endregion
 
 		#region Constructors
@@ -43,18 +43,18 @@ namespace nJupiter.DataAccess.DirectoryService {
 		#endregion
 
 		#region Properties
-		public string Name { 
-			get { return this.name; } 
-			set { 
+		public string Name {
+			get { return this.name; }
+			set {
 				if(value == null || value.Length.Equals(0)) {
 					throw new ArgumentOutOfRangeException("value");
 				}
-				this.name = value; 
-			} 
+				this.name = value;
+			}
 		}
-		public string Value { 
-			get { return this.value; } 
-			set { this.value = value ?? string.Empty; } 
+		public string Value {
+			get { return this.value; }
+			set { this.value = value ?? string.Empty; }
 		}
 		#endregion
 

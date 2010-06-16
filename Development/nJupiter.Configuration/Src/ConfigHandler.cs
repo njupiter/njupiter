@@ -38,21 +38,21 @@ namespace nJupiter.Configuration {
 	/// </summary>
 	public sealed class ConfigHandler {
 		#region Constants
-		private const string			ConfigElement				= "nJupiterConfiguration";
-		private	const string			ConfigSystemKey				= "System";
-		private	const string			ConfigSuffix				= ".config";
+		private const string ConfigElement = "nJupiterConfiguration";
+		private const string ConfigSystemKey = "System";
+		private const string ConfigSuffix = ".config";
 		#endregion
 
 		#region Static Members
-		private static readonly ILog	log		= LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private	static readonly	object	padLock	= new object();
-		private	static readonly char[]	illegalPathCharacters		= new[] {'\\', '/', '"', '*', '?', '<', '>'};
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly object PadLock = new object();
+		private static readonly char[] IllegalPathCharacters = new[] { '\\', '/', '"', '*', '?', '<', '>' };
 		#endregion
-		
+
 		#region Members
-		private				bool				allConfigLoaded;
-		internal			ConfigCollection	configurations	= new ConfigCollection();
-		private readonly	ArrayList			configDirs		= new ArrayList();
+		private bool allConfigLoaded;
+		private readonly ConfigCollection configurations = new ConfigCollection();
+		private readonly ArrayList configDirs = new ArrayList();
 		#endregion
 
 		#region Properties
@@ -60,12 +60,12 @@ namespace nJupiter.Configuration {
 		/// Gets the config key used for SystemConfig.
 		/// </summary>
 		/// <value>The system config key.</value>
-		public		static string			SystemConfigKey	{ get { return ConfigSystemKey; } }
+		public static string SystemConfigKey { get { return ConfigSystemKey; } }
 		/// <summary>
 		/// Gets all configuration objects.
 		/// </summary>
 		/// <value>The configurations.</value>
-		public		static ConfigCollection	Configurations	{
+		public static ConfigCollection Configurations {
 			get {
 				ConfigHandler.Instance.LoadAllConfigs();
 				return ConfigHandler.Instance.configurations;
@@ -74,7 +74,7 @@ namespace nJupiter.Configuration {
 		#endregion
 
 		#region Singleton Implementation
-		private ConfigHandler(){}
+		private ConfigHandler() { }
 
 		/// <summary>
 		/// Returns a ConfigHandler instance
@@ -90,9 +90,9 @@ namespace nJupiter.Configuration {
 			// Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			// ReSharper disable EmptyConstructor
 			static NestedSingleton() {
-			// ReSharper restore EmptyConstructor
-			}									
-			internal static readonly ConfigHandler instance  = new ConfigHandler();
+				// ReSharper restore EmptyConstructor
+			}
+			internal static readonly ConfigHandler instance = new ConfigHandler();
 		}
 		#endregion
 
@@ -102,7 +102,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <returns>The system config object</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetSystemConfig(){
+		public static Config GetSystemConfig() {
 			return GetConfig(SystemConfigKey);
 		}
 
@@ -111,7 +111,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <returns>The config object for the current assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(){
+		public static Config GetConfig() {
 			return GetConfig(Assembly.GetCallingAssembly(), false);
 		}
 
@@ -121,7 +121,7 @@ namespace nJupiter.Configuration {
 		/// <param name="suppressMissingConfigException">if set to <c>true</c> suppress exception if config for the calling assembly is missing.</param>
 		/// <returns>The config object for the current assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(bool suppressMissingConfigException){
+		public static Config GetConfig(bool suppressMissingConfigException) {
 			return GetConfig(Assembly.GetCallingAssembly(), suppressMissingConfigException);
 		}
 
@@ -142,7 +142,7 @@ namespace nJupiter.Configuration {
 		/// <param name="suppressMissingConfigException">if set to <c>true</c> suppress exception if config for the given assembly is missing.</param>
 		/// <returns>A config object for the given assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(Assembly assembly, bool suppressMissingConfigException){
+		public static Config GetConfig(Assembly assembly, bool suppressMissingConfigException) {
 			if(assembly == null)
 				throw new ArgumentNullException("assembly");
 			Config config = GetConfig(assembly.GetName().Name, suppressMissingConfigException);
@@ -174,8 +174,8 @@ namespace nJupiter.Configuration {
 
 			try {
 				return ConfigHandler.Instance.LoadConfig(configKey);
-			} catch (ConfigurationException) {
-				if (suppressMissingConfigException) 
+			} catch(ConfigurationException) {
+				if(suppressMissingConfigException)
 					return null;
 				throw;
 			}
@@ -186,7 +186,7 @@ namespace nJupiter.Configuration {
 		private void LoadAllConfigs() {
 			if(this.allConfigLoaded)
 				return;
-			lock(padLock) {
+			lock(PadLock) {
 				if(!this.allConfigLoaded) {
 					foreach(DirectoryInfo dir in this.configDirs) {
 						if(dir.Exists) {
@@ -206,13 +206,13 @@ namespace nJupiter.Configuration {
 			if(this.configurations.Contains(configKey))
 				return this.configurations[configKey];
 
-			lock(padLock) {
-				if(log.IsDebugEnabled) { log.Debug(string.Format("Loding config with key [{0}]", configKey)); }
+			lock(PadLock) {
+				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Loding config with key [{0}]", configKey)); }
 
 				if(!this.configurations.Contains(this.GetType().Assembly.GetName().Name))
 					this.Configure();
 
-				if(configKey.IndexOfAny(illegalPathCharacters) < 0) {
+				if(configKey.IndexOfAny(IllegalPathCharacters) < 0) {
 					foreach(DirectoryInfo dir in this.configDirs) {
 						if(dir.Exists) {
 							try {
@@ -223,12 +223,12 @@ namespace nJupiter.Configuration {
 								}
 							} catch(IOException ex) {
 								// Ignore IOException in case of incorrect syntax
-								if(log.IsDebugEnabled && !configKey.Contains(":")) { log.Debug(string.Format("Incorrect syntax in config key [{0}]", configKey), ex); }
+								if(Log.IsDebugEnabled && !configKey.Contains(":")) { Log.Debug(string.Format("Incorrect syntax in config key [{0}]", configKey), ex); }
 							}
 						}
 					}
 				} else {
-					if(log.IsDebugEnabled) { log.Debug(string.Format("Illegal path characters in config key [{0}]", configKey)); }
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Illegal path characters in config key [{0}]", configKey)); }
 				}
 				if(this.configurations.Contains(configKey)) {
 					return this.configurations[configKey];
@@ -237,26 +237,26 @@ namespace nJupiter.Configuration {
 			}
 		}
 
-		internal static void SetConfig(Config config){
-			if(config.ConfigFile != null){
+		internal static void SetConfig(Config config) {
+			if(config.ConfigFile != null) {
 				try {
 					// Create a watch handler that will reload the configuration whenever the config file is modified.
-					if(log.IsDebugEnabled) { log.Debug(string.Format("Start watching file {0} for config [{1}]", config.ConfigFile.FullName, config.ConfigKey)); }
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Start watching file {0} for config [{1}]", config.ConfigFile.FullName, config.ConfigKey)); }
 					config.Watcher = WatchedConfigHandler.StartWatching(config.ConfigKey, config.ConfigFile);
 				} catch(Exception ex) {
 					throw new ConfiguratorException(string.Format("Failed to initialize configuration file watcher for file [{0}].", config.ConfigFile.FullName), ex);
 				}
 			}
-			
-			lock(ConfigHandler.Instance.configurations.SyncRoot){
-				if(ConfigHandler.Instance.configurations.Contains(config.ConfigKey)){
+
+			lock(ConfigHandler.Instance.configurations.SyncRoot) {
+				if(ConfigHandler.Instance.configurations.Contains(config.ConfigKey)) {
 					ConfigHandler.Instance.configurations[config.ConfigKey] = config;
-				}else{
+				} else {
 					ConfigHandler.Instance.configurations.Add(config);
 				}
 			}
 		}
-	
+
 		#endregion
 
 		#region Handler Configuration
@@ -266,7 +266,7 @@ namespace nJupiter.Configuration {
 		private void Configure() {
 			try {
 				XmlElement configElement = System.Configuration.ConfigurationManager.GetSection(ConfigElement) as XmlElement;
-				if (configElement == null) {
+				if(configElement == null) {
 					// Failed to load the xml config using configuration settings handler
 					throw new ConfiguratorException(string.Format("Failed to find configuration section '{0}' in the application's .config file. Check your .config file for the <{1}> and <configSections> elements. The configuration section should look like: <section name=\"{2}\" type=\"nJupiter.Configuration.nJupiterConfigurationSectionHandler,nJupiter.Configuration\" />", ConfigElement, ConfigElement, ConfigElement));
 				}
@@ -274,13 +274,13 @@ namespace nJupiter.Configuration {
 				Configurator.Configure(this.GetType().Assembly, configElement);
 				// Configure using the 'elementName' element
 				XmlNodeList configNodeList = ConfigHandler.GetConfig().ConfigXML.GetElementsByTagName(ConfigElement);
-				if (configNodeList.Count > 1) {
+				if(configNodeList.Count > 1) {
 					throw new ConfiguratorException(string.Format("XML configuration contains [{0}] <{1}> elements. Only one is allowed. Configuration Aborted.", configNodeList.Count, ConfigElement));
 				}
 				this.Init();
 			} catch(System.Configuration.ConfigurationException confEx) {
 				string configFile = AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString();
-				if (confEx.BareMessage.IndexOf("Unrecognized element") >= 0) {
+				if(confEx.BareMessage.IndexOf("Unrecognized element") >= 0) {
 					// Looks like the XML file is not valid
 					throw new ConfiguratorException(string.Format("Failed to parse config file [{0}]. Check your .config file is well formed XML.", configFile), confEx);
 				}
@@ -290,19 +290,19 @@ namespace nJupiter.Configuration {
 			}
 		}
 
-		private void Init(){
+		private void Init() {
 			// TODO: Do redirects, specifed config files etc.
 
 			// Read config dirs
 			string[] dirs = ConfigHandler.GetConfig().GetValueArray("configDirectories", "configDirectory");
-			foreach(string dir in dirs){
-				if(!string.IsNullOrEmpty(dir)){
+			foreach(string dir in dirs) {
+				if(!string.IsNullOrEmpty(dir)) {
 					string directory = dir;
 					if(HttpContext.Current != null && dir.StartsWith("~")) {
 						directory = HttpContext.Current.Server.MapPath(dir);
 					}
 					DirectoryInfo dirInfo = new DirectoryInfo(directory);
-					if(dirInfo.Exists){
+					if(dirInfo.Exists) {
 						this.configDirs.Add(dirInfo);
 					}
 				}

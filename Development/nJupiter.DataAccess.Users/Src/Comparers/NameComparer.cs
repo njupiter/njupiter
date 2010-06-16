@@ -26,10 +26,10 @@ using System.Collections;
 
 namespace nJupiter.DataAccess.Users.Comparers.Users {
 
-	public class NameComparer : IComparer	{
+	public class NameComparer : IComparer {
 
 		#region Members
-		private readonly bool ascending; 
+		private readonly bool ascending;
 		#endregion
 
 		#region Constructors
@@ -42,11 +42,11 @@ namespace nJupiter.DataAccess.Users.Comparers.Users {
 		private static NameComparer ascendingInstance;
 		private static NameComparer descendingInstance;
 		#endregion
-	
+
 		#region Singleton Instances
 		public static NameComparer Ascending {
 			get {
-				if (ascendingInstance == null)
+				if(ascendingInstance == null)
 					ascendingInstance = new NameComparer(true);
 				return ascendingInstance;
 			}
@@ -54,7 +54,7 @@ namespace nJupiter.DataAccess.Users.Comparers.Users {
 
 		public static NameComparer Descending {
 			get {
-				if (descendingInstance == null)
+				if(descendingInstance == null)
 					descendingInstance = new NameComparer(false);
 				return descendingInstance;
 			}
@@ -65,8 +65,8 @@ namespace nJupiter.DataAccess.Users.Comparers.Users {
 		public int Compare(object x, object y) {
 			User xUser = x as User;
 			User yUser = y as User;
-			
-			if (xUser == null || yUser == null)
+
+			if(xUser == null || yUser == null)
 				return 0;
 
 			string xName = xUser.Properties.LastName ?? xUser.Properties.DisplayName;

@@ -34,7 +34,7 @@ namespace nJupiter.DataAccess.OleDb {
 	public class OleDbDataSource : DataSource {
 
 		#region Constructors
-		internal OleDbDataSource() {}
+		internal OleDbDataSource() { }
 		#endregion
 
 		#region Methods
@@ -69,7 +69,7 @@ namespace nJupiter.DataAccess.OleDb {
 		/// <returns></returns>
 		public override Command CreateCommand(string command, Transaction transaction, CommandType commandType, params object[] parameters) {
 			OleDbCommand commandObj = new OleDbCommand(command, commandType, parameters);
-			if(transaction != null){
+			if(transaction != null) {
 				commandObj.DbCommand.Connection = transaction.Connection;
 				commandObj.Transaction = transaction;
 			}

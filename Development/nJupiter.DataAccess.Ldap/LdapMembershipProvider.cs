@@ -56,7 +56,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override bool EnablePasswordRetrieval { get { return false; } }
 		public override bool EnablePasswordReset { get { return false; } }
- 		public override bool RequiresQuestionAndAnswer { get { return false; } }
+		public override bool RequiresQuestionAndAnswer { get { return false; } }
 		public override int MaxInvalidPasswordAttempts { get { return 256; } }
 		public override int PasswordAttemptWindow { get { return 1; } }
 		public override bool RequiresUniqueEmail { get { return false; } }
@@ -72,7 +72,7 @@ namespace nJupiter.DataAccess.Ldap {
 			this.appName = LdapMembershipProvider.GetStringConfigValue(config, "applicationName", typeof(LdapMembershipProvider).GetType().Name);
 			this.providerName = !string.IsNullOrEmpty(name) ? name : this.appName;
 
-			this.ldapServer	= GetStringConfigValue(config, "ldapServer", string.Empty);
+			this.ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
 			this.configuration = Configuration.GetConfig(this.ldapServer);
 			this.userSeracher = SearcherFactory.GetSearcher("user", configuration);

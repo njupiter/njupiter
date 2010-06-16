@@ -33,7 +33,7 @@ namespace nJupiter.Web.Syndication {
 		Uri Uri { get; }
 		string Description { get; }
 		DateTime PublishDate { get; }
-		IAuthor Author  { get; }
+		IAuthor Author { get; }
 		Dictionary<XmlQualifiedName, string> CustomElements { get; }
 	}
 }

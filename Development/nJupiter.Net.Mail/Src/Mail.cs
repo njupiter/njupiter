@@ -37,129 +37,117 @@ namespace nJupiter.Net.Mail {
 	/// Mail message
 	/// </summary>
 	public class Mail {
-		
+
 		#region Constants
-		private const string AddressPattern		= @"([\w\W]+)<([\w\W]+)>";
-		private const string EndofblockPattern	= @"\</[h1|h2|h3|h4|h5|h6|hr|p|pre|ul|dt|li]*?\>|<br*?>";
-		private const string ClosingtagPattern	= @"<script.*?>.*?</script.*?>|<style.*?>.*?</style.*?>";
-		private const string HtmltagPattern		= @"[\f\t\v]|<(?:[^""']+?|.+?(?:""|').*?(?:""|')?.*?)*?>";
-		private const string EndoflinePattern	= @"[\n\r\f\t\v]{3,}";
+		private const string AddressPattern = @"([\w\W]+)<([\w\W]+)>";
+		private const string EndofblockPattern = @"\</[h1|h2|h3|h4|h5|h6|hr|p|pre|ul|dt|li]*?\>|<br*?>";
+		private const string ClosingtagPattern = @"<script.*?>.*?</script.*?>|<style.*?>.*?</style.*?>";
+		private const string HtmltagPattern = @"[\f\t\v]|<(?:[^""']+?|.+?(?:""|').*?(?:""|')?.*?)*?>";
+		private const string EndoflinePattern = @"[\n\r\f\t\v]{3,}";
 		#endregion
 
 		#region Constants
-		private static readonly Regex addressRegEx	= new Regex(AddressPattern);
-		private static readonly Regex endOfBlockRegEx	= new Regex(EndofblockPattern, RegexOptions.CultureInvariant|RegexOptions.IgnoreCase);
-		private static readonly Regex closingTagRegEx	= new Regex(ClosingtagPattern, RegexOptions.Singleline);
-		private static readonly Regex htmlTagRegEx	= new Regex(HtmltagPattern);
-		private static readonly Regex endOfLineRegEx	= new Regex(EndoflinePattern);
+		private static readonly Regex AddressRegEx = new Regex(AddressPattern);
+		private static readonly Regex EndOfBlockRegEx = new Regex(EndofblockPattern, RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+		private static readonly Regex ClosingTagRegEx = new Regex(ClosingtagPattern, RegexOptions.Singleline);
+		private static readonly Regex HtmlTagRegEx = new Regex(HtmltagPattern);
+		private static readonly Regex EndOfLineRegEx = new Regex(EndoflinePattern);
 		#endregion
-		
+
 		#region Members
-		private readonly MailAddressCollection	to;
-		private readonly MailAddressCollection	cc;
-		private readonly MailAddressCollection	bcc;
-		private readonly AttachmentCollection	attachments;
-		private readonly NameValueCollection	headers;
-
-		private MailAddress				from;
-		private MailAddress				replyTo;
-		private MailAddress				sender;
-		private string					message;
-		private string					alternativeMessage;
-		private string					subject;
-		private bool					senderHidden;
-		private MailFormat				format;
-		private Encoding				messageEncoding;
-		private Encoding				alternativeMessageEncoding;
+		private readonly MailAddressCollection to;
+		private readonly AttachmentCollection attachments;
+		private readonly NameValueCollection headers;
 		#endregion
 
 		#region Constructors
 		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailAddress replyTo, MailAddress sender, bool senderHidden, string alternativeMessage, AttachmentCollection attachments, MailFormat format) {
-			this.to					= to;
-			this.from				= from;
-			this.replyTo			= replyTo;
-			this.sender				= sender;
-			this.message			= message;
-			this.alternativeMessage	= alternativeMessage;
-			this.subject			= subject;
-			this.cc					= cc;
-			this.bcc				= bcc;
-			this.attachments		= (attachments ?? new AttachmentCollection());
-			this.headers			= new NameValueCollection();
-			this.format				= format;
-			this.senderHidden		= senderHidden;
+			this.to = to;
+			this.From = from;
+			this.ReplyTo = replyTo;
+			this.Sender = sender;
+			this.Message = message;
+			this.AlternativeMessage = alternativeMessage;
+			this.Subject = subject;
+			this.CC = cc;
+			this.BCC = bcc;
+			this.attachments = (attachments ?? new AttachmentCollection());
+			this.headers = new NameValueCollection();
+			this.Format = format;
+			this.SenderHidden = senderHidden;
 		}
 
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailAddress replyTo, MailAddress sender, bool senderHidden, string alternativeMessage, AttachmentCollection attachments, MailFormat format) :this(null as MailAddressCollection, from, message, subject, cc, bcc, replyTo, sender, senderHidden, alternativeMessage, attachments, format) {
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailAddress replyTo, MailAddress sender, bool senderHidden, string alternativeMessage, AttachmentCollection attachments, MailFormat format)
+			: this(null as MailAddressCollection, from, message, subject, cc, bcc, replyTo, sender, senderHidden, alternativeMessage, attachments, format) {
 			if(to != null) {
 				this.to = new MailAddressCollection(to);
 			}
 		}
-		
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject)																																			: this(to, from, message, subject, null, null, null, null, false, null, null, MailFormat.Text) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, AttachmentCollection attachments)																										: this(to, from, message, subject, null, null, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailFormat format)																														: this(to, from, message, subject, null, null, null, null, false, null, null, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, AttachmentCollection attachments, MailFormat format)																					: this(to, from, message, subject, null, null, null, null, false, null, attachments, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc)																												: this(to, from, message, subject, cc, null, null, null , false, null, null, MailFormat.Text) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments)																				: this(to, from, message, subject, cc, null, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format)																							: this(to, from, message, subject, cc, null, null, null, false, null, null, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format)															: this(to, from, message, subject, cc, null, null, null, false, null, attachments, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments)													: this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format)								: this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format, string alternativeMessage)																	: this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, null, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailFormat format, string alternativeMessage)																							: this(to, from, message, subject, null, null, null, null, false, alternativeMessage, null, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format, string alternativeMessage)								: this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, attachments, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailFormat format, string alternativeMessage)										: this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, null, format) {}
-		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format, string alternativeMessage)	: this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, attachments, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject)																																					: this(to, from, message, subject, null, null, null, null, false, null, null, MailFormat.Text) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, AttachmentCollection attachments)																													: this(to, from, message, subject, null, null, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailFormat format)																																: this(to, from, message, subject, null, null, null, null, false, null, null, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, AttachmentCollection attachments, MailFormat format)																								: this(to, from, message, subject, null, null, null, null, false, null, attachments, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc)																															: this(to, from, message, subject, cc, null, null, null , false, null, null, MailFormat.Text) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments)																						: this(to, from, message, subject, cc, null, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format)																										: this(to, from, message, subject, cc, null, null, null, false, null, null, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format)																	: this(to, from, message, subject, cc, null, null, null, false, null, attachments, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments)															: this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format)											: this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format, string alternativeMessage)																			: this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, null, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailFormat format, string alternativeMessage)																										: this(to, from, message, subject, null, null, null, null, false, alternativeMessage, null, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format, string alternativeMessage)											: this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, attachments, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailFormat format, string alternativeMessage)												: this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, null, format) {}
-		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format, string alternativeMessage)				: this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, attachments, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, string bcc, string replyTo, string sender, bool senderHidden, string alternativeMessage, AttachmentCollection attachments, MailFormat format)	: this(GetMailAddressCollection(to), GetMailAddress(from), message, subject, GetMailAddressCollection(cc), GetMailAddressCollection(bcc), GetMailAddress(replyTo), GetMailAddress(sender), senderHidden, alternativeMessage, attachments, format) {}
-		public Mail(string to, string from, string message, string subject)																																								: this(to, from, message, subject, null, null, null, null, false, null, null, MailFormat.Text) {}
-		public Mail(string to, string from, string message, string subject, AttachmentCollection attachments)																															: this(to, from, message, subject, null, null, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(string to, string from, string message, string subject, MailFormat format)																																			: this(to, from, message, subject, null, null, null, null, false, null, null, format) {}
-		public Mail(string to, string from, string message, string subject, AttachmentCollection attachments, MailFormat format)																										: this(to, from, message, subject, null, null, null, null, false, null, attachments, format) {}
-		public Mail(string to, string from, string message, string subject, string cc)																																					: this(to, from, message, subject, cc, null, null, null , false, null, null, MailFormat.Text) {}
-		public Mail(string to, string from, string message, string subject, string cc, AttachmentCollection attachments)																												: this(to, from, message, subject, cc, null, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(string to, string from, string message, string subject, string cc, MailFormat format)																																: this(to, from, message, subject, cc, null, null, null, false, null, null, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, AttachmentCollection attachments, MailFormat format)																								: this(to, from, message, subject, cc, null, null, null, false, null, attachments, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, string bcc, AttachmentCollection attachments)																									: this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, MailFormat.Text) {}
-		public Mail(string to, string from, string message, string subject, string cc, string bcc, AttachmentCollection attachments, MailFormat format)																					: this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, MailFormat format, string alternativeMessage)																									: this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, null, format) {}
-		public Mail(string to, string from, string message, string subject, MailFormat format, string alternativeMessage)																												: this(to, from, message, subject, null, null, null, null, false, alternativeMessage, null, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, AttachmentCollection attachments, MailFormat format, string alternativeMessage)																	: this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, attachments, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, string bcc, MailFormat format, string alternativeMessage)																						: this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, null, format) {}
-		public Mail(string to, string from, string message, string subject, string cc, string bcc, AttachmentCollection attachments, MailFormat format, string alternativeMessage)														: this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, attachments, format) {}
+
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject) : this(to, from, message, subject, null, null, null, null, false, null, null, MailFormat.Text) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, AttachmentCollection attachments) : this(to, from, message, subject, null, null, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailFormat format) : this(to, from, message, subject, null, null, null, null, false, null, null, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, null, null, null, null, false, null, attachments, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc) : this(to, from, message, subject, cc, null, null, null, false, null, null, MailFormat.Text) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments) : this(to, from, message, subject, cc, null, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format) : this(to, from, message, subject, cc, null, null, null, false, null, null, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, cc, null, null, null, false, null, attachments, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments) : this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, null, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailFormat format, string alternativeMessage) : this(to, from, message, subject, null, null, null, null, false, alternativeMessage, null, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, attachments, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, null, format) { }
+		public Mail(MailAddressCollection to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, attachments, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject) : this(to, from, message, subject, null, null, null, null, false, null, null, MailFormat.Text) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, AttachmentCollection attachments) : this(to, from, message, subject, null, null, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailFormat format) : this(to, from, message, subject, null, null, null, null, false, null, null, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, null, null, null, null, false, null, attachments, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc) : this(to, from, message, subject, cc, null, null, null, false, null, null, MailFormat.Text) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments) : this(to, from, message, subject, cc, null, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format) : this(to, from, message, subject, cc, null, null, null, false, null, null, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, cc, null, null, null, false, null, attachments, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments) : this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, null, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailFormat format, string alternativeMessage) : this(to, from, message, subject, null, null, null, null, false, alternativeMessage, null, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, AttachmentCollection attachments, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, attachments, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, null, format) { }
+		public Mail(MailAddress to, MailAddress from, string message, string subject, MailAddressCollection cc, MailAddressCollection bcc, AttachmentCollection attachments, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, attachments, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, string bcc, string replyTo, string sender, bool senderHidden, string alternativeMessage, AttachmentCollection attachments, MailFormat format) : this(GetMailAddressCollection(to), GetMailAddress(from), message, subject, GetMailAddressCollection(cc), GetMailAddressCollection(bcc), GetMailAddress(replyTo), GetMailAddress(sender), senderHidden, alternativeMessage, attachments, format) { }
+		public Mail(string to, string from, string message, string subject) : this(to, from, message, subject, null, null, null, null, false, null, null, MailFormat.Text) { }
+		public Mail(string to, string from, string message, string subject, AttachmentCollection attachments) : this(to, from, message, subject, null, null, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(string to, string from, string message, string subject, MailFormat format) : this(to, from, message, subject, null, null, null, null, false, null, null, format) { }
+		public Mail(string to, string from, string message, string subject, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, null, null, null, null, false, null, attachments, format) { }
+		public Mail(string to, string from, string message, string subject, string cc) : this(to, from, message, subject, cc, null, null, null, false, null, null, MailFormat.Text) { }
+		public Mail(string to, string from, string message, string subject, string cc, AttachmentCollection attachments) : this(to, from, message, subject, cc, null, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(string to, string from, string message, string subject, string cc, MailFormat format) : this(to, from, message, subject, cc, null, null, null, false, null, null, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, cc, null, null, null, false, null, attachments, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, string bcc, AttachmentCollection attachments) : this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, MailFormat.Text) { }
+		public Mail(string to, string from, string message, string subject, string cc, string bcc, AttachmentCollection attachments, MailFormat format) : this(to, from, message, subject, cc, bcc, null, null, false, null, attachments, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, null, format) { }
+		public Mail(string to, string from, string message, string subject, MailFormat format, string alternativeMessage) : this(to, from, message, subject, null, null, null, null, false, alternativeMessage, null, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, AttachmentCollection attachments, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, null, null, null, false, alternativeMessage, attachments, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, string bcc, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, null, format) { }
+		public Mail(string to, string from, string message, string subject, string cc, string bcc, AttachmentCollection attachments, MailFormat format, string alternativeMessage) : this(to, from, message, subject, cc, bcc, null, null, false, alternativeMessage, attachments, format) { }
 		#endregion
 
 		#region Properties
-		public MailAddressCollection	To							{get {return this.to;} }
-		public MailAddress				From						{get {return this.from;}						set{this.from = value;}}
-		public MailAddress				ReplyTo						{get {return this.replyTo;}						set{this.replyTo = value;}}
-		public MailAddress				Sender						{get {return this.sender;}						set{this.sender = value;}}
-		public bool						SenderHidden				{get {return this.senderHidden;}				set{this.senderHidden = value;}}
-		public string					Message						{get {return this.message;}						set{this.message = value;}}
-		public string					AlternativeMessage			{get {return this.alternativeMessage;}			set{this.alternativeMessage = value;}}
-		public string					Subject						{get {return this.subject;}						set{this.subject = value;}}
-		public MailAddressCollection	CC							{get {return this.cc;}	}
-		public MailAddressCollection	BCC							{get {return this.bcc;} }
-		public MailFormat				Format						{get {return this.format;}						set{this.format = value;}}
-		public AttachmentCollection		Attachments					{get {return this.attachments;} }
-		public NameValueCollection		Headers						{get {return this.headers;} }
-		public Encoding					MessageEncoding				{get {return this.messageEncoding;}				set{this.messageEncoding = value;}}
-		public Encoding					AlternativeMessageEncoding	{get {return this.alternativeMessageEncoding;}	set{this.alternativeMessageEncoding = value;}}
+		public MailAddressCollection To { get { return this.to; } }
+		public MailAddress From { get; set; }
+		public MailAddress ReplyTo { get; set; }
+		public MailAddress Sender { get; set; }
+		public bool SenderHidden { get; set; }
+		public string Message { get; set; }
+		public string AlternativeMessage { get; set; }
+		public string Subject { get; set; }
+		public MailAddressCollection CC { get; private set; }
+		public MailAddressCollection BCC { get; private set; }
+		public MailFormat Format { get; set; }
+		public AttachmentCollection Attachments { get { return this.attachments; } }
+		public NameValueCollection Headers { get { return this.headers; } }
+		public Encoding MessageEncoding { get; set; }
+		public Encoding AlternativeMessageEncoding { get; set; }
 		#endregion
 
 		#region Methods
@@ -177,14 +165,14 @@ namespace nJupiter.Net.Mail {
 		/// </summary>
 		/// <param name="fileName">The full path and filename</param>
 		/// <returns>The created file</returns>
-		public virtual FileInfo Save(string fileName){
+		public virtual FileInfo Save(string fileName) {
 			FileInfo file = new FileInfo(fileName);
-			using(FileStream fileStream = file.OpenWrite()) { 
+			using(FileStream fileStream = file.OpenWrite()) {
 				string content = this.ToString();
 				byte[] binaryData = Encoding.ASCII.GetBytes(content);
 				fileStream.Write(binaryData, 0, binaryData.Length);
 			}
-			return file;	
+			return file;
 		}
 		#endregion
 
@@ -203,7 +191,7 @@ namespace nJupiter.Net.Mail {
 		private static MailAddress GetMailAddress(string address) {
 			if(string.IsNullOrEmpty(address))
 				return null;
-			string[] split = addressRegEx.Split(address);
+			string[] split = AddressRegEx.Split(address);
 			if(split.Length == 4) {
 				string name = split[1].Trim();
 				if(name.Length <= 0)
@@ -215,7 +203,7 @@ namespace nJupiter.Net.Mail {
 			return null;
 		}
 
-		private static string GenerateMail(Mail mail) { 
+		private static string GenerateMail(Mail mail) {
 			StringBuilder sb = new StringBuilder();
 
 			AppendHeaders(mail, sb);
@@ -232,7 +220,7 @@ namespace nJupiter.Net.Mail {
 
 			AppendSender(sb, mail.From, "From");
 			AppendSender(sb, mail.ReplyTo, "Reply-To");
-			
+
 			if(!mail.SenderHidden && mail.Sender != null && !mail.Sender.Equals(mail.From))
 				AppendSender(sb, mail.Sender, "Sender");
 
@@ -258,7 +246,7 @@ namespace nJupiter.Net.Mail {
 			}
 		}
 
-		private static void AppendBody(Mail mail, StringBuilder sb, bool addMimeHeader) { 
+		private static void AppendBody(Mail mail, StringBuilder sb, bool addMimeHeader) {
 			if(addMimeHeader)
 				sb.Append("MIME-Version: 1.0\r\n");
 			if(mail.Format.Equals(MailFormat.TextAndHtml)) {
@@ -282,7 +270,7 @@ namespace nJupiter.Net.Mail {
 				sb.Append("--");
 				sb.Append(uniqueBoundary);
 				sb.Append("--\r\n");
-			}else if(mail.Format.Equals(MailFormat.Html)) {
+			} else if(mail.Format.Equals(MailFormat.Html)) {
 				AppendMessage(sb, mail.Message, "html", mail.MessageEncoding);
 			} else {
 				AppendMessage(sb, mail.Message, "plain", mail.MessageEncoding);
@@ -300,22 +288,22 @@ namespace nJupiter.Net.Mail {
 				sb.Append("\r\n");
 				sb.Append(message);
 			} else {
-                if ((encoding == null && !TextHandler.IsAnsi(message)) || (encoding != null && encoding.Equals(Encoding.UTF8))){
-                    sb.Append("; charset=utf-8\r\n");
-                    sb.Append("Content-Transfer-Encoding: base64\r\n");
-                    sb.Append("\r\n");
-                    string base64String = Convert.ToBase64String(Encoding.UTF8.GetBytes(message));
-                    ChunkString(sb, base64String, 73);
-                }else{
-                    if (encoding == null)
-                        encoding = Encoding.GetEncoding(1252);
-                    sb.Append("; charset=");
-                    sb.Append(encoding.BodyName);
-                    sb.Append("\r\n");
-                    sb.Append("Content-Transfer-Encoding: quoted-printable\r\n");
-                    sb.Append("\r\n");
-                    sb.Append(TextHandler.EncodeToQuotedPrintable(message, encoding));
-                }
+				if((encoding == null && !TextHandler.IsAnsi(message)) || (encoding != null && encoding.Equals(Encoding.UTF8))) {
+					sb.Append("; charset=utf-8\r\n");
+					sb.Append("Content-Transfer-Encoding: base64\r\n");
+					sb.Append("\r\n");
+					string base64String = Convert.ToBase64String(Encoding.UTF8.GetBytes(message));
+					ChunkString(sb, base64String, 73);
+				} else {
+					if(encoding == null)
+						encoding = Encoding.GetEncoding(1252);
+					sb.Append("; charset=");
+					sb.Append(encoding.BodyName);
+					sb.Append("\r\n");
+					sb.Append("Content-Transfer-Encoding: quoted-printable\r\n");
+					sb.Append("\r\n");
+					sb.Append(TextHandler.EncodeToQuotedPrintable(message, encoding));
+				}
 			}
 			if(!message.EndsWith("\r\n"))
 				sb.Append("\r\n");
@@ -372,16 +360,16 @@ namespace nJupiter.Net.Mail {
 			}
 		}
 
-		private static void AppendSender(StringBuilder sb, MailAddress address, string type) { 
-			if(address != null){
+		private static void AppendSender(StringBuilder sb, MailAddress address, string type) {
+			if(address != null) {
 				sb.Append(type);
 				sb.Append(": ");
 				AppendAddress(sb, address);
 				sb.Append("\r\n");
 			}
 		}
-		
-		private static void AppendRecivers(StringBuilder sb, MailAddressCollection addresses, string type) { 
+
+		private static void AppendRecivers(StringBuilder sb, MailAddressCollection addresses, string type) {
 			if(addresses != null && addresses.Count > 0) {
 				sb.Append(type);
 				sb.Append(": ");
@@ -406,22 +394,22 @@ namespace nJupiter.Net.Mail {
 			}
 		}
 
-		private static string GenerateUniqueBoundary() { 
+		private static string GenerateUniqueBoundary() {
 			return "----" + Guid.NewGuid().ToString("N");
 		}
 
 		private static string StripHtmlFromMessage(string message) {
-			message = closingTagRegEx.Replace(message, string.Empty);
-			message = endOfBlockRegEx.Replace(message, "\r\n");
-			message = htmlTagRegEx.Replace(message, string.Empty);
-			message = endOfLineRegEx.Replace(message, "\r\n\r\n");
+			message = ClosingTagRegEx.Replace(message, string.Empty);
+			message = EndOfBlockRegEx.Replace(message, "\r\n");
+			message = HtmlTagRegEx.Replace(message, string.Empty);
+			message = EndOfLineRegEx.Replace(message, "\r\n\r\n");
 			message = System.Web.HttpUtility.HtmlDecode(message);
 			return message;
 		}
 
 		private static string EncodeHeaderValue(string value) {
-            StringBuilder sb = new StringBuilder();
-            if (TextHandler.IsAscii(value))
+			StringBuilder sb = new StringBuilder();
+			if(TextHandler.IsAscii(value))
 				return value;
 			if(TextHandler.IsAnsi(value)) {
 				Encoding enc = Encoding.GetEncoding(1252);
@@ -436,7 +424,7 @@ namespace nJupiter.Net.Mail {
 				sb.Append("?=");
 			}
 			return sb.ToString();
-        }
+		}
 		#endregion
 
 

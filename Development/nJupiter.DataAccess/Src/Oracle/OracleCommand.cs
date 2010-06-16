@@ -34,8 +34,8 @@ namespace nJupiter.DataAccess.Oracle {
 	public sealed class OracleCommand : Command {
 
 		#region Members
-		private readonly OracleClient.OracleCommand	command;
-		private bool								disposed;
+		private readonly OracleClient.OracleCommand command;
+		private bool disposed;
 		#endregion
 
 		#region Constructors
@@ -43,7 +43,8 @@ namespace nJupiter.DataAccess.Oracle {
 			this.command = new OracleClient.OracleCommand { CommandText = command, CommandType = commandType };
 		}
 
-		internal OracleCommand(string command, CommandType commandType, object[] parameters) : this(command, commandType) {
+		internal OracleCommand(string command, CommandType commandType, object[] parameters)
+			: this(command, commandType) {
 			if(parameters != null) {
 				this.command.Parameters.AddRange(parameters);
 			}
@@ -55,12 +56,12 @@ namespace nJupiter.DataAccess.Oracle {
 		/// Gets the <see cref="IDbCommand"/> associated with the command.
 		/// </summary>
 		/// <value>The <see cref="IDbCommand"/> associated with the command.</value>
-		public override	IDbCommand	DbCommand		{ get { return this.command; } }
+		public override IDbCommand DbCommand { get { return this.command; } }
 		/// <summary>
 		/// Gets or sets the timeout for the command.
 		/// </summary>
 		/// <value>The command timeout.</value>
-		public override	int			CommandTimeout	{ get { return 0; }	set {} }
+		public override int CommandTimeout { get { return 0; } set { } }
 		#endregion
 
 		#region Methods
@@ -86,13 +87,13 @@ namespace nJupiter.DataAccess.Oracle {
 		/// </summary>
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected override void Dispose(bool disposing) {
-			try{
-				if (!this.disposed) {
+			try {
+				if(!this.disposed) {
 					// Dispose managed resources.
 					this.command.Dispose();
 					this.disposed = true;
 				}
-			}finally{
+			} finally {
 				base.Dispose(disposing);
 			}
 		}
@@ -115,10 +116,10 @@ namespace nJupiter.DataAccess.Oracle {
 
 			param.Direction = direction;
 			param.IsNullable = nullable;
-			#pragma warning disable 618,612
+#pragma warning disable 618,612
 			param.Precision = precision;
 			param.Scale = scale;
-			#pragma warning restore 618,612
+#pragma warning restore 618,612
 			param.SourceColumn = column;
 			param.SourceVersion = rowVersion;
 

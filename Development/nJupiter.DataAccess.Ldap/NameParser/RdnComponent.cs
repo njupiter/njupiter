@@ -43,7 +43,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 				return componentType;
 			}
 		}
-		
+
 		public string ComponentValue {
 			get {
 				return componentValue;

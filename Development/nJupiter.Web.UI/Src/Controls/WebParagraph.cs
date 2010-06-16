@@ -32,9 +32,12 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 #pragma warning disable 168
+		// ReSharper disable UnusedParameter.Local
+		//
 		//This is needed for functioning (part of the contract of being an HtmlControl)
 		//Should always be a p
 		public WebParagraph(string tag) : this(){}
+		// ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
 		#endregion
 

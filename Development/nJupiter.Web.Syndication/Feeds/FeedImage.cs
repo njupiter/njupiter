@@ -33,9 +33,9 @@ namespace nJupiter.Web.Syndication {
 		private readonly Size size;
 		private readonly string description;
 		#endregion
-		
+
 		#region Constructors
-		public FeedImage(Uri uri) : this(uri, Size.Empty, null) {}
+		public FeedImage(Uri uri) : this(uri, Size.Empty, null) { }
 
 		public FeedImage(Uri uri, Size size, string description) {
 			if(uri == null) {

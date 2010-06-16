@@ -27,10 +27,10 @@ using System.Globalization;
 using System.IO;
 
 namespace nJupiter.Web.Syndication {
-	
+
 	internal class AtomWriter : FeedWriter {
-		
-		public AtomWriter(Stream stream, FeedType feedType) : base(stream, feedType) {}
+
+		public AtomWriter(Stream stream, FeedType feedType) : base(stream, feedType) { }
 
 		#region Methods
 		private void WriteHeader(IFeed feed) {
@@ -41,11 +41,11 @@ namespace nJupiter.Web.Syndication {
 			}
 			this.XmlWriter.WriteElementString("id", feed.Id);
 			this.XmlWriter.WriteElementString("title", feed.Title);
-			
+
 			this.XmlWriter.WriteStartElement("link");
 			this.XmlWriter.WriteAttributeString("href", feed.Uri.ToString());
 			this.XmlWriter.WriteEndElement();
-			
+
 			this.XmlWriter.WriteStartElement("link");
 			this.XmlWriter.WriteAttributeString("href", feed.FeedUri.ToString());
 			this.XmlWriter.WriteAttributeString("rel", "self");
@@ -91,7 +91,7 @@ namespace nJupiter.Web.Syndication {
 				}
 				this.XmlWriter.WriteEndElement();
 			}
-			string summary  = !string.IsNullOrEmpty(item.Description) ? item.Description : item.Title;
+			string summary = !string.IsNullOrEmpty(item.Description) ? item.Description : item.Title;
 			if(ContainsHtml(summary)) {
 				this.XmlWriter.WriteStartElement("summary");
 				this.XmlWriter.WriteAttributeString("type", "html");

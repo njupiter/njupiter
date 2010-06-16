@@ -51,7 +51,7 @@ namespace nJupiter.DataAccess.Ldap {
 		public string GetUserName(string entryName) {
 			return GetName(config.Users.NameType, entryName);
 		}
-	
+
 		public string GetGroupNameFromEntry(DirectoryEntry entry) {
 			return GetNameFromEntry(config.Groups.NameType, entry);
 		}
@@ -67,13 +67,13 @@ namespace nJupiter.DataAccess.Ldap {
 		private static string GetName(NameType nameType, string entryName) {
 			switch(nameType) {
 				case NameType.Cn:
-					return DnParser.GetCn(entryName);
+				return DnParser.GetCn(entryName);
 
 				case NameType.Rdn:
-					return DnParser.GetRdn(entryName);
+				return DnParser.GetRdn(entryName);
 
 				default:
-					return DnParser.GetDn(entryName);
+				return DnParser.GetDn(entryName);
 			}
 		}
 

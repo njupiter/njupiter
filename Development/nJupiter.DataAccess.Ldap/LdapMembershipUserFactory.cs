@@ -27,7 +27,7 @@ using System.DirectoryServices;
 using System.Web.Security;
 
 namespace nJupiter.DataAccess.Ldap {
-	
+
 	internal class LdapMembershipUserFactory {
 
 		private readonly Configuration config;
@@ -43,7 +43,7 @@ namespace nJupiter.DataAccess.Ldap {
 		private LdapMembershipUserFactory(Configuration config) {
 			this.config = config;
 		}
-		
+
 		public MembershipUser CreateUserFromSearcher(string providerName, DirectorySearcher searcher) {
 			SearchResult result = searcher.FindOne();
 			return CreateUserFromResult(providerName, result);
@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		private MembershipUserCollection CreateUsersFromResult(SearchResultCollection results, string providerName) {
-			
+
 			MembershipUserCollection users = new MembershipUserCollection();
 			if((results.Count > 0)) {
 				foreach(SearchResult result in results) {
@@ -73,7 +73,7 @@ namespace nJupiter.DataAccess.Ldap {
 				return null;
 			}
 			string name = GetStringAttributeFromSearchResult(config.Users.RdnAttribute, result);
-			string id =  name;
+			string id = name;
 			string email = GetStringAttributeFromSearchResult(config.Users.EmailAttribute, result);
 			string description = GetStringAttributeFromSearchResult(config.Users.DescriptionAttribute, result);
 

@@ -26,50 +26,50 @@ using System;
 
 namespace nJupiter.Services.Forum {
 
-	public sealed class ThreadedPostsResultConfiguration {	
+	public sealed class ThreadedPostsResultConfiguration {
 		#region Constants
-		private const int					DefaultLevels				= -1;
-		private const bool					DefaultIncludeHidden		= false;
-		private const bool					DefaultLoadAttributes		= true;
-		private const Post.DateProperty		DefaultDateFilterProperty	= Post.DateProperty.TimePosted;
-		private static readonly	DateTime	defaultDateFilterFrom		= DateTime.MinValue;
-		private static readonly	DateTime	defaultDateFilterTo			= DateTime.MaxValue;
+		private const int DefaultLevels = -1;
+		private const bool DefaultIncludeHidden = false;
+		private const bool DefaultLoadAttributes = true;
+		private const Post.DateProperty DefaultDateFilterProperty = Post.DateProperty.TimePosted;
+		private static readonly DateTime DefaultDateFilterFrom = DateTime.MinValue;
+		private static readonly DateTime DefaultDateFilterTo = DateTime.MaxValue;
 		#endregion
 
 		#region Variables
-		private int					levels;
+		private int levels;
 		#endregion
 
 		#region Constructors
 		public ThreadedPostsResultConfiguration(int levels, bool includeHidden, bool loadAttributes, Post.Property sortProperty, string sortAttributeName, bool sortAscending, DateTime dateFilterFrom, DateTime dateFilterTo, Post.DateProperty dateFilterProperty) {
-			this.levels				= levels;
-			this.IncludeHidden		= includeHidden;
-			this.LoadAttributes		= loadAttributes;
-			this.SortProperty		= sortProperty;
-			this.SortAttributeName	= sortAttributeName;
-			this.SortAscending		= sortAscending;
-			this.DateFilterFrom		= dateFilterFrom;
-			this.DateFilterTo		= dateFilterTo;
-			this.DateFilterProperty	= dateFilterProperty;
+			this.levels = levels;
+			this.IncludeHidden = includeHidden;
+			this.LoadAttributes = loadAttributes;
+			this.SortProperty = sortProperty;
+			this.SortAttributeName = sortAttributeName;
+			this.SortAscending = sortAscending;
+			this.DateFilterFrom = dateFilterFrom;
+			this.DateFilterTo = dateFilterTo;
+			this.DateFilterProperty = dateFilterProperty;
 		}
-		public ThreadedPostsResultConfiguration(int levels, bool includeHidden, bool loadAttributes, Post.Property sortProperty, bool sortAscending) : this(levels, includeHidden, loadAttributes, sortProperty, null, sortAscending, defaultDateFilterFrom, defaultDateFilterTo, DefaultDateFilterProperty) {}
-		public ThreadedPostsResultConfiguration(int levels, bool includeHidden, string sortAttributeName, bool sortAscending) : this(levels, includeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, sortAttributeName, sortAscending, defaultDateFilterFrom, defaultDateFilterTo, DefaultDateFilterProperty) {}
-		public ThreadedPostsResultConfiguration(int levels) : this(levels, DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, Post.DefaultSortAscending) {}
-		public ThreadedPostsResultConfiguration(bool includeHidden, bool loadAttributes, Post.Property sortProperty, bool sortAscending) : this(DefaultLevels, includeHidden, loadAttributes, sortProperty, sortAscending) {}
-		public ThreadedPostsResultConfiguration(bool includeHidden, string sortAttributeName, bool sortAscending) : this(DefaultLevels, includeHidden, sortAttributeName, sortAscending) {}
-		public ThreadedPostsResultConfiguration() : this(DefaultLevels) {}
-		public ThreadedPostsResultConfiguration(DateTime dateFilterFrom, DateTime dateFilterTo, Post.DateProperty dateFilterProperty) : this(DefaultLevels, DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, null, Post.DefaultSortAscending, dateFilterFrom, dateFilterTo, dateFilterProperty) {}
+		public ThreadedPostsResultConfiguration(int levels, bool includeHidden, bool loadAttributes, Post.Property sortProperty, bool sortAscending) : this(levels, includeHidden, loadAttributes, sortProperty, null, sortAscending, DefaultDateFilterFrom, DefaultDateFilterTo, DefaultDateFilterProperty) { }
+		public ThreadedPostsResultConfiguration(int levels, bool includeHidden, string sortAttributeName, bool sortAscending) : this(levels, includeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, sortAttributeName, sortAscending, DefaultDateFilterFrom, DefaultDateFilterTo, DefaultDateFilterProperty) { }
+		public ThreadedPostsResultConfiguration(int levels) : this(levels, DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, Post.DefaultSortAscending) { }
+		public ThreadedPostsResultConfiguration(bool includeHidden, bool loadAttributes, Post.Property sortProperty, bool sortAscending) : this(DefaultLevels, includeHidden, loadAttributes, sortProperty, sortAscending) { }
+		public ThreadedPostsResultConfiguration(bool includeHidden, string sortAttributeName, bool sortAscending) : this(DefaultLevels, includeHidden, sortAttributeName, sortAscending) { }
+		public ThreadedPostsResultConfiguration() : this(DefaultLevels) { }
+		public ThreadedPostsResultConfiguration(DateTime dateFilterFrom, DateTime dateFilterTo, Post.DateProperty dateFilterProperty) : this(DefaultLevels, DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, null, Post.DefaultSortAscending, dateFilterFrom, dateFilterTo, dateFilterProperty) { }
 		#endregion
 
 		#region Properties
-		public int Levels { 
-			get { return this.levels; } 
+		public int Levels {
+			get { return this.levels; }
 			set {
 				if(value < -1) {
 					throw new ArgumentOutOfRangeException("value");
 				}
-				this.levels = value; 
-			} 
+				this.levels = value;
+			}
 		}
 
 		public bool IncludeHidden { get; set; }

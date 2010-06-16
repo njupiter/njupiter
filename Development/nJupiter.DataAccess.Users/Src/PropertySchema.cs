@@ -27,22 +27,22 @@ using System;
 namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public class PropertySchema {
-		
+
 		#region Members
-		private readonly string		propertyName;
-		private readonly Type		type;
+		private readonly string propertyName;
+		private readonly Type type;
 		#endregion
 
 		#region Constructors
 		internal PropertySchema(string propertyName, Type dataType) {
-			this.propertyName	= propertyName;
-			this.type			= dataType;
+			this.propertyName = propertyName;
+			this.type = dataType;
 		}
 		#endregion
 
 		#region Properties
-		public		string			PropertyName	{ get { return this.propertyName; } }
-		public		Type			DataType		{ get { return this.type; } }
+		public string PropertyName { get { return this.propertyName; } }
+		public Type DataType { get { return this.type; } }
 		#endregion
 
 		#region Methods

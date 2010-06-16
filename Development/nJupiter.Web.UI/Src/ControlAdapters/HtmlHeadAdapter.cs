@@ -30,7 +30,7 @@ using System.Web.UI;
 namespace nJupiter.Web.UI.ControlAdapters {
 	public class HtmlHeadAdapter : HtmlControlAdapter {
 		private ListDictionary scriptBlocks;
-		
+
 		private readonly object padlock = new object();
 
 		private ListDictionary ScriptBlocks {
@@ -75,15 +75,15 @@ namespace nJupiter.Web.UI.ControlAdapters {
 
 		private sealed class ScriptKey {
 
-			private readonly string		key;
-			private readonly Type		type;
-			
+			private readonly string key;
+			private readonly Type type;
+
 			internal ScriptKey(Type type, string key) {
-				this.type		= type;
+				this.type = type;
 				if(key == null) {
 					key = string.Empty;
 				}
-				this.key		= key;
+				this.key = key;
 			}
 
 			public override bool Equals(object obj) {
@@ -93,8 +93,8 @@ namespace nJupiter.Web.UI.ControlAdapters {
 
 			public override int GetHashCode() {
 				int result = 17;
-				result = (37*result) + this.type.GetHashCode();
-				result = (37*result) + this.key.GetHashCode();
+				result = (37 * result) + this.type.GetHashCode();
+				result = (37 * result) + this.key.GetHashCode();
 				return result;
 			}
 

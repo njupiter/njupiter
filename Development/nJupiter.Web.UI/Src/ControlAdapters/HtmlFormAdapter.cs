@@ -29,7 +29,7 @@ using System.Web.UI.HtmlControls;
 using nJupiter.Web.UI.Controls;
 
 namespace nJupiter.Web.UI.ControlAdapters {
-	
+
 	public class HtmlFormAdapter : ControlAdapterBase {
 
 		private HtmlForm formControl;
@@ -46,13 +46,13 @@ namespace nJupiter.Web.UI.ControlAdapters {
 					}
 				}
 				return this.formControl;
-			} 
+			}
 		}
 
-		private bool XhtmlStrictRendering	{ get { return string.Compare(this.FormControl.Attributes["XhtmlStrictRendering"], "false", StringComparison.InvariantCultureIgnoreCase) != 0; } }
-		private string CssClass				{ get { return this.FormControl.Attributes["CssClass"]; } }
+		private bool XhtmlStrictRendering { get { return string.Compare(this.FormControl.Attributes["XhtmlStrictRendering"], "false", StringComparison.InvariantCultureIgnoreCase) != 0; } }
+		private string CssClass { get { return this.FormControl.Attributes["CssClass"]; } }
 		#endregion
-		
+
 		#region Methods
 		protected virtual void RenderAttributes(HtmlTextWriter writer) {
 			if(this.CssClass.Length > 0)
@@ -61,8 +61,8 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			this.FormControl.Attributes.Remove("CssClass");
 			this.FormControl.Attributes.Render(writer);
 		}
-		
-		protected override void Render(HtmlTextWriter writer){
+
+		protected override void Render(HtmlTextWriter writer) {
 			if(this.FormControl != null && this.XhtmlStrictRendering && writer.GetType().Equals(typeof(HtmlTextWriter)) && this.AdapterEnabled) {
 				StrictHtmlTextWriter w = new StrictHtmlTextWriter(writer);
 				base.Render(w);

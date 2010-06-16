@@ -34,7 +34,7 @@ namespace nJupiter.Configuration {
 	/// The configurator class to initialize config objects
 	/// </summary>
 	public static class Configurator {
-		
+
 		#region Static Methods
 
 		/// <summary>
@@ -106,20 +106,20 @@ namespace nJupiter.Configuration {
 		/// <param name="configKey">The config key.</param>
 		/// <param name="configFile">The file containing the Xml that holds the configuration.</param>
 		public static void Configure(string configKey, FileInfo configFile) {
-			if (configFile == null) {
+			if(configFile == null) {
 				throw new ArgumentNullException("configFile");
 			}
-			if(configFile.Name.StartsWith(configKey) && File.Exists(configFile.FullName)){
+			if(configFile.Name.StartsWith(configKey) && File.Exists(configFile.FullName)) {
 				// Open the file for reading
 				FileStream fs = null;
-				
+
 				// Try hard to open the file
 				for(int retry = 5; --retry >= 0; ) {
 					try {
 						fs = configFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
 						break;
 					} catch(IOException ex) {
-						if (retry == 0) {
+						if(retry == 0) {
 							// The stream cannot be valid
 							throw new ConfiguratorException(string.Format("Failed to open XML config file [{0}].", configFile.Name), ex);
 						}
@@ -127,21 +127,20 @@ namespace nJupiter.Configuration {
 					}
 				}
 
-				if (fs != null) {
+				if(fs != null) {
 					try {
 						// Load the configuration from the stream
 						Config config = new Config(configKey, configFile);
 						Configure(config, fs);
-					}
-					finally {
+					} finally {
 						// Force the file closed whatever happens
 						fs.Close();
 					}
 				}
-			}else{
+			} else {
 				// Remove old config
-				if(ConfigHandler.Instance.configurations.Contains(configKey))
-					ConfigHandler.Instance.configurations.Remove(configKey);
+				if(ConfigHandler.Configurations.Contains(configKey))
+					ConfigHandler.Configurations.Remove(configKey);
 			}
 		}
 
@@ -162,10 +161,10 @@ namespace nJupiter.Configuration {
 		/// <param name="configKey">The config key.</param>
 		/// <param name="configUri">The Uri containing the Xml that holds the configuration.</param>
 		public static void Configure(string configKey, Uri configUri) {
-			if (configUri == null) {
+			if(configUri == null) {
 				throw new ArgumentNullException("configUri");
 			}
-			if (configUri.IsFile) {
+			if(configUri.IsFile) {
 				// If URI is local file then call Configure with FileInfo
 				Configure(configKey, new FileInfo(configUri.LocalPath));
 			} else {
@@ -188,7 +187,7 @@ namespace nJupiter.Configuration {
 
 				try {
 					WebResponse response = configRequest.GetResponse();
-					if (response != null) {
+					if(response != null) {
 						try {
 							// Open stream on config URI
 							using(Stream configStream = response.GetResponseStream()) {
@@ -235,7 +234,7 @@ namespace nJupiter.Configuration {
 		}
 
 		private static void Configure(Config config, Stream configStream) {
-			if (configStream == null) {
+			if(configStream == null) {
 				throw new ArgumentNullException("configStream");
 			}
 			// Load the config file into a document
@@ -264,18 +263,18 @@ namespace nJupiter.Configuration {
 		}
 
 		private static void ConfigureFromXml(Config config, XmlNode element) {
-			if (element == null)
+			if(element == null)
 				throw new ArgumentNullException("element");
-			if (config == null)
+			if(config == null)
 				throw new ArgumentNullException("config");
 			// Copy the xml data into the root of a new document
 			// this isolates the xml config data from the rest of  the document
 			XmlDocument newDoc = new XmlDocument();
 			XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
-				
+
 			// Pass the configurator the config element
-			config.configXml = newElement;
-				
+			config.ConfigXML = newElement;
+
 			ConfigHandler.SetConfig(config);
 		}
 		#endregion

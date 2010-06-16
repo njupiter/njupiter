@@ -35,11 +35,11 @@ namespace nJupiter.DataAccess.Sql {
 	/// </summary>
 	public class SqlDataSource : DataSource {
 		#region Constructors
-		internal SqlDataSource() {}
+		internal SqlDataSource() { }
 		#endregion
 
 		#region Static Members
-		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Methods
@@ -61,7 +61,7 @@ namespace nJupiter.DataAccess.Sql {
 		/// 	<see cref="IDbConnection"/> connection associated with the current data source
 		/// </returns>
 		public override IDbConnection GetConnection() {
-			if(log.IsDebugEnabled) { log.Debug("Creating SqlConnection with connection string " + this.ConnectionString); }
+			if(Log.IsDebugEnabled) { Log.Debug("Creating SqlConnection with connection string " + this.ConnectionString); }
 			return new SqlConnection(this.ConnectionString);
 		}
 
@@ -74,7 +74,7 @@ namespace nJupiter.DataAccess.Sql {
 		/// <param name="parameters">Parameters associated with the command.</param>
 		/// <returns></returns>
 		public override Command CreateCommand(string command, Transaction transaction, CommandType commandType, params object[] parameters) {
-			if(log.IsDebugEnabled) { log.Debug(string.Format("Creating Sql Command {0} of type {1}", (command != null ? "[" + command + "]" : string.Empty), commandType)); }
+			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Creating Sql Command {0} of type {1}", (command != null ? "[" + command + "]" : string.Empty), commandType)); }
 			SqlCommand commandObj = new SqlCommand(command, commandType, parameters);
 			if(transaction != null) {
 				commandObj.DbCommand.Connection = transaction.Connection;
@@ -100,7 +100,7 @@ namespace nJupiter.DataAccess.Sql {
 		/// <param name="type">The type of the parameter.</param>
 		/// <returns>An <see cref="IDataParameter"/></returns>
 		public override IDataParameter CreateParameter(string name, DbType type) {
-			if(log.IsDebugEnabled) { log.Debug(string.Format("Creating Sql Parameter [{0}] of type {1}", name, type)); }
+			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Creating Sql Parameter [{0}] of type {1}", name, type)); }
 			SqlParameter param = new SqlParameter { ParameterName = AddParameterPrefix(name) };
 			if(type.Equals(DbType.Object)) {
 				param.SqlDbType = SqlDbType.Image;

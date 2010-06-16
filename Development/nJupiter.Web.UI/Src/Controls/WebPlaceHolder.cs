@@ -32,9 +32,9 @@ namespace nJupiter.Web.UI.Controls {
 	public class WebPlaceHolder : Control {
 
 		#region Constants
-		private const string BrTag					= "<" + HtmlTag.Br + " />";
-		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
-		private const string TrailingBreakKey		= "v_TrailingBreak";
+		private const string BrTag = "<" + HtmlTag.Br + " />";
+		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
+		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
 
 		#region Properties
@@ -89,7 +89,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false)]
 		public bool TrailingBreak {
 			get {
-				if (this.ViewState[TrailingBreakKey] == null) {
+				if(this.ViewState[TrailingBreakKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingBreakKey];
@@ -102,7 +102,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool TrailingLinefeed {
 			get {
-				if (this.ViewState[TrailingLinefeedKey] == null) {
+				if(this.ViewState[TrailingLinefeedKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingLinefeedKey];
@@ -112,7 +112,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 		#endregion
-		
+
 		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
 			if(!string.IsNullOrEmpty(this.SurroundingTag))
@@ -125,7 +125,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(this.TrailingLinefeed)
 				writer.WriteLine();
 		}
-		
+
 		new public void EnsureChildControls() {
 			base.EnsureChildControls();
 		}

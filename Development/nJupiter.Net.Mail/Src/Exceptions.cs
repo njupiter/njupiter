@@ -26,45 +26,45 @@ using System;
 using System.Runtime.Serialization;
 
 namespace nJupiter.Net.Mail {
-	
-	[Serializable] 
+
+	[Serializable]
 	public class SmtpException : Exception {
-		public SmtpException(){}
-		public SmtpException(string message) : base(message){}
-		public SmtpException(string message, Exception inner) : base(message, inner){}
-		protected SmtpException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		public SmtpException() { }
+		public SmtpException(string message) : base(message) { }
+		public SmtpException(string message, Exception inner) : base(message, inner) { }
+		protected SmtpException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
-	[Serializable] 
+	[Serializable]
 	public class SmtpConnectionException : SmtpException {
-		public SmtpConnectionException(){}
-		public SmtpConnectionException(string message) : base(message){}
-		public SmtpConnectionException(string message, Exception inner) : base(message, inner){}
-		protected SmtpConnectionException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		public SmtpConnectionException() { }
+		public SmtpConnectionException(string message) : base(message) { }
+		public SmtpConnectionException(string message, Exception inner) : base(message, inner) { }
+		protected SmtpConnectionException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
-	[Serializable] 
+	[Serializable]
 	public class SmtpTimeoutException : SmtpConnectionException {
-		public SmtpTimeoutException(){}
-		public SmtpTimeoutException(string message) : base(message){}
-		public SmtpTimeoutException(string message, Exception inner) : base(message, inner){}
-		protected SmtpTimeoutException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		public SmtpTimeoutException() { }
+		public SmtpTimeoutException(string message) : base(message) { }
+		public SmtpTimeoutException(string message, Exception inner) : base(message, inner) { }
+		protected SmtpTimeoutException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
-	[Serializable] 
+	[Serializable]
 	public class SmtpAuthenticationException : SmtpException {
-		public SmtpAuthenticationException(){}
-		public SmtpAuthenticationException(string message) : base(message){}
-		public SmtpAuthenticationException(string message, Exception inner) : base(message, inner){}
-		protected SmtpAuthenticationException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		public SmtpAuthenticationException() { }
+		public SmtpAuthenticationException(string message) : base(message) { }
+		public SmtpAuthenticationException(string message, Exception inner) : base(message, inner) { }
+		protected SmtpAuthenticationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 	[Serializable]
 	public class SmtpDataTransferException : SmtpException {
-		public SmtpDataTransferException(){}
-		public SmtpDataTransferException(string message) : base(message){}
-		public SmtpDataTransferException(string message, Exception inner) : base(message, inner){}
-		protected SmtpDataTransferException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		public SmtpDataTransferException() { }
+		public SmtpDataTransferException(string message) : base(message) { }
+		public SmtpDataTransferException(string message, Exception inner) : base(message, inner) { }
+		protected SmtpDataTransferException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 

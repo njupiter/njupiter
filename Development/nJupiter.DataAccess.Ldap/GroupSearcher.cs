@@ -27,7 +27,7 @@ using System.DirectoryServices;
 namespace nJupiter.DataAccess.Ldap {
 	internal class GroupSearcher : Searcher {
 
-		public GroupSearcher(Configuration config) : base(config) {}
+		public GroupSearcher(Configuration config) : base(config) { }
 
 		public override DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope) {
 			DirectorySearcher searcher = CreateSearcher(entry, SearchScope.Subtree, this.Config.Groups.RdnAttribute, this.Config.Groups.Attributes);

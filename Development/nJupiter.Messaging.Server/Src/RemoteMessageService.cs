@@ -31,20 +31,20 @@ using log4net;
 
 namespace nJupiter.Messaging.Server {
 
-	public class RemoteMessageService :  MessageService, IDisposable {
+	public class RemoteMessageService : MessageService, IDisposable {
 		#region Instance Members
-		internal			MessageConsumerMap	consumerMap;
-		internal			MessageQueue		messageQueue;
-		private				long				ticks;
-		private readonly	ILog				logger			= LogManager.GetLogger( Assembly.GetExecutingAssembly().GetType() );
+		internal MessageConsumerMap ConsumerMap;
+		internal MessageQueue MessageQueue;
+		private long ticks;
+		private readonly ILog logger = LogManager.GetLogger(Assembly.GetExecutingAssembly().GetType());
 		#endregion
-		
+
 		#region Constructor
 		public RemoteMessageService() {
-			this.messageQueue		= new MessageQueue(this);
-			this.ticks				= DateTime.Now.Ticks; 
-			this.consumerMap		= MessageConsumerMap.Deserialize() ;
-			this.messageQueue.LoadQueue();
+			this.MessageQueue = new MessageQueue(this);
+			this.ticks = DateTime.Now.Ticks;
+			this.ConsumerMap = MessageConsumerMap.Deserialize();
+			this.MessageQueue.LoadQueue();
 		}
 		#endregion
 
@@ -54,21 +54,21 @@ namespace nJupiter.Messaging.Server {
 			if(message == null) {
 				throw new ArgumentNullException("message");
 			}
-			message.Id		= GetUniqueId(); 
-			lock( this.messageQueue ) {
-				this.messageQueue.AddMessage( message );
+			message.Id = GetUniqueId();
+			lock(this.MessageQueue) {
+				this.MessageQueue.AddMessage(message);
 			}
 		}
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		public override void Register(MessageConsumer messageConsumer) { 
+		public override void Register(MessageConsumer messageConsumer) {
 			if(messageConsumer == null) {
 				throw new ArgumentNullException("messageConsumer");
 			}
-			lock( this.messageQueue ) {
+			lock(this.MessageQueue) {
 				this.logger.Info("AddMessageConsumer");
 				this.logger.Info("MessageConsumerDest: " + messageConsumer.Destination);
-				this.consumerMap.AddMessageConsumer( messageConsumer );
-			}			
+				this.ConsumerMap.AddMessageConsumer(messageConsumer);
+			}
 		}
 		public override void GetMessageConsumers() {
 			throw new NotImplementedException();
@@ -99,17 +99,17 @@ namespace nJupiter.Messaging.Server {
 		/// </summary>
 		/// <returns>Unique number</returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		private long GetUniqueId(){
+		private long GetUniqueId() {
 			return this.ticks++;
 		}
 		#endregion
 
 		#region IDisposable Members
 		public void Dispose() {
-			this.messageQueue.ClearQueue();
-			this.consumerMap.Serialize();
-			this.consumerMap = null;
+			this.MessageQueue.ClearQueue();
+			this.ConsumerMap.Serialize();
+			this.ConsumerMap = null;
 		}
-		#endregion		
+		#endregion
 	}
 }

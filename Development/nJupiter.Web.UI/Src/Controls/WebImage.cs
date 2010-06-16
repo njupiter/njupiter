@@ -31,51 +31,51 @@ namespace nJupiter.Web.UI.Controls {
 	public class WebImage : WebControl {
 
 		#region Constants
-		private const string BrTag					= "<" + HtmlTag.Br + " />";
-		private const string RenderIDKey			= "v_RenderId";
-		private const string RenderOriginalIDKey	= "v_RenderOriginalId";
-		private const string MaxWidthKey			= "v_MaxWidth";
-		private const string MaxHeightKey			= "v_MaxHeight";
-		private const string ForceStreamingKey		= "v_ForceStreaming";
-		private const string AllowEnlargingKey		= "v_AllowEnlarging";
-		private const string AllowStretchingKey		= "v_AllowStretching";
-		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
-		private const string TrailingBreakKey		= "v_TrailingBreak";
-		private const string StreamPagePathKey		= "v_StreamingPath";
-		private const string StreamPagePath			= "/nJupiter/nJupiter.Web.UI/Web/StreamImage.aspx";
+		private const string BrTag = "<" + HtmlTag.Br + " />";
+		private const string RenderIdKey = "v_RenderId";
+		private const string RenderOriginalIdKey = "v_RenderOriginalId";
+		private const string MaxWidthKey = "v_MaxWidth";
+		private const string MaxHeightKey = "v_MaxHeight";
+		private const string ForceStreamingKey = "v_ForceStreaming";
+		private const string AllowEnlargingKey = "v_AllowEnlarging";
+		private const string AllowStretchingKey = "v_AllowStretching";
+		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
+		private const string TrailingBreakKey = "v_TrailingBreak";
+		private const string StreamPagePathKey = "v_StreamingPath";
+		private const string StreamPagePath = "/nJupiter/nJupiter.Web.UI/Web/StreamImage.aspx";
 		#endregion
-		
+
 		#region Constructors
-		public WebImage() : base(HtmlTextWriterTag.Img) {}
+		public WebImage() : base(HtmlTextWriterTag.Img) { }
 		#endregion
 
 		#region Properties
-		public bool RenderId{
+		public bool RenderId {
 			get {
-				if(this.ViewState[RenderIDKey] == null)
+				if(this.ViewState[RenderIdKey] == null)
 					return false;
-				return (bool)this.ViewState[RenderIDKey];
+				return (bool)this.ViewState[RenderIdKey];
 			}
 			set {
-				this.ViewState[RenderIDKey] = value;
+				this.ViewState[RenderIdKey] = value;
 			}
 		}
-		
-		public bool RenderOriginalId{
+
+		public bool RenderOriginalId {
 			get {
-				if(this.ViewState[RenderOriginalIDKey] == null)
+				if(this.ViewState[RenderOriginalIdKey] == null)
 					return false;
-				return (bool)this.ViewState[RenderOriginalIDKey];
+				return (bool)this.ViewState[RenderOriginalIdKey];
 			}
 			set {
-				this.ViewState[RenderOriginalIDKey] = value;
+				this.ViewState[RenderOriginalIdKey] = value;
 			}
 		}
 
 		public virtual string AlternateText {
 			get {
-				string alternateText = (string) this.ViewState[HtmlAttribute.Alt];
-				if (alternateText != null) {
+				string alternateText = (string)this.ViewState[HtmlAttribute.Alt];
+				if(alternateText != null) {
 					return alternateText;
 				}
 				return string.Empty;
@@ -87,8 +87,8 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string DescriptionUrl {
 			get {
-				string descriptionUrl = (string) this.ViewState[HtmlAttribute.Longdesc];
-				if (descriptionUrl != null) {
+				string descriptionUrl = (string)this.ViewState[HtmlAttribute.Longdesc];
+				if(descriptionUrl != null) {
 					return descriptionUrl;
 				}
 				return string.Empty;
@@ -100,8 +100,8 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string ImageUrl {
 			get {
-				string imageUrl = (string) this.ViewState[HtmlAttribute.Src];
-				if (imageUrl != null) {
+				string imageUrl = (string)this.ViewState[HtmlAttribute.Src];
+				if(imageUrl != null) {
 					return imageUrl;
 				}
 				return string.Empty;
@@ -111,7 +111,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
-		public int MaxWidth{
+		public int MaxWidth {
 			get {
 				if(this.ViewState[MaxWidthKey] == null)
 					return 0;
@@ -122,7 +122,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
-		public int MaxHeight{
+		public int MaxHeight {
 			get {
 				if(this.ViewState[MaxHeightKey] == null)
 					return 0;
@@ -133,7 +133,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
-		public bool ForceStreaming{
+		public bool ForceStreaming {
 			get {
 				if(this.ViewState[ForceStreamingKey] == null)
 					return false;
@@ -147,7 +147,7 @@ namespace nJupiter.Web.UI.Controls {
 		public virtual string StreamingPath {
 			get {
 				string streamingPath = (string)this.ViewState[StreamPagePathKey];
-				if (streamingPath != null) {
+				if(streamingPath != null) {
 					return streamingPath;
 				}
 				return StreamPagePath;
@@ -156,8 +156,8 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[StreamPagePathKey] = value;
 			}
 		}
-		
-		public bool AllowEnlarging{
+
+		public bool AllowEnlarging {
 			get {
 				if(this.ViewState[AllowEnlargingKey] == null)
 					return false;
@@ -182,7 +182,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false)]
 		public bool TrailingBreak {
 			get {
-				if (this.ViewState[TrailingBreakKey] == null) {
+				if(this.ViewState[TrailingBreakKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingBreakKey];
@@ -195,7 +195,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool TrailingLinefeed {
 			get {
-				if (this.ViewState[TrailingLinefeedKey] == null) {
+				if(this.ViewState[TrailingLinefeedKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingLinefeedKey];
@@ -209,15 +209,15 @@ namespace nJupiter.Web.UI.Controls {
 		#region Methods
 		protected override void AddAttributesToRender(HtmlTextWriter writer) {
 			string text = this.ImageUrl;
-			if (text.Length > 0) {
+			if(text.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Src, this.RenderImageUrl());
 			}
 			text = this.DescriptionUrl;
-			if (text.Length > 0) {
+			if(text.Length > 0) {
 				writer.AddAttribute(HtmlAttribute.Longdesc, text);
 			}
 			string toolTip = this.ToolTip;
-			if (toolTip.Length > 0) {
+			if(toolTip.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Title, toolTip);
 				this.ToolTip = string.Empty;
 			}
@@ -228,7 +228,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		public virtual string RenderImageUrl() {
-			if(this.MaxWidth > 0 || this.MaxHeight > 0 || this.ForceStreaming){
+			if(this.MaxWidth > 0 || this.MaxHeight > 0 || this.ForceStreaming) {
 				string streamingPath = nJupiter.Web.UrlHandler.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl));
 				if(this.MaxWidth > 0 || this.MaxHeight > 0) {
 					streamingPath = nJupiter.Web.UrlHandler.AddQueryParams(streamingPath, "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
@@ -241,11 +241,11 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void Render(HtmlTextWriter writer) {
 			if(this.ImageUrl.Length.Equals(0))
 				return;
-			if(!this.RenderOriginalId){
-				string originalID = this.ID;
+			if(!this.RenderOriginalId) {
+				string originalId = this.ID;
 				this.ID = null;
 				if(this.RenderId)
-					this.Attributes.Add(HtmlAttribute.Id, originalID);
+					this.Attributes.Add(HtmlAttribute.Id, originalId);
 			}
 			base.Render(writer);
 			if(this.TrailingBreak)

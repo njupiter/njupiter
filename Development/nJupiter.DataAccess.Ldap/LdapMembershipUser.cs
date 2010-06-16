@@ -20,7 +20,7 @@ namespace nJupiter.DataAccess.Ldap {
 									ResultPropertyCollection resultPropertyCollection,
 									string path
 									)
-									: base(	providerName,
+									: base(providerName,
 											name,
 											providerUserKey,
 											email,

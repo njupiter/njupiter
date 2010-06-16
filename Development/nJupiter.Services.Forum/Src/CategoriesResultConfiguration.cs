@@ -26,23 +26,23 @@ namespace nJupiter.Services.Forum {
 
 	public sealed class CategoriesResultConfiguration {
 		#region Constants
-		private const bool	DefaultIncludeHidden	= false;
-		private const bool	DefaultLoadAttributes	= true;
+		private const bool DefaultIncludeHidden = false;
+		private const bool DefaultLoadAttributes = true;
 		#endregion
 
 		#region Variables
 		#endregion
 
 		#region Constructors
-		public CategoriesResultConfiguration() : this(DefaultIncludeHidden, DefaultLoadAttributes, Category.DefaultSortProperty, null, Category.DefaultSortAscending) {}
-		public CategoriesResultConfiguration(bool includeHidden, string sortAttributeName, bool sortAscending) : this(includeHidden, DefaultLoadAttributes, Category.DefaultSortProperty, sortAttributeName, sortAscending)  { }
-		public CategoriesResultConfiguration(bool includeHidden, bool loadAttributes, Category.Property sortProperty, bool sortAscending) : this(includeHidden, loadAttributes, sortProperty, null, sortAscending)  { }
+		public CategoriesResultConfiguration() : this(DefaultIncludeHidden, DefaultLoadAttributes, Category.DefaultSortProperty, null, Category.DefaultSortAscending) { }
+		public CategoriesResultConfiguration(bool includeHidden, string sortAttributeName, bool sortAscending) : this(includeHidden, DefaultLoadAttributes, Category.DefaultSortProperty, sortAttributeName, sortAscending) { }
+		public CategoriesResultConfiguration(bool includeHidden, bool loadAttributes, Category.Property sortProperty, bool sortAscending) : this(includeHidden, loadAttributes, sortProperty, null, sortAscending) { }
 		public CategoriesResultConfiguration(bool includeHidden, bool loadAttributes, Category.Property sortProperty, string sortAttributeName, bool sortAscending) {
-			this.IncludeHidden		= includeHidden;
-			this.LoadAttributes		= loadAttributes;
-			this.SortProperty		= sortProperty;
-			this.SortAttributeName	= sortAttributeName;
-			this.SortAscending		= sortAscending;
+			this.IncludeHidden = includeHidden;
+			this.LoadAttributes = loadAttributes;
+			this.SortProperty = sortProperty;
+			this.SortAttributeName = sortAttributeName;
+			this.SortAscending = sortAscending;
 		}
 		#endregion
 

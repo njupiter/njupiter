@@ -34,7 +34,8 @@ namespace nJupiter.DataAccess.DirectoryService {
 			this.required = true;
 		}
 		public SearchCriteria(string name, string value) : this(name, value, true) { }
-		public SearchCriteria(string name, string value, bool required) : base(name, value) { 
+		public SearchCriteria(string name, string value, bool required)
+			: base(name, value) {
 			this.required = required;
 		}
 		#endregion

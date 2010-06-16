@@ -33,332 +33,328 @@ namespace nJupiter.Services.Forum.UI.Web {
 
 	public class HierarchicalPostList : UserControl {
 		#region Constants
-		private const string							UNDERSCORE										= "_";
+		private const string Underscore = "_";
 
-		private const Post.Property						SORTPROPERTY									= Post.Property.TimePosted;
-		private const PostType							DEFAULT_POSTTYPE								= PostType.This;
-		private const bool								DEFAULT_GETONLYCHILDREN							= false;
-		private const int								DEFAULT_LEVELS									= -1;
-		private const bool								DEFAULT_SORTASCENDING							= true;
-		private const bool								DEFAULT_INCLUDEHIDDEN							= false;
-		private const bool								DEFAULT_LOADATTRIBUTES							= false;
-		private static readonly	DateTime				DEFAULT_DATEFILTERFROM							= DateTime.MinValue;
-		private static readonly	DateTime				DEFAULT_DATEFILTERTO							= DateTime.MaxValue;
-		private const Post.DateProperty					DEFAULT_DATEFILTERPROPERTY						= Post.DateProperty.TimePosted;
-		private const HierarchicalPostListVisibility	DEFAULT_TITLEVISIBILITY							= HierarchicalPostListVisibility.ShowOnAllPosts;
-		private const HierarchicalPostListVisibility	DEFAULT_DESCENDANTPOSTSINFORMATIONVISIBILITY	= HierarchicalPostListVisibility.ShowOnAllPosts;
-		private const HierarchicalPostListVisibility	DEFAULT_DESCENDANTPOSTSLABELVISIBILITY			= HierarchicalPostListVisibility.ShowOnRootPostsOnly;
-		private const HierarchicalPostListVisibility	DEFAULT_MESSAGENODESCENDANTPOSTSVISIBILITY		= HierarchicalPostListVisibility.ShowOnRootPostsOnly;
-		private const HierarchicalPostListVisibility	DEFAULT_ADDPOSTBUTTONVISIBILITY					= HierarchicalPostListVisibility.ShowOnAllPosts;
-		private const PostAdministrationVisibility		DEFAULT_UPDATEPOSTBUTTONVISIBILITY				= PostAdministrationVisibility.ShowOnAllPosts;
-		private const PostAdministrationVisibility		DEFAULT_CHANGEPOSTVISIBLEBUTTONVISIBILITY		= PostAdministrationVisibility.ShowOnAllPosts;
-		private const PostAdministrationVisibility		DEFAULT_DELETEPOSTBUTTONVISIBILITY				= PostAdministrationVisibility.ShowOnAllPosts;
-		private const Position							DEFAULT_ADDPOSTBUTTONPOSITION					= Position.AboveAndBelow;
-		private const Position							DEFAULT_UPDATEPOSTBUTTONPOSITION				= Position.AboveAndBelow;
-		private const Position							DEFAULT_CHANGEPOSTVISIBLEBUTTONPOSITION			= Position.AboveAndBelow;
-		private const Position							DEFAULT_DELETEPOSTBUTTONPOSITION				= Position.AboveAndBelow;
-		private const Position							DEFAULT_POSTINFORMATIONPOSITION					= Position.AboveAndBelow;
-		private const PostLocation						DEFAULT_ADDPOSTTARGETLOCATION					= PostLocation.Current;
-		private const PostLocation						DEFAULT_ADDPOSTREPLYSOURCELOCATION				= PostLocation.Current;
+		private const Post.Property Sortproperty = Post.Property.TimePosted;
+		private const PostType DefaultPosttype = PostType.This;
+		private const bool DefaultGetonlychildren = false;
+		private const int DefaultLevels = -1;
+		private const bool DefaultSortascending = true;
+		private const bool DefaultIncludehidden = false;
+		private const bool DefaultLoadattributes = false;
+		private static readonly DateTime DefaultDatefilterfrom = DateTime.MinValue;
+		private static readonly DateTime DefaultDatefilterto = DateTime.MaxValue;
+		private const Post.DateProperty DefaultDatefilterproperty = Post.DateProperty.TimePosted;
+		private const HierarchicalPostListVisibility DefaultTitlevisibility = HierarchicalPostListVisibility.ShowOnAllPosts;
+		private const HierarchicalPostListVisibility DefaultDescendantpostsinformationvisibility = HierarchicalPostListVisibility.ShowOnAllPosts;
+		private const HierarchicalPostListVisibility DefaultDescendantpostslabelvisibility = HierarchicalPostListVisibility.ShowOnRootPostsOnly;
+		private const HierarchicalPostListVisibility DefaultMessagenodescendantpostsvisibility = HierarchicalPostListVisibility.ShowOnRootPostsOnly;
+		private const HierarchicalPostListVisibility DefaultAddpostbuttonvisibility = HierarchicalPostListVisibility.ShowOnAllPosts;
+		private const PostAdministrationVisibility DefaultUpdatepostbuttonvisibility = PostAdministrationVisibility.ShowOnAllPosts;
+		private const PostAdministrationVisibility DefaultChangepostvisiblebuttonvisibility = PostAdministrationVisibility.ShowOnAllPosts;
+		private const PostAdministrationVisibility DefaultDeletepostbuttonvisibility = PostAdministrationVisibility.ShowOnAllPosts;
+		private const Position DefaultAddpostbuttonposition = Position.AboveAndBelow;
+		private const Position DefaultUpdatepostbuttonposition = Position.AboveAndBelow;
+		private const Position DefaultChangepostvisiblebuttonposition = Position.AboveAndBelow;
+		private const Position DefaultDeletepostbuttonposition = Position.AboveAndBelow;
+		private const Position DefaultPostinformationposition = Position.AboveAndBelow;
+		private const PostLocation DefaultAddposttargetlocation = PostLocation.Current;
+		private const PostLocation DefaultAddpostreplysourcelocation = PostLocation.Current;
 #if DEBUG
-		private const string							DEBUG_PREFIX									= "_";
+		private const string							DebugPrefix									= "_";
 #else
-		private const string							DEBUG_PREFIX									= "";
+		private const string DebugPrefix = "";
 #endif
-		private const string							DEFAULT_ADDPOSTBUTTONTEXT						= DEBUG_PREFIX + "Add new post";
-		private const string							DEFAULT_UPDATEPOSTBUTTONTEXT					= DEBUG_PREFIX + "Update post";
-		private const string							DEFAULT_CHANGEPOSTVISIBLEBUTTONHIDETEXT			= DEBUG_PREFIX + "Hide post";
-		private const string							DEFAULT_CHANGEPOSTVISIBLEBUTTONUNHIDETEXT		= DEBUG_PREFIX + "Unhide post";
-		private const string							DEFAULT_DELETEPOSTBUTTONTEXT					= DEBUG_PREFIX + "Delete post";
-		private const string							DEFAULT_AUTHORLABELTEXT							= DEBUG_PREFIX + "Author";
-		private const string							DEFAULT_TIMEPOSTEDLABELTEXT						= DEBUG_PREFIX + "Posted";
-		private const string							DEFAULT_POSTCOUNTLABELTEXT						= DEBUG_PREFIX + "Replies";
-		private const string							DEFAULT_TIMELASTPOSTLABELTEXT					= DEBUG_PREFIX + "Last post";
-		private const string							DEFAULT_DESCENDANTPOSTSLABELTEXT				= DEBUG_PREFIX + "Replies";
-		private	const string							DEFAULT_MESSAGENOPOSTSTEXT						= DEBUG_PREFIX + "No posts were found.";
-		private	const string							DEFAULT_MESSAGENODESCENDANTPOSTSTEXT			= DEBUG_PREFIX + "No replies were found.";
+		private const string DefaultAddpostbuttontext = DebugPrefix + "Add new post";
+		private const string DefaultUpdatepostbuttontext = DebugPrefix + "Update post";
+		private const string DefaultChangepostvisiblebuttonhidetext = DebugPrefix + "Hide post";
+		private const string DefaultChangepostvisiblebuttonunhidetext = DebugPrefix + "Unhide post";
+		private const string DefaultDeletepostbuttontext = DebugPrefix + "Delete post";
+		private const string DefaultAuthorlabeltext = DebugPrefix + "Author";
+		private const string DefaultTimepostedlabeltext = DebugPrefix + "Posted";
+		private const string DefaultPostcountlabeltext = DebugPrefix + "Replies";
+		private const string DefaultTimelastpostlabeltext = DebugPrefix + "Last post";
+		private const string DefaultDescendantpostslabeltext = DebugPrefix + "Replies";
+		private const string DefaultMessagenopoststext = DebugPrefix + "No posts were found.";
+		private const string DefaultMessagenodescendantpoststext = DebugPrefix + "No replies were found.";
 
-		private const string							VIEWSTATE_ADDPOSTBUTTONVISIBILITY				= "v_AddPostButtonVisibility";
-		private const string							VIEWSTATE_ADDPOSTTARGETPOSTID					= "v_AddPostTargetPostId";
-		private const string							VIEWSTATE_ADDPOSTTARGETLOCATION					= "v_AddPostTargetLocation";
-		private const string							VIEWSTATE_ADDPOSTREPLYSOURCEPOSTID				= "v_AddPostReplySourcePostId";
-		private const string							VIEWSTATE_ADDPOSTREPLYSOURCELOCATION			= "v_AddPostReplySourceLocation";
+		private const string ViewstateAddpostbuttonvisibility = "v_AddPostButtonVisibility";
+		private const string ViewstateAddposttargetpostid = "v_AddPostTargetPostId";
+		private const string ViewstateAddposttargetlocation = "v_AddPostTargetLocation";
+		private const string ViewstateAddpostreplysourcepostid = "v_AddPostReplySourcePostId";
+		private const string ViewstateAddpostreplysourcelocation = "v_AddPostReplySourceLocation";
 		#endregion
 
 		#region Variables
-		private ForumDao							m_ForumDao;
-		private bool								m_DataBound;
+		private ForumDao forumDao;
+		private bool dataBound;
 
-		private string								m_Domain;
-		private string								m_CategoryName;
-		private CategoryId							m_CategoryId;
-		private PostId								m_PostId;
-		private PostType							m_PostType								= DEFAULT_POSTTYPE;
-		private bool								m_GetOnlyChildren						= DEFAULT_GETONLYCHILDREN;
+		private string domain;
+		private string categoryName;
+		private CategoryId categoryId;
+		private PostId postId;
+		private PostType postType = DefaultPosttype;
+		private bool getOnlyChildren = DefaultGetonlychildren;
 
-		private int									m_Levels								= DEFAULT_LEVELS;
-		private bool								m_SortAscending							= DEFAULT_SORTASCENDING;
-		private bool								m_IncludeHidden							= DEFAULT_INCLUDEHIDDEN;
-		private bool								m_LoadAttributes						= DEFAULT_LOADATTRIBUTES;
-		private DateTime							m_DateFilterFrom						= DEFAULT_DATEFILTERFROM;
-		private DateTime							m_DateFilterTo							= DEFAULT_DATEFILTERTO;
-		private Post.DateProperty					m_DateFilterProperty					= DEFAULT_DATEFILTERPROPERTY;
-		private PostCollection						m_PostCollection;
+		private int levels = DefaultLevels;
+		private bool sortAscending = DefaultSortascending;
+		private bool includeHidden = DefaultIncludehidden;
+		private bool loadAttributes = DefaultLoadattributes;
+		private DateTime dateFilterFrom = DefaultDatefilterfrom;
+		private DateTime dateFilterTo = DefaultDatefilterto;
+		private Post.DateProperty dateFilterProperty = DefaultDatefilterproperty;
 
-		private HierarchicalPostListVisibility		m_TitleVisibility						= DEFAULT_TITLEVISIBILITY;
-		private HierarchicalPostListVisibility		m_DescendantPostsInformationVisibility	= DEFAULT_DESCENDANTPOSTSINFORMATIONVISIBILITY;
-		private HierarchicalPostListVisibility		m_DescendantPostsLabelVisibility		= DEFAULT_DESCENDANTPOSTSLABELVISIBILITY;
-		private HierarchicalPostListVisibility		m_MessageNoDescendantPostsVisibility	= DEFAULT_MESSAGENODESCENDANTPOSTSVISIBILITY;
-		private PostAdministrationVisibility		m_UpdatePostButtonVisibility			= DEFAULT_UPDATEPOSTBUTTONVISIBILITY;
-		private PostAdministrationVisibility		m_ChangePostVisibleButtonVisibility		= DEFAULT_CHANGEPOSTVISIBLEBUTTONVISIBILITY;
-		private PostAdministrationVisibility		m_DeletePostButtonVisibility			= DEFAULT_DELETEPOSTBUTTONVISIBILITY;
-		private Position							m_AddPostButtonPosition					= DEFAULT_ADDPOSTBUTTONPOSITION;
-		private Position							m_UpdatePostButtonPosition				= DEFAULT_UPDATEPOSTBUTTONPOSITION;
-		private Position							m_ChangePostVisibleButtonPosition		= DEFAULT_CHANGEPOSTVISIBLEBUTTONPOSITION;
-		private Position							m_DeletePostButtonPosition				= DEFAULT_DELETEPOSTBUTTONPOSITION;
-		private Position							m_PostInformationPosition				= DEFAULT_POSTINFORMATIONPOSITION;
+		private HierarchicalPostListVisibility titleVisibility = DefaultTitlevisibility;
+		private HierarchicalPostListVisibility descendantPostsInformationVisibility = DefaultDescendantpostsinformationvisibility;
+		private HierarchicalPostListVisibility descendantPostsLabelVisibility = DefaultDescendantpostslabelvisibility;
+		private HierarchicalPostListVisibility messageNoDescendantPostsVisibility = DefaultMessagenodescendantpostsvisibility;
+		private PostAdministrationVisibility updatePostButtonVisibility = DefaultUpdatepostbuttonvisibility;
+		private PostAdministrationVisibility changePostVisibleButtonVisibility = DefaultChangepostvisiblebuttonvisibility;
+		private PostAdministrationVisibility deletePostButtonVisibility = DefaultDeletepostbuttonvisibility;
+		private Position addPostButtonPosition = DefaultAddpostbuttonposition;
+		private Position updatePostButtonPosition = DefaultUpdatepostbuttonposition;
+		private Position changePostVisibleButtonPosition = DefaultChangepostvisiblebuttonposition;
+		private Position deletePostButtonPosition = DefaultDeletepostbuttonposition;
+		private Position postInformationPosition = DefaultPostinformationposition;
 
-		private AuthorResolver						m_AuthorResolver;
-		private DateFormatter						m_DateFormatter;
-		private string								m_PostHyperlinkPrefix;
-		private TextFormatter						m_TextFormatter;
-		private string								m_UrlWithoutTrailingUserIdentity;
-		private string								m_UserIdentity;
+		private DateFormatter dateFormatter;
+		private string postHyperlinkPrefix;
+		private TextFormatter textFormatter;
 
-		private string								m_AddPostButtonText						= DEFAULT_ADDPOSTBUTTONTEXT;
-		private string								m_UpdatePostButtonText					= DEFAULT_UPDATEPOSTBUTTONTEXT;
-		private string								m_ChangePostVisibleButtonHideText		= DEFAULT_CHANGEPOSTVISIBLEBUTTONHIDETEXT;
-		private string								m_ChangePostVisibleButtonUnhideText		= DEFAULT_CHANGEPOSTVISIBLEBUTTONUNHIDETEXT;
-		private string								m_DeletePostButtonText					= DEFAULT_DELETEPOSTBUTTONTEXT;
-		private string								m_AuthorLabelText						= DEFAULT_AUTHORLABELTEXT;
-		private string								m_TimePostedLabelText					= DEFAULT_TIMEPOSTEDLABELTEXT;
-		private string								m_PostCountLabelText					= DEFAULT_POSTCOUNTLABELTEXT;
-		private string								m_TimeLastPostLabelText					= DEFAULT_TIMELASTPOSTLABELTEXT;
-		private string								m_DescendantPostsLabelText				= DEFAULT_DESCENDANTPOSTSLABELTEXT;
-		private string								m_MessageNoPostsText					= DEFAULT_MESSAGENOPOSTSTEXT;
-		private string								m_MessageNoDescendantPostsText			= DEFAULT_MESSAGENODESCENDANTPOSTSTEXT;
-		
-		private static readonly object				s_EventAddPost							= new object();
-		private static readonly object				s_EventUpdatePost						= new object();
-		private static readonly object				s_EventPostVisibleChanging				= new object();
-		private static readonly object				s_EventPostVisibleChanged				= new object();
-		private static readonly object				s_EventPostVisibleChangeFailed			= new object();
-		private static readonly object				s_EventPostDeleting						= new object();
-		private static readonly object				s_EventPostDeleted						= new object();
+		private string addPostButtonText = DefaultAddpostbuttontext;
+		private string updatePostButtonText = DefaultUpdatepostbuttontext;
+		private string changePostVisibleButtonHideText = DefaultChangepostvisiblebuttonhidetext;
+		private string changePostVisibleButtonUnhideText = DefaultChangepostvisiblebuttonunhidetext;
+		private string deletePostButtonText = DefaultDeletepostbuttontext;
+		private string authorLabelText = DefaultAuthorlabeltext;
+		private string timePostedLabelText = DefaultTimepostedlabeltext;
+		private string postCountLabelText = DefaultPostcountlabeltext;
+		private string timeLastPostLabelText = DefaultTimelastpostlabeltext;
+		private string descendantPostsLabelText = DefaultDescendantpostslabeltext;
+		private string messageNoPostsText = DefaultMessagenopoststext;
+		private string messageNoDescendantPostsText = DefaultMessagenodescendantpoststext;
+
+		private static readonly object EventAddPost = new object();
+		private static readonly object EventUpdatePost = new object();
+		private static readonly object EventPostVisibleChanging = new object();
+		private static readonly object EventPostVisibleChanged = new object();
+		private static readonly object EventPostVisibleChangeFailed = new object();
+		private static readonly object EventPostDeleting = new object();
+		private static readonly object EventPostDeleted = new object();
 		#endregion
 
 		#region Events
-		public event AddPostEventHandler AddPost { 
-			add { base.Events.AddHandler(s_EventAddPost, value); } 
-			remove { base.Events.RemoveHandler(s_EventAddPost, value); } 
+		public event AddPostEventHandler AddPost {
+			add { base.Events.AddHandler(EventAddPost, value); }
+			remove { base.Events.RemoveHandler(EventAddPost, value); }
 		}
-		public event UpdatePostEventHandler UpdatePost { 
-			add { base.Events.AddHandler(s_EventUpdatePost, value); } 
-			remove { base.Events.RemoveHandler(s_EventUpdatePost, value); } 
+		public event UpdatePostEventHandler UpdatePost {
+			add { base.Events.AddHandler(EventUpdatePost, value); }
+			remove { base.Events.RemoveHandler(EventUpdatePost, value); }
 		}
-		public event PostVisibleChangingEventHandler PostVisibleChanging { 
-			add { base.Events.AddHandler(s_EventPostVisibleChanging, value); } 
-			remove { base.Events.RemoveHandler(s_EventPostVisibleChanging, value); } 
+		public event PostVisibleChangingEventHandler PostVisibleChanging {
+			add { base.Events.AddHandler(EventPostVisibleChanging, value); }
+			remove { base.Events.RemoveHandler(EventPostVisibleChanging, value); }
 		}
-		public event PostVisibleChangedEventHandler PostVisibleChanged { 
-			add { base.Events.AddHandler(s_EventPostVisibleChanged, value); } 
-			remove { base.Events.RemoveHandler(s_EventPostVisibleChanged, value); } 
+		public event PostVisibleChangedEventHandler PostVisibleChanged {
+			add { base.Events.AddHandler(EventPostVisibleChanged, value); }
+			remove { base.Events.RemoveHandler(EventPostVisibleChanged, value); }
 		}
-		public event PostVisibleChangeFailedEventHandler PostVisibleChangeFailed { 
-			add { base.Events.AddHandler(s_EventPostVisibleChangeFailed, value); } 
-			remove { base.Events.RemoveHandler(s_EventPostVisibleChangeFailed, value); } 
+		public event PostVisibleChangeFailedEventHandler PostVisibleChangeFailed {
+			add { base.Events.AddHandler(EventPostVisibleChangeFailed, value); }
+			remove { base.Events.RemoveHandler(EventPostVisibleChangeFailed, value); }
 		}
-		public event PostDeletingEventHandler PostDeleting { 
-			add { base.Events.AddHandler(s_EventPostDeleting, value); } 
-			remove { base.Events.RemoveHandler(s_EventPostDeleting, value); } 
+		public event PostDeletingEventHandler PostDeleting {
+			add { base.Events.AddHandler(EventPostDeleting, value); }
+			remove { base.Events.RemoveHandler(EventPostDeleting, value); }
 		}
-		public event PostDeletedEventHandler PostDeleted { 
-			add { base.Events.AddHandler(s_EventPostDeleted, value); } 
-			remove { base.Events.RemoveHandler(s_EventPostDeleted, value); } 
+		public event PostDeletedEventHandler PostDeleted {
+			add { base.Events.AddHandler(EventPostDeleted, value); }
+			remove { base.Events.RemoveHandler(EventPostDeleted, value); }
 		}
 		#endregion
 
 		#region UI Members
-		protected GeneralListing	ctrlGeneralListing;
+		protected GeneralListing ctrlGeneralListing;
 		#endregion
 
 		#region Properties
-		public ForumDao ForumDao { get { return this.m_ForumDao ?? (this.m_ForumDao = ForumDao.GetInstance()); } set { m_ForumDao = value; } }
+		public ForumDao ForumDao { get { return this.forumDao ?? (this.forumDao = ForumDao.GetInstance()); } set { this.forumDao = value; } }
 
-		public string Domain { 
-			get { return m_Domain; } 
-			set { 
+		public string Domain {
+			get { return this.domain; }
+			set {
 				if(value != null) {
-					m_PostId = null; 
-					m_CategoryId = null;
+					this.postId = null;
+					this.categoryId = null;
 				}
-				m_Domain = value; 
-			} 
+				this.domain = value;
+			}
 		}
-		public string CategoryName { 
-			get { return m_CategoryName; } 
-			set { 
+		public string CategoryName {
+			get { return this.categoryName; }
+			set {
 				if(value != null) {
-					m_PostId = null;
-					m_CategoryId = null;
+					this.postId = null;
+					this.categoryId = null;
 				}
-				m_CategoryName = value; 
-			} 
+				this.categoryName = value;
+			}
 		}
-		public CategoryId CategoryId { 
-			get { return m_CategoryId; } 
-			set { 
+		public CategoryId CategoryId {
+			get { return this.categoryId; }
+			set {
 				if(value != null) {
-					m_PostId = null;
-					m_Domain = null;
-					m_CategoryName = null;
+					this.postId = null;
+					this.domain = null;
+					this.categoryName = null;
 				}
-				m_CategoryId = value; 
-			} 
+				this.categoryId = value;
+			}
 		}
-		public PostId PostId { 
-			get { return m_PostId; } 
-			set { 
+		public PostId PostId {
+			get { return this.postId; }
+			set {
 				if(value != null) {
-					m_CategoryId = null;
-					m_Domain = null; 
-					m_CategoryName = null;
+					this.categoryId = null;
+					this.domain = null;
+					this.categoryName = null;
 				}
-				m_PostId = value; 
-			} 
+				this.postId = value;
+			}
 		}
-		public PostType PostType { get { return m_PostType; } set { m_PostType = value; } }
-		public bool GetOnlyChildren { get { return m_GetOnlyChildren; } set { m_GetOnlyChildren = value; } }
-		public int Levels { 
-			get { return m_Levels; } 
+		public PostType PostType { get { return this.postType; } set { this.postType = value; } }
+		public bool GetOnlyChildren { get { return this.getOnlyChildren; } set { this.getOnlyChildren = value; } }
+		public int Levels {
+			get { return this.levels; }
 			set {
 				if(value < -1) {
 					throw new ArgumentOutOfRangeException("value");
 				}
-				m_Levels = value; 
-			} 
+				this.levels = value;
+			}
 		}
-		public bool SortAscending { get { return m_SortAscending; } set { m_SortAscending = value; } }
-		public bool IncludeHidden { get { return m_IncludeHidden; } set { m_IncludeHidden = value; } }
-		public bool LoadAttributes { get { return m_LoadAttributes; } set { m_LoadAttributes = value; } }
-		public DateTime DateFilterFrom { get { return m_DateFilterFrom; } set { m_DateFilterFrom = value; } }
-		public DateTime DateFilterTo { get { return m_DateFilterTo; } set { m_DateFilterTo = value; } }
-		public Post.DateProperty DateFilterProperty { get { return m_DateFilterProperty; } set { m_DateFilterProperty = value; } }
-		public PostCollection PostCollection { get { return m_PostCollection; } set { m_PostCollection = value; } }
+		public bool SortAscending { get { return this.sortAscending; } set { this.sortAscending = value; } }
+		public bool IncludeHidden { get { return this.includeHidden; } set { this.includeHidden = value; } }
+		public bool LoadAttributes { get { return this.loadAttributes; } set { this.loadAttributes = value; } }
+		public DateTime DateFilterFrom { get { return this.dateFilterFrom; } set { this.dateFilterFrom = value; } }
+		public DateTime DateFilterTo { get { return this.dateFilterTo; } set { this.dateFilterTo = value; } }
+		public Post.DateProperty DateFilterProperty { get { return this.dateFilterProperty; } set { this.dateFilterProperty = value; } }
+		public PostCollection PostCollection { get; set; }
 
-		public HierarchicalPostListVisibility TitleVisibility { get { return m_TitleVisibility; } set { m_TitleVisibility = value; } }
-		public HierarchicalPostListVisibility DescendantPostsInformationVisibility { get { return m_DescendantPostsInformationVisibility; } set { m_DescendantPostsInformationVisibility = value; } }
-		public HierarchicalPostListVisibility DescendantPostsLabelVisibility { get { return m_DescendantPostsLabelVisibility; } set { m_DescendantPostsLabelVisibility = value; } }
-		public HierarchicalPostListVisibility MessageNoDescendantPostsVisibility { 
-			get { return m_MessageNoDescendantPostsVisibility; }
+		public HierarchicalPostListVisibility TitleVisibility { get { return this.titleVisibility; } set { this.titleVisibility = value; } }
+		public HierarchicalPostListVisibility DescendantPostsInformationVisibility { get { return this.descendantPostsInformationVisibility; } set { this.descendantPostsInformationVisibility = value; } }
+		public HierarchicalPostListVisibility DescendantPostsLabelVisibility { get { return this.descendantPostsLabelVisibility; } set { this.descendantPostsLabelVisibility = value; } }
+		public HierarchicalPostListVisibility MessageNoDescendantPostsVisibility {
+			get { return this.messageNoDescendantPostsVisibility; }
 			set {
 				switch(value) {
 					case HierarchicalPostListVisibility.ShowOnParentPostsOnly:
 					case HierarchicalPostListVisibility.ShowOnRootAndParentPostsOnly:
-						throw new InvalidEnumArgumentException("value", (int)value, typeof(HierarchicalPostListVisibility));
+					throw new InvalidEnumArgumentException("value", (int)value, typeof(HierarchicalPostListVisibility));
 					default:
-						m_MessageNoDescendantPostsVisibility = value; 
-						break;
+					this.messageNoDescendantPostsVisibility = value;
+					break;
 				}
-			} 
+			}
 		}
-		public HierarchicalPostListVisibility AddPostButtonVisibility {	get { return (HierarchicalPostListVisibility)(this.ViewState[VIEWSTATE_ADDPOSTBUTTONVISIBILITY] == null ? this.ViewState.Add(VIEWSTATE_ADDPOSTBUTTONVISIBILITY, DEFAULT_ADDPOSTBUTTONVISIBILITY).Value : this.ViewState[VIEWSTATE_ADDPOSTBUTTONVISIBILITY]); } set { this.ViewState.Add(VIEWSTATE_ADDPOSTBUTTONVISIBILITY, value); } }
-		public PostAdministrationVisibility UpdatePostButtonVisibility { get { return m_UpdatePostButtonVisibility; } set { m_UpdatePostButtonVisibility = value; } }
-		public PostAdministrationVisibility ChangePostVisibleButtonVisibility { get { return m_ChangePostVisibleButtonVisibility; } set { m_ChangePostVisibleButtonVisibility = value; } }
-		public PostAdministrationVisibility DeletePostButtonVisibility { get { return m_DeletePostButtonVisibility; } set { m_DeletePostButtonVisibility = value; } }
-		public Position AddPostButtonPosition { get { return m_AddPostButtonPosition; } set { m_AddPostButtonPosition = value; } }
-		public Position UpdatePostButtonPosition { get { return m_UpdatePostButtonPosition; } set { m_UpdatePostButtonPosition = value; } }
-		public Position ChangePostVisibleButtonPosition { get { return m_ChangePostVisibleButtonPosition; } set { m_ChangePostVisibleButtonPosition = value; } }
-		public Position DeletePostButtonPosition { get { return m_DeletePostButtonPosition; } set { m_DeletePostButtonPosition = value; } }
-		public Position PostInformationPosition { get { return m_PostInformationPosition; } set { m_PostInformationPosition = value; } }
+		public HierarchicalPostListVisibility AddPostButtonVisibility { get { return (HierarchicalPostListVisibility)(this.ViewState[ViewstateAddpostbuttonvisibility] == null ? this.ViewState.Add(ViewstateAddpostbuttonvisibility, DefaultAddpostbuttonvisibility).Value : this.ViewState[ViewstateAddpostbuttonvisibility]); } set { this.ViewState.Add(ViewstateAddpostbuttonvisibility, value); } }
+		public PostAdministrationVisibility UpdatePostButtonVisibility { get { return this.updatePostButtonVisibility; } set { this.updatePostButtonVisibility = value; } }
+		public PostAdministrationVisibility ChangePostVisibleButtonVisibility { get { return this.changePostVisibleButtonVisibility; } set { this.changePostVisibleButtonVisibility = value; } }
+		public PostAdministrationVisibility DeletePostButtonVisibility { get { return this.deletePostButtonVisibility; } set { this.deletePostButtonVisibility = value; } }
+		public Position AddPostButtonPosition { get { return this.addPostButtonPosition; } set { this.addPostButtonPosition = value; } }
+		public Position UpdatePostButtonPosition { get { return this.updatePostButtonPosition; } set { this.updatePostButtonPosition = value; } }
+		public Position ChangePostVisibleButtonPosition { get { return this.changePostVisibleButtonPosition; } set { this.changePostVisibleButtonPosition = value; } }
+		public Position DeletePostButtonPosition { get { return this.deletePostButtonPosition; } set { this.deletePostButtonPosition = value; } }
+		public Position PostInformationPosition { get { return this.postInformationPosition; } set { this.postInformationPosition = value; } }
 
-		public PostId AddPostTargetPostId { get { return (PostId)this.ViewState[VIEWSTATE_ADDPOSTTARGETPOSTID]; } set { this.ViewState[VIEWSTATE_ADDPOSTTARGETPOSTID] = value; } }
-		public PostId AddPostReplySourcePostId { get { return (PostId)this.ViewState[VIEWSTATE_ADDPOSTREPLYSOURCEPOSTID]; } set { this.ViewState[VIEWSTATE_ADDPOSTREPLYSOURCEPOSTID] = value; } }
-		public PostLocation AddPostTargetLocation { get { return (PostLocation)(this.ViewState[VIEWSTATE_ADDPOSTTARGETLOCATION] == null ? this.ViewState.Add(VIEWSTATE_ADDPOSTTARGETLOCATION, DEFAULT_ADDPOSTTARGETLOCATION).Value : this.ViewState[VIEWSTATE_ADDPOSTTARGETLOCATION]); } set { this.ViewState.Add(VIEWSTATE_ADDPOSTTARGETLOCATION, value); } }
-		public PostLocation AddPostReplySourceLocation { get { return (PostLocation)(this.ViewState[VIEWSTATE_ADDPOSTREPLYSOURCELOCATION] == null ? this.ViewState.Add(VIEWSTATE_ADDPOSTREPLYSOURCELOCATION, DEFAULT_ADDPOSTREPLYSOURCELOCATION).Value : this.ViewState[VIEWSTATE_ADDPOSTREPLYSOURCELOCATION]); } set { this.ViewState.Add(VIEWSTATE_ADDPOSTREPLYSOURCELOCATION, value); } }
-		public AuthorResolver AuthorResolver { get { return m_AuthorResolver; } set { m_AuthorResolver = value; } }
-		public DateFormatter DateFormatter { get { return this.m_DateFormatter ?? (this.m_DateFormatter = new FriendlyDateFormatter()); } set { m_DateFormatter = value; } }
-		public string PostHyperlinkPrefix {	get { return this.m_PostHyperlinkPrefix ?? (this.m_PostHyperlinkPrefix = this.ClientID + UNDERSCORE);	} set { m_PostHyperlinkPrefix = value; } }
-		public TextFormatter TextFormatter { get { return this.m_TextFormatter ?? (this.m_TextFormatter = new WebTextFormatter()); } set { m_TextFormatter = value; } }
-		public string UrlWithoutTrailingUserIdentity { get { return m_UrlWithoutTrailingUserIdentity; } set { m_UrlWithoutTrailingUserIdentity = value; } }
-		public string UserIdentity { get { return m_UserIdentity; } set { m_UserIdentity = value; } }
+		public PostId AddPostTargetPostId { get { return (PostId)this.ViewState[ViewstateAddposttargetpostid]; } set { this.ViewState[ViewstateAddposttargetpostid] = value; } }
+		public PostId AddPostReplySourcePostId { get { return (PostId)this.ViewState[ViewstateAddpostreplysourcepostid]; } set { this.ViewState[ViewstateAddpostreplysourcepostid] = value; } }
+		public PostLocation AddPostTargetLocation { get { return (PostLocation)(this.ViewState[ViewstateAddposttargetlocation] == null ? this.ViewState.Add(ViewstateAddposttargetlocation, DefaultAddposttargetlocation).Value : this.ViewState[ViewstateAddposttargetlocation]); } set { this.ViewState.Add(ViewstateAddposttargetlocation, value); } }
+		public PostLocation AddPostReplySourceLocation { get { return (PostLocation)(this.ViewState[ViewstateAddpostreplysourcelocation] == null ? this.ViewState.Add(ViewstateAddpostreplysourcelocation, DefaultAddpostreplysourcelocation).Value : this.ViewState[ViewstateAddpostreplysourcelocation]); } set { this.ViewState.Add(ViewstateAddpostreplysourcelocation, value); } }
+		public AuthorResolver AuthorResolver { get; set; }
+		public DateFormatter DateFormatter { get { return this.dateFormatter ?? (this.dateFormatter = new FriendlyDateFormatter()); } set { this.dateFormatter = value; } }
+		public string PostHyperlinkPrefix { get { return this.postHyperlinkPrefix ?? (this.postHyperlinkPrefix = this.ClientID + Underscore); } set { this.postHyperlinkPrefix = value; } }
+		public TextFormatter TextFormatter { get { return this.textFormatter ?? (this.textFormatter = new WebTextFormatter()); } set { this.textFormatter = value; } }
+		public string UrlWithoutTrailingUserIdentity { get; set; }
+		public string UserIdentity { get; set; }
 
-		public string AddPostButtonText { get { return m_AddPostButtonText; } set { m_AddPostButtonText = value; } }
-		public string UpdatePostButtonText { get { return m_UpdatePostButtonText; } set { m_UpdatePostButtonText = value; } }
-		public string ChangePostVisibleButtonHideText { get { return m_ChangePostVisibleButtonHideText; } set { m_ChangePostVisibleButtonHideText = value; } }
-		public string ChangePostVisibleButtonUnhideText { get { return m_ChangePostVisibleButtonUnhideText; } set { m_ChangePostVisibleButtonUnhideText = value; } }
-		public string DeletePostButtonText { get { return m_DeletePostButtonText; } set { m_DeletePostButtonText = value; } }
-		public string AuthorLabelText { get { return m_AuthorLabelText; } set { m_AuthorLabelText = value; } }
-		public string TimePostedLabelText { get { return m_TimePostedLabelText; } set { m_TimePostedLabelText = value; } }
-		public string PostCountLabelText { get { return m_PostCountLabelText; } set { m_PostCountLabelText = value; } }
-		public string TimeLastPostLabelText { get { return m_TimeLastPostLabelText; } set { m_TimeLastPostLabelText = value; } }
-		public string DescendantPostsLabelText { get { return m_DescendantPostsLabelText; } set { m_DescendantPostsLabelText = value; } }
-		public string MessageNoPostsText { get { return m_MessageNoPostsText; } set { m_MessageNoPostsText = value; } }
-		public string MessageNoDescendantPostsText { get { return m_MessageNoDescendantPostsText; } set { m_MessageNoDescendantPostsText = value; } }
+		public string AddPostButtonText { get { return this.addPostButtonText; } set { this.addPostButtonText = value; } }
+		public string UpdatePostButtonText { get { return this.updatePostButtonText; } set { this.updatePostButtonText = value; } }
+		public string ChangePostVisibleButtonHideText { get { return this.changePostVisibleButtonHideText; } set { this.changePostVisibleButtonHideText = value; } }
+		public string ChangePostVisibleButtonUnhideText { get { return this.changePostVisibleButtonUnhideText; } set { this.changePostVisibleButtonUnhideText = value; } }
+		public string DeletePostButtonText { get { return this.deletePostButtonText; } set { this.deletePostButtonText = value; } }
+		public string AuthorLabelText { get { return this.authorLabelText; } set { this.authorLabelText = value; } }
+		public string TimePostedLabelText { get { return this.timePostedLabelText; } set { this.timePostedLabelText = value; } }
+		public string PostCountLabelText { get { return this.postCountLabelText; } set { this.postCountLabelText = value; } }
+		public string TimeLastPostLabelText { get { return this.timeLastPostLabelText; } set { this.timeLastPostLabelText = value; } }
+		public string DescendantPostsLabelText { get { return this.descendantPostsLabelText; } set { this.descendantPostsLabelText = value; } }
+		public string MessageNoPostsText { get { return this.messageNoPostsText; } set { this.messageNoPostsText = value; } }
+		public string MessageNoDescendantPostsText { get { return this.messageNoDescendantPostsText; } set { this.messageNoDescendantPostsText = value; } }
 		#endregion
 
 		#region Event Handlers
-		private void ctrlGeneralListing_AfterDataBinding(object sender, EventArgs e) {
-			WebParagraph ctrlMessageNoPosts		= (WebParagraph)ctrlGeneralListing.FooterControl.FindControl("ctrlMessageNoPosts");
-			ctrlMessageNoPosts.EnableViewState	= false;
-			if(ctrlMessageNoPosts.Visible		= ctrlGeneralListing.VisibleItems.Equals(0)) {
-				ctrlMessageNoPosts.InnerText	= this.MessageNoPostsText;
+		private void GeneralListingAfterDataBinding(object sender, EventArgs e) {
+			WebParagraph ctrlMessageNoPosts = (WebParagraph)ctrlGeneralListing.FooterControl.FindControl("ctrlMessageNoPosts");
+			ctrlMessageNoPosts.EnableViewState = false;
+			if(ctrlMessageNoPosts.Visible = ctrlGeneralListing.VisibleItems.Equals(0)) {
+				ctrlMessageNoPosts.InnerText = this.MessageNoPostsText;
 			}
 		}
-		private void ctrlGeneralListing_ListItemDataBinding(object sender, ListItemEventArgs e) {
-			HierarchicalPostListItem listItem				= (HierarchicalPostListItem)e.ListItem;
-			listItem.AddPostTargetPostId					= this.AddPostTargetPostId;
-			listItem.AddPostReplySourcePostId				= this.AddPostReplySourcePostId;
-			listItem.AddPostTargetLocation					= this.AddPostTargetLocation;
-			listItem.AddPostReplySourceLocation				= this.AddPostReplySourceLocation;
-			listItem.AuthorResolver							= this.AuthorResolver;
-			listItem.DateFormatter							= this.DateFormatter;
-			listItem.PostHyperlinkPrefix					= this.PostHyperlinkPrefix;
-			listItem.TextFormatter							= this.TextFormatter;
-			listItem.UrlWithoutTrailingUserIdentity			= this.UrlWithoutTrailingUserIdentity;
-			listItem.UserIdentity							= this.UserIdentity;
-			listItem.AddPostButtonVisibility				= this.AddPostButtonVisibility;
-			listItem.UpdatePostButtonVisibility				= this.UpdatePostButtonVisibility;
-			listItem.ChangePostVisibleButtonVisibility		= this.ChangePostVisibleButtonVisibility;
-			listItem.DeletePostButtonVisibility				= this.DeletePostButtonVisibility;
-			listItem.TitleVisibility						= this.TitleVisibility;
-			listItem.DescendantPostsInformationVisibility	= this.DescendantPostsInformationVisibility;
-			listItem.DescendantPostsLabelVisibility			= this.DescendantPostsLabelVisibility;
-			listItem.MessageNoDescendantPostsVisibility		= this.MessageNoDescendantPostsVisibility;
-			listItem.AddPostButtonPosition					= this.AddPostButtonPosition;
-			listItem.UpdatePostButtonPosition				= this.UpdatePostButtonPosition;
-			listItem.ChangePostVisibleButtonPosition		= this.ChangePostVisibleButtonPosition;
-			listItem.DeletePostButtonPosition				= this.DeletePostButtonPosition;
-			listItem.PostInformationPosition				= this.PostInformationPosition;
-			listItem.AddPostButtonText						= this.AddPostButtonText;
-			listItem.ChangePostVisibleButtonHideText		= this.ChangePostVisibleButtonHideText;
-			listItem.ChangePostVisibleButtonUnhideText		= this.ChangePostVisibleButtonUnhideText;
-			listItem.UpdatePostButtonText					= this.UpdatePostButtonText;
-			listItem.DeletePostButtonText					= this.DeletePostButtonText;
-			listItem.AuthorLabelText						= this.AuthorLabelText;
-			listItem.TimePostedLabelText					= this.TimePostedLabelText;
-			listItem.PostCountLabelText						= this.PostCountLabelText;
-			listItem.TimeLastPostLabelText					= this.TimeLastPostLabelText;
-			listItem.DescendantPostsLabelText				= this.DescendantPostsLabelText;
-			listItem.MessageNoDescendantPostsText			= this.MessageNoDescendantPostsText;
-			listItem.EnableViewState						= false;
-			listItem.AddPost								+= this.listItem_AddPost;
-			listItem.UpdatePost								+= this.listItem_UpdatePost;
-			listItem.ChangePostVisible						+= this.listItem_ChangePostVisible;
-			listItem.DeletePost								+= this.listItem_DeletePost;
-			listItem.PostVisibleChanging					+= this.listItem_PostVisibleChanging;
-			listItem.PostVisibleChanged						+= this.listItem_PostVisibleChanged;
-			listItem.PostVisibleChangeFailed				+= this.listItem_PostVisibleChangeFailed;
-			listItem.PostDeleting							+= this.listItem_PostDeleting;
-			listItem.PostDeleted							+= this.listItem_PostDeleted;
+		private void GeneralListingListItemDataBinding(object sender, ListItemEventArgs e) {
+			HierarchicalPostListItem listItem = (HierarchicalPostListItem)e.ListItem;
+			listItem.AddPostTargetPostId = this.AddPostTargetPostId;
+			listItem.AddPostReplySourcePostId = this.AddPostReplySourcePostId;
+			listItem.AddPostTargetLocation = this.AddPostTargetLocation;
+			listItem.AddPostReplySourceLocation = this.AddPostReplySourceLocation;
+			listItem.AuthorResolver = this.AuthorResolver;
+			listItem.DateFormatter = this.DateFormatter;
+			listItem.PostHyperlinkPrefix = this.PostHyperlinkPrefix;
+			listItem.TextFormatter = this.TextFormatter;
+			listItem.UrlWithoutTrailingUserIdentity = this.UrlWithoutTrailingUserIdentity;
+			listItem.UserIdentity = this.UserIdentity;
+			listItem.AddPostButtonVisibility = this.AddPostButtonVisibility;
+			listItem.UpdatePostButtonVisibility = this.UpdatePostButtonVisibility;
+			listItem.ChangePostVisibleButtonVisibility = this.ChangePostVisibleButtonVisibility;
+			listItem.DeletePostButtonVisibility = this.DeletePostButtonVisibility;
+			listItem.TitleVisibility = this.TitleVisibility;
+			listItem.DescendantPostsInformationVisibility = this.DescendantPostsInformationVisibility;
+			listItem.DescendantPostsLabelVisibility = this.DescendantPostsLabelVisibility;
+			listItem.MessageNoDescendantPostsVisibility = this.MessageNoDescendantPostsVisibility;
+			listItem.AddPostButtonPosition = this.AddPostButtonPosition;
+			listItem.UpdatePostButtonPosition = this.UpdatePostButtonPosition;
+			listItem.ChangePostVisibleButtonPosition = this.ChangePostVisibleButtonPosition;
+			listItem.DeletePostButtonPosition = this.DeletePostButtonPosition;
+			listItem.PostInformationPosition = this.PostInformationPosition;
+			listItem.AddPostButtonText = this.AddPostButtonText;
+			listItem.ChangePostVisibleButtonHideText = this.ChangePostVisibleButtonHideText;
+			listItem.ChangePostVisibleButtonUnhideText = this.ChangePostVisibleButtonUnhideText;
+			listItem.UpdatePostButtonText = this.UpdatePostButtonText;
+			listItem.DeletePostButtonText = this.DeletePostButtonText;
+			listItem.AuthorLabelText = this.AuthorLabelText;
+			listItem.TimePostedLabelText = this.TimePostedLabelText;
+			listItem.PostCountLabelText = this.PostCountLabelText;
+			listItem.TimeLastPostLabelText = this.TimeLastPostLabelText;
+			listItem.DescendantPostsLabelText = this.DescendantPostsLabelText;
+			listItem.MessageNoDescendantPostsText = this.MessageNoDescendantPostsText;
+			listItem.EnableViewState = false;
+			listItem.AddPost += this.ListItemAddPost;
+			listItem.UpdatePost += this.ListItemUpdatePost;
+			listItem.ChangePostVisible += this.ListItemChangePostVisible;
+			listItem.DeletePost += this.ListItemDeletePost;
+			listItem.PostVisibleChanging += this.ListItemPostVisibleChanging;
+			listItem.PostVisibleChanged += this.ListItemPostVisibleChanged;
+			listItem.PostVisibleChangeFailed += this.ListItemPostVisibleChangeFailed;
+			listItem.PostDeleting += this.ListItemPostDeleting;
+			listItem.PostDeleted += this.ListItemPostDeleted;
 		}
-		private void listItem_AddPost(object sender, AddPostEventArgs e) {
+		private void ListItemAddPost(object sender, AddPostEventArgs e) {
 			OnAddPost(e);
 		}
-		private void listItem_UpdatePost(object sender, UpdatePostEventArgs e) {
+		private void ListItemUpdatePost(object sender, UpdatePostEventArgs e) {
 			OnUpdatePost(e);
 		}
-		private void listItem_ChangePostVisible(object sender, PostEventArgs e) {
+		private void ListItemChangePostVisible(object sender, PostEventArgs e) {
 			e.Post.Visible = !e.Post.Visible;
 			PostCancelEventArgs cancelEventArgs = new PostCancelEventArgs(e.Post);
 			OnPostVisibleChanging(cancelEventArgs);
@@ -371,7 +367,7 @@ namespace nJupiter.Services.Forum.UI.Web {
 				}
 			}
 		}
-		private void listItem_DeletePost(object sender, PostEventArgs e) {
+		private void ListItemDeletePost(object sender, PostEventArgs e) {
 			PostCancelEventArgs cancelEventArgs = new PostCancelEventArgs(e.Post);
 			OnPostDeleting(cancelEventArgs);
 			if(!cancelEventArgs.Cancel) {
@@ -380,62 +376,62 @@ namespace nJupiter.Services.Forum.UI.Web {
 				OnPostDeleted(new PostDeletedEventArgs(e.Post, affectedPosts));
 			}
 		}
-		private void listItem_PostVisibleChanging(object sender, PostCancelEventArgs e) {
+		private void ListItemPostVisibleChanging(object sender, PostCancelEventArgs e) {
 			OnPostVisibleChanging(e);
 		}
-		private void listItem_PostVisibleChanged(object sender, PostEventArgs e) {
+		private void ListItemPostVisibleChanged(object sender, PostEventArgs e) {
 			OnPostVisibleChanged(e);
 		}
-		private void listItem_PostVisibleChangeFailed(object sender, PostFailureEventArgs e) {
+		private void ListItemPostVisibleChangeFailed(object sender, PostFailureEventArgs e) {
 			OnPostVisibleChangeFailed(e);
 		}
-		private void listItem_PostDeleting(object sender, PostCancelEventArgs e) {
+		private void ListItemPostDeleting(object sender, PostCancelEventArgs e) {
 			OnPostDeleting(e);
 		}
-		private void listItem_PostDeleted(object sender, PostDeletedEventArgs e) {
+		private void ListItemPostDeleted(object sender, PostDeletedEventArgs e) {
 			OnPostDeleted(e);
 		}
 		#endregion
 
 		#region Event Activators
 		protected virtual void OnAddPost(AddPostEventArgs e) {
-			AddPostEventHandler eventHandler = base.Events[s_EventAddPost] as AddPostEventHandler;
+			AddPostEventHandler eventHandler = base.Events[EventAddPost] as AddPostEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
 		protected virtual void OnUpdatePost(UpdatePostEventArgs e) {
-			UpdatePostEventHandler eventHandler = base.Events[s_EventUpdatePost] as UpdatePostEventHandler;
+			UpdatePostEventHandler eventHandler = base.Events[EventUpdatePost] as UpdatePostEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
 		protected virtual void OnPostVisibleChanging(PostCancelEventArgs e) {
-			PostVisibleChangingEventHandler eventHandler = base.Events[s_EventPostVisibleChanging] as PostVisibleChangingEventHandler;
+			PostVisibleChangingEventHandler eventHandler = base.Events[EventPostVisibleChanging] as PostVisibleChangingEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
 		protected virtual void OnPostVisibleChanged(PostEventArgs e) {
-			PostVisibleChangedEventHandler eventHandler = base.Events[s_EventPostVisibleChanged] as PostVisibleChangedEventHandler;
+			PostVisibleChangedEventHandler eventHandler = base.Events[EventPostVisibleChanged] as PostVisibleChangedEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
 		protected virtual void OnPostVisibleChangeFailed(PostFailureEventArgs e) {
-			PostVisibleChangeFailedEventHandler eventHandler = base.Events[s_EventPostVisibleChangeFailed] as PostVisibleChangeFailedEventHandler;
+			PostVisibleChangeFailedEventHandler eventHandler = base.Events[EventPostVisibleChangeFailed] as PostVisibleChangeFailedEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
 		protected virtual void OnPostDeleting(PostCancelEventArgs e) {
-			PostDeletingEventHandler eventHandler = base.Events[s_EventPostDeleting] as PostDeletingEventHandler;
+			PostDeletingEventHandler eventHandler = base.Events[EventPostDeleting] as PostDeletingEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
 		protected virtual void OnPostDeleted(PostDeletedEventArgs e) {
-			PostDeletedEventHandler eventHandler = base.Events[s_EventPostDeleted] as PostDeletedEventHandler;
+			PostDeletedEventHandler eventHandler = base.Events[EventPostDeleted] as PostDeletedEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
@@ -444,13 +440,13 @@ namespace nJupiter.Services.Forum.UI.Web {
 
 		#region Overridden Methods
 		protected override void OnInit(EventArgs e) {
-			ctrlGeneralListing.AfterDataBinding		+= this.ctrlGeneralListing_AfterDataBinding;
-			ctrlGeneralListing.ListItemDataBinding	+= this.ctrlGeneralListing_ListItemDataBinding;
+			ctrlGeneralListing.AfterDataBinding += this.GeneralListingAfterDataBinding;
+			ctrlGeneralListing.ListItemDataBinding += this.GeneralListingListItemDataBinding;
 			base.OnInit(e);
 		}
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
-			if(!m_DataBound) {
+			if(!this.dataBound) {
 				this.DataBind();
 			}
 		}
@@ -458,7 +454,7 @@ namespace nJupiter.Services.Forum.UI.Web {
 			if(this.PostCollection != null && !this.PostCollection.Count.Equals(0)) {
 				ctrlGeneralListing.ListCollection = this.PostCollection;
 			} else {
-				ThreadedPostsResultConfiguration resultConfiguration = new ThreadedPostsResultConfiguration(this.Levels, this.IncludeHidden, this.LoadAttributes, SORTPROPERTY, null, this.SortAscending, this.DateFilterFrom, this.DateFilterTo, this.DateFilterProperty);
+				ThreadedPostsResultConfiguration resultConfiguration = new ThreadedPostsResultConfiguration(this.Levels, this.IncludeHidden, this.LoadAttributes, Sortproperty, null, this.SortAscending, this.DateFilterFrom, this.DateFilterTo, this.DateFilterProperty);
 				if(this.PostId != null) {
 					if(this.GetOnlyChildren) {
 						ctrlGeneralListing.ListCollection = this.ForumDao.GetPosts(this.PostId, this.PostType, resultConfiguration);
@@ -481,7 +477,7 @@ namespace nJupiter.Services.Forum.UI.Web {
 				this.DeletePostButtonVisibility.Equals(PostAdministrationVisibility.DoNotShowOnAnyPosts) &&
 				this.UpdatePostButtonVisibility.Equals(PostAdministrationVisibility.DoNotShowOnAnyPosts));
 			ctrlGeneralListing.DataBind();
-			m_DataBound = true;
+			this.dataBound = true;
 		}
 		#endregion
 	}

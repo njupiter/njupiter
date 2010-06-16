@@ -25,18 +25,18 @@
 using System;
 
 namespace nJupiter.Services.Forum {
-	
+
 	[Serializable]
-	public abstract class GuidId : IComparable {	
+	public abstract class GuidId : IComparable {
 		#region Variables
-		private Guid	value;
+		private Guid value;
 		#endregion
 
 		#region Constructors
 		internal GuidId(Guid value) {
 			this.value = value;
 		}
-		internal GuidId() : this(Guid.NewGuid()) {}
+		internal GuidId() : this(Guid.NewGuid()) { }
 		#endregion
 
 		#region Properties
@@ -78,7 +78,7 @@ namespace nJupiter.Services.Forum {
 			return this.value.GetHashCode();
 		}
 		public sealed override string ToString() {
-			const string	format	= "N";
+			const string format = "N";
 
 			return this.value.ToString(format);
 		}

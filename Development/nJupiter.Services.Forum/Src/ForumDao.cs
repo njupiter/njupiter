@@ -33,18 +33,18 @@ namespace nJupiter.Services.Forum {
 
 	public abstract class ForumDao {
 		#region Constants
-		private const PostType	DefaultPostType		= PostType.This;
+		private const PostType DefaultPostType = PostType.This;
 
-		private const string	ParamNamePosts			= "posts";
-		private const string	ParamNamePost			= "post";
-		private const string	ParamNameCategories		= "categories";
-		private const string	ParamNameCategory		= "category";
-		private const string	ParamNameAttributes		= "attributes";
-		private const string	ParamNameAttribute		= "attribute";
+		private const string ParamNamePosts = "posts";
+		private const string ParamNamePost = "post";
+		private const string ParamNameCategories = "categories";
+		private const string ParamNameCategory = "category";
+		private const string ParamNameAttributes = "attributes";
+		private const string ParamNameAttribute = "attribute";
 		#endregion
 
 		#region Variables
-		private readonly Config			settings;
+		private readonly Config settings;
 		#endregion
 
 		#region Constructors
@@ -52,8 +52,8 @@ namespace nJupiter.Services.Forum {
 			const string settingsXpathFormat = ForumDaoXpath + "[@value='{0}']/settings";
 
 			string xPath = string.Format(CultureInfo.InvariantCulture, settingsXpathFormat, forumDaoName);
-			if(config.ContainsKey(xPath)) {
-				this.settings = config.GetConfigSection(xPath);
+			if(Config.ContainsKey(xPath)) {
+				this.settings = Config.GetConfigSection(xPath);
 			}
 		}
 		#endregion
@@ -67,7 +67,7 @@ namespace nJupiter.Services.Forum {
 			return new Category(name, domain, this.CategoryAttributes.Clone());
 		}
 
-		public Category GetCategory(CategoryId id) {	
+		public Category GetCategory(CategoryId id) {
 			return GetCategory(id, null, null);
 		}
 		public Category GetCategory(CategoryId id, CategoryResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration) {
@@ -85,7 +85,7 @@ namespace nJupiter.Services.Forum {
 		}
 		public abstract CategoryWithPagedPostsResult GetCategory(string domain, string name, CategoryResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration, PagingConfiguration pagingConfiguration);
 
-		public Category GetCategory(PostId id) {	
+		public Category GetCategory(PostId id) {
 			return GetCategory(id, null, null);
 		}
 		public Category GetCategory(PostId id, CategoryResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration) {
@@ -94,18 +94,18 @@ namespace nJupiter.Services.Forum {
 		}
 		public abstract CategoryWithPagedPostsResult GetCategory(PostId id, CategoryResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration, PagingConfiguration pagingConfiguration);
 
-		public CategoryCollection GetCategories() {	
+		public CategoryCollection GetCategories() {
 			return GetCategories(null, null, null);
 		}
-		public CategoryCollection GetCategories(CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration) {	
+		public CategoryCollection GetCategories(CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration) {
 			return GetCategories(resultConfiguration, postsResultConfiguration, PagingConfiguration.DefaultPageSize);
 		}
 		public abstract CategoryCollection GetCategories(CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration, int postsLimitSize);
 
-		public CategoryCollection GetCategories(string domain) {	
+		public CategoryCollection GetCategories(string domain) {
 			return GetCategories(domain, null, null);
 		}
-		public CategoryCollection GetCategories(string domain, CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration) {	
+		public CategoryCollection GetCategories(string domain, CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration) {
 			return GetCategories(domain, resultConfiguration, postsResultConfiguration, PagingConfiguration.DefaultPageSize);
 		}
 		public abstract CategoryCollection GetCategories(string domain, CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration, int postsLimitSize);
@@ -173,7 +173,7 @@ namespace nJupiter.Services.Forum {
 			return GetPosts(resultConfiguration, null).Posts;
 		}
 		public abstract PagedPostsResult GetPosts(ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
-		
+
 		public PostCollection GetPosts(string domain) {
 			return GetPosts(domain, (ThreadedPostsResultConfiguration)null);
 		}
@@ -197,7 +197,7 @@ namespace nJupiter.Services.Forum {
 			return GetPosts(domain, categoryName, resultConfiguration, null).Posts;
 		}
 		public abstract PagedPostsResult GetPosts(string domain, string categoryName, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
-		
+
 		public PostCollection GetPosts(PostId id) {
 			return GetPosts(id, null);
 		}
@@ -274,10 +274,10 @@ namespace nJupiter.Services.Forum {
 
 		public PostCollection SearchPosts(PostId id, SearchCriteria searchCriteria) {
 			return SearchPosts(id, searchCriteria, null);
-		}		
+		}
 		public PostCollection SearchPosts(PostId id, PostType postType, SearchCriteria searchCriteria) {
 			return SearchPosts(id, postType, searchCriteria, null);
-		}		
+		}
 		public PostCollection SearchPosts(PostId id, SearchCriteria searchCriteria, PostsResultConfiguration resultConfiguration) {
 			return SearchPosts(id, searchCriteria, resultConfiguration, null).Posts;
 		}
@@ -318,10 +318,10 @@ namespace nJupiter.Services.Forum {
 		public int DeletePosts(string domain) {
 			return DeletePosts(domain, DateTime.MinValue);
 		}
-		public abstract int DeletePosts(CategoryId id, DateTime until); 
+		public abstract int DeletePosts(CategoryId id, DateTime until);
 		public int DeletePosts(CategoryId id) {
 			return DeletePosts(id, DateTime.MinValue);
-		} 
+		}
 		public abstract int DeletePosts(string domain, string categoryName, DateTime until);
 		public int DeletePosts(string domain, string categoryName) {
 			return DeletePosts(domain, categoryName, DateTime.MinValue);
@@ -361,7 +361,7 @@ namespace nJupiter.Services.Forum {
 		protected static PostWithPagedPostsResult CreatePostWithPagedPostsResultsInstance(Post post, int totalCount) {
 			return new PostWithPagedPostsResult(post, totalCount);
 		}
-		
+
 		protected static Category CreateCategoryInstance(CategoryId id, string domain, string name, AttributeCollection attributes, PostCollection posts, int rootPostCount, string concurrencyIdentity) {
 			return new Category(id, domain, name, attributes, posts, rootPostCount, concurrencyIdentity);
 		}
@@ -417,55 +417,55 @@ namespace nJupiter.Services.Forum {
 
 		#region Abstract Factory
 		#region Constants
-		private const string	ForumDaoXpath					= "forumDAOs/forumDAO";
-		private const string	NamedForumDaoXpathFormat		= ForumDaoXpath + "[@value='{0}']";
+		private const string ForumDaoXpath = "forumDAOs/forumDAO";
+		private const string NamedForumDaoXpathFormat = ForumDaoXpath + "[@value='{0}']";
 		#endregion
 
 		#region Variables
-		private static readonly ListDictionary	forumDaos		= new ListDictionary();
-		private static readonly Config			config			= ConfigHandler.GetConfig();
-		private static ForumDao					defaultInstance;
-		private static readonly object			lockObject		= new object();
+		private static readonly ListDictionary ForumDaos = new ListDictionary();
+		private static readonly Config Config = ConfigHandler.GetConfig();
+		private static ForumDao defaultInstance;
+		private static readonly object LockObject = new object();
 		#endregion
 
 		#region Methods
 		public static ForumDao GetInstance() {
 			const string defaultForumDaoXpath = ForumDaoXpath + "[@default='true']";
-			
+
 			if(defaultInstance != null) {
 				return defaultInstance;
 			}
-			lock(lockObject) {
+			lock(LockObject) {
 				defaultInstance = GetForumDaoFromSection(defaultForumDaoXpath);
 				return defaultInstance;
 			}
 		}
 		public static ForumDao GetInstance(string name) {
-			if(!forumDaos.Contains(name)) {
+			if(!ForumDaos.Contains(name)) {
 				return GetForumDaoFromSection(string.Format(CultureInfo.InvariantCulture, NamedForumDaoXpathFormat, name));
 			}
-			return (ForumDao)forumDaos[name];
+			return (ForumDao)ForumDaos[name];
 		}
 		#endregion
 
 		#region Helper Methods
 		private static ForumDao GetForumDaoFromSection(string section) {
-			const string assemblyPathKey	= "assemblyPath";
-			const string assemblyKey		= "assembly";
-			const string typeKey			= "type";
+			const string assemblyPathKey = "assemblyPath";
+			const string assemblyKey = "assembly";
+			const string typeKey = "type";
 
-			string name = config.GetValue(section);
+			string name = Config.GetValue(section);
 
-			if(forumDaos.Contains(name)) {
-				return (ForumDao)forumDaos[name];
+			if(ForumDaos.Contains(name)) {
+				return (ForumDao)ForumDaos[name];
 			}
-			lock(forumDaos.SyncRoot) {
+			lock(ForumDaos.SyncRoot) {
 				object forumDao = GetInstance(
-					config.GetValue(section, assemblyPathKey),
-					config.GetValue(section, assemblyKey),
-					config.GetValue(section, typeKey),
-					new object[] {name});
-				forumDaos.Add(name, forumDao);
+					Config.GetValue(section, assemblyPathKey),
+					Config.GetValue(section, assemblyKey),
+					Config.GetValue(section, typeKey),
+					new object[] { name });
+				ForumDaos.Add(name, forumDao);
 				return (ForumDao)forumDao;
 			}
 		}
@@ -473,17 +473,17 @@ namespace nJupiter.Services.Forum {
 			Assembly assembly;
 			if(!string.IsNullOrEmpty(assemblyPath)) {
 				assembly = Assembly.LoadFrom(assemblyPath);
-			} else if(assemblyName == null || assemblyName.Length.Equals(0) || 
+			} else if(assemblyName == null || assemblyName.Length.Equals(0) ||
 				Assembly.GetExecutingAssembly().GetName().Name.Equals(assemblyName)) {
-				assembly = Assembly.GetExecutingAssembly();	
+				assembly = Assembly.GetExecutingAssembly();
 				//Load current assembly
 			} else {
-				assembly = Assembly.Load(assemblyName); 
+				assembly = Assembly.Load(assemblyName);
 				// Late binding to an assembly on disk (current directory)
 			}
 			return assembly.CreateInstance(
-				typeName, true, 
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | 
+				typeName, true,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
 				BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.ExactBinding,
 				null, prams, null, null);
 		}

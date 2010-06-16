@@ -38,7 +38,7 @@ namespace nJupiter.Web.Syndication {
 			XmlWriterSettings settings = new XmlWriterSettings();
 			settings.Indent = true;
 			this.feedType = feedType;
-			this.xmlWriter =  XmlWriter.Create(stream, settings);
+			this.xmlWriter = XmlWriter.Create(stream, settings);
 		}
 
 		protected XmlWriter XmlWriter { get { return this.xmlWriter; } }
@@ -50,10 +50,10 @@ namespace nJupiter.Web.Syndication {
 		}
 
 		public static FeedWriter Create(Stream stream, FeedType type) {
-			if(FeedType.Rss.Equals(type)){
+			if(FeedType.Rss.Equals(type)) {
 				return new RssWriter(stream, type);
 			}
-			if(FeedType.Atom.Equals(type)){
+			if(FeedType.Atom.Equals(type)) {
 				return new AtomWriter(stream, type);
 			}
 			throw new NotSupportedException(string.Format("FeedType {0} not supported", type.Name));
@@ -68,9 +68,9 @@ namespace nJupiter.Web.Syndication {
 
 		#region IDisposable Members
 		private void Dispose(bool disposing) {
-			if (!this.disposed) {
+			if(!this.disposed) {
 				this.disposed = true;
-				if(this.xmlWriter !=  null)
+				if(this.xmlWriter != null)
 					this.xmlWriter.Close();
 
 				// Suppress finalization of this disposed instance.
@@ -82,7 +82,7 @@ namespace nJupiter.Web.Syndication {
 		public void Dispose() {
 			Dispose(true);
 		}
-		
+
 		// Disposable types implement a finalizer.
 		~FeedWriter() {
 			Dispose(false);

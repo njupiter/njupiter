@@ -32,16 +32,16 @@ namespace nJupiter.Web.UI.Controls {
 
 	public class WebAnchor : HyperLink {
 		#region Constants
-		private const string HashChar				= "#";
-		private const string BrTag					= "<" + HtmlTag.Br + " />";
-		private const string InnerSpanKey			= "v_InnerSpan";
-		private const string RenderIdKey			= "v_RenderId";
-		private const string RenderOriginalIdKey	= "v_RenderOriginalId";
-		private const string NoLinkKey				= "v_NoLink";
-		private const string DisableEncodingKey		= "v_DisableEncoding";
-		private const string HasControlsKey			= "v_HasControls";
-		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
-		private const string TrailingBreakKey		= "v_TrailingBreak";
+		private const string HashChar = "#";
+		private const string BrTag = "<" + HtmlTag.Br + " />";
+		private const string InnerSpanKey = "v_InnerSpan";
+		private const string RenderIdKey = "v_RenderId";
+		private const string RenderOriginalIdKey = "v_RenderOriginalId";
+		private const string NoLinkKey = "v_NoLink";
+		private const string DisableEncodingKey = "v_DisableEncoding";
+		private const string HasControlsKey = "v_HasControls";
+		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
+		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
 
 		#region Properties
@@ -53,7 +53,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			set { this.ViewState[RenderIdKey] = value; }
 		}
-		
+
 		public bool RenderOriginalId {
 			get {
 				if(this.ViewState[RenderOriginalIdKey] == null)
@@ -72,7 +72,7 @@ namespace nJupiter.Web.UI.Controls {
 			set { this.ViewState[NoLinkKey] = value; }
 		}
 
-		public bool DisableEncoding{
+		public bool DisableEncoding {
 			get {
 				if(this.ViewState[DisableEncodingKey] == null)
 					return false;
@@ -83,7 +83,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
-		private bool HasControlsInternal{
+		private bool HasControlsInternal {
 			get {
 				if(this.ViewState[HasControlsKey] == null)
 					return false;
@@ -96,7 +96,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public bool InnerSpan {
 			get {
-				if (this.ViewState[InnerSpanKey] == null) {
+				if(this.ViewState[InnerSpanKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[InnerSpanKey];
@@ -109,7 +109,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false)]
 		public bool TrailingBreak {
 			get {
-				if (this.ViewState[TrailingBreakKey] == null) {
+				if(this.ViewState[TrailingBreakKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingBreakKey];
@@ -122,7 +122,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool TrailingLinefeed {
 			get {
-				if (this.ViewState[TrailingLinefeedKey] == null) {
+				if(this.ViewState[TrailingLinefeedKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingLinefeedKey];
@@ -135,27 +135,27 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Method
 		protected override void AddParsedSubObject(object obj) {
-			if (!(obj is LiteralControl) && !(obj is Literal))
+			if(!(obj is LiteralControl) && !(obj is Literal))
 				this.DisableEncoding = true;
 			this.HasControlsInternal = true;
 			base.AddParsedSubObject(obj);
 		}
 
 		protected override void Render(HtmlTextWriter writer) {
-			if(this.NoLink){
+			if(this.NoLink) {
 				if(this.InnerSpan) {
 					if(!string.IsNullOrEmpty(this.CssClass)) {
 						writer.WriteBeginTag(HtmlTag.Span);
 						writer.WriteAttribute(HtmlAttribute.Class, this.CssClass);
 						this.Attributes.Render(writer);
-						if(!this.RenderOriginalId){
-							string originalID = this.ID;
+						if(!this.RenderOriginalId) {
+							string originalId = this.ID;
 							this.ID = null;
 							if(this.RenderId)
-								writer.WriteAttribute(HtmlAttribute.Id, originalID);
+								writer.WriteAttribute(HtmlAttribute.Id, originalId);
 						}
 						writer.Write(HtmlTextWriter.TagRightChar);
-					} else { 
+					} else {
 						writer.WriteFullBeginTag(HtmlTag.Span);
 					}
 				}
@@ -163,12 +163,12 @@ namespace nJupiter.Web.UI.Controls {
 				if(this.InnerSpan)
 					writer.WriteEndTag(HtmlTag.Span);
 
-			}else{
-				if(!this.RenderOriginalId){
-					string originalID = this.ID;
+			} else {
+				if(!this.RenderOriginalId) {
+					string originalId = this.ID;
 					this.ID = null;
 					if(this.RenderId)
-						this.Attributes.Add(HtmlAttribute.Id, originalID);
+						this.Attributes.Add(HtmlAttribute.Id, originalId);
 				}
 				base.Render(writer);
 			}
@@ -198,7 +198,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected override void RenderContents(HtmlTextWriter writer) {
 			string text = this.ImageUrl;
-			if (text.Length > 0) {
+			if(text.Length > 0) {
 				WebImage image = new WebImage();
 				image.ImageUrl = text;
 				text = this.ToolTip;

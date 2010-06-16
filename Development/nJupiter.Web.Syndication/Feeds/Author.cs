@@ -32,7 +32,7 @@ namespace nJupiter.Web.Syndication {
 		public Author(string name) {
 			this.name = name;
 		}
-	
+
 		public Author(string name, string email) {
 			this.name = name;
 			this.email = email;

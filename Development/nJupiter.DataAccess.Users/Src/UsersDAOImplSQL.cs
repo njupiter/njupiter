@@ -37,30 +37,30 @@ namespace nJupiter.DataAccess.Users {
 
 	public class UsersDAOImplSQL : UsersDAO {
 		#region Constants
-		private const int AddStatusUsernameTaken	= 1;
+		private const int AddStatusUsernameTaken = 1;
 		#endregion
 
 		#region Members
-		private readonly	object				padlock = new object();
-		private readonly	Hashtable			propertySchemaTables = new Hashtable();
-		private				ContextCollection	contexts;
-		private				DataSource			dataAccess;
+		private readonly object padlock = new object();
+		private readonly Hashtable propertySchemaTables = new Hashtable();
+		private ContextCollection contexts;
+		private DataSource dataAccess;
 		#endregion
-		
+
 		#region Properties
 		private DataSource CurrentDB {
 			get {
-				if(this.dataAccess == null){
+				if(this.dataAccess == null) {
 					this.dataAccess = Config.ContainsKey("dataSource") ? DataSource.GetInstance(Config.GetValue("dataSource")) : DataSource.GetInstance();
 				}
 				return this.dataAccess;
 			}
 		}
 		#endregion
-		
+
 		#region Overridden Methods
 		public override UserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
-			IDataParameter returnParam	= CurrentDB.CreateReturnParameter("@intPagingTotalNumber", DbType.Int32);
+			IDataParameter returnParam = CurrentDB.CreateReturnParameter("@intPagingTotalNumber", DbType.Int32);
 			DataSet dsUser;
 			if(pageSize.Equals(int.MaxValue) || pageIndex.Equals(int.MaxValue)) {
 				dsUser = CurrentDB.ExecuteDataSet("dbo.USER_FilterUsers", returnParam);
@@ -81,86 +81,86 @@ namespace nJupiter.DataAccess.Users {
 			if(user != null) {
 				return user;
 			}
-			
-			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetByID", 
+
+			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetByID",
 				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(userId)));
 			user = GetUserFromDataSet(dsUser);
 			this.UserCache.AddUserToCache(user);
 			return user;
 		}
-		
+
 		public override User GetUserByUserName(string userName, string domain) {
 			User user = this.UserCache.GetUserByUserName(userName, domain);
 			if(user != null) {
 				return user;
 			}
-			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetByUsername", 
+			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetByUsername",
 				CurrentDB.CreateStringInputParameter("@chvnUsername", DbType.String, userName),
 				CurrentDB.CreateStringInputParameter("@chvDomain", DbType.AnsiString, domain ?? string.Empty));
 			user = GetUserFromDataSet(dsUser);
 			this.UserCache.AddUserToCache(user);
 			return user;
 		}
-		
-		public override UserCollection GetUsersBySearchCriteria(SearchCriteriaCollection searchCriteriaCollection){
+
+		public override UserCollection GetUsersBySearchCriteria(SearchCriteriaCollection searchCriteriaCollection) {
 			if(searchCriteriaCollection == null) {
 				throw new ArgumentNullException("searchCriteriaCollection");
 			}
 
-			const string sqlSinglequote						= "'";
-			const string sqlSinglequoteEscaped				= "''";
-			const string sqlWhere							= "WHERE ";
-			const string sqlAnd								= "AND ";
-			const string sqlOr								= "OR ";
-			const string sqlNot								= "NOT ";
+			const string sqlSinglequote = "'";
+			const string sqlSinglequoteEscaped = "''";
+			const string sqlWhere = "WHERE ";
+			const string sqlAnd = "AND ";
+			const string sqlOr = "OR ";
+			const string sqlNot = "NOT ";
 
-			const string sqlBasicQuery						= "SELECT u.UserID, u.Username, u.Domain FROM dbo.USER_User u ";
-			const string sqlBasicSubqueryStart				= "EXISTS(SELECT * FROM dbo.USER_Property p JOIN dbo.USER_PropertySchema ps ON p.PropertyID = ps.PropertyID ";
-			const string sqlBasicSubqueryEnd				= sqlAnd + "u.UserID = p.UserID) ";
-			const string sqlContextJoin						= "JOIN dbo.USER_Context c ON p.ContextID = c.ContextID ";
+			const string sqlBasicQuery = "SELECT u.UserID, u.Username, u.Domain FROM dbo.USER_User u ";
+			const string sqlBasicSubqueryStart = "EXISTS(SELECT * FROM dbo.USER_Property p JOIN dbo.USER_PropertySchema ps ON p.PropertyID = ps.PropertyID ";
+			const string sqlBasicSubqueryEnd = sqlAnd + "u.UserID = p.UserID) ";
+			const string sqlContextJoin = "JOIN dbo.USER_Context c ON p.ContextID = c.ContextID ";
 
-			const string sqlCriteriaProperty				= "ps.PropertyName = {0} ";
-			const string sqlCriteriaContext					= sqlAnd + "c.ContextName = {0} ";
-			const string sqlCriteriaDomain					= sqlAnd + "u.Domain = {0} ";
+			const string sqlCriteriaProperty = "ps.PropertyName = {0} ";
+			const string sqlCriteriaContext = sqlAnd + "c.ContextName = {0} ";
+			const string sqlCriteriaDomain = sqlAnd + "u.Domain = {0} ";
 
-			const string sqlCriteriaCondNomatch				= sqlAnd + "1 = 0 ";
+			const string sqlCriteriaCondNomatch = sqlAnd + "1 = 0 ";
 
-			const string sqlCriteriaCondLike				= sqlAnd + "(p.PropertyValue LIKE {0} OR p.ExtendedPropertyValue LIKE {0}) ";
-			const string sqlCriteriaCondLikeOnlyext			= sqlAnd + "p.ExtendedPropertyValue LIKE {0} ";
-			const string sqlCriteriaCondNotlike				= sqlAnd + "(p.PropertyValue NOT LIKE {0} OR p.ExtendedPropertyValue NOT LIKE {0}) ";
-			const string sqlCriteriaCondNotlikeOnlyext		= sqlAnd + "p.ExtendedPropertyValue NOT LIKE {0} ";
+			const string sqlCriteriaCondLike = sqlAnd + "(p.PropertyValue LIKE {0} OR p.ExtendedPropertyValue LIKE {0}) ";
+			const string sqlCriteriaCondLikeOnlyext = sqlAnd + "p.ExtendedPropertyValue LIKE {0} ";
+			const string sqlCriteriaCondNotlike = sqlAnd + "(p.PropertyValue NOT LIKE {0} OR p.ExtendedPropertyValue NOT LIKE {0}) ";
+			const string sqlCriteriaCondNotlikeOnlyext = sqlAnd + "p.ExtendedPropertyValue NOT LIKE {0} ";
 
-			const string sqlCriteriaCondEqual				= sqlAnd + "p.PropertyValue = {0} ";
-			const string sqlCriteriaCondEqualExt			= sqlCriteriaCondLikeOnlyext;
-			const string sqlCriteriaCondNotequal			= sqlAnd + "p.PropertyValue <> {0} ";
-			const string sqlCriteriaCondNotequalExt			= sqlCriteriaCondNotlikeOnlyext;
+			const string sqlCriteriaCondEqual = sqlAnd + "p.PropertyValue = {0} ";
+			const string sqlCriteriaCondEqualExt = sqlCriteriaCondLikeOnlyext;
+			const string sqlCriteriaCondNotequal = sqlAnd + "p.PropertyValue <> {0} ";
+			const string sqlCriteriaCondNotequalExt = sqlCriteriaCondNotlikeOnlyext;
 
-			const string sqlCriteriaCondGreater				= sqlAnd + "(p.PropertyValue > {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) > {0})";
-			const string sqlCriteriaCondGreaterequal		= sqlAnd + "(p.PropertyValue >= {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) >= {0})";
-			const string sqlCriteriaCondLess				= sqlAnd + "(p.PropertyValue < {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) < {0})";
-			const string sqlCriteriaCondLessequal			= sqlAnd + "(p.PropertyValue <= {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) <= {0})";
+			const string sqlCriteriaCondGreater = sqlAnd + "(p.PropertyValue > {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) > {0})";
+			const string sqlCriteriaCondGreaterequal = sqlAnd + "(p.PropertyValue >= {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) >= {0})";
+			const string sqlCriteriaCondLess = sqlAnd + "(p.PropertyValue < {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) < {0})";
+			const string sqlCriteriaCondLessequal = sqlAnd + "(p.PropertyValue <= {0} OR CAST(p.ExtendedPropertyValue AS NVARCHAR(4000)) <= {0})";
 
-			const string sqlCriteriaCondContainsstartswith	= sqlAnd + @"CONTAINS(p.*,N'""{0}*""') ";
-			
-			const string sqlParameter						= "@param";
+			const string sqlCriteriaCondContainsstartswith = sqlAnd + @"CONTAINS(p.*,N'""{0}*""') ";
 
-			Command command					= CurrentDB.CreateTextCommand();
-			StringBuilder queryBuilder		= new StringBuilder(sqlBasicQuery);
-			ArrayList requiredCriterias		= new ArrayList();
-			ArrayList notRequiredCriterias	= new ArrayList();
-			int	parameterCount				= 0;
+			const string sqlParameter = "@param";
+
+			Command command = CurrentDB.CreateTextCommand();
+			StringBuilder queryBuilder = new StringBuilder(sqlBasicQuery);
+			ArrayList requiredCriterias = new ArrayList();
+			ArrayList notRequiredCriterias = new ArrayList();
+			int parameterCount = 0;
 
 			foreach(SearchCriteria sc in searchCriteriaCollection) {
-				string	serializedValue				= sc.Property.ToSerializedString();
-				string	likeEscapedSerializedValue	= EscapeForLikeClause(serializedValue);
-				bool	isDefaultValue				= sc.Property.IsEmpty();
+				string serializedValue = sc.Property.ToSerializedString();
+				string likeEscapedSerializedValue = EscapeForLikeClause(serializedValue);
+				bool isDefaultValue = sc.Property.IsEmpty();
 
-				string	parameterNameName	= sqlParameter + parameterCount++;
-				string	parameterNameValue	= sqlParameter + parameterCount++;
-				bool	contextIsSet		= sc.Property.Context != null && sc.Property.Context.Name != null;
-				bool	domainIsSet			= !string.IsNullOrEmpty(sc.Domain);
-				
-				StringBuilder criteria		= new StringBuilder(sqlBasicSubqueryStart);
+				string parameterNameName = sqlParameter + parameterCount++;
+				string parameterNameValue = sqlParameter + parameterCount++;
+				bool contextIsSet = sc.Property.Context != null && sc.Property.Context.Name != null;
+				bool domainIsSet = !string.IsNullOrEmpty(sc.Domain);
+
+				StringBuilder criteria = new StringBuilder(sqlBasicSubqueryStart);
 				if(contextIsSet) {
 					// Add context criteria to query if context is set
 					criteria.Append(sqlContextJoin);
@@ -168,13 +168,13 @@ namespace nJupiter.DataAccess.Users {
 				criteria.Append(sqlWhere).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaProperty, parameterNameName);
 				if(contextIsSet) {
 					// Add context criteria to query if context is set
-					string parameterContext	= sqlParameter + parameterCount++;
+					string parameterContext = sqlParameter + parameterCount++;
 					criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaContext, parameterContext);
 					command.AddInParameter(parameterContext, DbType.String, sc.Property.Context.Name);
 				}
-				if(domainIsSet){
+				if(domainIsSet) {
 					// Add domain criteria to query if domain is set
-					string parameterDomain	= sqlParameter + parameterCount++;
+					string parameterDomain = sqlParameter + parameterCount++;
 					criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaDomain, parameterDomain);
 					command.AddInParameter(parameterDomain, DbType.String, sc.Domain);
 				}
@@ -182,146 +182,146 @@ namespace nJupiter.DataAccess.Users {
 				switch(sc.Condition) {
 					// If value is bigger than 4000 bytes, search in the extended value column
 					case SearchCriteria.CompareCondition.ContainsStartsWith:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondContainsstartswith, serializedValue.Replace(sqlSinglequote, sqlSinglequoteEscaped));
-						} else {
-							//return all if defaultValue
-							criteria.
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-						}
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondContainsstartswith, serializedValue.Replace(sqlSinglequote, sqlSinglequoteEscaped));
+					} else {
+						//return all if defaultValue
+						criteria.
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+					}
+					break;
 					case SearchCriteria.CompareCondition.StartsWith:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
-							command.AddInParameter(parameterNameValue, DbType.String, likeEscapedSerializedValue + "%");
-						} else {
-							//return all if defaultValue
-							criteria.
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-						}
-						break;
-					case SearchCriteria.CompareCondition.NotStartsWith:
-						if(!isDefaultValue) {
-							criteria.
-								AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-						} else {
-							//return none if defaultValue
-							criteria.Append(sqlCriteriaCondNomatch);
-						}
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
 						command.AddInParameter(parameterNameValue, DbType.String, likeEscapedSerializedValue + "%");
-						break;
+					} else {
+						//return all if defaultValue
+						criteria.
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+					}
+					break;
+					case SearchCriteria.CompareCondition.NotStartsWith:
+					if(!isDefaultValue) {
+						criteria.
+							AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+					} else {
+						//return none if defaultValue
+						criteria.Append(sqlCriteriaCondNomatch);
+					}
+					command.AddInParameter(parameterNameValue, DbType.String, likeEscapedSerializedValue + "%");
+					break;
 					case SearchCriteria.CompareCondition.EndsWith:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
-							command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue);
-						} else {
-							//return all if defaultValue
-							criteria.
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-						}
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
+						command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue);
+					} else {
+						//return all if defaultValue
+						criteria.
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+					}
+					break;
 					case SearchCriteria.CompareCondition.NotEndsWith:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-							command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue);
-						} else {
-							//return none if defaultValue
-							criteria.Append(sqlCriteriaCondNomatch);
-						}
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+						command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue);
+					} else {
+						//return none if defaultValue
+						criteria.Append(sqlCriteriaCondNomatch);
+					}
+					break;
 					case SearchCriteria.CompareCondition.Contains:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
-							command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue + "%");
-						} else {
-							//return all if defaultValue
-							criteria.
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-						}
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
+						command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue + "%");
+					} else {
+						//return all if defaultValue
+						criteria.
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+					}
+					break;
 					case SearchCriteria.CompareCondition.NotContains:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
-								Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
-								Append(basicSubQueryStart);
-							command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue + "%");
-						} else {
-							//return none if defaultValue
-							criteria.Append(sqlCriteriaCondNomatch);
-						}
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
+							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
+							Append(basicSubQueryStart);
+						command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue + "%");
+					} else {
+						//return none if defaultValue
+						criteria.Append(sqlCriteriaCondNomatch);
+					}
+					break;
 					case SearchCriteria.CompareCondition.NotEqual:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture,	serializedValue.Length <= 4000 ? sqlCriteriaCondNotequal : sqlCriteriaCondNotequalExt, parameterNameValue);
-							command.AddInParameter(parameterNameValue, DbType.String, serializedValue.Length <= 4000 ? serializedValue : likeEscapedSerializedValue);
-						}
-						//return all that has a row if defaultValue
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotequal : sqlCriteriaCondNotequalExt, parameterNameValue);
+						command.AddInParameter(parameterNameValue, DbType.String, serializedValue.Length <= 4000 ? serializedValue : likeEscapedSerializedValue);
+					}
+					//return all that has a row if defaultValue
+					break;
 					case SearchCriteria.CompareCondition.GreaterThan:
 					case SearchCriteria.CompareCondition.GreaterThanOrEqual:
 					case SearchCriteria.CompareCondition.LessThan:
 					case SearchCriteria.CompareCondition.LessThanOrEqual:
-						if(!sc.Property.SerializationPreservesOrder) {
-							throw new InvalidOperationException("Can not use inequality comparison on a property that does not maintain sort order of its underlying type in its serialized form.");
+					if(!sc.Property.SerializationPreservesOrder) {
+						throw new InvalidOperationException("Can not use inequality comparison on a property that does not maintain sort order of its underlying type in its serialized form.");
+					}
+					int comparedWithDefaultValue = sc.Property.Value == null ?
+						sc.Property.DefaultValue == null ? 0 : -1 : ((IComparable)sc.Property.Value).CompareTo(sc.Property.DefaultValue);
+					switch(sc.Condition) {
+						case SearchCriteria.CompareCondition.GreaterThan:
+						if(comparedWithDefaultValue < 0) {	// value > (<defaultValue)
+							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLessequal, parameterNameValue);
+						} else {							// value > (>=defaultValue)
+							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreater, parameterNameValue);
 						}
-						int comparedWithDefaultValue	= sc.Property.Value == null ?
-							sc.Property.DefaultValue == null ? 0 : -1 :	((IComparable)sc.Property.Value).CompareTo(sc.Property.DefaultValue);
-						switch(sc.Condition) {
-							case SearchCriteria.CompareCondition.GreaterThan:
-								if(comparedWithDefaultValue < 0) {	// value > (<defaultValue)
-									criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLessequal, parameterNameValue);
-								} else {							// value > (>=defaultValue)
-									criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreater, parameterNameValue);
-								}
-								break;
-							case SearchCriteria.CompareCondition.GreaterThanOrEqual:
-								if(comparedWithDefaultValue > 0) {	//value >= (>defaultValue)
-									criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreaterequal, parameterNameValue);
-								} else {							//value >= (<=defaultValue>
-									criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLess, parameterNameValue);
-								}
-								break;
-							case SearchCriteria.CompareCondition.LessThan:
-								if(comparedWithDefaultValue > 0) {	//value < (>defaultValue>
-									criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreaterequal, parameterNameValue);
-								} else {							//value < (<=defaultValue)
-									criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLess, parameterNameValue);
-								}
-								break;
-							case SearchCriteria.CompareCondition.LessThanOrEqual:
-								if(comparedWithDefaultValue < 0) {	//value <= (<defaultValue)
-									criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLessequal, parameterNameValue);
-								} else {							//value <= (>=defaultValue>
-									criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreater, parameterNameValue);
-								}
-								break;
-						}
-						command.AddInParameter(parameterNameValue, DbType.String, serializedValue);
 						break;
+						case SearchCriteria.CompareCondition.GreaterThanOrEqual:
+						if(comparedWithDefaultValue > 0) {	//value >= (>defaultValue)
+							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreaterequal, parameterNameValue);
+						} else {							//value >= (<=defaultValue>
+							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLess, parameterNameValue);
+						}
+						break;
+						case SearchCriteria.CompareCondition.LessThan:
+						if(comparedWithDefaultValue > 0) {	//value < (>defaultValue>
+							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreaterequal, parameterNameValue);
+						} else {							//value < (<=defaultValue)
+							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLess, parameterNameValue);
+						}
+						break;
+						case SearchCriteria.CompareCondition.LessThanOrEqual:
+						if(comparedWithDefaultValue < 0) {	//value <= (<defaultValue)
+							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLessequal, parameterNameValue);
+						} else {							//value <= (>=defaultValue>
+							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreater, parameterNameValue);
+						}
+						break;
+					}
+					command.AddInParameter(parameterNameValue, DbType.String, serializedValue);
+					break;
 					default:
-						if(!isDefaultValue) {
-							criteria.AppendFormat(CultureInfo.InvariantCulture,	serializedValue.Length <= 4000 ? sqlCriteriaCondEqual : sqlCriteriaCondEqualExt, parameterNameValue);
-							command.AddInParameter(parameterNameValue, DbType.String, serializedValue.Length <= 4000 ? serializedValue : likeEscapedSerializedValue);
-						} else {
-							//return all that has no row if defaultValue
-							criteria.Insert(0, sqlNot);
-						}
-						break;
+					if(!isDefaultValue) {
+						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondEqual : sqlCriteriaCondEqualExt, parameterNameValue);
+						command.AddInParameter(parameterNameValue, DbType.String, serializedValue.Length <= 4000 ? serializedValue : likeEscapedSerializedValue);
+					} else {
+						//return all that has no row if defaultValue
+						criteria.Insert(0, sqlNot);
+					}
+					break;
 				}
 				criteria.Append(sqlBasicSubqueryEnd);
 				(sc.Required ? requiredCriterias : notRequiredCriterias).Add(criteria.ToString());
 				command.AddInParameter(parameterNameName, DbType.String, sc.Property.Name);
 			}
-			
-			if(requiredCriterias.Count > 0 ||  notRequiredCriterias.Count > 0){
+
+			if(requiredCriterias.Count > 0 || notRequiredCriterias.Count > 0) {
 				queryBuilder.Append(sqlWhere);
 				// Populate required criterias
 				if(requiredCriterias.Count > 0) {
@@ -337,9 +337,9 @@ namespace nJupiter.DataAccess.Users {
 						queryBuilder.Append(sqlAnd);
 					}
 				}
-				
+
 				// Populate non-required criterias
-				if(notRequiredCriterias.Count > 0){
+				if(notRequiredCriterias.Count > 0) {
 					queryBuilder.Append("(");
 					for(int i = 0; i < notRequiredCriterias.Count; i++) {
 						queryBuilder.Append(notRequiredCriterias[i]);
@@ -349,7 +349,7 @@ namespace nJupiter.DataAccess.Users {
 					queryBuilder.Append(") ");
 				}
 			}
-			
+
 			command.CommandText = queryBuilder.ToString();
 			try {
 				UserCollection uc = GetUsersFromDataSet(CurrentDB.ExecuteDataSet(command));
@@ -367,12 +367,12 @@ namespace nJupiter.DataAccess.Users {
 				throw;
 			}
 		}
-		
+
 		public override UserCollection GetUsersByDomain(string domain) {
 			if(domain == null) {
 				domain = string.Empty;
 			}
-			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetUsersByDomain", 
+			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetUsersByDomain",
 				CurrentDB.CreateStringInputParameter("@chvDomain", DbType.AnsiString, domain, false));
 			UserCollection uc = GetUsersFromDataSet(dsUser);
 			this.UserCache.AddUsersToCache(uc);
@@ -387,20 +387,20 @@ namespace nJupiter.DataAccess.Users {
 			User user = new User(userId, userName, domain, GetPropertiesByUserId(userId), this.PropertyNames);
 			return user;
 		}
-		
+
 		public override void SaveUser(User user) {
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
+			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
 				this.SaveUser(user, transaction);
 				transaction.Commit();
 			}
 		}
-		
+
 		public override void SaveUsers(UserCollection users) {
 			if(users == null)
 				throw new ArgumentNullException("users");
 
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-				foreach(User user in users){
+			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+				foreach(User user in users) {
 					this.SaveUser(user, transaction);
 				}
 				transaction.Commit();
@@ -409,8 +409,8 @@ namespace nJupiter.DataAccess.Users {
 
 		public override string[] GetDomains() {
 			DataSet dsDomains = CurrentDB.ExecuteDataSet("dbo.USER_GetDomains");
-			if(dsDomains.Tables.Count == 1 && dsDomains.Tables[0].Rows.Count > 0) { 
-				string [] result = new string[dsDomains.Tables[0].Rows.Count];
+			if(dsDomains.Tables.Count == 1 && dsDomains.Tables[0].Rows.Count > 0) {
+				string[] result = new string[dsDomains.Tables[0].Rows.Count];
 				for(int i = 0; i < result.Length; i++) {
 					result[i] = dsDomains.Tables[0].Rows[i]["Domain"].ToString();
 				}
@@ -422,11 +422,11 @@ namespace nJupiter.DataAccess.Users {
 		public override PropertyCollection GetProperties() {
 			return GetPropertiesFromDataRows(null, null, null);
 		}
-		
+
 		public override PropertyCollection GetProperties(Context context) {
 			return GetPropertiesFromDataRows(null, context, null);
 		}
-		
+
 		public override PropertyCollection GetProperties(User user, Context context) {
 			if(user == null)
 				throw new ArgumentNullException("user");
@@ -436,7 +436,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override void SaveProperties(User user, PropertyCollection propertyCollection) {
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
+			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
 				SaveProperties(user, propertyCollection, transaction);
 				transaction.Commit();
 			}
@@ -447,14 +447,14 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("user");
 			}
 			this.UserCache.RemoveUserFromCache(user);
-			CurrentDB.ExecuteNonQuery("dbo.USER_Delete", 
+			CurrentDB.ExecuteNonQuery("dbo.USER_Delete",
 				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(user.Id)));
 		}
 
-		public override Context GetContext(string contextName){
+		public override Context GetContext(string contextName) {
 			if(this.GetContexts().Contains(contextName))
 				return this.GetContexts()[contextName];
-			lock(this.padlock){
+			lock(this.padlock) {
 				if(!this.GetContexts().Contains(contextName))
 					this.contexts = null; // If not found then clear the cache and read the contexts from database again to be sure it is not created on a different computer.
 				if(!this.GetContexts().Contains(contextName))
@@ -465,11 +465,11 @@ namespace nJupiter.DataAccess.Users {
 		public override ContextCollection GetContexts() {
 			if(this.contexts != null)
 				return this.contexts;
-			lock(this.padlock){
-				if(this.contexts == null){
+			lock(this.padlock) {
+				if(this.contexts == null) {
 					ContextCollection contextCollection = CreateContextCollectionInstance();
 					DataSet dsFunction = CurrentDB.ExecuteDataSet("dbo.USER_GetContexts");
-					if (dsFunction.Tables.Count > 0) {
+					if(dsFunction.Tables.Count > 0) {
 						foreach(DataRow row in dsFunction.Tables[0].Rows) {
 							string contextName = (string)row["ContextName"];
 							Context uc = CreateContextInstance(contextName, this.GetPropertySchemas(contextName, null));
@@ -490,23 +490,23 @@ namespace nJupiter.DataAccess.Users {
 
 			Context context;
 
-			lock(this.contexts.SyncRoot){
-				if(this.GetContexts().Contains(contextName)){
+			lock(this.contexts.SyncRoot) {
+				if(this.GetContexts().Contains(contextName)) {
 					throw new ContextAlreadyExistsException("A context with the name [" + contextName + "] already exists.");
 				}
-				using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-					CurrentDB.ExecuteNonQuery("dbo.USER_CreateContext", transaction, 
+				using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+					CurrentDB.ExecuteNonQuery("dbo.USER_CreateContext", transaction,
 						CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName));
-					foreach(PropertySchema schema in schemaTable){
+					foreach(PropertySchema schema in schemaTable) {
 						this.AddSchemaToContext(schema, contextName, transaction);
 					}
 					context = CreateContextInstance(contextName, this.GetPropertySchemas(contextName, transaction));
 					transaction.Commit();
 				}
-				
+
 				AddContextToCollection(context, this.contexts);
 			}
-			
+
 			return context;
 		}
 
@@ -514,14 +514,14 @@ namespace nJupiter.DataAccess.Users {
 			if(context == null) {
 				throw new ArgumentNullException("context");
 			}
-			lock(this.contexts.SyncRoot){
-				using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)){
-					CurrentDB.ExecuteNonQuery("dbo.USER_DeleteContext", transaction, 
+			lock(this.contexts.SyncRoot) {
+				using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+					CurrentDB.ExecuteNonQuery("dbo.USER_DeleteContext", transaction,
 						CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context.Name, true));
 					transaction.Commit();
 				}
 				RemoveContextFromCollection(context, this.contexts);
-			}		
+			}
 		}
 
 		public override PropertySchemaTable GetPropertySchemas() {
@@ -532,16 +532,16 @@ namespace nJupiter.DataAccess.Users {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			if(user.Properties[this.PropertyNames.Password] == null)
-				throw new UsersException("Database does not contain a field for password." );
+				throw new UsersException("Database does not contain a field for password.");
 			if(user.Properties[this.PropertyNames.PasswordSalt] == null)
-				throw new UsersException("Database does not contain a field for password salt." );
+				throw new UsersException("Database does not contain a field for password salt.");
 
 			if(this.Config.GetBoolValue("hashPassword")) {
 				user.Properties[this.PropertyNames.PasswordSalt].Value = GenerateSalt(); // Generate new salt every time password is changed
 				user.Properties[this.PropertyNames.Password].Value = MD5Hash(user.Properties["passwordSalt"].Value + password);
 			} else {
 				user.Properties[this.PropertyNames.PasswordSalt].Value = string.Empty;
-				user.Properties[this.PropertyNames.Password].Value  = password;
+				user.Properties[this.PropertyNames.Password].Value = password;
 			}
 		}
 
@@ -549,9 +549,9 @@ namespace nJupiter.DataAccess.Users {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			if(user.Properties["password"] == null)
-				throw new UsersException("Database does not contain a field for password." );
+				throw new UsersException("Database does not contain a field for password.");
 			if(user.Properties["passwordSalt"] == null)
-				throw new UsersException("Database does not contain a field for password salt." );
+				throw new UsersException("Database does not contain a field for password salt.");
 
 			if(this.Config.GetBoolValue("hashPassword")) {
 				return user.Properties["password"].Value.Equals(MD5Hash(user.Properties["passwordSalt"].Value + password));
@@ -559,13 +559,13 @@ namespace nJupiter.DataAccess.Users {
 			return user.Properties["password"].Value.Equals(password);
 		}
 		#endregion
-		
+
 		#region Static Methods
 		private static string EscapeForLikeClause(string value) {
-			const char	squarebracketOpening	= '[';
-			const char	squarebracketClosing	= ']';
-			const char	underscore				= '_';
-			const char	percent					= '%';
+			const char squarebracketOpening = '[';
+			const char squarebracketClosing = ']';
+			const char underscore = '_';
+			const char percent = '%';
 
 			StringBuilder escapedValue = new StringBuilder(value);
 			for(int i = 0; i < escapedValue.Length; i++) {
@@ -573,11 +573,11 @@ namespace nJupiter.DataAccess.Users {
 					case squarebracketOpening:
 					case underscore:
 					case percent:
-						escapedValue.
-							Insert(i, squarebracketOpening).
-							Insert(i + 2, squarebracketClosing);
-						i += 2;
-						break;
+					escapedValue.
+						Insert(i, squarebracketOpening).
+						Insert(i + 2, squarebracketClosing);
+					i += 2;
+					break;
 				}
 			}
 			return escapedValue.ToString();
@@ -591,7 +591,7 @@ namespace nJupiter.DataAccess.Users {
 			Random random = new Random();
 			byte[] salt = new byte[10];
 			for(int i = 0; i < 10; i++)
-				salt[i] = (byte) random.Next(32,(126 - 32 + 1)); // Common 7bits ascii chars
+				salt[i] = (byte)random.Next(32, (126 - 32 + 1)); // Common 7bits ascii chars
 			return System.Text.Encoding.ASCII.GetString(salt);
 		}
 
@@ -617,29 +617,29 @@ namespace nJupiter.DataAccess.Users {
 			UserCollection users = new UserCollection();
 			// translate dataset
 			foreach(DataRow row in dsUser.Tables[0].Rows) {
-				string		domain	= (string)row["Domain"];
-				string		userId	= row["UserID"].ToString();
+				string domain = (string)row["Domain"];
+				string userId = row["UserID"].ToString();
 
-				User user			= new User(userId, (string)row["Username"], domain, GetPropertiesByUserId(userId), this.PropertyNames);
+				User user = new User(userId, (string)row["Username"], domain, GetPropertiesByUserId(userId), this.PropertyNames);
 				users.Add(user);
 			}
 			return users;
 		}
 		protected virtual void SaveUser(User user, Transaction transaction) {
 			SaveUserInstance(user, transaction);
-			SaveProperties(user, this.GetProperties(user), transaction);	
+			SaveProperties(user, this.GetProperties(user), transaction);
 			if(GetAttachedContextsToUser(user).Length > 0) {
 				foreach(Context context in GetAttachedContextsToUser(user)) {
-					SaveProperties(user, this.GetProperties(user, context), transaction);	
+					SaveProperties(user, this.GetProperties(user, context), transaction);
 				}
 			}
 		}
 		protected virtual void SaveUserInstance(User user, Transaction transaction) {
-			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_Update", transaction, 
+			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_Update", transaction,
 				CurrentDB.CreateInputParameter("@guidUserId", DbType.Guid, new Guid(user.Id)),
 				CurrentDB.CreateStringInputParameter("@chvnUsername", DbType.String, user.UserName, false),
 				CurrentDB.CreateStringInputParameter("@chvDomain", DbType.AnsiString, user.Domain, false));
-			int status = (int) dsUser.Tables[0].Rows[0]["STATUS"];
+			int status = (int)dsUser.Tables[0].Rows[0]["STATUS"];
 			if(status == AddStatusUsernameTaken) {
 				throw new UserNameAlreadyExistsException("Cannot save user. User name already exists.");
 			}
@@ -650,32 +650,32 @@ namespace nJupiter.DataAccess.Users {
 		protected virtual PropertyCollection GetPropertiesByUserId(string userId, Context context) {
 			PropertyCollection upc = null;
 
-			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties", 
+			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties",
 				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(userId)),
 				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context == null ? null : context.Name));
 			// translate dataset
-			if (dsUser.Tables.Count > 0) {
+			if(dsUser.Tables.Count > 0) {
 				dsUser.Tables[0].PrimaryKey = new[] { dsUser.Tables[0].Columns["PropertyName"] };
 				DataRowCollection rows = dsUser.Tables[0].Rows;
 				upc = GetPropertiesFromDataRows(rows, context, null);
 			}
 			return upc;
 		}
-		private PropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, Transaction transaction){
+		private PropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, Transaction transaction) {
 			PropertySchemaTable pdt = (context == null ? this.GetPropertySchemas() : this.GetPropertySchemas(context.Name, transaction));
 			PropertyCollection upc = CreatePropertyCollectionInstance(pdt);
 
 			foreach(PropertySchema pd in pdt) {
-				string	propertyValue	= null;
-				string	propertyName	= pd.PropertyName;
-				Type	propertyType	= pd.DataType;
+				string propertyValue = null;
+				string propertyName = pd.PropertyName;
+				Type propertyType = pd.DataType;
 
 				DataRow currentField = (rows != null ? rows.Find(pd.PropertyName) : null);
 				if(currentField != null) {
 					if(!currentField.IsNull("PropertyValue"))
-						propertyValue	= (string) currentField["PropertyValue"];
+						propertyValue = (string)currentField["PropertyValue"];
 					else
-						propertyValue	= (string) currentField["ExtendedPropertyValue"];
+						propertyValue = (string)currentField["ExtendedPropertyValue"];
 				}
 
 				AbstractProperty property = CreatePropertyInstance(propertyName, propertyValue, propertyType, context);
@@ -724,15 +724,15 @@ namespace nJupiter.DataAccess.Users {
 			if(this.propertySchemaTables.Contains(contextName))
 				return (PropertySchemaTable)this.propertySchemaTables[contextName];
 
-			lock(padlock){
+			lock(padlock) {
 				if(this.propertySchemaTables.Contains(contextName))
 					return (PropertySchemaTable)this.propertySchemaTables[contextName];
 
 				PropertySchemaTable pdt = CreatePropertySchemaTableInstance();
 
 				IDataParameter[] prams = { CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName, true) };
-			
-				
+
+
 				DataSet dsUser;
 				if(transaction == null) {
 					dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetPropertySchema", prams);
@@ -741,24 +741,22 @@ namespace nJupiter.DataAccess.Users {
 				}
 
 				// translate dataset
-				if (dsUser.Tables.Count > 0) {
+				if(dsUser.Tables.Count > 0) {
 					foreach(DataRow row in dsUser.Tables[0].Rows) {
-						string	propertyName	= (string) row["PropertyName"];
+						string propertyName = (string)row["PropertyName"];
 
-						Type	propertyType;
+						Type propertyType;
 						if(!row.IsNull("AssemblyPath")) {
-							Assembly assembly = Assembly.LoadFrom((string) row["AssemblyPath"]);
-							propertyType = assembly.GetType((string) row["DataType"]);
-						}
-						else if(!row.IsNull("AssemblyName")) {
-							Assembly assembly = Assembly.Load((string) row["AssemblyName"]);
-							propertyType = assembly.GetType((string) row["DataType"]);
-						}
-						else{
-							propertyType	= Type.GetType((string) row["DataType"]);
+							Assembly assembly = Assembly.LoadFrom((string)row["AssemblyPath"]);
+							propertyType = assembly.GetType((string)row["DataType"]);
+						} else if(!row.IsNull("AssemblyName")) {
+							Assembly assembly = Assembly.Load((string)row["AssemblyName"]);
+							propertyType = assembly.GetType((string)row["DataType"]);
+						} else {
+							propertyType = Type.GetType((string)row["DataType"]);
 						}
 						if(propertyType == null)
-							throw new UnsupportedTypeException("The given property has a type " + (string) row["DataType"] + " that can not be loaded.");
+							throw new UnsupportedTypeException("The given property has a type " + (string)row["DataType"] + " that can not be loaded.");
 
 						PropertySchema pd = CreatePropertySchemaInstance(propertyName, propertyType);
 						AddPropertySchemaToTable(pd, pdt);
@@ -768,8 +766,8 @@ namespace nJupiter.DataAccess.Users {
 				return pdt;
 			}
 		}
-		protected virtual void AddSchemaToContext(PropertySchema schema, string contextName, Transaction transaction){
-			CurrentDB.ExecuteNonQuery("dbo.USER_AddContextualPropertySchema", transaction, 
+		protected virtual void AddSchemaToContext(PropertySchema schema, string contextName, Transaction transaction) {
+			CurrentDB.ExecuteNonQuery("dbo.USER_AddContextualPropertySchema", transaction,
 				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName, true),
 				CurrentDB.CreateStringInputParameter("@chvPropertyName", DbType.AnsiString, schema.PropertyName, true));
 		}

@@ -30,9 +30,9 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public class ForumException : Exception {
 		#region Constructors
-		public ForumException() {}
-		public ForumException(string message) : base(message) {}
-		public ForumException(string message, Exception innerException) : base(message, innerException) {}
+		public ForumException() { }
+		public ForumException(string message) : base(message) { }
+		public ForumException(string message, Exception innerException) : base(message, innerException) { }
 		protected ForumException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 		#endregion
 	}
@@ -40,60 +40,60 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public sealed class CategoryNotFoundException : ForumException {
 		#region Constructors
-		public CategoryNotFoundException() {}
-		public CategoryNotFoundException(string message) : base(message) {}
-		public CategoryNotFoundException(string message, Exception innerException) : base(message, innerException) {}
-		private CategoryNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+		public CategoryNotFoundException() { }
+		public CategoryNotFoundException(string message) : base(message) { }
+		public CategoryNotFoundException(string message, Exception innerException) : base(message, innerException) { }
+		private CategoryNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 		#endregion
 	}
 
 	[Serializable]
 	public sealed class PostNotFoundException : ForumException {
 		#region Constructors
-		public PostNotFoundException() {}
-		public PostNotFoundException(string message) : base(message) {}
-		public PostNotFoundException(string message, Exception innerException) : base(message, innerException) {}
-		private PostNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+		public PostNotFoundException() { }
+		public PostNotFoundException(string message) : base(message) { }
+		public PostNotFoundException(string message, Exception innerException) : base(message, innerException) { }
+		private PostNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 		#endregion
 	}
 
 	[Serializable]
 	public sealed class CategoryNameAlreadyExistsException : ForumException {
 		#region Constructors
-		public CategoryNameAlreadyExistsException() {}
-		public CategoryNameAlreadyExistsException(string message) : base(message) {}
-		public CategoryNameAlreadyExistsException(string message, Exception innerException) : base(message, innerException) {}
-		private CategoryNameAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+		public CategoryNameAlreadyExistsException() { }
+		public CategoryNameAlreadyExistsException(string message) : base(message) { }
+		public CategoryNameAlreadyExistsException(string message, Exception innerException) : base(message, innerException) { }
+		private CategoryNameAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 		#endregion
 	}
 
 	[Serializable]
 	public sealed class InvalidPostMoveException : ForumException {
 		#region Constructors
-		public InvalidPostMoveException() {}
-		public InvalidPostMoveException(string message) : base(message) {}
-		public InvalidPostMoveException(string message, Exception innerException) : base(message, innerException) {}
-		private InvalidPostMoveException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+		public InvalidPostMoveException() { }
+		public InvalidPostMoveException(string message) : base(message) { }
+		public InvalidPostMoveException(string message, Exception innerException) : base(message, innerException) { }
+		private InvalidPostMoveException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 		#endregion
 	}
 
 	[Serializable]
 	public sealed class ConcurrentUpdateException : ForumException {
 		#region Constructors
-		public ConcurrentUpdateException() {}
-		public ConcurrentUpdateException(string message) : base(message) {}
-		public ConcurrentUpdateException(string message, Exception innerException) : base(message, innerException) {}
-		private ConcurrentUpdateException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-		#endregion	
+		public ConcurrentUpdateException() { }
+		public ConcurrentUpdateException(string message) : base(message) { }
+		public ConcurrentUpdateException(string message, Exception innerException) : base(message, innerException) { }
+		private ConcurrentUpdateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		#endregion
 	}
 
 	[Serializable]
 	public sealed class OrphanInsertException : ForumException {
 		#region Constructors
-		public OrphanInsertException() {}
-		public OrphanInsertException(string message) : base(message) {}
-		public OrphanInsertException(string message, Exception innerException) : base(message, innerException) {}
-		private OrphanInsertException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-		#endregion	
+		public OrphanInsertException() { }
+		public OrphanInsertException(string message) : base(message) { }
+		public OrphanInsertException(string message, Exception innerException) : base(message, innerException) { }
+		private OrphanInsertException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		#endregion
 	}
 }

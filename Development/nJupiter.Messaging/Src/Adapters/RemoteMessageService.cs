@@ -30,28 +30,28 @@ namespace nJupiter.Messaging.Adapters {
 
 	public sealed class RemoteMessageService : MessageService {
 		public override void Publish(Message message) {
-			if (message == null)
+			if(message == null)
 				throw new ArgumentNullException("message");
 			MessageService messageService = GetRemoteMessageService();
 			messageService.Publish(message);
 		}
 
 		public override void Register(MessageConsumer messageConsumer) {
-			if (messageConsumer == null)
+			if(messageConsumer == null)
 				throw new ArgumentNullException("messageConsumer");
-			MessageService	messageService = GetRemoteMessageService();
+			MessageService messageService = GetRemoteMessageService();
 			messageService.Register(messageConsumer);
 		}
-		
-		public override void	GetMessageConsumers(){throw new NotImplementedException();}
-		public override void	GetMessageConsumers(MessageDestination messageDestination){throw new NotImplementedException();}
-		public override void	GetMessageDestinations(){throw new NotImplementedException();}
-		public override void	RemoveMessageDestination(MessageDestination messageDestination){throw new NotImplementedException();}
-		public override void	RemoveMessageConsumer(MessageConsumer messageConsumer){throw new NotImplementedException();}
+
+		public override void GetMessageConsumers() { throw new NotImplementedException(); }
+		public override void GetMessageConsumers(MessageDestination messageDestination) { throw new NotImplementedException(); }
+		public override void GetMessageDestinations() { throw new NotImplementedException(); }
+		public override void RemoveMessageDestination(MessageDestination messageDestination) { throw new NotImplementedException(); }
+		public override void RemoveMessageConsumer(MessageConsumer messageConsumer) { throw new NotImplementedException(); }
 
 		private MessageService GetRemoteMessageService() {
 			//TODO rewrite...
-			if (ChannelServices.RegisteredChannels.Length==0) {
+			if(ChannelServices.RegisteredChannels.Length == 0) {
 				IChannel chan = new TcpChannel();
 				ChannelServices.RegisterChannel(chan, false);
 			}

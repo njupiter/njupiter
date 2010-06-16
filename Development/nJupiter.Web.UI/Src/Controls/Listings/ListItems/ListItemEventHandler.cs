@@ -30,37 +30,37 @@ namespace nJupiter.Web.UI.Controls.Listings {
 	public delegate void ListItemEventHandler(object sender, ListItemEventArgs e);
 
 	public sealed class ListItemEventArgs : EventArgs {
-		
-		private readonly ListItemBase	listItem;
-		private readonly object			listItemObject;
+
+		private readonly ListItemBase listItem;
+		private readonly object listItemObject;
 		private readonly GeneralListing listingObject;
-		private readonly RepeaterItem	repeaterItem;
-		private readonly int			itemIndex;
+		private readonly RepeaterItem repeaterItem;
+		private readonly int itemIndex;
 
 		public ListItemEventArgs(ListItemBase listItem) {
 			if(listItem == null) {
 				throw new ArgumentNullException("listItem");
 			}
-			this.listItem		= listItem;
-			this.listItemObject= listItem.ListItem;
-			this.listingObject	= listItem.ListingObject;
-			this.repeaterItem	= listItem.RepeaterItem;
-			this.itemIndex		= listItem.ItemIndex;
+			this.listItem = listItem;
+			this.listItemObject = listItem.ListItem;
+			this.listingObject = listItem.ListingObject;
+			this.repeaterItem = listItem.RepeaterItem;
+			this.itemIndex = listItem.ItemIndex;
 		}
 
 		public ListItemEventArgs(object listItemObject, GeneralListing listingObject, RepeaterItem repeaterItem, int itemIndex) {
-			this.listItemObject	= listItemObject;
-			this.listingObject		= listingObject;
-			this.repeaterItem		= repeaterItem;
-			this.itemIndex			= itemIndex;
+			this.listItemObject = listItemObject;
+			this.listingObject = listingObject;
+			this.repeaterItem = repeaterItem;
+			this.itemIndex = itemIndex;
 		}
 
-		public ListItemBase		ListItem		{ get { return this.listItem; } }
-		public object			ListItemObject	{ get { return this.listItemObject; } }
-		public GeneralListing	Listing			{ get { return this.listingObject; } }
-		public RepeaterItem		Item			{ get { return this.repeaterItem; } }
-		public bool				AlternatingItem	{ get { return this.repeaterItem.ItemType == ListItemType.AlternatingItem; } }
-		public int				ItemIndex		{ get { return this.itemIndex; } }
-		
+		public ListItemBase ListItem { get { return this.listItem; } }
+		public object ListItemObject { get { return this.listItemObject; } }
+		public GeneralListing Listing { get { return this.listingObject; } }
+		public RepeaterItem Item { get { return this.repeaterItem; } }
+		public bool AlternatingItem { get { return this.repeaterItem.ItemType == ListItemType.AlternatingItem; } }
+		public int ItemIndex { get { return this.itemIndex; } }
+
 	}
 }

@@ -26,10 +26,10 @@ using System;
 
 namespace nJupiter.Services.Forum {
 
-	public sealed class CategoryWithPagedPostsResult {	
+	public sealed class CategoryWithPagedPostsResult {
 		#region Variables
-		private readonly Category	category;
-		private readonly int		totalCount;
+		private readonly Category category;
+		private readonly int totalCount;
 		#endregion
 
 		#region Constructors
@@ -40,8 +40,8 @@ namespace nJupiter.Services.Forum {
 			if(totalCount < 0) {
 				throw new ArgumentOutOfRangeException("totalCount");
 			}
-			this.category	= category;
-			this.totalCount	= totalCount;
+			this.category = category;
+			this.totalCount = totalCount;
 		}
 		#endregion
 

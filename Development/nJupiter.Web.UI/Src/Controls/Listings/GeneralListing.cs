@@ -33,46 +33,44 @@ namespace nJupiter.Web.UI.Controls.Listings {
 	[ParseChildren(true), PersistChildren(false), ToolboxItem(true)]
 	public class GeneralListing : UserControl {
 		#region Constants
-		private const string ListCollectionKey	= "v_ListCollection";
-		private const string ViewstateList			= "v_ViewStateList";
-		private const string ViewstateRepeater		= "v_ViewStateRepeater";
+		private const string ListCollectionKey = "v_ListCollection";
+		private const string ViewstateList = "v_ViewStateList";
+		private const string ViewstateRepeater = "v_ViewStateRepeater";
 		#endregion
 
 		#region UI Members
-		private Repeater			rptList;
-		private WebPlaceHolder		plhHeader;
-		private WebPlaceHolder		plhFooter;
+		private Repeater rptList;
+		private WebPlaceHolder plhHeader;
+		private WebPlaceHolder plhFooter;
 		#endregion
 
 		#region Members
-		private bool				filtered;
-		private bool				dataBound;
-		private bool				suppressAutoDataBinding;
-		private bool				listSet;
-		private IComparer			comparer;
-		private ArrayList			listCollection = new ArrayList();
-		private ITemplate			headerTemplate;
-		private ITemplate			itemTemplate;
-		private ITemplate			alternatingItemTemplate;
-		private ITemplate			separatorTemplate;
-		private ITemplate			footerTemplate;
-		private int					visibleItems;
-		private ListItemCollection	listItemCollection = new ListItemCollection();
+		private bool filtered;
+		private bool dataBound;
+		private bool listSet;
+		private ArrayList listCollection = new ArrayList();
+		private ITemplate headerTemplate;
+		private ITemplate itemTemplate;
+		private ITemplate alternatingItemTemplate;
+		private ITemplate separatorTemplate;
+		private ITemplate footerTemplate;
+		private int visibleItems;
+		private ListItemCollection listItemCollection = new ListItemCollection();
 		#endregion
 
 		#region Properties
-		public int						VisibleItems			{ get { return this.visibleItems; } }
-		public IComparer				Comparer				{ get { return this.comparer; }					set { this.comparer = value; } }
-		public bool						SuppressAutoDataBinding	{ get { return this.suppressAutoDataBinding; }	set { this.suppressAutoDataBinding = value; } }
-		public ListItemCollection		ListItems				{ get { return this.listItemCollection; } }
-		public WebPlaceHolder			HeaderControl			{ get { this.EnsureChildControls(); return plhHeader; } }
-		public WebPlaceHolder			FooterControl			{ get { this.EnsureChildControls(); return plhFooter; } }
-		public RepeaterItemCollection	Items					{ get { return this.RepeaterControl.Items; } }
+		public int VisibleItems { get { return this.visibleItems; } }
+		public IComparer Comparer { get; set; }
+		public bool SuppressAutoDataBinding { get; set; }
+		public ListItemCollection ListItems { get { return this.listItemCollection; } }
+		public WebPlaceHolder HeaderControl { get { this.EnsureChildControls(); return plhHeader; } }
+		public WebPlaceHolder FooterControl { get { this.EnsureChildControls(); return plhFooter; } }
+		public RepeaterItemCollection Items { get { return this.RepeaterControl.Items; } }
 
-		protected ArrayList	InnerListCollection		{ get {	return this.listCollection; }	set { this.ListCollection = value; } }
-		protected bool		ListSet					{ get { return this.listSet; } }
+		protected ArrayList InnerListCollection { get { return this.listCollection; } set { this.ListCollection = value; } }
+		protected bool ListSet { get { return this.listSet; } }
 
-		public bool	ViewStateList {
+		public bool ViewStateList {
 			get {
 				if(this.ViewState[ViewstateList] == null)
 					return false;
@@ -83,7 +81,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 		}
 
-		public bool	ViewStateRepeater {
+		public bool ViewStateRepeater {
 			get {
 				if(this.ViewState[ViewstateRepeater] == null)
 					return false;
@@ -94,12 +92,12 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 		}
 
-		public ICollection	ListCollection {
+		public ICollection ListCollection {
 			get { return this.InnerListCollection; }
 			set {
-				this.dataBound			= false;
-				this.listSet			= true;
-				this.listCollection	= value != null ? new ArrayList(value) : new ArrayList();
+				this.dataBound = false;
+				this.listSet = true;
+				this.listCollection = value != null ? new ArrayList(value) : new ArrayList();
 			}
 		}
 
@@ -114,49 +112,49 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		[TemplateContainer(typeof(RepeaterItem)), PersistenceMode(PersistenceMode.InnerProperty)]
 		public ITemplate FooterTemplate { get { return this.footerTemplate; } set { this.footerTemplate = value; } }
 
-		protected Repeater	RepeaterControl	{
+		protected Repeater RepeaterControl {
 			get {
 				this.EnsureChildControls();
 				return rptList;
 			}
 		}
 		#endregion
-		
+
 		#region Static Holders
-		private static readonly object eventItemCreated			= new object();
-		private static readonly object eventItemDataBound		= new object();
-		private static readonly object eventBeforeDataBinding	= new object();
-		private static readonly object eventAfterDataBinding	= new object();
-		private static readonly object eventListItemDataBinding	= new object();
+		private static readonly object EventItemCreated = new object();
+		private static readonly object EventItemDataBound = new object();
+		private static readonly object EventBeforeDataBinding = new object();
+		private static readonly object EventAfterDataBinding = new object();
+		private static readonly object EventListItemDataBinding = new object();
 		#endregion
 
 		#region Events
-		public event RepeaterCommandEventHandler	ItemCommand { 
-			add { this.RepeaterControl.ItemCommand += value; } 
-			remove {this.RepeaterControl.ItemCommand -= value; } 
+		public event RepeaterCommandEventHandler ItemCommand {
+			add { this.RepeaterControl.ItemCommand += value; }
+			remove { this.RepeaterControl.ItemCommand -= value; }
 		}
-		public event ListItemEventHandler			ItemCreated {
-			add { base.Events.AddHandler(GeneralListing.eventItemCreated, value); }
-			remove { base.Events.RemoveHandler(GeneralListing.eventItemCreated, value); }
+		public event ListItemEventHandler ItemCreated {
+			add { base.Events.AddHandler(GeneralListing.EventItemCreated, value); }
+			remove { base.Events.RemoveHandler(GeneralListing.EventItemCreated, value); }
 		}
-		public event ListItemEventHandler			ItemDataBound {
-			add { base.Events.AddHandler(GeneralListing.eventItemDataBound, value); }
-			remove { base.Events.RemoveHandler(GeneralListing.eventItemDataBound, value); }
+		public event ListItemEventHandler ItemDataBound {
+			add { base.Events.AddHandler(GeneralListing.EventItemDataBound, value); }
+			remove { base.Events.RemoveHandler(GeneralListing.EventItemDataBound, value); }
 		}
-		
-		public event EventHandler					BeforeDataBinding {
-			add { base.Events.AddHandler(GeneralListing.eventBeforeDataBinding, value); }
-			remove { base.Events.RemoveHandler(GeneralListing.eventBeforeDataBinding, value); }
+
+		public event EventHandler BeforeDataBinding {
+			add { base.Events.AddHandler(GeneralListing.EventBeforeDataBinding, value); }
+			remove { base.Events.RemoveHandler(GeneralListing.EventBeforeDataBinding, value); }
 		}
-		
-		public event EventHandler					AfterDataBinding {
-			add { base.Events.AddHandler(GeneralListing.eventAfterDataBinding, value); }
-			remove { base.Events.RemoveHandler(GeneralListing.eventAfterDataBinding, value); }
+
+		public event EventHandler AfterDataBinding {
+			add { base.Events.AddHandler(GeneralListing.EventAfterDataBinding, value); }
+			remove { base.Events.RemoveHandler(GeneralListing.EventAfterDataBinding, value); }
 		}
-		
-		public event ListItemEventHandler			ListItemDataBinding {
-			add { base.Events.AddHandler(GeneralListing.eventListItemDataBinding, value); }
-			remove { base.Events.RemoveHandler(GeneralListing.eventListItemDataBinding, value); }
+
+		public event ListItemEventHandler ListItemDataBinding {
+			add { base.Events.AddHandler(GeneralListing.EventListItemDataBinding, value); }
+			remove { base.Events.RemoveHandler(GeneralListing.EventListItemDataBinding, value); }
 		}
 		#endregion
 
@@ -171,12 +169,12 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		#endregion
 
 		#region Methods
-		protected void DoSorting(){
+		protected void DoSorting() {
 			if(this.Comparer != null) {
 				this.InnerListCollection.Sort(this.Comparer);
 			}
 		}
-		
+
 		public override void DataBind() {
 			this.EnsureChildControls();
 			OnBeforeDataBinding(EventArgs.Empty);
@@ -194,8 +192,8 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			this.RepeaterControl.DataBind();
 		}
 
-		protected void DoFiltering(){
-			if(!this.filtered){
+		protected void DoFiltering() {
+			if(!this.filtered) {
 				// TODO: Implement filtering
 				this.filtered = true;
 			}
@@ -208,13 +206,13 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			this.Controls.Add(rptList);
 			this.Controls.Add(plhFooter);
 		}
-		
+
 		protected override void CreateChildControls() {
 			this.Controls.Clear();
 
-			rptList		= new Repeater();
-			plhHeader	= new WebPlaceHolder();
-			plhFooter	= new WebPlaceHolder();
+			rptList = new Repeater();
+			plhHeader = new WebPlaceHolder();
+			plhFooter = new WebPlaceHolder();
 
 			if(this.ItemTemplate != null)
 				rptList.ItemTemplate = this.ItemTemplate;
@@ -222,7 +220,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				rptList.ItemTemplate = this.AlternatingItemTemplate;
 			if(this.SeparatorTemplate != null)
 				rptList.SeparatorTemplate = this.SeparatorTemplate;
-			
+
 			this.PopulateListControls();
 
 			if(this.HeaderTemplate != null)
@@ -230,8 +228,8 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			if(this.FooterTemplate != null)
 				this.FooterTemplate.InstantiateIn(plhFooter);
 
-			this.rptList.ItemCreated	+= this.ListItemCreated;
-			this.rptList.ItemDataBound	+= this.ListItemDataBound;
+			this.rptList.ItemCreated += this.ListItemCreated;
+			this.rptList.ItemDataBound += this.ListItemDataBound;
 		}
 
 		public override ControlCollection Controls {
@@ -240,35 +238,35 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				return base.Controls;
 			}
 		}
-		
+
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
 			if(!this.SuppressAutoDataBinding && !this.dataBound) {
 				this.DataBind();
 			}
 		}
-		
+
 		protected virtual void OnBeforeDataBinding(EventArgs e) {
-			EventHandler eventHandler = base.Events[GeneralListing.eventBeforeDataBinding] as EventHandler;
+			EventHandler eventHandler = base.Events[GeneralListing.EventBeforeDataBinding] as EventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
-		
+
 		protected virtual void OnAfterDataBinding(EventArgs e) {
-			EventHandler eventHandler = base.Events[GeneralListing.eventAfterDataBinding] as EventHandler;
+			EventHandler eventHandler = base.Events[GeneralListing.EventAfterDataBinding] as EventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
-		
+
 		protected virtual void OnListItemDataBinding(ListItemEventArgs e) {
-			ListItemEventHandler eventHandler = base.Events[GeneralListing.eventListItemDataBinding] as ListItemEventHandler;
+			ListItemEventHandler eventHandler = base.Events[GeneralListing.EventListItemDataBinding] as ListItemEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
-		
+
 
 		protected virtual void OnItemCreated(RepeaterItemEventArgs e) {
 			if(e.Item.DataItem != null && (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)) {
@@ -277,32 +275,32 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				int itemIndex = this.visibleItems;
 				this.visibleItems++;
 				if(listItem != null) {
-					listItem.ListItem				= e.Item.DataItem;
-					listItem.ListingObject			= this;
-					listItem.RepeaterItem			= e.Item;
+					listItem.ListItem = e.Item.DataItem;
+					listItem.ListingObject = this;
+					listItem.RepeaterItem = e.Item;
 					if(e.Item.ItemType == ListItemType.AlternatingItem) {
 						listItem.AlternatingItem = true;
 					}
-					listItem.ItemIndex				= itemIndex;
+					listItem.ItemIndex = itemIndex;
 					eventArgs = new ListItemEventArgs(listItem);
 					OnListItemDataBinding(eventArgs);
 					this.listItemCollection.Add(listItem);
 				} else {
 					eventArgs = new ListItemEventArgs(e.Item.DataItem, this, e.Item, itemIndex);
 				}
-				ListItemEventHandler eventHandler = base.Events[GeneralListing.eventItemCreated] as ListItemEventHandler;
+				ListItemEventHandler eventHandler = base.Events[GeneralListing.EventItemCreated] as ListItemEventHandler;
 				if(eventHandler != null) {
 					eventHandler(this, eventArgs);
 				}
 			}
 		}
-		
+
 		protected virtual void OnItemDataBound(RepeaterItemEventArgs e) {
 			if(e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem) {
 
 				ListItemBase listItem = (ListItemBase)ControlHandler.FindFirstControlOnType(e.Item, typeof(ListItemBase));
 				ListItemEventArgs eventArgs = listItem != null ? new ListItemEventArgs(listItem) : new ListItemEventArgs(e.Item.DataItem, this, e.Item, this.visibleItems - 1);
-				ListItemEventHandler eventHandler = base.Events[GeneralListing.eventItemDataBound] as ListItemEventHandler;
+				ListItemEventHandler eventHandler = base.Events[GeneralListing.EventItemDataBound] as ListItemEventHandler;
 				if(eventHandler != null) {
 					eventHandler(this, eventArgs);
 				}

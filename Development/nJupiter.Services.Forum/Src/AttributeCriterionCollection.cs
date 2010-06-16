@@ -29,13 +29,13 @@ namespace nJupiter.Services.Forum {
 
 	public sealed class AttributeCriterionCollection : ICollection {
 		#region Variables
-		private readonly ArrayList	innerList;
+		private readonly ArrayList innerList;
 		#endregion
-		
+
 		#region Constructors
-		public AttributeCriterionCollection() : this(new ArrayList()) {}
+		public AttributeCriterionCollection() : this(new ArrayList()) { }
 		private AttributeCriterionCollection(ArrayList arrayList) {
-			this.innerList	= arrayList;
+			this.innerList = arrayList;
 		}
 		#endregion
 
@@ -80,7 +80,7 @@ namespace nJupiter.Services.Forum {
 			return this.innerList.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
 		public bool IsSynchronized { get { return this.innerList.IsSynchronized; } }
 		public int Count { get { return this.innerList.Count; } }

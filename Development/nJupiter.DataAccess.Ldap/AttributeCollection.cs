@@ -10,7 +10,7 @@ namespace nJupiter.DataAccess.Ldap {
 		internal AttributeCollection(ResultPropertyCollection resultPropertyCollection) {
 			attributeCollection = new Dictionary<string, AttributeValueCollection>(StringComparer.InvariantCultureIgnoreCase);
 			foreach(string key in resultPropertyCollection.PropertyNames) {
-				ResultPropertyValueCollection values =  resultPropertyCollection[key];
+				ResultPropertyValueCollection values = resultPropertyCollection[key];
 				AttributeValueCollection attributeValueCollection = new AttributeValueCollection(values);
 				attributeCollection.Add(key, attributeValueCollection);
 			}
@@ -27,7 +27,7 @@ namespace nJupiter.DataAccess.Ldap {
 				return attributeCollection.Count;
 			}
 		}
-	
+
 		public bool ContainsKey(string key) {
 			return attributeCollection.ContainsKey(key);
 		}

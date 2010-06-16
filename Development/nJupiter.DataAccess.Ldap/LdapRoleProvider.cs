@@ -57,7 +57,7 @@ namespace nJupiter.DataAccess.Ldap {
 			this.appName = LdapRoleProvider.GetStringConfigValue(config, "applicationName", typeof(LdapRoleProvider).GetType().Name);
 			this.providerName = !string.IsNullOrEmpty(name) ? name : this.appName;
 
-			this.ldapServer	= GetStringConfigValue(config, "ldapServer", string.Empty);
+			this.ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
 			this.configuration = Configuration.GetConfig(this.ldapServer);
 			this.userSeracher = SearcherFactory.GetSearcher("user", configuration);
@@ -191,7 +191,7 @@ namespace nJupiter.DataAccess.Ldap {
 					// Shall be cleaned up later
 					uint rangeLow = 0;
 					uint rangeHigh = rangeLow;
-					bool isLastQuery  = false;
+					bool isLastQuery = false;
 					bool endOfRange = false;
 					do {
 						string userMembershipRangeFilter = filterBuilder.CreateGroupMembershipRangeFilter(rangeLow, isLastQuery ? uint.MaxValue : rangeHigh);
@@ -204,13 +204,13 @@ namespace nJupiter.DataAccess.Ldap {
 								string name = ldapNameHandler.GetUserName(user);
 								builder.Add(name);
 							}
-							if(isLastQuery ) {
+							if(isLastQuery) {
 								endOfRange = true;
 							}
 						} else {
-							isLastQuery  = true;
+							isLastQuery = true;
 						}
-						if(!isLastQuery ) {
+						if(!isLastQuery) {
 							rangeLow = rangeHigh + 1;
 							rangeHigh = rangeLow;
 						}

@@ -33,9 +33,9 @@ namespace nJupiter.DataAccess.Users {
 	public class UsersDAOProfileProvider : ProfileProvider {
 
 		#region Fields
-		private string		appName;
-		private string		providerName;
-		private UsersDAO	usersDAO;
+		private string appName;
+		private string providerName;
+		private UsersDAO usersDAO;
 		#endregion
 
 		#region Properties
@@ -52,12 +52,12 @@ namespace nJupiter.DataAccess.Users {
 
 		#region Protected Methods
 		/// <summary>
-		/// Gets the providerName from the username oa a membership user
+		/// Gets the name from the username oa a membership user
 		/// </summary>
-		/// <param providerName="membershipUserName">Name of the membership user.</param>
+		/// <param name="membershipUserName">Name of the membership user.</param>
 		/// <returns></returns>
 		protected static string GetUserNameFromMembershipUserName(string membershipUserName) {
-			if(membershipUserName.Contains("\\")){
+			if(membershipUserName.Contains("\\")) {
 				return membershipUserName.Substring(membershipUserName.IndexOf("\\") + 1);
 			}
 			return membershipUserName;
@@ -66,10 +66,10 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// Gets the domain from the username oa a membership user.
 		/// </summary>
-		/// <param providerName="membershipUserName">Domain of the membership user.</param>
+		/// <param name="membershipUserName">Domain of the membership user.</param>
 		/// <returns></returns>
 		protected static string GetDomainFromMembershipUserName(string membershipUserName) {
-			if(membershipUserName.Contains("\\")){
+			if(membershipUserName.Contains("\\")) {
 				return membershipUserName.Substring(0, membershipUserName.IndexOf("\\"));
 			}
 			return null;
@@ -96,8 +96,8 @@ namespace nJupiter.DataAccess.Users {
 
 		/// <summary>Retrieves profile property information and values from a UserDAO profile.</summary>
 		/// <returns>A <see cref="T:System.Configuration.SettingsPropertyValueCollection"></see> containing profile property information and values.</returns>
-		/// <param providerName="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection"></see> containing profile information for the properties to be retrieved.</param>
-		/// <param providerName="sc">The <see cref="T:System.Configuration.SettingsContext"></see> that contains user profile information.</param>
+		/// <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyCollection"></see> containing profile information for the properties to be retrieved.</param>
+		/// <param name="sc">The <see cref="T:System.Configuration.SettingsContext"></see> that contains user profile information.</param>
 		public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext sc, SettingsPropertyCollection properties) {
 			SettingsPropertyValueCollection svc = new SettingsPropertyValueCollection();
 			if(properties.Count >= 1) {
@@ -137,8 +137,8 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		/// <summary>Updates the UsersDAO profile with the specified property values.</summary>
-		/// <param providerName="properties">A <see cref="T:System.Configuration.SettingsPropertyValueCollection"></see> containing profile information and values for the properties to be updated.</param>
-		/// <param providerName="sc">The <see cref="T:System.Configuration.SettingsContext"></see> that contains user profile information.</param>
+		/// <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyValueCollection"></see> containing profile information and values for the properties to be updated.</param>
+		/// <param name="sc">The <see cref="T:System.Configuration.SettingsContext"></see> that contains user profile information.</param>
 		public override void SetPropertyValues(SettingsContext sc, SettingsPropertyValueCollection properties) {
 			string username = (string)sc["UserName"];
 			bool isIsAuthenticated = (bool)sc["IsAuthenticated"];
@@ -157,7 +157,7 @@ namespace nJupiter.DataAccess.Users {
 							}
 						} else {
 							//TODO: Gör så man dynamiskt i userdaoen kan lägga dit property schema definitioner
-							throw new ProviderException(string.Format("UsersDAO {0} is not configured to handle a property with the providerName {1}", this.UsersDAO.Name, propertyValue.Name));
+							throw new ProviderException(string.Format("UsersDAO {0} is not configured to handle a property with the name {1}", this.UsersDAO.Name, propertyValue.Name));
 						}
 					}
 					if(userIsDirty) {
@@ -170,13 +170,13 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// Initializes the provider.
 		/// </summary>
-		/// <param providerName="name">The friendly providerName of the provider.</param>
-		/// <param providerName="config">A collection of the providerName/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
+		/// <param name="name">The friendly name of the provider.</param>
+		/// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
 		/// <exception cref="T:System.ArgumentNullException">
-		/// The providerName of the provider is null.
+		/// The name of the provider is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
-		/// The providerName of the provider has a length of zero.
+		/// The name of the provider has a length of zero.
 		/// </exception>
 		/// <exception cref="T:System.InvalidOperationException">
 		/// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
@@ -193,11 +193,11 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		/// <summary>
-		/// Gets or sets the providerName of the currently running application.
+		/// Gets or sets the name of the currently running application.
 		/// </summary>
 		/// <value></value>
 		/// <returns>
-		/// A <see cref="T:System.String"/> that contains the application's shortened providerName, which does not contain a full path or extension, for example, SimpleAppSettings.
+		/// A <see cref="T:System.String"/> that contains the application's shortened name, which does not contain a full path or extension, for example, SimpleAppSettings.
 		/// </returns>
 		public override string ApplicationName {
 			get {
@@ -205,7 +205,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 			set {
 				if(value.Length > 256) {
-					throw new ProviderException("Provider application providerName too long");
+					throw new ProviderException("Provider application name too long");
 				}
 				this.appName = value;
 			}
@@ -214,7 +214,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// When overridden in a derived class, deletes profile properties and information for the supplied list of profiles.
 		/// </summary>
-		/// <param providerName="profiles">A <see cref="T:System.Web.Profile.ProfileInfoCollection"/>  of information about profiles that are to be deleted.</param>
+		/// <param name="profiles">A <see cref="T:System.Web.Profile.ProfileInfoCollection"/>  of information about profiles that are to be deleted.</param>
 		/// <returns>
 		/// The number of profiles deleted from the data source.
 		/// </returns>
@@ -236,7 +236,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// When overridden in a derived class, deletes profile properties and information for profiles that match the supplied list of user names.
 		/// </summary>
-		/// <param providerName="usernames">A string array of user names for profiles to be deleted.</param>
+		/// <param name="usernames">A string array of user names for profiles to be deleted.</param>
 		/// <returns>
 		/// The number of profiles deleted from the data source.
 		/// </returns>
@@ -257,8 +257,8 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// When overridden in a derived class, deletes all user-profile data for profiles in which the last activity date occurred before the specified date.
 		/// </summary>
-		/// <param providerName="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are deleted.</param>
-		/// <param providerName="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/>  value of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
+		/// <param name="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are deleted.</param>
+		/// <param name="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/>  value of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
 		/// <returns>
 		/// The number of profiles deleted from the data source.
 		/// </returns>
@@ -269,8 +269,8 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// When overridden in a derived class, returns the number of profiles in which the last activity date occurred on or before the specified date.
 		/// </summary>
-		/// <param providerName="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
-		/// <param providerName="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/>  of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
+		/// <param name="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
+		/// <param name="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/>  of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
 		/// <returns>
 		/// The number of profiles in which the last activity date occurred on or before the specified date.
 		/// </returns>
@@ -281,10 +281,10 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// When overridden in a derived class, retrieves user profile data for all profiles in the data source.
 		/// </summary>
-		/// <param providerName="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
-		/// <param providerName="pageIndex">The index of the page of results to return.</param>
-		/// <param providerName="pageSize">The size of the page of results to return.</param>
-		/// <param providerName="totalRecords">When this method returns, contains the total number of profiles.</param>
+		/// <param name="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
+		/// <param name="pageIndex">The index of the page of results to return.</param>
+		/// <param name="pageSize">The size of the page of results to return.</param>
+		/// <param name="totalRecords">When this method returns, contains the total number of profiles.</param>
 		/// <returns>
 		/// A <see cref="T:System.Web.Profile.ProfileInfoCollection"/> containing user-profile information for all profiles in the data source.
 		/// </returns>
@@ -305,11 +305,11 @@ namespace nJupiter.DataAccess.Users {
 		/// <summary>
 		/// When overridden in a derived class, retrieves user-profile data from the data source for profiles in which the last activity date occurred on or before the specified date.
 		/// </summary>
-		/// <param providerName="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
-		/// <param providerName="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/>  of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
-		/// <param providerName="pageIndex">The index of the page of results to return.</param>
-		/// <param providerName="pageSize">The size of the page of results to return.</param>
-		/// <param providerName="totalRecords">When this method returns, contains the total number of profiles.</param>
+		/// <param name="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
+		/// <param name="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/>  of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
+		/// <param name="pageIndex">The index of the page of results to return.</param>
+		/// <param name="pageSize">The size of the page of results to return.</param>
+		/// <param name="totalRecords">When this method returns, contains the total number of profiles.</param>
 		/// <returns>
 		/// A <see cref="T:System.Web.Profile.ProfileInfoCollection"/> containing user-profile information about the inactive profiles.
 		/// </returns>
@@ -319,15 +319,15 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		/// <summary>
-		/// When overridden in a derived class, retrieves profile information for profiles in which the user providerName matches the specified user names.
+		/// When overridden in a derived class, retrieves profile information for profiles in which the user name matches the specified user names.
 		/// </summary>
-		/// <param providerName="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
-		/// <param providerName="usernameToMatch">The user providerName to search for.</param>
-		/// <param providerName="pageIndex">The index of the page of results to return.</param>
-		/// <param providerName="pageSize">The size of the page of results to return.</param>
-		/// <param providerName="totalRecords">When this method returns, contains the total number of profiles.</param>
+		/// <param name="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
+		/// <param name="usernameToMatch">The user name to search for.</param>
+		/// <param name="pageIndex">The index of the page of results to return.</param>
+		/// <param name="pageSize">The size of the page of results to return.</param>
+		/// <param name="totalRecords">When this method returns, contains the total number of profiles.</param>
 		/// <returns>
-		/// A <see cref="T:System.Web.Profile.ProfileInfoCollection"/> containing user-profile information for profiles where the user providerName matches the supplied <paramref providerName="usernameToMatch"/> parameter.
+		/// A <see cref="T:System.Web.Profile.ProfileInfoCollection"/> containing user-profile information for profiles where the user name matches the supplied <paramref name="usernameToMatch"/> parameter.
 		/// </returns>
 		public override ProfileInfoCollection FindProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			if(usernameToMatch == null)
@@ -347,16 +347,16 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		/// <summary>
-		/// When overridden in a derived class, retrieves profile information for profiles in which the last activity date occurred on or before the specified date and the user providerName matches the specified user providerName.
+		/// When overridden in a derived class, retrieves profile information for profiles in which the last activity date occurred on or before the specified date and the user name matches the specified user name.
 		/// </summary>
-		/// <param providerName="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
-		/// <param providerName="usernameToMatch">The user providerName to search for.</param>
-		/// <param providerName="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/> value of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
-		/// <param providerName="pageIndex">The index of the page of results to return.</param>
-		/// <param providerName="pageSize">The size of the page of results to return.</param>
-		/// <param providerName="totalRecords">When this method returns, contains the total number of profiles.</param>
+		/// <param name="authenticationOption">One of the <see cref="T:System.Web.Profile.ProfileAuthenticationOption"/> values, specifying whether anonymous, authenticated, or both types of profiles are returned.</param>
+		/// <param name="usernameToMatch">The user name to search for.</param>
+		/// <param name="userInactiveSinceDate">A <see cref="T:System.DateTime"/> that identifies which user profiles are considered inactive. If the <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate"/> value of a user profile occurs on or before this date and time, the profile is considered inactive.</param>
+		/// <param name="pageIndex">The index of the page of results to return.</param>
+		/// <param name="pageSize">The size of the page of results to return.</param>
+		/// <param name="totalRecords">When this method returns, contains the total number of profiles.</param>
 		/// <returns>
-		/// A <see cref="T:System.Web.Profile.ProfileInfoCollection"/> containing user profile information for inactive profiles where the user providerName matches the supplied <paramref providerName="usernameToMatch"/> parameter.
+		/// A <see cref="T:System.Web.Profile.ProfileInfoCollection"/> containing user profile information for inactive profiles where the user name matches the supplied <paramref name="usernameToMatch"/> parameter.
 		/// </returns>
 		public override ProfileInfoCollection FindInactiveProfilesByUserName(ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords) {
 			totalRecords = 0;

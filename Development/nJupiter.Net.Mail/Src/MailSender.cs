@@ -31,7 +31,7 @@ using nJupiter.Configuration;
 using log4net;
 
 namespace nJupiter.Net.Mail {
-	
+
 	/// <summary>
 	/// Abstract class for fabricating MailSender instances.
 	/// </summary>
@@ -39,11 +39,11 @@ namespace nJupiter.Net.Mail {
 		/// <summary>
 		/// Private construct avoids instanciation
 		/// </summary>
-		internal MailSender() {}
+		internal MailSender() { }
 
 		public abstract void SendEmails();
 		public abstract void SendEmails(bool synchronize);
-	
+
 		/// <summary>
 		/// Returns instance of MailSender.
 		/// </summary>
@@ -62,13 +62,13 @@ namespace nJupiter.Net.Mail {
 	}
 
 	#region Default implementation of the MailSender interface
-	
+
 	internal class MailSenderImpl : MailSender {
 
 		#region Static Members
-		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
-		
+
 		private readonly ArrayList mailList;
 
 		internal MailSenderImpl(MailCollection mailList) {
@@ -77,9 +77,9 @@ namespace nJupiter.Net.Mail {
 
 		public override void SendEmails() {
 			ThreadStart startDelegate = this.Send;
-			Thread mailThread = new Thread (startDelegate);
+			Thread mailThread = new Thread(startDelegate);
 			mailThread.Name = "nJupiter.Net.Mail.MailSender Thread";
-			mailThread.Start ();
+			mailThread.Start();
 		}
 
 		public override void SendEmails(bool synchronize) {
@@ -96,8 +96,8 @@ namespace nJupiter.Net.Mail {
 		private void Send() {
 			Send(false);
 		}
-		
-		private void Send (bool synchronize) {
+
+		private void Send(bool synchronize) {
 			string smtpServer = "localhost";
 			string userName = string.Empty;
 			string password = string.Empty;
@@ -118,19 +118,19 @@ namespace nJupiter.Net.Mail {
 					try {
 						smtpClient.Send(mail);
 					} catch(Exception innerEx) {
-						if(log.IsErrorEnabled) { log.Error(string.Format("Error sending mail {0}{1} to SMTP-server {2}", (mail.Subject != null ? "[" + mail.Subject + "]" : string.Empty), (mail.To != null ? " to [" + mail.To + "]" : string.Empty), smtpServer), innerEx); }
+						if(Log.IsErrorEnabled) { Log.Error(string.Format("Error sending mail {0}{1} to SMTP-server {2}", (mail.Subject != null ? "[" + mail.Subject + "]" : string.Empty), (mail.To != null ? " to [" + mail.To + "]" : string.Empty), smtpServer), innerEx); }
 						if(synchronize) {
 							throw;
 						}
 					}
 				}
 			} catch(Exception ex) {
-				if(log.IsErrorEnabled) { log.Error("Error sending mails to SMTP-server " + smtpServer, ex); }
+				if(Log.IsErrorEnabled) { Log.Error("Error sending mails to SMTP-server " + smtpServer, ex); }
 				if(synchronize) {
 					throw;
 				}
 			}
 		}
-	} 
+	}
 	#endregion
 }

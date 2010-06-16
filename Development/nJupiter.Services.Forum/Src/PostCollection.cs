@@ -31,19 +31,19 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public sealed class PostCollection : ICollection {
 		#region Variables
-		private readonly Hashtable		innerHash;
-		private readonly PostComparer	comparer;
+		private readonly Hashtable innerHash;
+		private readonly PostComparer comparer;
 		[NonSerialized]
-		private ArrayList				innerList;
+		private ArrayList innerList;
 		[NonSerialized]
-		private bool					isSorted;
+		private bool isSorted;
 		#endregion
 
 		#region Constructors
-		internal PostCollection(Post.Property sortProperty, string sortAttributeName, bool sortAscending) : this(new PostComparer(sortProperty, sortAttributeName, sortAscending), new Hashtable()) {}
+		internal PostCollection(Post.Property sortProperty, string sortAttributeName, bool sortAscending) : this(new PostComparer(sortProperty, sortAttributeName, sortAscending), new Hashtable()) { }
 		private PostCollection(PostComparer comparer, Hashtable hashTable) {
-			this.comparer		= comparer;
-			this.innerHash		= hashTable;
+			this.comparer = comparer;
+			this.innerHash = hashTable;
 		}
 		#endregion
 
@@ -51,16 +51,16 @@ namespace nJupiter.Services.Forum {
 		public Post this[PostId id] { get { return (Post)this.innerHash[id]; } }
 		public Post this[int index] { get { return (Post)InnerList[index]; } }
 
-		private ArrayList InnerList { 
-			get { 
+		private ArrayList InnerList {
+			get {
 				if(!this.isSorted) {
 					ArrayList list = new ArrayList(this.innerHash.Values);
 					this.innerList = this.innerList != null && this.innerList.IsSynchronized ? ArrayList.Synchronized(list) : list;
 					this.innerList.Sort(this.comparer);
 					this.isSorted = true;
 				}
-				return this.innerList; 
-			} 
+				return this.innerList;
+			}
 		}
 		#endregion
 
@@ -99,7 +99,7 @@ namespace nJupiter.Services.Forum {
 			return InnerList.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
 		public bool IsSynchronized { get { return InnerList.IsSynchronized; } }
 		public int Count { get { return this.innerHash.Count; } }
@@ -110,16 +110,16 @@ namespace nJupiter.Services.Forum {
 		[Serializable]
 		private sealed class PostComparer : IComparer {
 			#region Variables
-			private readonly bool			sortAscending;
-			private readonly Post.Property	sortProperty;
-			private readonly string			sortAttributeName;
+			private readonly bool sortAscending;
+			private readonly Post.Property sortProperty;
+			private readonly string sortAttributeName;
 			#endregion
 
 			#region Constructors
 			public PostComparer(Post.Property sortProperty, string sortAttributeName, bool sortAscending) {
-				this.sortProperty		= sortProperty;
-				this.sortAttributeName	= sortAttributeName;
-				this.sortAscending		= sortAscending;
+				this.sortProperty = sortProperty;
+				this.sortAttributeName = sortAttributeName;
+				this.sortAscending = sortAscending;
 			}
 			#endregion
 
@@ -132,70 +132,70 @@ namespace nJupiter.Services.Forum {
 				if(this.sortAttributeName == null) {
 					switch(this.sortProperty) {
 						case Post.Property.Author:
-							compareValue = string.Compare(postx.Author, posty.Author, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(postx.Author, posty.Author, true, CultureInfo.CurrentCulture);
+						break;
 						case Post.Property.Body:
-							compareValue = string.Compare(postx.Body, posty.Body, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(postx.Body, posty.Body, true, CultureInfo.CurrentCulture);
+						break;
 						case Post.Property.Id:
-							compareValue = postx.Id.CompareTo(posty.Id);
-							break;
+						compareValue = postx.Id.CompareTo(posty.Id);
+						break;
 						case Post.Property.ParentId:
-							compareValue = postx.ParentId == null ? posty.ParentId == null ? 0 : -1 : posty.ParentId == null ? 1 : postx.ParentId.CompareTo(posty.ParentId);
-							break;
+						compareValue = postx.ParentId == null ? posty.ParentId == null ? 0 : -1 : posty.ParentId == null ? 1 : postx.ParentId.CompareTo(posty.ParentId);
+						break;
 						case Post.Property.CategoryId:
-							compareValue = postx.CategoryId == null ? posty.CategoryId == null ? 0 : -1 : posty.CategoryId == null ? 1 : postx.CategoryId.CompareTo(posty.CategoryId);
-							break;
+						compareValue = postx.CategoryId == null ? posty.CategoryId == null ? 0 : -1 : posty.CategoryId == null ? 1 : postx.CategoryId.CompareTo(posty.CategoryId);
+						break;
 						case Post.Property.PostCount:
-							compareValue = postx.PostCount.CompareTo(posty.PostCount);
-							break;
+						compareValue = postx.PostCount.CompareTo(posty.PostCount);
+						break;
 						case Post.Property.SearchRelevance:
-							compareValue = postx.SearchRelevance.CompareTo(posty.SearchRelevance);
-							break;
+						compareValue = postx.SearchRelevance.CompareTo(posty.SearchRelevance);
+						break;
 						case Post.Property.TimeLastPost:
-							compareValue = postx.TimeLastPost.CompareTo(posty.TimeLastPost);
-							break;
+						compareValue = postx.TimeLastPost.CompareTo(posty.TimeLastPost);
+						break;
 						case Post.Property.Title:
-							compareValue = string.Compare(postx.Title, posty.Title, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(postx.Title, posty.Title, true, CultureInfo.CurrentCulture);
+						break;
 						case Post.Property.UserIdentity:
-							compareValue = string.Compare(postx.UserIdentity, posty.UserIdentity, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(postx.UserIdentity, posty.UserIdentity, true, CultureInfo.CurrentCulture);
+						break;
 						case Post.Property.Visible:
-							compareValue = postx.Visible.CompareTo(posty.Visible);
-							break;
+						compareValue = postx.Visible.CompareTo(posty.Visible);
+						break;
 						case Post.Property.EffectivelyVisible:
-							compareValue = postx.EffectivelyVisible.CompareTo(posty.EffectivelyVisible);
-							break;
+						compareValue = postx.EffectivelyVisible.CompareTo(posty.EffectivelyVisible);
+						break;
 						case Post.Property.EffectiveCategoryId:
-							compareValue = postx.EffectiveCategoryId.CompareTo(posty.EffectiveCategoryId);
-							break;
+						compareValue = postx.EffectiveCategoryId.CompareTo(posty.EffectiveCategoryId);
+						break;
 						case Post.Property.EffectiveCategoryName:
-							compareValue = string.Compare(postx.EffectiveCategoryName, posty.EffectiveCategoryName, true, CultureInfo.CurrentCulture);
-							if(compareValue.Equals(0)) {
-								goto case Post.Property.EffectiveCategoryId;
-							}
-							break;
+						compareValue = string.Compare(postx.EffectiveCategoryName, posty.EffectiveCategoryName, true, CultureInfo.CurrentCulture);
+						if(compareValue.Equals(0)) {
+							goto case Post.Property.EffectiveCategoryId;
+						}
+						break;
 						case Post.Property.ConcurrencyIdentity:
-							compareValue = string.Compare(postx.ConcurrencyIdentity, posty.ConcurrencyIdentity, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(postx.ConcurrencyIdentity, posty.ConcurrencyIdentity, true, CultureInfo.CurrentCulture);
+						break;
 						case Post.Property.RootPostId:
-							compareValue = postx.RootPostId.CompareTo(posty.RootPostId);
-							break;
+						compareValue = postx.RootPostId.CompareTo(posty.RootPostId);
+						break;
 						case Post.Property.RootPostTitle:
-							compareValue = string.Compare(postx.RootPostTitle, posty.RootPostTitle, true, CultureInfo.CurrentCulture);
-							if(compareValue.Equals(0)) {
-								goto case Post.Property.RootPostId;
-							}
-							break;
+						compareValue = string.Compare(postx.RootPostTitle, posty.RootPostTitle, true, CultureInfo.CurrentCulture);
+						if(compareValue.Equals(0)) {
+							goto case Post.Property.RootPostId;
+						}
+						break;
 						default:
-							compareValue = postx.TimePosted.CompareTo(posty.TimePosted);
-							break;
+						compareValue = postx.TimePosted.CompareTo(posty.TimePosted);
+						break;
 					}
 				} else {
-					object valuex	= postx.Attributes[this.sortAttributeName].Value;
-					object valuey	= posty.Attributes[this.sortAttributeName].Value;
-					compareValue	= valuex == null ? valuey == null ? 0 : -1 : ((IComparable)valuex).CompareTo(valuey);
+					object valuex = postx.Attributes[this.sortAttributeName].Value;
+					object valuey = posty.Attributes[this.sortAttributeName].Value;
+					compareValue = valuex == null ? valuey == null ? 0 : -1 : ((IComparable)valuex).CompareTo(valuey);
 				}
 				return compareValue.Equals(0) && !this.sortProperty.Equals(Post.Property.TimePosted) ?
 					postx.TimePosted.CompareTo(posty.TimePosted)

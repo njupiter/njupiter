@@ -31,49 +31,49 @@ using System.Globalization;
 
 namespace nJupiter.Messaging {
 
-	[XmlTypeAttribute(Namespace="urn:njupiter:messaging:message")]
+	[XmlTypeAttribute(Namespace = "urn:njupiter:messaging:message")]
 	[Serializable]
-	public class Message	{
+	public class Message {
 
 		#region Private instance members
-		private		long				id;
-		private		DateTime			created				= 	DateTime.Now;
-		private		DateTime			startPublish		=	DateTime.Now;
-		private		DateTime			stopPublish			=	DateTime.MaxValue;
-		private		string				data; 
-		private		MessageDestination	messageDestination;
-		private		int					interval;
+		private long id;
+		private DateTime created = DateTime.Now;
+		private DateTime startPublish = DateTime.Now;
+		private DateTime stopPublish = DateTime.MaxValue;
+		private string data;
+		private MessageDestination messageDestination;
+		private int interval;
 		#endregion
 
 		#region  Properties - Xml serializable
 		[XmlAttribute(DataType = "long", AttributeName = "id")]
-		public long					Id			{ get {return this.id;}						set { this.id					= value;}}
-		
+		public long Id { get { return this.id; } set { this.id = value; } }
+
 		[XmlAttribute(DataType = "dateTime", AttributeName = "created")]
-		public DateTime				Created		{ get {return this.created;}				set { this.created				= value;}}
-		
+		public DateTime Created { get { return this.created; } set { this.created = value; } }
+
 		[XmlAttribute(DataType = "dateTime", AttributeName = "startpublish")]
-		public DateTime				StartPublish { get {return this.startPublish;}			set { this.startPublish		= value;}}
+		public DateTime StartPublish { get { return this.startPublish; } set { this.startPublish = value; } }
 
 		[XmlAttribute(DataType = "dateTime", AttributeName = "stoppublish")]
-		public DateTime				StopPublish	{ get {return this.stopPublish;}			set { this.stopPublish			= value;}}
+		public DateTime StopPublish { get { return this.stopPublish; } set { this.stopPublish = value; } }
 
 		[XmlAttribute(DataType = "string", AttributeName = "data")]
-		public  string				Data		{ get {return this.data;}					set { this.data				= value;}}
+		public string Data { get { return this.data; } set { this.data = value; } }
 
 		[XmlElement("messagedestination")]
-		public  MessageDestination	Destination { get {return this.messageDestination;}		set { this.messageDestination	= value;}}
-		
+		public MessageDestination Destination { get { return this.messageDestination; } set { this.messageDestination = value; } }
+
 		[XmlAttribute(DataType = "int", AttributeName = "interval")]
-		public int					Interval	{ get {return this.interval;}				set { this.interval			= value;}}
+		public int Interval { get { return this.interval; } set { this.interval = value; } }
 		#endregion
-		
+
 		#region Constructor
 
 		/// <summary>
 		/// Public constructor, used for Xml deserialization
 		/// </summary>
-		public Message(){}
+		public Message() { }
 
 		/// <summary>
 		/// Internal construct, used for fabrication
@@ -83,17 +83,17 @@ namespace nJupiter.Messaging {
 		/// <param name="message"></param>
 		/// <param name="messageDestination"></param>
 		internal Message(DateTime startPublish, DateTime stopPublish, string message, MessageDestination messageDestination) {
-			if (message == null)
+			if(message == null)
 				throw new ArgumentNullException("message");
 
-			if (messageDestination == null)
+			if(messageDestination == null)
 				throw new ArgumentNullException("messageDestination");
 
-			this.created			= DateTime.Now;
-			this.startPublish		= startPublish;
-			this.stopPublish		= stopPublish;
-			this.data				= message;
-			this.messageDestination= messageDestination;
+			this.created = DateTime.Now;
+			this.startPublish = startPublish;
+			this.stopPublish = stopPublish;
+			this.data = message;
+			this.messageDestination = messageDestination;
 		}
 		#endregion
 
@@ -102,14 +102,14 @@ namespace nJupiter.Messaging {
 		/// Serialize a <code>Message</code> object to Xml. 
 		/// </summary>
 		/// <returns></returns>
-		public XmlDocument Serialize(){
+		public XmlDocument Serialize() {
 
-			XmlSerializer serializer	= new XmlSerializer(typeof(Message));
-			StringWriter stringwriter	= new StringWriter(CultureInfo.InvariantCulture);
-			XmlTextWriter xmlwriter		= new XmlTextWriter( stringwriter );
+			XmlSerializer serializer = new XmlSerializer(typeof(Message));
+			StringWriter stringwriter = new StringWriter(CultureInfo.InvariantCulture);
+			XmlTextWriter xmlwriter = new XmlTextWriter(stringwriter);
 			serializer.Serialize(xmlwriter, this);
-			XmlDocument xml				= new XmlDocument();
-			xml.LoadXml( stringwriter.ToString() );
+			XmlDocument xml = new XmlDocument();
+			xml.LoadXml(stringwriter.ToString());
 			return xml;
 		}
 
@@ -118,28 +118,28 @@ namespace nJupiter.Messaging {
 		/// </summary>
 		/// <param name="xml"></param>
 		/// <returns></returns>
-		static public Message Deserialize(XmlDocument xml){
+		static public Message Deserialize(XmlDocument xml) {
 			if(xml == null)
 				throw new ArgumentNullException("xml");
-			XmlSerializer serializer	= new XmlSerializer(typeof(Message));
-			StringReader stringReader	= new StringReader(xml.OuterXml);
-			XmlTextReader xmlReader		= new XmlTextReader(stringReader);
+			XmlSerializer serializer = new XmlSerializer(typeof(Message));
+			StringReader stringReader = new StringReader(xml.OuterXml);
+			XmlTextReader xmlReader = new XmlTextReader(stringReader);
 			return (Message)serializer.Deserialize(xmlReader);
 		}
-		
-		static public Message Deserialize(string xml){
+
+		static public Message Deserialize(string xml) {
 			if(xml == null)
 				throw new ArgumentNullException("xml");
 
 			XmlDocument xmlDoc = new XmlDocument();
 			xmlDoc.LoadXml(xml);
-			
+
 			return Deserialize(xmlDoc);
 		}
 
 		public override bool Equals(object obj) {
 			Message msgObj = obj as Message;
-			if (msgObj == null)
+			if(msgObj == null)
 				return false;
 			return this.Id == msgObj.Id;
 		}
@@ -168,7 +168,7 @@ namespace nJupiter.Messaging {
 			str.Append(",");
 			str.Append(Destination);
 			str.Append("]");
-			return str.ToString();			
+			return str.ToString();
 		}
 
 		#endregion

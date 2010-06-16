@@ -22,10 +22,8 @@
 */
 #endregion
 
-namespace nJupiter.Web.UI.Controls
-{
-	public class WebRadioButtonList : WebCheckListControl
-	{
-		public WebRadioButtonList() : base(new WebRadioButton()) {}
+namespace nJupiter.Web.UI.Controls {
+	public class WebRadioButtonList : WebCheckListControl {
+		public WebRadioButtonList() : base(new WebRadioButton()) { }
 	}
 }

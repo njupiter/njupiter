@@ -28,20 +28,20 @@ namespace nJupiter.Services.Forum {
 
 	public sealed class NumberOfPostsResultConfiguration {
 		#region Constants
-		private const bool					DefaultIncludeHidden	= false;
-		private static readonly	DateTime	defaultDateFilterFrom	= DateTime.MinValue;
-		private static readonly	DateTime	defaultDateFilterTo		= DateTime.MaxValue;
+		private const bool DefaultIncludeHidden = false;
+		private static readonly DateTime DefaultDateFilterFrom = DateTime.MinValue;
+		private static readonly DateTime DefaultDateFilterTo = DateTime.MaxValue;
 		#endregion
 
 		#region Constructors
 		public NumberOfPostsResultConfiguration(bool includeHidden, DateTime dateFilterFrom, DateTime dateFilterTo) {
-			this.IncludeHidden	= includeHidden;
-			this.DateFilterFrom	= dateFilterFrom;
-			this.DateFilterTo	= dateFilterTo;
+			this.IncludeHidden = includeHidden;
+			this.DateFilterFrom = dateFilterFrom;
+			this.DateFilterTo = dateFilterTo;
 		}
-		public NumberOfPostsResultConfiguration(bool includeHidden) : this(includeHidden, defaultDateFilterFrom, defaultDateFilterTo) {}
-		public NumberOfPostsResultConfiguration(DateTime dateFilterFrom, DateTime dateFilterTo) : this(DefaultIncludeHidden, dateFilterFrom, dateFilterTo) {}
-		public NumberOfPostsResultConfiguration() : this(DefaultIncludeHidden) {}
+		public NumberOfPostsResultConfiguration(bool includeHidden) : this(includeHidden, DefaultDateFilterFrom, DefaultDateFilterTo) { }
+		public NumberOfPostsResultConfiguration(DateTime dateFilterFrom, DateTime dateFilterTo) : this(DefaultIncludeHidden, dateFilterFrom, dateFilterTo) { }
+		public NumberOfPostsResultConfiguration() : this(DefaultIncludeHidden) { }
 		#endregion
 
 		#region Properties

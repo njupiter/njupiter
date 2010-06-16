@@ -30,7 +30,7 @@ using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.DirectoryService {
 
-	public abstract class DirectoryService  {
+	public abstract class DirectoryService {
 		#region Constants
 		private const string DirectoryServicesSection = "directoryServices";
 		private const string DirectoryServiceSection = DirectoryServicesSection + "/directoryService";
@@ -39,20 +39,20 @@ namespace nJupiter.DataAccess.DirectoryService {
 		#endregion
 
 		#region Static Members
-		private static readonly Hashtable directoryServices = Hashtable.Synchronized(new Hashtable());
+		private static readonly Hashtable DirectoryServices = Hashtable.Synchronized(new Hashtable());
 		#endregion
 
 		#region Members
-		private Config		settings;
+		private Config settings;
 		#endregion
-		
+
 		#region Methods
 		public abstract DirectoryObject GetDirectoryObjectById(string id);
-		
+
 		public abstract DirectoryObject[] GetDirectoryObjectsBySearchCriteria(SearchCriteria[] searchCriteria);
-		
+
 		public abstract void SaveDirectoryObject(DirectoryObject directoryObject);
-		
+
 		public abstract DirectoryObject CreateDirectoryObjectInstance();
 		#endregion
 
@@ -68,17 +68,17 @@ namespace nJupiter.DataAccess.DirectoryService {
 		}
 
 		private static DirectoryService GetDirectoryServiceFromSection(string section) {
-			const string assemblyPathKey	= "assemblyPath";
-			const string assemblyKey		= "assembly";
-			const string typKey				= "type";
+			const string assemblyPathKey = "assemblyPath";
+			const string assemblyKey = "assembly";
+			const string typKey = "type";
 
 			Config config = ConfigHandler.GetConfig();
 			string name = config.GetValue(section);
-			if(directoryServices.ContainsKey(name))
-				return (DirectoryService)directoryServices[name];
+			if(DirectoryServices.ContainsKey(name))
+				return (DirectoryService)DirectoryServices[name];
 
-			lock(directoryServices.SyncRoot) {
-				if(!directoryServices.ContainsKey(name)) {
+			lock(DirectoryServices.SyncRoot) {
+				if(!DirectoryServices.ContainsKey(name)) {
 
 					string assemblyPath = config.GetValue(section, assemblyPathKey);
 					string assemblyName = config.GetValue(section, assemblyKey);
@@ -89,33 +89,33 @@ namespace nJupiter.DataAccess.DirectoryService {
 					if(directoryService == null)
 						throw new ConfigurationException("Could not load DirectoryService from " + assemblyName + " " + assemblyType + " " + assemblyPath + ".");
 
-					directoryService.settings					= config.GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, name));
+					directoryService.settings = config.GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, name));
 
-					directoryServices.Add(name, directoryService);
+					DirectoryServices.Add(name, directoryService);
 					return directoryService;
 				}
-				return (DirectoryService)directoryServices[name];
+				return (DirectoryService)DirectoryServices[name];
 			}
 		}
-		
+
 		private static object CreateInstance(string assemblyPath, string assemblyName, string typeName) {
 			Assembly assembly;
 			if(!string.IsNullOrEmpty(assemblyPath)) {
 				assembly = Assembly.LoadFrom(assemblyPath);
-			} else if(assemblyName == null || assemblyName.Length.Equals(0) || 
+			} else if(assemblyName == null || assemblyName.Length.Equals(0) ||
 				Assembly.GetExecutingAssembly().GetName().Name.Equals(assemblyName)) {
 				assembly = Assembly.GetExecutingAssembly();	//Load current assembly
 			} else {
 				assembly = Assembly.Load(assemblyName); // Late binding to an assembly on disk (current directory)
 			}
 			return assembly.CreateInstance(
-				typeName, false, 
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | 
+				typeName, false,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
 				BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.ExactBinding,
 				null, null, null, null);
 		}
-		#endregion	
-		
+		#endregion
+
 		#region Protected Properties
 		protected Config Settings { get { return this.settings; } }
 		#endregion

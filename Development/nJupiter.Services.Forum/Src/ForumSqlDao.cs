@@ -64,130 +64,129 @@ namespace nJupiter.Services.Forum {
 			CategoryConcurrentlyUpdated
 		}
 
-		private const string SpNameFilterposts								= "dbo.FORUM_FilterPosts";
-		private const string SpNameFiltercategories							= "dbo.FORUM_FilterCategories";
-		private const string SpNameGetnumberofposts							= "dbo.FORUM_GetNumberOfPosts";
-		private const string SpNameGetdomains								= "dbo.FORUM_GetDomains";
-		private const string SpNameGetpostattributes						= "dbo.FORUM_GetPostAttributes";
-		private const string SpNameGetcategoryattributes					= "dbo.FORUM_GetCategoryAttributes";
-		private const string SpNameSavepost									= "dbo.FORUM_SavePost";
-		private const string SpNameSavecategory								= "dbo.FORUM_SaveCategory";
-		private const string SpNameSavepostattribute						= "dbo.FORUM_SavePostAttribute";
-		private const string SpNameSavecategoryattribute					= "dbo.FORUM_SaveCategoryAttribute";
-		private const string SpNameMoveposts								= "dbo.FORUM_MovePosts";
-		private const string SpNameDeleteposts								= "dbo.FORUM_DeletePosts";
-		private const string SpNameDeletecategories							= "dbo.FORUM_DeleteCategories";
-		private const string SpNameDeletepostattribute						= "dbo.FORUM_DeletePostAttribute";
-		private const string SpNameDeletecategoryattribute					= "dbo.FORUM_DeleteCategoryAttribute";
+		private const string SpNameFilterposts = "dbo.FORUM_FilterPosts";
+		private const string SpNameFiltercategories = "dbo.FORUM_FilterCategories";
+		private const string SpNameGetnumberofposts = "dbo.FORUM_GetNumberOfPosts";
+		private const string SpNameGetdomains = "dbo.FORUM_GetDomains";
+		private const string SpNameGetpostattributes = "dbo.FORUM_GetPostAttributes";
+		private const string SpNameGetcategoryattributes = "dbo.FORUM_GetCategoryAttributes";
+		private const string SpNameSavepost = "dbo.FORUM_SavePost";
+		private const string SpNameSavecategory = "dbo.FORUM_SaveCategory";
+		private const string SpNameSavepostattribute = "dbo.FORUM_SavePostAttribute";
+		private const string SpNameSavecategoryattribute = "dbo.FORUM_SaveCategoryAttribute";
+		private const string SpNameMoveposts = "dbo.FORUM_MovePosts";
+		private const string SpNameDeleteposts = "dbo.FORUM_DeletePosts";
+		private const string SpNameDeletecategories = "dbo.FORUM_DeleteCategories";
+		private const string SpNameDeletepostattribute = "dbo.FORUM_DeletePostAttribute";
+		private const string SpNameDeletecategoryattribute = "dbo.FORUM_DeleteCategoryAttribute";
 
-		private const string SpParamNameReturnvalue							= "@intReturnValue";
-		private const string SpParamNameId									= "@guidID";
-		private const string SpParamNamePostid								= "@guidPostID";
-		private const string SpParamNameCategoryid							= "@guidCategoryID";
-		private const string SpParamNameParentid							= "@guidParentID";
-		private const string SpParamNameImmediatedescendantid				= "@guidImmediateDescendantID";
-		private const string SpParamNameRootdescendantid					= "@guidRootDescendantID";
-		private const string SpParamNameValue								= "@chvnValue";
-		private const string SpParamNameExtendedvalue						= "@txtnExtendedValue";
-		private const string SpParamNameName								= "@chvnName";
-		private const string SpParamNameCategoryname						= "@chvnCategoryName";
-		private const string SpParamNameAttributename						= "@chvAttributeName";
-		private const string SpParamNameVisible								= "@bitVisible";
-		private const string SpParamNameDomain								= "@chvnDomain";
-		private const string SpParamNameGetonlychildren						= "@bitGetOnlyChildren";
-		private const string SpParamNameDeleteonlychildren					= "@bitDeleteOnlyChildren";
-		private const string SpParamNameUntil								= "@dteUntil";
-		private const string SpParamNameIncludehidden						= "@bitIncludeHidden";
-		private const string SpParamNamePostincludehidden					= "@bitPostIncludeHidden";
-		private const string SpParamNameDatefilterfrom						= "@dteDateFilterFrom";
-		private const string SpParamNamePostdatefilterfrom					= "@dtePostDateFilterFrom";
-		private const string SpParamNameDatefilterto						= "@dteDateFilterTo";
-		private const string SpParamNamePostdatefilterto					= "@dtePostDateFilterTo";
-		private const string SpParamNameDatefiltercolumn					= "@intDateFilterColumn";
-		private const string SpParamNamePostdatefiltercolumn				= "@bitPostDateFilterColumn";
-		private const string SpParamNameLoadattributes						= "@bitGetAttributes";
-		private const string SpParamNamePostloadattributes					= "@bitPostGetAttributes";
-		private const string SpParamNameLevels								= "@intLevels";
-		private const string SpParamNamePostlevels							= "@intPostLevels";
-		private const string SpParamNameLimitsize							= "@intLimitSize";
-		private const string SpParamNamePostlimitsize						= "@intPostLimitSize";
-		private const string SpParamNameLimitpage							= "@intLimitPage";
-		private const string SpParamNamePostlimitpage						= "@intPostLimitPage";
-		private const string SpParamNameLimitsortcolumn						= "@intLimitSortColumn";
-		private const string SpParamNamePostlimitsortcolumn					= "@intPostLimitSortColumn";
-		private const string SpParamNameLimitsortattributename				= "@chvLimitSortAttributeName";
-		private const string SpParamNamePostlimitsortattributename			= "@chvPostLimitSortAttributeName";
-		private const string SpParamNameLimitsortattributedefaultvalue		= "@chvnLimitSortAttributeDefaultValue";
-		private const string SpParamNamePostlimitsortattributedefaultvalue	= "@chvnPostLimitSortAttributeDefaultValue";
-		private const string SpParamNameLimitsortdirectionasc				= "@bitLimitSortDirectionAsc";
-		private const string SpParamNamePostlimitsortdirectionasc			= "@bitPostLimitSortDirectionAsc";
-		private const string SpParamNameSearchtext							= "@chvnSearchText";
-		private const string SpParamNameUseridentity						= "@chvUserIdentity";
-		private const string SpParamNameAuthor								= "@chvnAuthor";
-		private const string SpParamNameTitle								= "@chvnTitle";
-		private const string SpParamNameBody								= "@txtnBody";
-		private const string SpParamNamePostssearchquery					= "@txtnPostsSearchQuery";
-		private const string SpParamNameFromcategoryid						= "@guidFromCategoryID";
-		private const string SpParamNameTocategoryid						= "@guidToCategoryID";
-		private const string SpParamNameFromdomain							= "@chvnFromDomain";
-		private const string SpParamNameTodomain							= "@chvnToDomain";
-		private const string SpParamNameFromcategoryname					= "@chvnFromCategoryName";
-		private const string SpParamNameTocategoryname						= "@chvnToCategoryName";
-		private const string SpParamNameTimestamp							= "@tsTimestamp";
+		private const string SpParamNameReturnvalue = "@intReturnValue";
+		private const string SpParamNameId = "@guidID";
+		private const string SpParamNamePostid = "@guidPostID";
+		private const string SpParamNameCategoryid = "@guidCategoryID";
+		private const string SpParamNameParentid = "@guidParentID";
+		private const string SpParamNameImmediatedescendantid = "@guidImmediateDescendantID";
+		private const string SpParamNameRootdescendantid = "@guidRootDescendantID";
+		private const string SpParamNameValue = "@chvnValue";
+		private const string SpParamNameExtendedvalue = "@txtnExtendedValue";
+		private const string SpParamNameName = "@chvnName";
+		private const string SpParamNameCategoryname = "@chvnCategoryName";
+		private const string SpParamNameAttributename = "@chvAttributeName";
+		private const string SpParamNameVisible = "@bitVisible";
+		private const string SpParamNameDomain = "@chvnDomain";
+		private const string SpParamNameGetonlychildren = "@bitGetOnlyChildren";
+		private const string SpParamNameDeleteonlychildren = "@bitDeleteOnlyChildren";
+		private const string SpParamNameUntil = "@dteUntil";
+		private const string SpParamNameIncludehidden = "@bitIncludeHidden";
+		private const string SpParamNamePostincludehidden = "@bitPostIncludeHidden";
+		private const string SpParamNameDatefilterfrom = "@dteDateFilterFrom";
+		private const string SpParamNamePostdatefilterfrom = "@dtePostDateFilterFrom";
+		private const string SpParamNameDatefilterto = "@dteDateFilterTo";
+		private const string SpParamNamePostdatefilterto = "@dtePostDateFilterTo";
+		private const string SpParamNameDatefiltercolumn = "@intDateFilterColumn";
+		private const string SpParamNamePostdatefiltercolumn = "@bitPostDateFilterColumn";
+		private const string SpParamNameLoadattributes = "@bitGetAttributes";
+		private const string SpParamNamePostloadattributes = "@bitPostGetAttributes";
+		private const string SpParamNameLevels = "@intLevels";
+		private const string SpParamNamePostlevels = "@intPostLevels";
+		private const string SpParamNameLimitsize = "@intLimitSize";
+		private const string SpParamNamePostlimitsize = "@intPostLimitSize";
+		private const string SpParamNameLimitpage = "@intLimitPage";
+		private const string SpParamNamePostlimitpage = "@intPostLimitPage";
+		private const string SpParamNameLimitsortcolumn = "@intLimitSortColumn";
+		private const string SpParamNamePostlimitsortcolumn = "@intPostLimitSortColumn";
+		private const string SpParamNameLimitsortattributename = "@chvLimitSortAttributeName";
+		private const string SpParamNamePostlimitsortattributename = "@chvPostLimitSortAttributeName";
+		private const string SpParamNameLimitsortattributedefaultvalue = "@chvnLimitSortAttributeDefaultValue";
+		private const string SpParamNamePostlimitsortattributedefaultvalue = "@chvnPostLimitSortAttributeDefaultValue";
+		private const string SpParamNameLimitsortdirectionasc = "@bitLimitSortDirectionAsc";
+		private const string SpParamNamePostlimitsortdirectionasc = "@bitPostLimitSortDirectionAsc";
+		private const string SpParamNameSearchtext = "@chvnSearchText";
+		private const string SpParamNameUseridentity = "@chvUserIdentity";
+		private const string SpParamNameAuthor = "@chvnAuthor";
+		private const string SpParamNameTitle = "@chvnTitle";
+		private const string SpParamNameBody = "@txtnBody";
+		private const string SpParamNamePostssearchquery = "@txtnPostsSearchQuery";
+		private const string SpParamNameFromcategoryid = "@guidFromCategoryID";
+		private const string SpParamNameTocategoryid = "@guidToCategoryID";
+		private const string SpParamNameFromdomain = "@chvnFromDomain";
+		private const string SpParamNameTodomain = "@chvnToDomain";
+		private const string SpParamNameFromcategoryname = "@chvnFromCategoryName";
+		private const string SpParamNameTocategoryname = "@chvnToCategoryName";
+		private const string SpParamNameTimestamp = "@tsTimestamp";
 
-		private const string ColNameId										= "ID";
-		private const string ColNameCategoryid								= "CategoryID";
-		private const string ColNameRootpostid								= "RootPostID";
-		private const string ColNameRootposttitle							= "RootPostTitle";
-		private const string ColNameEffectivecategoryid						= "EffectiveCategoryID";
-		private const string ColNameEffectivecategoryname					= "EffectiveCategoryName";
-		private const string ColNameParentid								= "ParentID";
-		private const string ColNameDomain									= "Domain";
-		private const string ColNameValue									= "Value";
-		private const string ColNameExtendedvalue							= "ExtendedValue";
-		private const string ColNameTypename								= "TypeName";
-		private const string ColNameAssemblyname							= "AssemblyName";
-		private const string ColNameAssemblypath							= "AssemblyPath";
-		private const string ColNameName									= "Name";
-		private const string ColNameUseridentity							= "UserIdentity";
-		private const string ColNameAuthor									= "Author";
-		private const string ColNameTitle									= "Title";
-		private const string ColNameBody									= "Body";
-		private const string ColNameTimeposted								= "TimePosted";
-		private const string ColNameVisible									= "Visible";
-		private const string ColNamePostcount								= "PostCount";
-		private const string ColNameTimelastpost							= "TimeLastPost";
-		private const string ColNameRank									= "Rank";
-		private const string ColNameEffectivelyvisible						= "EffectivelyVisible";
-		private const string ColNamePagingtotalnumberofposts				= "PagingTotalNumberOfPosts";
-		private const string ColNameRootpostcount							= "RootPostCount";
-		private const string ColNameTimestamp								= "Timestamp";
+		private const string ColNameId = "ID";
+		private const string ColNameCategoryid = "CategoryID";
+		private const string ColNameRootpostid = "RootPostID";
+		private const string ColNameRootposttitle = "RootPostTitle";
+		private const string ColNameEffectivecategoryid = "EffectiveCategoryID";
+		private const string ColNameEffectivecategoryname = "EffectiveCategoryName";
+		private const string ColNameParentid = "ParentID";
+		private const string ColNameDomain = "Domain";
+		private const string ColNameValue = "Value";
+		private const string ColNameExtendedvalue = "ExtendedValue";
+		private const string ColNameTypename = "TypeName";
+		private const string ColNameAssemblyname = "AssemblyName";
+		private const string ColNameAssemblypath = "AssemblyPath";
+		private const string ColNameName = "Name";
+		private const string ColNameUseridentity = "UserIdentity";
+		private const string ColNameAuthor = "Author";
+		private const string ColNameTitle = "Title";
+		private const string ColNameBody = "Body";
+		private const string ColNameTimeposted = "TimePosted";
+		private const string ColNameVisible = "Visible";
+		private const string ColNamePostcount = "PostCount";
+		private const string ColNameTimelastpost = "TimeLastPost";
+		private const string ColNameRank = "Rank";
+		private const string ColNameEffectivelyvisible = "EffectivelyVisible";
+		private const string ColNamePagingtotalnumberofposts = "PagingTotalNumberOfPosts";
+		private const string ColNameRootpostcount = "RootPostCount";
+		private const string ColNameTimestamp = "Timestamp";
 
-		private const string ParamNameId									= "id";
-		private const string ParamNameDomain								= "domain";
-		private const string ParamNameName									= "name";
-		private const string ParamNameCategory								= "category";
-		private const string ParamNameCategoryname							= "categoryName";
-		private const string ParamNameSearchcriteria						= "searchCriteria";
-		private const string ParamNamePost									= "post";
-		private const string ParamNameCategoryid							= "categoryId";
-		private const string ParamNameParentid								= "parentId";
-		private const string ParamNameFromdomain							= "fromDomain";
-		private const string ParamNameFromcategoryname						= "fromCategoryName";
-		private const string ParamNameTodomain								= "toDomain";
-		private const string ParamNameTocategoryname						= "toCategoryName";
-		private const string ParamNameFromcategoryid						= "fromCategoryId";
-		private const string ParamNameTocategoryid							= "toCategoryId";
+		private const string ParamNameId = "id";
+		private const string ParamNameDomain = "domain";
+		private const string ParamNameName = "name";
+		private const string ParamNameCategory = "category";
+		private const string ParamNameCategoryname = "categoryName";
+		private const string ParamNameSearchcriteria = "searchCriteria";
+		private const string ParamNamePost = "post";
+		private const string ParamNameFromdomain = "fromDomain";
+		private const string ParamNameFromcategoryname = "fromCategoryName";
+		private const string ParamNameTodomain = "toDomain";
+		private const string ParamNameTocategoryname = "toCategoryName";
+		private const string ParamNameFromcategoryid = "fromCategoryId";
+		private const string ParamNameTocategoryid = "toCategoryId";
 		#endregion
-		
+
 		#region Variables
 		private DataSource currentDataSource;
 		#endregion
 
 		#region Constructors
-		public ForumSqlDao(string forumDaoName) : base(forumDaoName) {
-			base.PostAttributes		= GetAttributes(AttributeType.PostAttribute);
-			base.CategoryAttributes	= GetAttributes(AttributeType.CategoryAttribute);
+		public ForumSqlDao(string forumDaoName)
+			: base(forumDaoName) {
+			base.PostAttributes = GetAttributes(AttributeType.PostAttribute);
+			base.CategoryAttributes = GetAttributes(AttributeType.CategoryAttribute);
 		}
 		#endregion
 
@@ -197,8 +196,8 @@ namespace nJupiter.Services.Forum {
 				const string settingDataSourceKey = "dataSource";
 
 				if(this.currentDataSource == null) {
-					string settingDataSource	= GetSetting(settingDataSourceKey);
-					this.currentDataSource		= settingDataSource == null ? DataSource.GetInstance() : DataSource.GetInstance(settingDataSource);
+					string settingDataSource = GetSetting(settingDataSourceKey);
+					this.currentDataSource = settingDataSource == null ? DataSource.GetInstance() : DataSource.GetInstance(settingDataSource);
 				}
 				return this.currentDataSource;
 			}
@@ -207,9 +206,9 @@ namespace nJupiter.Services.Forum {
 
 		#region Domain Methods
 		public override string[] GetDomains() {
-			DataSet dsDomains	= this.CurrentDataSource.ExecuteDataSet(SpNameGetdomains);
-			string[] domains	= new string[dsDomains.Tables[0].Rows.Count];
-			int i				= 0;
+			DataSet dsDomains = this.CurrentDataSource.ExecuteDataSet(SpNameGetdomains);
+			string[] domains = new string[dsDomains.Tables[0].Rows.Count];
+			int i = 0;
 			foreach(DataRow row in dsDomains.Tables[0].Rows) {
 				domains[i++] = (string)row[ColNameDomain];
 			}
@@ -583,22 +582,22 @@ namespace nJupiter.Services.Forum {
 			if(pagingConfiguration == null) {
 				pagingConfiguration = new PagingConfiguration();
 			}
-			ArrayList filterParams	= new ArrayList();
+			ArrayList filterParams = new ArrayList();
 			if(!idParameterType.Equals(IdParameterType.None)) {
 				string filterParamName = null;
 				switch(idParameterType) {
 					case IdParameterType.Post:
-						filterParamName		= SpParamNameId;
-						break;
+					filterParamName = SpParamNameId;
+					break;
 					case IdParameterType.ImmediatePostDescendant:
-						filterParamName		= SpParamNameImmediatedescendantid;
-						break;
+					filterParamName = SpParamNameImmediatedescendantid;
+					break;
 					case IdParameterType.RootPostDescendant:
-						filterParamName		= SpParamNameRootdescendantid;
-						break;
+					filterParamName = SpParamNameRootdescendantid;
+					break;
 					case IdParameterType.Category:
-						filterParamName		= SpParamNameCategoryid;
-						break;
+					filterParamName = SpParamNameCategoryid;
+					break;
 				}
 				filterParams.Add(this.CurrentDataSource.CreateInputParameter(filterParamName, DbType.Guid, id.Value));
 				if(getOnlyChildren) {
@@ -632,8 +631,8 @@ namespace nJupiter.Services.Forum {
 					filterParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameLimitpage, DbType.Int32, pagingConfiguration.PageNumber));
 				}
 			}
-			bool fromIsDefault	= resultConfiguration.DateFilterFrom.Equals(DateTime.MinValue);
-			bool toIsDefault	= resultConfiguration.DateFilterTo.Equals(DateTime.MaxValue);
+			bool fromIsDefault = resultConfiguration.DateFilterFrom.Equals(DateTime.MinValue);
+			bool toIsDefault = resultConfiguration.DateFilterTo.Equals(DateTime.MaxValue);
 			if(!fromIsDefault) {
 				filterParams.Add(this.CurrentDataSource.CreateDateInputParameter(SpParamNameDatefilterfrom, GetUtcDateTime(resultConfiguration.DateFilterFrom)));
 			}
@@ -658,7 +657,7 @@ namespace nJupiter.Services.Forum {
 					filterParams.Add(this.CurrentDataSource.CreateStringInputParameter(SpParamNamePostssearchquery, DbType.String, ConstructSqlFromAttributeCriteria(searchCriteria.AttributeCriteria)));
 				}
 			}
-			IDataParameter returnParam	= this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
+			IDataParameter returnParam = this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
 			filterParams.Add(returnParam);
 			DataSet dsPosts;
 			try {
@@ -669,9 +668,9 @@ namespace nJupiter.Services.Forum {
 					case 7619: //the execution of a full-text operation failed, the clause of the query contained only ignored words (SQL Server 2000)
 					case 7643: //the execution of a full-text operation failed, the search generated too many results
 					case 7645: //the execution of a full-text operation failed, full-text predicate was null or empty (SQL Server 2005)
-						return ForumDao.CreatePagedPostsResultInstance(posts, 0);
+					return ForumDao.CreatePagedPostsResultInstance(posts, 0);
 					default:
-						throw;
+					throw;
 				}
 			}
 			AddPostsToCollectionFromDataTables(posts, dsPosts.Tables[0], resultConfiguration.SortAttributeName != null || resultConfiguration.LoadAttributes ? dsPosts.Tables[1] : null, resultConfiguration.Levels, resultConfiguration.SortProperty, resultConfiguration.SortAttributeName, resultConfiguration.SortAscending, searchCriteria != null || resultConfiguration.Levels.Equals(1));
@@ -691,37 +690,37 @@ namespace nJupiter.Services.Forum {
 				}
 			}
 			filterParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameIncludehidden, DbType.Boolean, resultConfiguration.IncludeHidden));
-			bool fromIsDefault	= resultConfiguration.DateFilterFrom.Equals(DateTime.MinValue);
-			bool toIsDefault	= resultConfiguration.DateFilterTo.Equals(DateTime.MaxValue);
+			bool fromIsDefault = resultConfiguration.DateFilterFrom.Equals(DateTime.MinValue);
+			bool toIsDefault = resultConfiguration.DateFilterTo.Equals(DateTime.MaxValue);
 			if(!fromIsDefault) {
 				filterParams.Add(this.CurrentDataSource.CreateDateInputParameter(SpParamNameDatefilterfrom, GetUtcDateTime(resultConfiguration.DateFilterFrom)));
 			}
 			if(!toIsDefault) {
 				filterParams.Add(this.CurrentDataSource.CreateDateInputParameter(SpParamNameDatefilterto, GetUtcDateTime(resultConfiguration.DateFilterTo)));
 			}
-			IDataParameter returnParam	= this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
+			IDataParameter returnParam = this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
 			filterParams.Add(returnParam);
 			this.CurrentDataSource.ExecuteNonQuery(SpNameGetnumberofposts, filterParams.ToArray());
 			return (int)returnParam.Value;
 		}
 		private CategoryCollection GetCategories(string domain, GuidId id, string name, CategoriesResultConfiguration resultConfiguration, ThreadedPostsResultConfiguration postsResultConfiguration, PagingConfiguration pagingConfiguration, out Hashtable totalCounts) {
 			if(resultConfiguration == null) {
-				resultConfiguration			= new CategoriesResultConfiguration();
+				resultConfiguration = new CategoriesResultConfiguration();
 			}
 			if(resultConfiguration.SortAttributeName != null) {
 				CheckAttributeParameter(base.CategoryAttributes, resultConfiguration.SortAttributeName);
 			}
 			if(postsResultConfiguration == null) {
-				postsResultConfiguration	= new ThreadedPostsResultConfiguration();
+				postsResultConfiguration = new ThreadedPostsResultConfiguration();
 			}
 			Attribute postAttribute = null;
 			if(postsResultConfiguration.SortAttributeName != null) {
 				postAttribute = CheckAttributeParameter(base.PostAttributes, postsResultConfiguration.SortAttributeName);
 			}
 			if(pagingConfiguration == null) {
-				pagingConfiguration			= new PagingConfiguration();
+				pagingConfiguration = new PagingConfiguration();
 			}
-			ArrayList filterParams		= new ArrayList();
+			ArrayList filterParams = new ArrayList();
 			if(id != null) {
 				filterParams.Add(this.CurrentDataSource.CreateInputParameter(id is CategoryId ? SpParamNameId : SpParamNamePostid, DbType.Guid, id.Value));
 			} else {
@@ -752,10 +751,10 @@ namespace nJupiter.Services.Forum {
 					if(pagingConfiguration.PageNumber > 0) {
 						filterParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNamePostlimitpage, DbType.Int32, pagingConfiguration.PageNumber));
 					}
-				}				
+				}
 			}
-			bool fromIsDefault	= postsResultConfiguration.DateFilterFrom.Equals(DateTime.MinValue);
-			bool toIsDefault	= postsResultConfiguration.DateFilterTo.Equals(DateTime.MaxValue);
+			bool fromIsDefault = postsResultConfiguration.DateFilterFrom.Equals(DateTime.MinValue);
+			bool toIsDefault = postsResultConfiguration.DateFilterTo.Equals(DateTime.MaxValue);
 			if(!fromIsDefault) {
 				filterParams.Add(this.CurrentDataSource.CreateDateInputParameter(SpParamNamePostdatefilterfrom, GetUtcDateTime(postsResultConfiguration.DateFilterFrom)));
 			}
@@ -765,17 +764,17 @@ namespace nJupiter.Services.Forum {
 			if(!fromIsDefault || !toIsDefault) {
 				filterParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNamePostdatefiltercolumn, DbType.Boolean, postsResultConfiguration.DateFilterProperty));
 			}
-			DataSet dsCategories			= this.CurrentDataSource.ExecuteDataSet(SpNameFiltercategories, filterParams.ToArray());
-			CategoryCollection categories	= ForumDao.CreateCategoryCollectionInstance(resultConfiguration.SortProperty, resultConfiguration.SortAttributeName, resultConfiguration.SortAscending);
+			DataSet dsCategories = this.CurrentDataSource.ExecuteDataSet(SpNameFiltercategories, filterParams.ToArray());
+			CategoryCollection categories = ForumDao.CreateCategoryCollectionInstance(resultConfiguration.SortProperty, resultConfiguration.SortAttributeName, resultConfiguration.SortAscending);
 			foreach(DataRow row in dsCategories.Tables[0].Rows) {
-				Category category	= ForumDao.CreateCategoryInstance(ForumDao.CreateCategoryIdInstance((Guid)row[ColNameId]), (string)row[ColNameDomain], (string)row[ColNameName], resultConfiguration.LoadAttributes ? ForumDao.CloneAttributeCollection(base.CategoryAttributes) : null, postsResultConfiguration.Levels.Equals(0) ? null : ForumDao.CreatePostCollectionInstance(postsResultConfiguration.SortProperty, postsResultConfiguration.SortAttributeName, postsResultConfiguration.SortAscending), (int)row[ColNameRootpostcount], ToLongString((byte[])row[ColNameTimestamp]));
-				category.Visible	= (bool)row[ColNameVisible];
+				Category category = ForumDao.CreateCategoryInstance(ForumDao.CreateCategoryIdInstance((Guid)row[ColNameId]), (string)row[ColNameDomain], (string)row[ColNameName], resultConfiguration.LoadAttributes ? ForumDao.CloneAttributeCollection(base.CategoryAttributes) : null, postsResultConfiguration.Levels.Equals(0) ? null : ForumDao.CreatePostCollectionInstance(postsResultConfiguration.SortProperty, postsResultConfiguration.SortAttributeName, postsResultConfiguration.SortAscending), (int)row[ColNameRootpostcount], ToLongString((byte[])row[ColNameTimestamp]));
+				category.Visible = (bool)row[ColNameVisible];
 				ForumDao.AddCategoryToCategoryCollection(categories, category);
 			}
 			if(resultConfiguration.LoadAttributes) {
 				foreach(DataRow row in dsCategories.Tables[1].Rows) {
-					Attribute attribute	= categories[ForumDao.CreateCategoryIdInstance((Guid)row[ColNameId])].Attributes[(string)row[ColNameName]];
-					attribute.Value		= attribute.DeserializeAttributeValue((string)(row.IsNull(ColNameValue) ? row[ColNameExtendedvalue] : row[ColNameValue]));
+					Attribute attribute = categories[ForumDao.CreateCategoryIdInstance((Guid)row[ColNameId])].Attributes[(string)row[ColNameName]];
+					attribute.Value = attribute.DeserializeAttributeValue((string)(row.IsNull(ColNameValue) ? row[ColNameExtendedvalue] : row[ColNameValue]));
 				}
 			}
 			if(!postsResultConfiguration.Levels.Equals(0)) {
@@ -794,23 +793,23 @@ namespace nJupiter.Services.Forum {
 			string spName;
 			switch(attributeType) {
 				case AttributeType.PostAttribute:
-					spName	= SpNameGetpostattributes;
-					break;
+				spName = SpNameGetpostattributes;
+				break;
 				default:
-					spName	= SpNameGetcategoryattributes;
-					break;
+				spName = SpNameGetcategoryattributes;
+				break;
 			}
-			DataSet dsAttributes			= this.CurrentDataSource.ExecuteDataSet(spName);
-			AttributeCollection attributes	= ForumDao.CreateAttributeCollectionInstance();
+			DataSet dsAttributes = this.CurrentDataSource.ExecuteDataSet(spName);
+			AttributeCollection attributes = ForumDao.CreateAttributeCollectionInstance();
 			foreach(DataRow row in dsAttributes.Tables[0].Rows) {
 				Type type;
 				string typeName = (string)row[ColNameTypename];
 				if(!row.IsNull(ColNameAssemblypath)) {
-					type	= Assembly.LoadFrom((string)row[ColNameAssemblypath]).GetType(typeName, true);
+					type = Assembly.LoadFrom((string)row[ColNameAssemblypath]).GetType(typeName, true);
 				} else if(!row.IsNull(ColNameAssemblyname)) {
-					type	= Assembly.Load((string)row[ColNameAssemblyname]).GetType(typeName, true);
+					type = Assembly.Load((string)row[ColNameAssemblyname]).GetType(typeName, true);
 				} else {
-					type	= Type.GetType(typeName, true);
+					type = Type.GetType(typeName, true);
 				}
 				ForumDao.AddAttributeToAttributeCollection(attributes, ForumDao.CreateAttributeInstance((string)row[ColNameName], type));
 			}
@@ -832,7 +831,7 @@ namespace nJupiter.Services.Forum {
 
 			if(post.ParentId != null) {
 				saveParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameParentid, DbType.Guid, post.ParentId.Value));
-			}else {
+			} else {
 				saveParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameCategoryid, DbType.Guid, post.CategoryId.Value));
 			}
 
@@ -842,19 +841,19 @@ namespace nJupiter.Services.Forum {
 			this.CurrentDataSource.ExecuteNonQuery(SpNameSavepost, transaction, saveParams.ToArray());
 			switch((SavePostErrorCode)returnParam.Value) {
 				case SavePostErrorCode.CategoryNotFound:
-					throw new CategoryNotFoundException("The specified category cannot be found.");
+				throw new CategoryNotFoundException("The specified category cannot be found.");
 				case SavePostErrorCode.ParentNotFound:
-					throw new PostNotFoundException("The specified parent post cannot be found.");
+				throw new PostNotFoundException("The specified parent post cannot be found.");
 				case SavePostErrorCode.PostNeedsParentOrCategory:
-					throw new OrphanInsertException("The post needs a parent or a category.");
+				throw new OrphanInsertException("The post needs a parent or a category.");
 				case SavePostErrorCode.CannotMoveChildPostToCategory:
-					throw new InvalidPostMoveException("A child post cannot be moved to a category.");
+				throw new InvalidPostMoveException("A child post cannot be moved to a category.");
 				case SavePostErrorCode.CannotMovePostToOtherPost:
-					throw new InvalidPostMoveException("A post cannot be moved to another post.");
+				throw new InvalidPostMoveException("A post cannot be moved to another post.");
 				case SavePostErrorCode.PostDeleted:
-					throw new PostNotFoundException("The post has been deleted.");
+				throw new PostNotFoundException("The post has been deleted.");
 				case SavePostErrorCode.PostConcurrentlyUpdated:
-					throw new ConcurrentUpdateException("The post has been concurrently updated.");
+				throw new ConcurrentUpdateException("The post has been concurrently updated.");
 			}
 			if(post.Attributes != null) {
 				SaveAttributes(post.Id, post.Attributes, AttributeType.PostAttribute, transaction);
@@ -878,13 +877,13 @@ namespace nJupiter.Services.Forum {
 			this.CurrentDataSource.ExecuteNonQuery(SpNameSavecategory, transaction, saveParams.ToArray());
 			switch((SaveCategoryErrorCode)returnParam.Value) {
 				case SaveCategoryErrorCode.CategoryNeedsDomain:
-					throw new OrphanInsertException("The category needs a domain.");
+				throw new OrphanInsertException("The category needs a domain.");
 				case SaveCategoryErrorCode.NameAlreadyExists:
-					throw new CategoryNameAlreadyExistsException("The specified category name already exists.");
+				throw new CategoryNameAlreadyExistsException("The specified category name already exists.");
 				case SaveCategoryErrorCode.CategoryDeleted:
-					throw new PostNotFoundException("The category has been deleted.");
+				throw new PostNotFoundException("The category has been deleted.");
 				case SaveCategoryErrorCode.CategoryConcurrentlyUpdated:
-					throw new ConcurrentUpdateException("The post has been concurrently updated.");
+				throw new ConcurrentUpdateException("The post has been concurrently updated.");
 			}
 			if(category.Attributes != null) {
 				SaveAttributes(category.Id, category.Attributes, AttributeType.CategoryAttribute, transaction);
@@ -896,15 +895,15 @@ namespace nJupiter.Services.Forum {
 			string paramNameId;
 			switch(attributeType) {
 				case AttributeType.PostAttribute:
-					spNameSave		= SpNameSavepostattribute;
-					spNameDelete	= SpNameDeletepostattribute;
-					paramNameId		= SpParamNamePostid;
-					break;
+				spNameSave = SpNameSavepostattribute;
+				spNameDelete = SpNameDeletepostattribute;
+				paramNameId = SpParamNamePostid;
+				break;
 				default:
-					spNameSave		= SpNameSavecategoryattribute;
-					spNameDelete	= SpNameDeletecategoryattribute;
-					paramNameId		= SpParamNameCategoryid;
-					break;
+				spNameSave = SpNameSavecategoryattribute;
+				spNameDelete = SpNameDeletecategoryattribute;
+				paramNameId = SpParamNameCategoryid;
+				break;
 			}
 			foreach(Attribute attribute in attributes) {
 				if(attribute.IsEmpty) {
@@ -921,7 +920,7 @@ namespace nJupiter.Services.Forum {
 				}
 			}
 		}
-		
+
 		private int MovePosts(CategoryId fromCategoryId, string fromDomain, string fromCategoryName, CategoryId toCategoryId, string toDomain, string toCategoryName, DateTime until, Transaction transaction) {
 			ArrayList moveParams = new ArrayList();
 			if(fromCategoryId != null) {
@@ -939,12 +938,12 @@ namespace nJupiter.Services.Forum {
 			if(until > DateTime.MinValue) {
 				moveParams.Add(this.CurrentDataSource.CreateDateInputParameter(SpParamNameUntil, GetUtcDateTime(until)));
 			}
-			IDataParameter returnParam	= this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
+			IDataParameter returnParam = this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
 			moveParams.Add(returnParam);
 			this.CurrentDataSource.ExecuteNonQuery(SpNameMoveposts, transaction, moveParams.ToArray());
 			return (int)returnParam.Value;
 		}
-		
+
 		private int DeletePosts(GuidId id, bool deleteOnlyChildren, string domain, string categoryName, DateTime until, Transaction transaction) {
 			ArrayList deleteParams = new ArrayList();
 			if(id != null) {
@@ -961,7 +960,7 @@ namespace nJupiter.Services.Forum {
 			if(until > DateTime.MinValue) {
 				deleteParams.Add(this.CurrentDataSource.CreateDateInputParameter(SpParamNameUntil, GetUtcDateTime(until)));
 			}
-			IDataParameter returnParam	= this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
+			IDataParameter returnParam = this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
 			deleteParams.Add(returnParam);
 			this.CurrentDataSource.ExecuteNonQuery(SpNameDeleteposts, transaction, deleteParams.ToArray());
 			return (int)returnParam.Value;
@@ -976,35 +975,35 @@ namespace nJupiter.Services.Forum {
 					deleteParams.Add(this.CurrentDataSource.CreateStringInputParameter(SpParamNameName, DbType.String, name));
 				}
 			}
-			IDataParameter returnParam	= this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
+			IDataParameter returnParam = this.CurrentDataSource.CreateReturnParameter(SpParamNameReturnvalue, DbType.Int32);
 			deleteParams.Add(returnParam);
 			this.CurrentDataSource.ExecuteNonQuery(SpNameDeletecategories, transaction, deleteParams.ToArray());
 			return (int)returnParam.Value;
 		}
 
 		private void AddPostsToCollectionFromDataTables(ICollection collection, DataTable dtPosts, DataTable dtAttributes, int levels, Post.Property sortProperty, string sortAttributeName, bool sortAscending, bool addFlat) {
-			Hashtable postLookupTable		= addFlat && dtAttributes == null ? null : new Hashtable();
-			Hashtable postLevels			= null;
-			PostCollection posts			= collection as PostCollection;
-			CategoryCollection categories	= collection as CategoryCollection;
+			Hashtable postLookupTable = addFlat && dtAttributes == null ? null : new Hashtable();
+			Hashtable postLevels = null;
+			PostCollection posts = collection as PostCollection;
+			CategoryCollection categories = collection as CategoryCollection;
 			if(!addFlat) {
-				dtPosts.DefaultView.Sort	= ColNameTimeposted;
-				postLevels					= new Hashtable();
+				dtPosts.DefaultView.Sort = ColNameTimeposted;
+				postLevels = new Hashtable();
 			}
-			bool rankColumnExists			= dtPosts.Columns.Contains(ColNameRank);
+			bool rankColumnExists = dtPosts.Columns.Contains(ColNameRank);
 			foreach(DataRowView rowView in dtPosts.DefaultView) {
-				Guid id				= (Guid)rowView[ColNameId];
-				bool parentIdEmpty	= rowView.Row.IsNull(ColNameParentid);
-				Guid parentId		= parentIdEmpty ? Guid.Empty : (Guid)rowView[ColNameParentid];
-				Post post			= ForumDao.CreatePostInstance(
+				Guid id = (Guid)rowView[ColNameId];
+				bool parentIdEmpty = rowView.Row.IsNull(ColNameParentid);
+				Guid parentId = parentIdEmpty ? Guid.Empty : (Guid)rowView[ColNameParentid];
+				Post post = ForumDao.CreatePostInstance(
 					ForumDao.CreatePostIdInstance(id),
 					parentIdEmpty ? null : ForumDao.CreatePostIdInstance(parentId),
 					rowView.Row.IsNull(ColNameCategoryid) ? null : ForumDao.CreateCategoryIdInstance((Guid)rowView[ColNameCategoryid]),
 					ForumDao.CreatePostIdInstance((Guid)rowView[ColNameRootpostid]),
 					(string)rowView[ColNameRootposttitle],
 					ForumDao.CreateCategoryIdInstance((Guid)rowView[ColNameEffectivecategoryid]),
-					(string)rowView[ColNameEffectivecategoryname], 
-					dtAttributes == null ? null : ForumDao.CloneAttributeCollection(base.PostAttributes), 
+					(string)rowView[ColNameEffectivecategoryname],
+					dtAttributes == null ? null : ForumDao.CloneAttributeCollection(base.PostAttributes),
 					addFlat || (!parentIdEmpty && (levels - 1).Equals(postLevels[parentId])) ? null : ForumDao.CreatePostCollectionInstance(sortProperty, sortAttributeName, sortAscending),
 					(DateTime)rowView[ColNameTimeposted],
 					(DateTime)rowView[ColNameTimelastpost],
@@ -1012,11 +1011,11 @@ namespace nJupiter.Services.Forum {
 					!rankColumnExists || rowView.Row.IsNull(ColNameRank) ? 0F : (short)rowView[ColNameRank] / 1000F,
 					(bool)rowView[ColNameEffectivelyvisible],
 					ToLongString((byte[])rowView[ColNameTimestamp]));
-				post.UserIdentity	= rowView.Row.IsNull(ColNameUseridentity) ? null : (string)rowView[ColNameUseridentity];
-				post.Author			= rowView.Row.IsNull(ColNameAuthor) ? null : (string)rowView[ColNameAuthor];
-				post.Title			= (string)rowView[ColNameTitle];
-				post.Body			= (string)rowView[ColNameBody];
-				post.Visible		= (bool)rowView[ColNameVisible];
+				post.UserIdentity = rowView.Row.IsNull(ColNameUseridentity) ? null : (string)rowView[ColNameUseridentity];
+				post.Author = rowView.Row.IsNull(ColNameAuthor) ? null : (string)rowView[ColNameAuthor];
+				post.Title = (string)rowView[ColNameTitle];
+				post.Body = (string)rowView[ColNameBody];
+				post.Visible = (bool)rowView[ColNameVisible];
 				if(postLookupTable != null && (dtAttributes != null || post.Posts != null)) {
 					postLookupTable.Add(id, post);
 				}
@@ -1024,67 +1023,67 @@ namespace nJupiter.Services.Forum {
 					postLevels.Add(id, parentIdEmpty || !postLevels.ContainsKey(parentId) ? 1 : (int)postLevels[parentId] + 1);
 				}
 
-				if(posts != null || categories != null){
-					ForumDao.AddPostToPostCollection(addFlat || parentIdEmpty || !postLookupTable.ContainsKey(parentId) ? 
-						posts ?? categories[post.CategoryId].Posts : 
+				if(posts != null || categories != null) {
+					ForumDao.AddPostToPostCollection(addFlat || parentIdEmpty || !postLookupTable.ContainsKey(parentId) ?
+						posts ?? categories[post.CategoryId].Posts :
 						((Post)postLookupTable[parentId]).Posts, post);
 				}
 			}
 			if(dtAttributes != null) {
 				foreach(DataRow row in dtAttributes.Rows) {
-					Attribute attribute	= ((Post)postLookupTable[row[ColNameId]]).Attributes[(string)row[ColNameName]];
-					attribute.Value		= attribute.DeserializeAttributeValue((string)(row.IsNull(ColNameValue) ? row[ColNameExtendedvalue] : row[ColNameValue]));
+					Attribute attribute = ((Post)postLookupTable[row[ColNameId]]).Attributes[(string)row[ColNameName]];
+					attribute.Value = attribute.DeserializeAttributeValue((string)(row.IsNull(ColNameValue) ? row[ColNameExtendedvalue] : row[ColNameValue]));
 				}
 			}
 		}
 		private static IdParameterType GetIdParameterType(PostType postType) {
 			switch(postType) {
 				case PostType.Parent:
-					return IdParameterType.ImmediatePostDescendant;
+				return IdParameterType.ImmediatePostDescendant;
 				case PostType.Root:
-					return IdParameterType.RootPostDescendant;
+				return IdParameterType.RootPostDescendant;
 				default:
-					return IdParameterType.Post;
+				return IdParameterType.Post;
 			}
 		}
 		private static FullTextHandler.FullTextSearchType GetFullTextHandlerFullTextSearchType(FullTextSearchType fullTextSearchType) {
 			switch(fullTextSearchType) {
 				case FullTextSearchType.Inflectional:
-					return FullTextHandler.FullTextSearchType.Inflectional;
+				return FullTextHandler.FullTextSearchType.Inflectional;
 				case FullTextSearchType.Thesaurus:
-					return FullTextHandler.FullTextSearchType.Thesaurus;
+				return FullTextHandler.FullTextSearchType.Thesaurus;
 				case FullTextSearchType.Prefix:
-					return FullTextHandler.FullTextSearchType.Prefix;
+				return FullTextHandler.FullTextSearchType.Prefix;
 				default:
-					return FullTextHandler.FullTextSearchType.Normal;
+				return FullTextHandler.FullTextSearchType.Normal;
 			}
 		}
 		private string ConstructSqlFromAttributeCriteria(AttributeCriterionCollection attributeCriteria) {
-			const string quote						= "'";
-			const string quoteEscaped				= "''";
-			const string parenStart					= "(";
-			const string parenEnd					= ")";
-			const string space						= " ";
-			const string not						= "NOT";
-			const string and						= "AND";
-			const string or							= "OR";
+			const string quote = "'";
+			const string quoteEscaped = "''";
+			const string parenStart = "(";
+			const string parenEnd = ")";
+			const string space = " ";
+			const string not = "NOT";
+			const string and = "AND";
+			const string or = "OR";
 
-			const string query						= "SELECT p.ID FROM dbo.FORUM_Post p WHERE ";
-			const string subqueryStart				= "EXISTS(SELECT*FROM dbo.FORUM_PostAttribute pa JOIN dbo.FORUM_PostAttributeType pat ON pa.PostAttributeTypeID=pat.ID WHERE pa.PostID=p.ID AND pat.Name='{0}'";
-			const string subqueryEnd				= parenEnd;
+			const string query = "SELECT p.ID FROM dbo.FORUM_Post p WHERE ";
+			const string subqueryStart = "EXISTS(SELECT*FROM dbo.FORUM_PostAttribute pa JOIN dbo.FORUM_PostAttributeType pat ON pa.PostAttributeTypeID=pat.ID WHERE pa.PostID=p.ID AND pat.Name='{0}'";
+			const string subqueryEnd = parenEnd;
 
-			const string conditionEqual				= " AND pa.Value=N'{0}'";
-			const string conditionEqualExtended		= " AND pa.ExtendedValue LIKE N'{0}'";
-			const string conditionNotequal			= "	AND pa.Value<>N'{0}'";
-			const string conditionNotequalExtended	= " AND pa.ExtendedValue NOT LIKE N'{0}'";
-			const string conditionGreater			= " AND(pa.Value>N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))>N'{0}')";
-			const string conditionGreaterequal		= " AND(pa.Value>=N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))>=N'{0}')";
-			const string conditionLess				= " AND(pa.Value<N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))<N'{0}')";
-			const string conditionLessequal			= " AND(pa.Value<=N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))<=N'{0}')";
+			const string conditionEqual = " AND pa.Value=N'{0}'";
+			const string conditionEqualExtended = " AND pa.ExtendedValue LIKE N'{0}'";
+			const string conditionNotequal = "	AND pa.Value<>N'{0}'";
+			const string conditionNotequalExtended = " AND pa.ExtendedValue NOT LIKE N'{0}'";
+			const string conditionGreater = " AND(pa.Value>N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))>N'{0}')";
+			const string conditionGreaterequal = " AND(pa.Value>=N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))>=N'{0}')";
+			const string conditionLess = " AND(pa.Value<N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))<N'{0}')";
+			const string conditionLessequal = " AND(pa.Value<=N'{0}'OR CAST(pa.ExtendedValue AS NVARCHAR(4000))<=N'{0}')";
 
-			StringBuilder queryBuilder		= new StringBuilder(query);
-			ArrayList requiredAttributes	= new ArrayList();
-			ArrayList nonRequiredAttributes	= new ArrayList();
+			StringBuilder queryBuilder = new StringBuilder(query);
+			ArrayList requiredAttributes = new ArrayList();
+			ArrayList nonRequiredAttributes = new ArrayList();
 
 			foreach(AttributeCriterion attributeCriterion in attributeCriteria) {
 				if(!base.PostAttributes.Contains(attributeCriterion.Attribute)) {
@@ -1095,71 +1094,71 @@ namespace nJupiter.Services.Forum {
 				switch(attributeCriterion.Comparison) {
 					case Comparison.Equal:
 					case Comparison.NotEqual:
-						//not default value
-						if(!attributeCriterion.Attribute.IsEmpty) { 
-							string serializedValue			= attributeCriterion.Attribute.ToSerializedString();
-							bool searchExtendedValue		= serializedValue.Length > 3500;
-							string escapedSerializedValue	= serializedValue.Replace(quote, quoteEscaped);
-							if(searchExtendedValue) {
-								escapedSerializedValue		= EscapeForLikeClause(escapedSerializedValue);
-							}
-							if(attributeCriterion.Comparison.Equals(Comparison.Equal)) {
-								criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, searchExtendedValue ? conditionEqualExtended : conditionEqual, escapedSerializedValue);
-							} else {
-								criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, searchExtendedValue ? conditionNotequalExtended : conditionNotequal, escapedSerializedValue);
-							}
-						} else if(attributeCriterion.Comparison.Equals(Comparison.Equal)) {
-							criterionBuilder.Insert(0, space).Insert(0, not);
+					//not default value
+					if(!attributeCriterion.Attribute.IsEmpty) {
+						string serializedValue = attributeCriterion.Attribute.ToSerializedString();
+						bool searchExtendedValue = serializedValue.Length > 3500;
+						string escapedSerializedValue = serializedValue.Replace(quote, quoteEscaped);
+						if(searchExtendedValue) {
+							escapedSerializedValue = EscapeForLikeClause(escapedSerializedValue);
 						}
-						break;
+						if(attributeCriterion.Comparison.Equals(Comparison.Equal)) {
+							criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, searchExtendedValue ? conditionEqualExtended : conditionEqual, escapedSerializedValue);
+						} else {
+							criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, searchExtendedValue ? conditionNotequalExtended : conditionNotequal, escapedSerializedValue);
+						}
+					} else if(attributeCriterion.Comparison.Equals(Comparison.Equal)) {
+						criterionBuilder.Insert(0, space).Insert(0, not);
+					}
+					break;
 					case Comparison.Greater:
 					case Comparison.GreaterEqual:
 					case Comparison.Less:
 					case Comparison.LessEqual:
-						if(!attributeCriterion.Attribute.SerializationPreservesOrder) {
-							throw new InvalidOperationException("Can not use inequality comparison on an attribute that does not maintain sort order of its underlying type in its serialized form.");
-						}
-						int comparedWithDefaultValue	= attributeCriterion.Attribute.Value == null ?
-							attributeCriterion.Attribute.DefaultValue == null ? 0 : -1 :
-							((IComparable)attributeCriterion.Attribute.Value).CompareTo(attributeCriterion.Attribute.DefaultValue);
-						string escapedValue = attributeCriterion.Attribute.ToSerializedString().Replace(quote, quoteEscaped);
-						switch(attributeCriterion.Comparison) {
-							case Comparison.Greater:
-								if(comparedWithDefaultValue < 0) {	// value > (<defaultValue)
-									criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionLessequal, escapedValue);
-								} else {							// value > (>=defaultValue)
-									criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionGreater, escapedValue);
-								}
-								break;
-							case Comparison.GreaterEqual:
-								if(comparedWithDefaultValue > 0) {	//value >= (>defaultValue)
-									criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionGreaterequal, escapedValue);
-								} else {							//value >= (<=defaultValue>
-									criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionLess, escapedValue);
-								}
-								break;
-							case Comparison.Less:
-								if(comparedWithDefaultValue > 0) {	//value < (>defaultValue>
-									criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionGreaterequal, escapedValue);
-								} else {							//value < (<=defaultValue)
-									criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionLess, escapedValue);
-								}
-								break;
-							case Comparison.LessEqual:
-								if(comparedWithDefaultValue < 0) {	//value <= (<defaultValue)
-									criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionLessequal, escapedValue);
-								} else {							//value <= (>=defaultValue>
-									criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionGreater, escapedValue);
-								}
-								break;
+					if(!attributeCriterion.Attribute.SerializationPreservesOrder) {
+						throw new InvalidOperationException("Can not use inequality comparison on an attribute that does not maintain sort order of its underlying type in its serialized form.");
+					}
+					int comparedWithDefaultValue = attributeCriterion.Attribute.Value == null ?
+						attributeCriterion.Attribute.DefaultValue == null ? 0 : -1 :
+						((IComparable)attributeCriterion.Attribute.Value).CompareTo(attributeCriterion.Attribute.DefaultValue);
+					string escapedValue = attributeCriterion.Attribute.ToSerializedString().Replace(quote, quoteEscaped);
+					switch(attributeCriterion.Comparison) {
+						case Comparison.Greater:
+						if(comparedWithDefaultValue < 0) {	// value > (<defaultValue)
+							criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionLessequal, escapedValue);
+						} else {							// value > (>=defaultValue)
+							criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionGreater, escapedValue);
 						}
 						break;
+						case Comparison.GreaterEqual:
+						if(comparedWithDefaultValue > 0) {	//value >= (>defaultValue)
+							criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionGreaterequal, escapedValue);
+						} else {							//value >= (<=defaultValue>
+							criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionLess, escapedValue);
+						}
+						break;
+						case Comparison.Less:
+						if(comparedWithDefaultValue > 0) {	//value < (>defaultValue>
+							criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionGreaterequal, escapedValue);
+						} else {							//value < (<=defaultValue)
+							criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionLess, escapedValue);
+						}
+						break;
+						case Comparison.LessEqual:
+						if(comparedWithDefaultValue < 0) {	//value <= (<defaultValue)
+							criterionBuilder.AppendFormat(CultureInfo.InvariantCulture, conditionLessequal, escapedValue);
+						} else {							//value <= (>=defaultValue>
+							criterionBuilder.Insert(0, space).Insert(0, not).AppendFormat(CultureInfo.InvariantCulture, conditionGreater, escapedValue);
+						}
+						break;
+					}
+					break;
 				}
 				(attributeCriterion.Required ? requiredAttributes : nonRequiredAttributes).Add(criterionBuilder.Append(subqueryEnd).ToString());
 			}
 			if(requiredAttributes.Count > 0) {
 				queryBuilder.Append(parenStart);
-				for(int i = 0; i < requiredAttributes.Count; i++){
+				for(int i = 0; i < requiredAttributes.Count; i++) {
 					queryBuilder.Append(requiredAttributes[i]);
 					if(!i.Equals(requiredAttributes.Count - 1)) {
 						queryBuilder.Append(and).Append(space);
@@ -1183,10 +1182,10 @@ namespace nJupiter.Services.Forum {
 			return queryBuilder.ToString();
 		}
 		private static string EscapeForLikeClause(string value) {
-			const char	squarebracketOpening	= '[';
-			const char	squarebracketClosing	= ']';
-			const char	underscore				= '_';
-			const char	percent					= '%';
+			const char squarebracketOpening = '[';
+			const char squarebracketClosing = ']';
+			const char underscore = '_';
+			const char percent = '%';
 
 			StringBuilder escapedValue = new StringBuilder(value);
 			for(int i = 0; i < escapedValue.Length; i++) {
@@ -1194,8 +1193,8 @@ namespace nJupiter.Services.Forum {
 					case squarebracketOpening:
 					case underscore:
 					case percent:
-						escapedValue.Insert(i, squarebracketOpening).Insert(i += 2, squarebracketClosing);
-						break;
+					escapedValue.Insert(i, squarebracketOpening).Insert(i += 2, squarebracketClosing);
+					break;
 				}
 			}
 			return escapedValue.ToString();
@@ -1226,11 +1225,11 @@ namespace nJupiter.Services.Forum {
 		private static DateTime GetUtcDateTime(DateTime dateTime) {
 			switch(dateTime.Kind) {
 				case DateTimeKind.Local:
-					return dateTime.ToUniversalTime();
+				return dateTime.ToUniversalTime();
 				case DateTimeKind.Utc:
-					return dateTime;
+				return dateTime;
 				default:
-					return DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+				return DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
 			}
 		}
 		private static string ToLongString(byte[] bytes) {

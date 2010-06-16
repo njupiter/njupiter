@@ -35,7 +35,7 @@ using nJupiter.Configuration;
 using nJupiter.Drawing.Imaging;
 
 namespace nJupiter.Web.UI {
-	
+
 	public class StreamImage : Page {
 
 		#region IFileToStream Interface
@@ -56,17 +56,17 @@ namespace nJupiter.Web.UI {
 		#region Default IFileToStream Implementation
 		private sealed class FileToStreamImpl : IFileToStream {
 			#region Members
-			private readonly VirtualFile	virtualFile;
-			private readonly FileInfo		fileInfo;
+			private readonly VirtualFile virtualFile;
+			private readonly FileInfo fileInfo;
 			#endregion
 
 			#region Properties
-			private string	Extension		{ get { return Path.GetExtension(this.Name); } }
-			public string	Name			{ get { return this.fileInfo != null ? this.fileInfo.Name : (this.virtualFile != null ? this.virtualFile.Name : null); } }
-			public string	MimeType		{ get { return "image/" + this.Extension.Substring(1); } }
-			public bool		Exists			{ get { return this.fileInfo != null ? this.fileInfo.Exists : this.virtualFile != null; } }
+			private string Extension { get { return Path.GetExtension(this.Name); } }
+			public string Name { get { return this.fileInfo != null ? this.fileInfo.Name : (this.virtualFile != null ? this.virtualFile.Name : null); } }
+			public string MimeType { get { return "image/" + this.Extension.Substring(1); } }
+			public bool Exists { get { return this.fileInfo != null ? this.fileInfo.Exists : this.virtualFile != null; } }
 
-			public DateTime	LastModified {
+			public DateTime LastModified {
 				get {
 					if(this.fileInfo != null) {
 						return this.fileInfo.LastAccessTimeUtc;
@@ -81,9 +81,9 @@ namespace nJupiter.Web.UI {
 			public FileToStreamImpl(string path) {
 				path = HttpUtility.UrlDecode(path);
 				string filePath = HttpContext.Current.Server.MapPath(path);
-				if(File.Exists(filePath)){
+				if(File.Exists(filePath)) {
 					this.fileInfo = new FileInfo(filePath);
-				}else if(HostingEnvironment.VirtualPathProvider.FileExists(path)) {
+				} else if(HostingEnvironment.VirtualPathProvider.FileExists(path)) {
 					this.virtualFile = HostingEnvironment.VirtualPathProvider.GetFile(path);
 				}
 			}
@@ -106,7 +106,7 @@ namespace nJupiter.Web.UI {
 			IFileToStream file = null;
 			try {
 				file = GetFileToStreamInternal(path);
-			} catch (FileNotFoundException) { }
+			} catch(FileNotFoundException) { }
 			if(file == null)
 				file = new FileToStreamImpl(path);
 			return file;
@@ -119,7 +119,7 @@ namespace nJupiter.Web.UI {
 			const string type = "type";
 
 			Config config = ConfigHandler.GetConfig(true);
-			if (config != null && config.ContainsKey(section)) {
+			if(config != null && config.ContainsKey(section)) {
 				return (IFileToStream)GetInstance(
 					config.GetValue(section, assemblypath),
 					config.GetValue(section, assembly),
@@ -128,7 +128,7 @@ namespace nJupiter.Web.UI {
 			}
 			return null;
 		}
-		
+
 		private static object GetInstance(string assemblyPath, string assemblyName, string typeName, object[] prams) {
 			Assembly assembly;
 			if(!string.IsNullOrEmpty(assemblyPath)) {
@@ -143,7 +143,7 @@ namespace nJupiter.Web.UI {
 			}
 			return assembly.CreateInstance(
 				typeName, false,
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | 
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
 				BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.ExactBinding,
 				null, prams, null, null);
 		}
@@ -153,16 +153,16 @@ namespace nJupiter.Web.UI {
 		protected override void OnLoad(EventArgs e) {
 			// See if client has a cached version of the image
 			string ifModifiedSince = this.Request.Headers.Get("If-Modified-Since");
-			
-			string	reqPath	= this.Request.QueryString["path"];
-			string	path	= reqPath ?? string.Empty;
+
+			string reqPath = this.Request.QueryString["path"];
+			string path = reqPath ?? string.Empty;
 
 			IFileToStream fileToStream = this.GetFileToStream(path);
-			if(fileToStream.Exists){
+			if(fileToStream.Exists) {
 				//Get the last modified time for the current file
 				//Handle the situation where we get a LastModified that is in the future
-				DateTime now				= DateTime.Now;
-				DateTime lastModifiedTime	= fileToStream.LastModified > now ? now : fileToStream.LastModified;
+				DateTime now = DateTime.Now;
+				DateTime lastModifiedTime = fileToStream.LastModified > now ? now : fileToStream.LastModified;
 
 				//Check to see if it is a conditional HTTP GET.
 				if(ifModifiedSince != null) {
@@ -170,7 +170,7 @@ namespace nJupiter.Web.UI {
 					try {
 						DateTime incrementalIndexTime = DateTime.Parse(ifModifiedSince, DateTimeFormatInfo.InvariantInfo).ToUniversalTime();
 						// Has to do a string compare because of the resolution
-						if(incrementalIndexTime.ToString(DateTimeFormatInfo.InvariantInfo) == 
+						if(incrementalIndexTime.ToString(DateTimeFormatInfo.InvariantInfo) ==
 							lastModifiedTime.ToString(DateTimeFormatInfo.InvariantInfo)) {
 							// If the file has not been modifed, send a not changed status
 							this.Response.StatusCode = 304;
@@ -180,15 +180,15 @@ namespace nJupiter.Web.UI {
 					}
 				}
 
-				string reqWidth				= Page.Request.QueryString["width"];
-				string reqHeight			= Page.Request.QueryString["height"];
-				string reqAllowEnlarging	= Page.Request.QueryString["allowEnlarging"];
-				string reqAllowStretching	= Page.Request.QueryString["allowStretching"];
+				string reqWidth = Page.Request.QueryString["width"];
+				string reqHeight = Page.Request.QueryString["height"];
+				string reqAllowEnlarging = Page.Request.QueryString["allowEnlarging"];
+				string reqAllowStretching = Page.Request.QueryString["allowStretching"];
 
-				int		width			= 0;
-				int		height			= 0;
-				bool	allowEnlarging	= reqAllowEnlarging != null && string.Compare(reqAllowEnlarging, "true", true, CultureInfo.InvariantCulture) == 0;
-				bool	allowStretching = reqAllowStretching != null && string.Compare(reqAllowStretching, "true", true, CultureInfo.InvariantCulture) == 0;
+				int width = 0;
+				int height = 0;
+				bool allowEnlarging = reqAllowEnlarging != null && string.Compare(reqAllowEnlarging, "true", true, CultureInfo.InvariantCulture) == 0;
+				bool allowStretching = reqAllowStretching != null && string.Compare(reqAllowStretching, "true", true, CultureInfo.InvariantCulture) == 0;
 
 				Config config = ConfigHandler.GetSystemConfig();
 				SmoothingMode smoothingMode = SmoothingMode.Default;
@@ -203,14 +203,14 @@ namespace nJupiter.Web.UI {
 				if(config.ContainsKey("imageScaleConfig", "pixelOffsetMode")) {
 					pixelOffsetMode = (PixelOffsetMode)Enum.Parse(typeof(PixelOffsetMode), config.GetValue("imageScaleConfig", "pixelOffsetMode"), true);
 				}
-			
+
 				try {
 					width = reqWidth == null ? width : int.Parse(reqWidth, NumberFormatInfo.InvariantInfo);
-				} catch(FormatException) {}
-				try{
+				} catch(FormatException) { }
+				try {
 					height = reqHeight == null ? height : int.Parse(reqHeight, NumberFormatInfo.InvariantInfo);
-				} catch(FormatException) {}
-				
+				} catch(FormatException) { }
+
 				using(Stream fileStream = fileToStream.OpenStream()) {
 					ImageScale.ResizeFlags resizeFlags = ImageScale.ResizeFlags.None;
 					if(allowEnlarging) {

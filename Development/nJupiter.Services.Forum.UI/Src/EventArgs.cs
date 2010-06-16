@@ -49,7 +49,7 @@ namespace nJupiter.Services.Forum.UI {
 	public delegate void PostVisibleChangingEventHandler(object sender, PostCancelEventArgs e);
 	public delegate void PostVisibleChangedEventHandler(object sender, PostEventArgs e);
 	public delegate void PostVisibleChangeFailedEventHandler(object sender, PostFailureEventArgs e);
-	
+
 	public delegate void SearchEventHandler(object sender, SearchEventArgs e);
 	public delegate void SearchDiscardedEventHandler(object sender, EventArgs e);
 
@@ -58,11 +58,11 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public sealed class AddPostEventArgs : EventArgs {
 		#region Variables
-		private readonly PostId		postId;
-		private readonly CategoryId	categoryId;
-		private readonly string		domain;
-		private readonly string		categoryName;
-		private readonly PostId		replySourcePostId;
+		private readonly PostId postId;
+		private readonly CategoryId categoryId;
+		private readonly string domain;
+		private readonly string categoryName;
+		private readonly PostId replySourcePostId;
 		#endregion
 
 		#region Properties
@@ -75,10 +75,10 @@ namespace nJupiter.Services.Forum.UI {
 
 		#region Constructors
 		public AddPostEventArgs(PostId postId, PostId replySourcePostId) {
-			this.postId			= postId;
-			this.replySourcePostId	= replySourcePostId;
+			this.postId = postId;
+			this.replySourcePostId = replySourcePostId;
 		}
-		public AddPostEventArgs(PostId postId) : this(postId, postId) {}
+		public AddPostEventArgs(PostId postId) : this(postId, postId) { }
 		public AddPostEventArgs(CategoryId categoryId) {
 			this.categoryId = categoryId;
 		}
@@ -92,7 +92,7 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public sealed class UpdatePostEventArgs : EventArgs {
 		#region Variables
-		private readonly PostId		postId;
+		private readonly PostId postId;
 		#endregion
 
 		#region Properties
@@ -109,7 +109,7 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public class PostEventArgs : EventArgs {
 		#region Variables
-		private readonly Post	post;
+		private readonly Post post;
 		#endregion
 
 		#region Constructors
@@ -130,7 +130,8 @@ namespace nJupiter.Services.Forum.UI {
 		#endregion
 
 		#region Constructors
-		public PostDeletedEventArgs(Post post, int affectedPosts) : base(post) {
+		public PostDeletedEventArgs(Post post, int affectedPosts)
+			: base(post) {
 			this.affectedPosts = affectedPosts;
 		}
 		#endregion
@@ -143,11 +144,12 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public sealed class PostFailureEventArgs : PostEventArgs {
 		#region Variables
-		private readonly Exception	exception;
+		private readonly Exception exception;
 		#endregion
 
 		#region Constructors
-		public PostFailureEventArgs(Post post, Exception exception) : base(post) {
+		public PostFailureEventArgs(Post post, Exception exception)
+			: base(post) {
 			this.exception = exception;
 		}
 		#endregion
@@ -160,7 +162,7 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public class PostCancelEventArgs : CancelEventArgs {
 		#region Variables
-		private readonly Post	post;
+		private readonly Post post;
 		#endregion
 
 		#region Constructors
@@ -177,7 +179,7 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public sealed class SearchEventArgs : EventArgs {
 		#region Variables
-		private readonly string	searchText;
+		private readonly string searchText;
 		#endregion
 
 		#region Constructors
@@ -194,16 +196,16 @@ namespace nJupiter.Services.Forum.UI {
 	[Serializable]
 	public sealed class PostsSortEventArgs : EventArgs {
 		#region Variables
-		private Post.Property	property;
-		private string			attributeName;
-		private bool			ascending;
+		private Post.Property property;
+		private string attributeName;
+		private bool ascending;
 		#endregion
 
 		#region Constructors
 		public PostsSortEventArgs(Post.Property property, string attributeName, bool ascending) {
-			this.property		= property;
-			this.attributeName	= attributeName;
-			this.ascending		= ascending;
+			this.property = property;
+			this.attributeName = attributeName;
+			this.ascending = ascending;
 		}
 		#endregion
 

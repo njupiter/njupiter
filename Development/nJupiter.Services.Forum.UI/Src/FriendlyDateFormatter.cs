@@ -32,24 +32,24 @@ namespace nJupiter.Services.Forum.UI {
 #if DEBUG
 		private const string		DebugPrefix				= "_";
 #else
-		private const string		DebugPrefix				= "";
+		private const string DebugPrefix = "";
 #endif
 
-		private const string		DefaultDefaultDateFormat	= DebugPrefix + "{0:g}";
-		private const string		DefaultTodayDateFormat		= DebugPrefix + "{0:t}";
-		private const string		DefaultYesterdayDateFormat	= DebugPrefix + "yesterday {0:t}";
-		private const string		DefaultXDaysAgoDateFormat	= DebugPrefix + "{0} days agos {1:t}";
-		private const int			DefaultXDaysAgoLimit		= 5;
-		private const bool			DefaultConvertToLocalTime	= true;
+		private const string DefaultDefaultDateFormat = DebugPrefix + "{0:g}";
+		private const string DefaultTodayDateFormat = DebugPrefix + "{0:t}";
+		private const string DefaultYesterdayDateFormat = DebugPrefix + "yesterday {0:t}";
+		private const string DefaultXDaysAgoDateFormat = DebugPrefix + "{0} days agos {1:t}";
+		private const int DefaultXDaysAgoLimit = 5;
+		private const bool DefaultConvertToLocalTime = true;
 		#endregion
 
 		#region Variables
-		private string	defaultDateFormat	= DefaultDefaultDateFormat;
-		private string	todayDateFormat		= DefaultTodayDateFormat;
-		private string	yesterdayDateFormat	= DefaultYesterdayDateFormat;
-		private string	xDaysAgoDateFormat	= DefaultXDaysAgoDateFormat;
-		private int		xDaysAgoLimit		= DefaultXDaysAgoLimit;
-		private bool	convertToLocalTime	= DefaultConvertToLocalTime;
+		private string defaultDateFormat = DefaultDefaultDateFormat;
+		private string todayDateFormat = DefaultTodayDateFormat;
+		private string yesterdayDateFormat = DefaultYesterdayDateFormat;
+		private string xDaysAgoDateFormat = DefaultXDaysAgoDateFormat;
+		private int xDaysAgoLimit = DefaultXDaysAgoLimit;
+		private bool convertToLocalTime = DefaultConvertToLocalTime;
 		#endregion
 
 		#region Properties
@@ -62,25 +62,25 @@ namespace nJupiter.Services.Forum.UI {
 		#endregion
 
 		#region Constructors
-		public FriendlyDateFormatter() {}
+		public FriendlyDateFormatter() { }
 		public FriendlyDateFormatter(string defaultDateFormat, string todayDateFormat, string yesterdayDateFormat, string xDaysAgoDateFormat, int xDaysAgoLimit)
-			: this(defaultDateFormat, todayDateFormat, yesterdayDateFormat, xDaysAgoDateFormat, xDaysAgoLimit, DefaultConvertToLocalTime) {}
+			: this(defaultDateFormat, todayDateFormat, yesterdayDateFormat, xDaysAgoDateFormat, xDaysAgoLimit, DefaultConvertToLocalTime) { }
 		public FriendlyDateFormatter(string defaultDateFormat, string todayDateFormat, string yesterdayDateFormat, string xDaysAgoDateFormat, int xDaysAgoLimit, bool convertToLocalTime) {
-			this.defaultDateFormat		= defaultDateFormat;
-			this.todayDateFormat		= todayDateFormat;
-			this.yesterdayDateFormat	= yesterdayDateFormat;
-			this.xDaysAgoDateFormat		= xDaysAgoDateFormat;
-			this.xDaysAgoLimit			= xDaysAgoLimit;
-			this.convertToLocalTime		= convertToLocalTime;
+			this.defaultDateFormat = defaultDateFormat;
+			this.todayDateFormat = todayDateFormat;
+			this.yesterdayDateFormat = yesterdayDateFormat;
+			this.xDaysAgoDateFormat = xDaysAgoDateFormat;
+			this.xDaysAgoLimit = xDaysAgoLimit;
+			this.convertToLocalTime = convertToLocalTime;
 		}
 		#endregion
 
 		#region DateFormatter Implementation
 		public string FormatDate(DateTime dateTime) {
 			if(this.ConvertToLocalDateTime) {
-				dateTime	= dateTime.ToLocalTime();
+				dateTime = dateTime.ToLocalTime();
 			}
-			DateTime today	= this.ConvertToLocalDateTime ? DateTime.Today : DateTime.UtcNow.Date;
+			DateTime today = this.ConvertToLocalDateTime ? DateTime.Today : DateTime.UtcNow.Date;
 			int daysAgo;
 			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
 			if(dateTime.Date.Equals(today)) {

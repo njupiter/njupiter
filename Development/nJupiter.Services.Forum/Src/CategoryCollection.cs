@@ -31,19 +31,19 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public sealed class CategoryCollection : ICollection {
 		#region Variables
-		private readonly Hashtable			innerHash;
-		private readonly CategoryComparer	comparer;
+		private readonly Hashtable innerHash;
+		private readonly CategoryComparer comparer;
 		[NonSerialized]
-		private ArrayList					innerList;
+		private ArrayList innerList;
 		[NonSerialized]
-		private bool						isSorted;
+		private bool isSorted;
 		#endregion
-		
+
 		#region Constructors
-		internal CategoryCollection(Category.Property sortProperty, string sortAttributeName, bool sortAscending) : this(new CategoryComparer(sortProperty, sortAttributeName, sortAscending), new Hashtable()) {}
+		internal CategoryCollection(Category.Property sortProperty, string sortAttributeName, bool sortAscending) : this(new CategoryComparer(sortProperty, sortAttributeName, sortAscending), new Hashtable()) { }
 		private CategoryCollection(CategoryComparer comparer, Hashtable hashTable) {
-			this.comparer		= comparer;
-			this.innerHash		= hashTable;
+			this.comparer = comparer;
+			this.innerHash = hashTable;
 		}
 		#endregion
 
@@ -51,16 +51,16 @@ namespace nJupiter.Services.Forum {
 		public Category this[CategoryId id] { get { return (Category)this.innerHash[id]; } }
 		public Category this[int index] { get { return (Category)InnerList[index]; } }
 
-		private ArrayList InnerList { 
-			get { 
+		private ArrayList InnerList {
+			get {
 				if(!this.isSorted) {
 					ArrayList list = new ArrayList(this.innerHash.Values);
 					this.innerList = this.innerList != null && this.innerList.IsSynchronized ? ArrayList.Synchronized(list) : list;
 					this.innerList.Sort(this.comparer);
 					this.isSorted = true;
 				}
-				return this.innerList; 
-			} 
+				return this.innerList;
+			}
 		}
 		#endregion
 
@@ -99,7 +99,7 @@ namespace nJupiter.Services.Forum {
 			return InnerList.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
 		public bool IsSynchronized { get { return InnerList.IsSynchronized; } }
 		public int Count { get { return this.innerHash.Count; } }
@@ -110,19 +110,19 @@ namespace nJupiter.Services.Forum {
 		[Serializable]
 		private sealed class CategoryComparer : IComparer {
 			#region Variables
-			private readonly bool				sortAscending;
-			private readonly Category.Property	sortProperty;
-			private readonly string				sortAttributeName;
+			private readonly bool sortAscending;
+			private readonly Category.Property sortProperty;
+			private readonly string sortAttributeName;
 			#endregion
 
 			#region Constructors
 			public CategoryComparer(Category.Property sortProperty, string sortAttributeName, bool sortAscending) {
-				this.sortProperty		= sortProperty;
-				this.sortAttributeName	= sortAttributeName;
-				this.sortAscending		= sortAscending;
+				this.sortProperty = sortProperty;
+				this.sortAttributeName = sortAttributeName;
+				this.sortAscending = sortAscending;
 			}
 			#endregion
-			
+
 			#region IComparer Members
 			public int Compare(object x, object y) {
 				Category categoryx = (Category)x;
@@ -132,28 +132,28 @@ namespace nJupiter.Services.Forum {
 				if(this.sortAttributeName == null) {
 					switch(this.sortProperty) {
 						case Category.Property.Id:
-							compareValue = categoryx.Id.CompareTo(categoryy.Id);
-							break;
+						compareValue = categoryx.Id.CompareTo(categoryy.Id);
+						break;
 						case Category.Property.Domain:
-							compareValue = string.Compare(categoryx.Domain, categoryy.Domain, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(categoryx.Domain, categoryy.Domain, true, CultureInfo.CurrentCulture);
+						break;
 						case Category.Property.RootPostCount:
-							compareValue = categoryx.RootPostCount.CompareTo(categoryy.RootPostCount);
-							break;
+						compareValue = categoryx.RootPostCount.CompareTo(categoryy.RootPostCount);
+						break;
 						case Category.Property.Visible:
-							compareValue = categoryx.Visible.CompareTo(categoryy.Visible);
-							break;
+						compareValue = categoryx.Visible.CompareTo(categoryy.Visible);
+						break;
 						case Category.Property.ConcurrencyIdentity:
-							compareValue = string.Compare(categoryx.ConcurrencyIdentity, categoryy.ConcurrencyIdentity, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(categoryx.ConcurrencyIdentity, categoryy.ConcurrencyIdentity, true, CultureInfo.CurrentCulture);
+						break;
 						default:
-							compareValue = string.Compare(categoryx.Name, categoryy.Name, true, CultureInfo.CurrentCulture);
-							break;
+						compareValue = string.Compare(categoryx.Name, categoryy.Name, true, CultureInfo.CurrentCulture);
+						break;
 					}
 				} else {
-					object valuex	= categoryx.Attributes[this.sortAttributeName].Value;
-					object valuey	= categoryy.Attributes[this.sortAttributeName].Value;
-					compareValue	= valuex == null ? valuey == null ? 0 : -1 : ((IComparable)valuex).CompareTo(valuey);
+					object valuex = categoryx.Attributes[this.sortAttributeName].Value;
+					object valuey = categoryy.Attributes[this.sortAttributeName].Value;
+					compareValue = valuex == null ? valuey == null ? 0 : -1 : ((IComparable)valuex).CompareTo(valuey);
 				}
 				return (this.sortAscending ? 1 : -1) * compareValue;
 			}

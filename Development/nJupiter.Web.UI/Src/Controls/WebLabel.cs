@@ -27,12 +27,12 @@ using System.Web.UI;
 namespace nJupiter.Web.UI.Controls {
 
 	public class WebLabel : WebGenericControl {
-		
+
 		#region Properties
 		public string For {
 			get {
 				string result = this.ViewState[HtmlAttribute.For] as string;
-				if (result != null) {
+				if(result != null) {
 					return result;
 				}
 				return string.Empty;
@@ -42,23 +42,26 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 		#endregion
-		
+
 		#region Constructors
 		public WebLabel() {
 			this.TagName = HtmlTag.Label;
 		}
 
 #pragma warning disable 168
+		// ReSharper disable UnusedParameter.Local
+		//
 		//This is needed for functioning (part of the contract of being an HtmlControl)
 		//Should always be a label
-		public WebLabel(string tag) : this(){}
+		public WebLabel(string tag) : this() { }
+		// ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
 		#endregion
 
 		#region Methods
 		protected string GetControlRenderID(string name) {
 			Control control = this.FindControl(name);
-			if (control == null) {
+			if(control == null) {
 				return name;
 			}
 			return control.ClientID;
@@ -67,7 +70,7 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void RenderAttributes(HtmlTextWriter writer) {
 			if(this.For.Length > 0)
 				this.Attributes.Add(HtmlAttribute.For, GetControlRenderID(this.For));
-			base.RenderAttributes (writer);
+			base.RenderAttributes(writer);
 		}
 		#endregion
 

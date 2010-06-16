@@ -35,42 +35,42 @@ namespace nJupiter.DataAccess.Users {
 	public abstract class UsersDAO {
 
 		#region Constants
-		private const string UsersDAOSection		= "userDAOs/userDAO";
-		private const string UsersDAODefaultSection	= UsersDAOSection + "[@default='true']";
-		private const string UsersDAOSectionFormat	= UsersDAOSection + "[@value='{0}']";
-		private const string AssemblyPath			= "assemblyPath";
-		private const string Assembly				= "assembly";
-		private const string Type					= "type";
-		private const string Cache					= "cache";
+		private const string UsersDAOSection = "userDAOs/userDAO";
+		private const string UsersDAODefaultSection = UsersDAOSection + "[@default='true']";
+		private const string UsersDAOSectionFormat = UsersDAOSection + "[@value='{0}']";
+		private const string AssemblyPath = "assemblyPath";
+		private const string Assembly = "assembly";
+		private const string Type = "type";
+		private const string Cache = "cache";
 		#endregion
 
 		#region Variables
-		private static readonly Hashtable	usersDAOs = Hashtable.Synchronized(new Hashtable());
+		private static readonly Hashtable UsersDAOs = Hashtable.Synchronized(new Hashtable());
 
-		private string					name;
-		private Config					config;
-		private CommonPropertyNames		commonPropertyNames;
-		private IUserCache				userCache;
+		private string name;
+		private Config config;
+		private CommonPropertyNames commonPropertyNames;
+		private IUserCache userCache;
 		#endregion
-		
+
 		#region Properties
 		/// <summary>
 		/// The name of the current UsersDAO instance.
 		/// </summary>
 		/// <value>The UsersDAO name.</value>
-		public		string				Name			{ get { return this.name; } }
+		public string Name { get { return this.name; } }
 		/// <summary>
 		/// Gets the config section that is associated with the current UsersDAO instance.
 		/// </summary>
 		/// <value>The config section that is associated with the current UsersDAO instance.</value>
-		public		Config				Config			{ get { return this.config; } }
+		public Config Config { get { return this.config; } }
 		/// <summary>
 		/// Gets the common property names that is associated with the current UsersDAO instance.
 		/// </summary>
 		/// <value>The common property names that is associated with the current UsersDAO instance.</value>
-		public		CommonPropertyNames	PropertyNames	{ get { return this.commonPropertyNames; } }
+		public CommonPropertyNames PropertyNames { get { return this.commonPropertyNames; } }
 
-		protected	IUserCache			UserCache		{ get { return this.userCache; } }
+		protected IUserCache UserCache { get { return this.userCache; } }
 		#endregion
 
 		#region Methods
@@ -96,14 +96,14 @@ namespace nJupiter.DataAccess.Users {
 		private static UsersDAO GetUserDAOFromSection(string section) {
 
 			string name = ConfigHandler.GetConfig().GetValue(section);
-			
-			if(usersDAOs.ContainsKey(name))
-				return (UsersDAO)usersDAOs[name];
 
-			lock(usersDAOs.SyncRoot) {
-				if(!usersDAOs.ContainsKey(name)) {
-					
-					Config config =	ConfigHandler.GetConfig();
+			if(UsersDAOs.ContainsKey(name))
+				return (UsersDAO)UsersDAOs[name];
+
+			lock(UsersDAOs.SyncRoot) {
+				if(!UsersDAOs.ContainsKey(name)) {
+
+					Config config = ConfigHandler.GetConfig();
 					string assemblyPath = config.GetValue(section, AssemblyPath);
 					string assemblyName = config.GetValue(section, Assembly);
 					string assemblyType = config.GetValue(section, Type);
@@ -129,11 +129,11 @@ namespace nJupiter.DataAccess.Users {
 					}
 
 					userDAO.commonPropertyNames = PopulateCommonPropertyNames(userDAO.config);
-					
-					usersDAOs.Add(name, instance);
+
+					UsersDAOs.Add(name, instance);
 					return userDAO;
 				}
-				return (UsersDAO)usersDAOs[name];
+				return (UsersDAO)UsersDAOs[name];
 			}
 		}
 
@@ -145,21 +145,21 @@ namespace nJupiter.DataAccess.Users {
 			Assembly assembly;
 			if(!string.IsNullOrEmpty(assemblyPath)) {
 				assembly = System.Reflection.Assembly.LoadFrom(assemblyPath);
-			} else if(assemblyName == null || assemblyName.Length.Equals(0) || 
+			} else if(assemblyName == null || assemblyName.Length.Equals(0) ||
 				System.Reflection.Assembly.GetExecutingAssembly().GetName().Name.Equals(assemblyName)) {
 				assembly = System.Reflection.Assembly.GetExecutingAssembly();	//Load current assembly
 			} else {
 				assembly = System.Reflection.Assembly.Load(assemblyName); // Late binding to an assembly on disk (current directory)
 			}
 			return assembly.CreateInstance(
-				typeName, false, 
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | 
+				typeName, false,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
 				BindingFlags.Instance | BindingFlags.IgnoreCase,
 				null, constructorArgs, null, null);
 		}
 
-		private static CommonPropertyNames PopulateCommonPropertyNames(Config config){
-		
+		private static CommonPropertyNames PopulateCommonPropertyNames(Config config) {
+
 			CommonPropertyNames cpn = new CommonPropertyNames(
 																GetCommonPropertyKey("userName", config),
 																GetCommonContextAttribute("userName", config),
@@ -228,14 +228,14 @@ namespace nJupiter.DataAccess.Users {
 			return cpn;
 		}
 
-		private static string GetCommonPropertyKey(string property, Config config){
+		private static string GetCommonPropertyKey(string property, Config config) {
 			string result = null;
 			if(config.ContainsKey("commonProperties", property))
 				result = config.GetValue("commonProperties", property);
 			return result;
 		}
 
-		private static string GetCommonContextAttribute(string property, Config config){
+		private static string GetCommonContextAttribute(string property, Config config) {
 			string result = null;
 			if(config.ContainsAttribute("commonProperties", property, "context"))
 				result = config.GetAttribute("commonProperties", property, "context");
@@ -287,7 +287,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <returns>A user object with the new use</returns>
 		/// <remarks>This method does not save any information to the database, use SaveUser to save user to the database.</remarks>
 		public abstract User CreateUserInstance(string userName, string domain);
-		
+
 		/// <summary>
 		/// Saves a user
 		/// </summary>
@@ -300,7 +300,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="users">The collection of users to save</param>
 		public abstract void SaveUsers(UserCollection users);
 
-		
+
 		/// <summary>
 		/// Set password for user
 		/// </summary>
@@ -348,7 +348,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <returns>A collection containing all available contexts</returns>
 		public abstract ContextCollection GetContexts();
 
-		
+
 		/// <summary>
 		/// Get a specific context on name
 		/// </summary>
@@ -403,7 +403,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="userId">The Id for the user</param>
 		/// <param name="loadAllContexts">If true, at the same time also load all properties for all contexts</param>
 		/// <returns>The loaded user object</returns>
-		public virtual User GetUserById(string userId, bool loadAllContexts){
+		public virtual User GetUserById(string userId, bool loadAllContexts) {
 			User user = this.GetUserById(userId);
 			if(loadAllContexts && user != null)
 				this.LoadAllContextsForUser(user);
@@ -417,7 +417,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="domain">The specified domain</param>
 		/// <param name="loadAllContexts">If true, at the same time also load all properties for all contexts</param>
 		/// <returns>A user object</returns>
-		public virtual User GetUserByUserName(string userName, string domain, bool loadAllContexts){
+		public virtual User GetUserByUserName(string userName, string domain, bool loadAllContexts) {
 			User user = this.GetUserByUserName(userName, domain);
 			if(loadAllContexts && user != null)
 				this.LoadAllContextsForUser(user);
@@ -468,14 +468,14 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="searchCriteria">Search criteria object</param>
 		/// <returns>A collection of user objects</returns>
-		public virtual UserCollection GetUsersBySearchCriteria(SearchCriteria searchCriteria){
+		public virtual UserCollection GetUsersBySearchCriteria(SearchCriteria searchCriteria) {
 			SearchCriteriaCollection sc = new SearchCriteriaCollection();
 			if(searchCriteria != null) {
 				sc.Add(searchCriteria);
 			}
 			return GetUsersBySearchCriteria(sc);
 		}
-		
+
 		/// <summary>
 		/// Gets a collection of users based on search criteria
 		/// </summary>
@@ -494,7 +494,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="user">The specified user</param>
 		/// <param name="context">The specified context</param>
 		/// <returns>A collection of properties</returns>
-		public virtual PropertyCollection GetProperties(User user, Context context){
+		public virtual PropertyCollection GetProperties(User user, Context context) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			if(context == null)
@@ -508,12 +508,12 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="user">The specified user</param>
 		/// <param name="context">The specified context to load intro the user</param>
 		/// <returns>Return a property collection if properties for the context exists, else returns null</returns>
-		public virtual PropertyCollection LoadProperties(User user, Context context){
+		public virtual PropertyCollection LoadProperties(User user, Context context) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			if(context == null)
 				throw new ArgumentNullException("context");
-			if(!user.ContainsPropertiesForContext(context)){			
+			if(!user.ContainsPropertiesForContext(context)) {
 				PropertyCollection pc = this.GetProperties(user, context);
 				if(pc != null)
 					AttachPropertiesToUser(user, pc);
@@ -532,7 +532,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("user");
 			if(context == null)
 				throw new ArgumentNullException("context");
-			user.UnattachProperties(context);			
+			user.UnattachProperties(context);
 		}
 		#endregion
 
@@ -545,7 +545,7 @@ namespace nJupiter.DataAccess.Users {
 		public User GetUserByUserName(string userName) {
 			return GetUserByUserName(userName, null);
 		}
-		
+
 		/// <summary>
 		/// Gets a user for the current domain by its user name
 		/// </summary>
@@ -582,7 +582,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="user">The specified user</param>
 		/// <returns>A collection of properties</returns>
-		public PropertyCollection GetProperties(User user){
+		public PropertyCollection GetProperties(User user) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			return user.GetProperties();
@@ -595,7 +595,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="propertySchemaTable">Schema bound to the collection</param>
 		/// <returns>A property collection</returns>
-		protected static PropertyCollection CreatePropertyCollectionInstance(PropertySchemaTable propertySchemaTable){
+		protected static PropertyCollection CreatePropertyCollectionInstance(PropertySchemaTable propertySchemaTable) {
 			return new PropertyCollection(propertySchemaTable);
 		}
 
@@ -604,7 +604,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="property">Property to add</param>
 		/// <param name="propertyCollection">Destination collection</param>
-		protected static void AddPropertyToCollection(AbstractProperty property, PropertyCollection propertyCollection){
+		protected static void AddPropertyToCollection(AbstractProperty property, PropertyCollection propertyCollection) {
 			if(property == null)
 				throw new ArgumentNullException("property");
 			if(propertyCollection == null)
@@ -619,7 +619,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="name">The name of the context</param>
 		/// <param name="propertySchemaTable">The property scheme table for the context</param>
 		/// <returns>A context object</returns>
-		protected static Context CreateContextInstance(string name, PropertySchemaTable propertySchemaTable){
+		protected static Context CreateContextInstance(string name, PropertySchemaTable propertySchemaTable) {
 			return new Context(name, propertySchemaTable);
 		}
 
@@ -627,7 +627,7 @@ namespace nJupiter.DataAccess.Users {
 		/// Creates an instance of a context collection
 		/// </summary>
 		/// <returns>A new context collection</returns>
-		protected static ContextCollection CreateContextCollectionInstance(){
+		protected static ContextCollection CreateContextCollectionInstance() {
 			return new ContextCollection();
 		}
 
@@ -636,7 +636,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="contexts">The contexts that the collection shallc ontain.</param>
 		/// <returns>A new context collection</returns>
-		protected static ContextCollection CreateContextCollectionInstance(IEnumerable<Context> contexts){
+		protected static ContextCollection CreateContextCollectionInstance(IEnumerable<Context> contexts) {
 			if(contexts == null) {
 				throw new ArgumentNullException("contexts");
 			}
@@ -646,13 +646,13 @@ namespace nJupiter.DataAccess.Users {
 			}
 			return contextCollection;
 		}
-		
+
 		/// <summary>
 		/// Adds a context to a sepcified context collection
 		/// </summary>
 		/// <param name="context">Context to add</param>
 		/// <param name="contextCollection">The target collection</param>
-		protected static void AddContextToCollection(Context context, ContextCollection contextCollection){
+		protected static void AddContextToCollection(Context context, ContextCollection contextCollection) {
 			if(context == null)
 				throw new ArgumentNullException("context");
 			if(contextCollection == null)
@@ -665,7 +665,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="context">Context to remove</param>
 		/// <param name="contextCollection">The target context</param>
-		protected static void RemoveContextFromCollection(Context context, ContextCollection contextCollection){
+		protected static void RemoveContextFromCollection(Context context, ContextCollection contextCollection) {
 			if(context == null)
 				throw new ArgumentNullException("context");
 			if(contextCollection == null)
@@ -678,7 +678,7 @@ namespace nJupiter.DataAccess.Users {
 		/// Creates a instance of PropertySchemaTable
 		/// </summary>
 		/// <returns>A PropertySchemaTable</returns>
-		protected static PropertySchemaTable CreatePropertySchemaTableInstance(){
+		protected static PropertySchemaTable CreatePropertySchemaTableInstance() {
 			return new PropertySchemaTable();
 		}
 
@@ -690,7 +690,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="propertyType">The type of the property</param>
 		/// <param name="context">The context that this property belongs to</param>
 		/// <returns>The created property</returns>
-		protected static AbstractProperty CreatePropertyInstance(string propertyName, string serializedPropertyValue, Type propertyType, Context context){
+		protected static AbstractProperty CreatePropertyInstance(string propertyName, string serializedPropertyValue, Type propertyType, Context context) {
 			return AbstractProperty.Create(propertyName, serializedPropertyValue, propertyType, context);
 		}
 
@@ -699,7 +699,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="propertySchema">Schema to add</param>
 		/// <param name="propertySchemaTable">Destination table</param>
-		protected static void AddPropertySchemaToTable(PropertySchema propertySchema, PropertySchemaTable propertySchemaTable){
+		protected static void AddPropertySchemaToTable(PropertySchema propertySchema, PropertySchemaTable propertySchemaTable) {
 			if(propertySchema == null)
 				throw new ArgumentNullException("propertySchema");
 			if(propertySchemaTable == null)
@@ -714,7 +714,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="propertyName">Property name</param>
 		/// <param name="dataType">Property type</param>
 		/// <returns>A property schema</returns>
-		protected static PropertySchema CreatePropertySchemaInstance(string propertyName, Type dataType){
+		protected static PropertySchema CreatePropertySchemaInstance(string propertyName, Type dataType) {
 			if(propertyName == null)
 				throw new ArgumentNullException("propertyName");
 			if(dataType == null)
@@ -722,24 +722,24 @@ namespace nJupiter.DataAccess.Users {
 
 			return new PropertySchema(propertyName, dataType);
 		}
-		
+
 		/// <summary>
 		/// Attach a property collection to a specified user
 		/// </summary>
 		/// <param name="user">The user</param>
 		/// <param name="properties">The property collection to attach</param>
-		protected static void AttachPropertiesToUser(User user, PropertyCollection properties){
+		protected static void AttachPropertiesToUser(User user, PropertyCollection properties) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			user.AttachProperties(properties);
 		}
-		
+
 		/// <summary>
 		/// Gets an array of contexts that has been loaded for a specified user
 		/// </summary>
 		/// <param name="user">The user</param>
 		/// <returns>An array of contexts</returns>
-		protected static Context[] GetAttachedContextsToUser(User user){
+		protected static Context[] GetAttachedContextsToUser(User user) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 
@@ -750,8 +750,8 @@ namespace nJupiter.DataAccess.Users {
 		/// Load properties for all context for a specified user
 		/// </summary>
 		/// <param name="user">The specified user</param>
-		protected void LoadAllContextsForUser(User user){
-			foreach(Context context in this.GetContexts()){
+		protected void LoadAllContextsForUser(User user) {
+			foreach(Context context in this.GetContexts()) {
 				this.LoadProperties(user, context);
 			}
 		}
@@ -761,11 +761,11 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="users">The users to load context for</param>
 		/// <returns>The user collection with the users with loaded contexts</returns>
-		protected UserCollection LoadAllContextsForUsers(UserCollection users){
+		protected UserCollection LoadAllContextsForUsers(UserCollection users) {
 			if(users == null)
 				throw new ArgumentNullException("users");
 
-			foreach(User user in users){
+			foreach(User user in users) {
 				this.LoadAllContextsForUser(user);
 			}
 			return users;

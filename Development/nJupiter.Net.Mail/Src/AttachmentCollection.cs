@@ -31,10 +31,10 @@ namespace nJupiter.Net.Mail {
 	public sealed class AttachmentCollection : ICloneable, IList, IDisposable {
 
 		#region Members
-		private	ArrayList	innerArray;
-		private bool		disposed;
+		private ArrayList innerArray;
+		private bool disposed;
 		#endregion
-		
+
 		#region Constructors
 		public AttachmentCollection() {
 			this.innerArray = new ArrayList();
@@ -46,12 +46,12 @@ namespace nJupiter.Net.Mail {
 		#endregion
 
 		#region Public Methods
-		public Attachment this[int index] { get { return (Attachment)InnerArray[index]; }	set { InnerArray[index] = value; }	}
+		public Attachment this[int index] { get { return (Attachment)InnerArray[index]; } set { InnerArray[index] = value; } }
 
 		public void Add(Attachment attachment) {
 			InnerArray.Add(attachment);
 		}
-		
+
 		public void Add(FileInfo file) {
 			Attachment attachment = new Attachment(file);
 			InnerArray.Add(attachment);
@@ -103,12 +103,12 @@ namespace nJupiter.Net.Mail {
 		#endregion
 
 		#region Implementation of ICloneable
-		public AttachmentCollection Clone(){
+		public AttachmentCollection Clone() {
 			AttachmentCollection collection = new AttachmentCollection();
 			collection.innerArray = (ArrayList)this.InnerArray.Clone();
 			return collection;
 		}
-		
+
 		object ICloneable.Clone() {
 			return Clone();
 		}
@@ -119,11 +119,11 @@ namespace nJupiter.Net.Mail {
 			return this.innerArray.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerArray.IsSynchronized; } }
-		public int		Count			{ get { return InnerArray.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerArray.IsSynchronized; } }
+		public int Count { get { return InnerArray.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 
 		#region Implementation of IList
@@ -136,7 +136,7 @@ namespace nJupiter.Net.Mail {
 			set {
 				if(!(value is Attachment))
 					throw new InvalidCastException();
-				InnerArray[index] = value; 
+				InnerArray[index] = value;
 			}
 		}
 
@@ -184,16 +184,16 @@ namespace nJupiter.Net.Mail {
 		#endregion
 
 		#region IDisposable Members
-        public void Dispose(){
-            if(!this.disposed){
-                foreach(Attachment attachment in this) {
+		public void Dispose() {
+			if(!this.disposed) {
+				foreach(Attachment attachment in this) {
 					if(attachment != null)
 						attachment.Dispose();
-                }
+				}
 				this.Clear();
-                this.disposed = true;
-            }
-        }
+				this.disposed = true;
+			}
+		}
 		#endregion
 	}
 }

@@ -146,38 +146,38 @@ namespace nJupiter.DataAccess.Sql.Util {
 		/// <returns>A search condition.</returns>
 		public static string GetContainsSearchCondition(string searchText, FullTextSearchType fullTextSearchType, ImplicitOperator implicitOperator, bool treatTextualOperatorsAsSearchText) {
 			//TODO: when a logical operator is not valid at a certain place, handle it as a search word?
-			const string and					= "and";
-			const string andSign				= "&";
-			const string plus					= "+";
-			const string or						= "or";
-			const string orSign					= "|";
-			const string not					= "not";
-			const string notSign				= "!";
-			const string minus					= "-";
-			const string near					= "near";
-			const string nearSign				= "~";
-			const string prefix					= "*";
-			const string parenStart				= "(";
-			const string parenEnd				= ")";
+			const string and = "and";
+			const string andSign = "&";
+			const string plus = "+";
+			const string or = "or";
+			const string orSign = "|";
+			const string not = "not";
+			const string notSign = "!";
+			const string minus = "-";
+			const string near = "near";
+			const string nearSign = "~";
+			const string prefix = "*";
+			const string parenStart = "(";
+			const string parenEnd = ")";
 
-			const string formatNormal			= @"""{0}""";
-			const string formatPrefix			= @"""{0}*""";
-			const string formatInflectional		= @"FORMSOF(INFLECTIONAL,""{0}"")";
-			const string formatThesaurus		= @"FORMSOF(THESAURUS,""{0}"")";
+			const string formatNormal = @"""{0}""";
+			const string formatPrefix = @"""{0}*""";
+			const string formatInflectional = @"FORMSOF(INFLECTIONAL,""{0}"")";
+			const string formatThesaurus = @"FORMSOF(THESAURUS,""{0}"")";
 
-			string[] logicalSearchTerms		= treatTextualOperatorsAsSearchText ? 
-				new[] {minus, notSign, andSign, parenStart, parenEnd, prefix, orSign, nearSign, plus} :
-				new[] {minus, notSign, andSign, parenStart, parenEnd, prefix, orSign, nearSign, plus, and, near, not, or};
-			
-			string firstLogical				= null;
-			string secondLogical			= null;
-			int normalSearchTerms			= 0;
-			int openParens					= 0;
-			int openedParens				= 0;
-			int closeParens					= 0;
-			int closedParens				= 0;
-			StringBuilder searchCondition	= new StringBuilder();
-			string[] searchTokens			= GetSearchTokens(searchText);
+			string[] logicalSearchTerms = treatTextualOperatorsAsSearchText ?
+				new[] { minus, notSign, andSign, parenStart, parenEnd, prefix, orSign, nearSign, plus } :
+				new[] { minus, notSign, andSign, parenStart, parenEnd, prefix, orSign, nearSign, plus, and, near, not, or };
+
+			string firstLogical = null;
+			string secondLogical = null;
+			int normalSearchTerms = 0;
+			int openParens = 0;
+			int openedParens = 0;
+			int closeParens = 0;
+			int closedParens = 0;
+			StringBuilder searchCondition = new StringBuilder();
+			string[] searchTokens = GetSearchTokens(searchText);
 
 			for(int i = 0; i < searchTokens.Length; i++) {
 				string searchTerm = searchTokens[i];
@@ -189,8 +189,8 @@ namespace nJupiter.DataAccess.Sql.Util {
 						searchCondition.Append(parenEnd);
 					}
 					if(normalSearchTerms > 1) {
-						if(!fullTextSearchType.Equals(FullTextSearchType.Inflectional) && !fullTextSearchType.Equals(FullTextSearchType.Thesaurus) && 
-							!beginningOrEndingParens &&	firstLogical != null && ((!treatTextualOperatorsAsSearchText && IsEqualCaseInsensitive(firstLogical, near)) || firstLogical.Equals(nearSign))) {
+						if(!fullTextSearchType.Equals(FullTextSearchType.Inflectional) && !fullTextSearchType.Equals(FullTextSearchType.Thesaurus) &&
+							!beginningOrEndingParens && firstLogical != null && ((!treatTextualOperatorsAsSearchText && IsEqualCaseInsensitive(firstLogical, near)) || firstLogical.Equals(nearSign))) {
 							searchCondition.Append(nearSign);
 							//"near" not supported between parens nor inflectional/thesaurus terms
 						} else if((firstLogical != null && ((!treatTextualOperatorsAsSearchText && IsEqualCaseInsensitive(firstLogical, or)) || firstLogical.Equals(orSign))) ||
@@ -212,21 +212,21 @@ namespace nJupiter.DataAccess.Sql.Util {
 					string format;
 					switch(fullTextSearchType) {
 						case FullTextSearchType.Inflectional:
-							//prefix terms not supported in inflectional terms
-							searchTerm	= searchTerm.TrimEnd(prefix[0]);
-							format		= formatInflectional;
-							break;
+						//prefix terms not supported in inflectional terms
+						searchTerm = searchTerm.TrimEnd(prefix[0]);
+						format = formatInflectional;
+						break;
 						case FullTextSearchType.Thesaurus:
-							//prefix terms not supported in thesaurus terms
-							searchTerm	= searchTerm.TrimEnd(prefix[0]);
-							format		= formatThesaurus;
-							break;
+						//prefix terms not supported in thesaurus terms
+						searchTerm = searchTerm.TrimEnd(prefix[0]);
+						format = formatThesaurus;
+						break;
 						case FullTextSearchType.Prefix:
-							format		= formatPrefix;
-							break;
+						format = formatPrefix;
+						break;
 						default:
-							format		= formatNormal;
-							break;
+						format = formatNormal;
+						break;
 					}
 					searchCondition.AppendFormat(CultureInfo.InvariantCulture, format, searchTerm);
 					firstLogical = secondLogical = null;
@@ -239,9 +239,9 @@ namespace nJupiter.DataAccess.Sql.Util {
 						closeParens++;
 					}
 				} else if(firstLogical == null) {
-					firstLogical	= searchTerm;
+					firstLogical = searchTerm;
 				} else if(secondLogical == null) {
-					secondLogical	= searchTerm;
+					secondLogical = searchTerm;
 				}
 			}
 			for(int i = openedParens - closedParens; i > 0; i--) {
@@ -253,24 +253,24 @@ namespace nJupiter.DataAccess.Sql.Util {
 
 		#region Helper Methods
 		private static string[] GetSearchTokens(string searchText) {
-			const char separator	= ' ';
-			const char quote		= '"';
-			const char parenStart	= '(';
-			const char parenEnd		= ')';
-			const char and			= '&';
-			const char plus			= '+';
-			const char or			= '|';
-			const char not			= '!';
-			const char minus		= '-';
-			const char near			= '~';
+			const char separator = ' ';
+			const char quote = '"';
+			const char parenStart = '(';
+			const char parenEnd = ')';
+			const char and = '&';
+			const char plus = '+';
+			const char or = '|';
+			const char not = '!';
+			const char minus = '-';
+			const char near = '~';
 
 			if(searchText == null || (searchText = searchText.Trim()).Length.Equals(0)) {
 				return new string[0];
 			}
-			bool insideQuotes				= false;
-			bool lastWasWhitespace			= false;
-			bool lastWasSpecialSign			= false;
-			StringBuilder fixedSearchText	= new StringBuilder(searchText);
+			bool insideQuotes = false;
+			bool lastWasWhitespace = false;
+			bool lastWasSpecialSign = false;
+			StringBuilder fixedSearchText = new StringBuilder(searchText);
 
 			for(int i = 0; i < fixedSearchText.Length; i++) {
 				char character = fixedSearchText[i];
@@ -284,37 +284,36 @@ namespace nJupiter.DataAccess.Sql.Util {
 					case minus:
 					case near:
 					case quote:
-						if(lastWasSpecialSign || (i > 0 && !insideQuotes && !lastWasWhitespace)) {
-							if(!lastWasSpecialSign && character.Equals(minus)) {
-								goto default;
-							} else {
-								fixedSearchText.Insert(i++, separator);
-							}
+					if(lastWasSpecialSign || (i > 0 && !insideQuotes && !lastWasWhitespace)) {
+						if(!lastWasSpecialSign && character.Equals(minus)) {
+							goto default;
 						}
+						fixedSearchText.Insert(i++, separator);
+					}
 						if(character.Equals(quote)) {
-							fixedSearchText.Remove(i--, 1);
-							lastWasWhitespace	= insideQuotes = !insideQuotes;
-						} else {
-							lastWasWhitespace	= false;
-						}
-						lastWasSpecialSign = !insideQuotes;
-						break;
+						fixedSearchText.Remove(i--, 1);
+						lastWasWhitespace = insideQuotes = !insideQuotes;
+					} else {
+						lastWasWhitespace = false;
+					}
+					lastWasSpecialSign = !insideQuotes;
+					break;
 					default:
-						if(char.IsWhiteSpace(character)) {
-							if(lastWasWhitespace) {
-								fixedSearchText.Remove(i--, 1);
-							} else {
-								fixedSearchText[i]	= insideQuotes ? char.MinValue : separator;
-								lastWasWhitespace	= true;
-							}
+					if(char.IsWhiteSpace(character)) {
+						if(lastWasWhitespace) {
+							fixedSearchText.Remove(i--, 1);
 						} else {
-							if(lastWasSpecialSign) {
-								fixedSearchText.Insert(i++, separator);
-							}
-							lastWasWhitespace = false;
+							fixedSearchText[i] = insideQuotes ? char.MinValue : separator;
+							lastWasWhitespace = true;
 						}
-						lastWasSpecialSign = false;
-						break;
+					} else {
+						if(lastWasSpecialSign) {
+							fixedSearchText.Insert(i++, separator);
+						}
+						lastWasWhitespace = false;
+					}
+					lastWasSpecialSign = false;
+					break;
 				}
 			}
 			string[] tokens = fixedSearchText.ToString().Trim().Split(separator);

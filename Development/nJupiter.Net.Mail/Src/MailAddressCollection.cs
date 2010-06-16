@@ -31,21 +31,22 @@ namespace nJupiter.Net.Mail {
 	public sealed class MailAddressCollection : ICollection {
 
 		#region Members
-		private		ArrayList		innerArray;
+		private ArrayList innerArray;
 		#endregion
-		
+
 		#region Constructors
 		public MailAddressCollection() {
 			this.innerArray = new ArrayList();
 		}
 
-		internal MailAddressCollection(MailAddress mailAddress) : this() {
+		internal MailAddressCollection(MailAddress mailAddress)
+			: this() {
 			this.innerArray.Add(mailAddress);
 		}
 		#endregion
 
 		#region Indexers
-		public MailAddress this[int index] { get { return (MailAddress) InnerArray[index]; } }
+		public MailAddress this[int index] { get { return (MailAddress)InnerArray[index]; } }
 		#endregion
 
 		#region Properties
@@ -64,11 +65,11 @@ namespace nJupiter.Net.Mail {
 		public MailAddress[] ToArray() {
 			return (MailAddress[])InnerArray.ToArray(typeof(MailAddress));
 		}
-		
+
 		public bool Contains(MailAddress mailAddress) {
-			return(InnerArray.Contains(mailAddress));
+			return (InnerArray.Contains(mailAddress));
 		}
-		
+
 		public void CopyTo(Array array, int index) {
 			InnerArray.CopyTo(array, index);
 		}
@@ -81,15 +82,15 @@ namespace nJupiter.Net.Mail {
 			InnerArray.Clear();
 		}
 
-		public void Sort() { 
+		public void Sort() {
 			InnerArray.Sort();
 		}
 
-		public void Sort(IComparer comparer) { 
+		public void Sort(IComparer comparer) {
 			InnerArray.Sort(comparer);
 		}
 
-		public void Sort(int indexer, int count, IComparer comparer) { 
+		public void Sort(int indexer, int count, IComparer comparer) {
 			InnerArray.Sort(indexer, count, comparer);
 		}
 
@@ -119,11 +120,11 @@ namespace nJupiter.Net.Mail {
 			return this.innerArray.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerArray.IsSynchronized; } }
-		public int		Count			{ get { return InnerArray.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerArray.IsSynchronized; } }
+		public int Count { get { return InnerArray.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 
 	}

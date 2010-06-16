@@ -35,60 +35,58 @@ namespace nJupiter.Web.UI.Controls.Listings {
 #if DEBUG
 		private const string	DebugPrefix = "_";
 #else
-		private const string	DebugPrefix = "";
+		private const string DebugPrefix = "";
 #endif
 
-		private const string	DefaultPagingresulttext				= DebugPrefix + "{0}-{1} of {2}";
-		private const string	DefaultPagingnumberofpagestext		= DebugPrefix + "{0} pages:";
-		private const string	DefaultPagingnextpagetext			= DebugPrefix + "Next page";
-		private const string	DefaultPagingpreviouspagetext		= DebugPrefix + "Previous page";
-		private const string	DefaultPagingnextincrementtext		= DebugPrefix + "...";
-		private const string	DefaultPagingpreviousincrementtext	= DebugPrefix + "...";
+		private const string DefaultPagingresulttext = DebugPrefix + "{0}-{1} of {2}";
+		private const string DefaultPagingnumberofpagestext = DebugPrefix + "{0} pages:";
+		private const string DefaultPagingnextpagetext = DebugPrefix + "Next page";
+		private const string DefaultPagingpreviouspagetext = DebugPrefix + "Previous page";
+		private const string DefaultPagingnextincrementtext = DebugPrefix + "...";
+		private const string DefaultPagingpreviousincrementtext = DebugPrefix + "...";
 		#endregion
 
 		#region Members
-		private int				totalNumberOfItems;
-		private int				itemsPerPage							= 10;
-		private int				currentPageNumber						= 1;
-		private int				pagingNumberOfPages					= 5;
-		private string			pagingResultText						= DefaultPagingresulttext;
-		private string			pagingNumberOfPagesText				= DefaultPagingnumberofpagestext;
-		private string			pagingNextPageText					= DefaultPagingnextpagetext;
-		private string			pagingPreviousPageText				= DefaultPagingpreviouspagetext;
-		private string			pagingNextIncrementText				= DefaultPagingnextincrementtext;
-		private string			pagingPreviousIncrementText			= DefaultPagingpreviousincrementtext;
-		private string			pagingNextPageToolTipText				= "";
-		private string			pagingPreviousPageToolTipText			= "";
-		private string			pagingNextIncrementToolTipText		= "";
-		private string			pagingPreviousIncrementToolTipText	= "";
+		private int itemsPerPage = 10;
+		private int currentPageNumber = 1;
+		private int pagingNumberOfPages = 5;
+		private string pagingResultText = DefaultPagingresulttext;
+		private string pagingNumberOfPagesText = DefaultPagingnumberofpagestext;
+		private string pagingNextPageText = DefaultPagingnextpagetext;
+		private string pagingPreviousPageText = DefaultPagingpreviouspagetext;
+		private string pagingNextIncrementText = DefaultPagingnextincrementtext;
+		private string pagingPreviousIncrementText = DefaultPagingpreviousincrementtext;
+		private string pagingNextPageToolTipText = "";
+		private string pagingPreviousPageToolTipText = "";
+		private string pagingNextIncrementToolTipText = "";
+		private string pagingPreviousIncrementToolTipText = "";
 
-		private	Paging			headerPaging;
-		private	string			headerPagingId;
-		private	Paging			footerPaging;
-		private	string			footerPagingId;
-		private WebDropDownList	numberOfItemsSelector;
-		private	bool			disablePaging;
+		private Paging headerPaging;
+		private string headerPagingId;
+		private Paging footerPaging;
+		private string footerPagingId;
+		private WebDropDownList numberOfItemsSelector;
 		#endregion
-		
+
 		#region Properties
-		public string	PagingResultText					{ get { return this.pagingResultText;}						set	{ this.pagingResultText					= value; } }
-		public string	PagingNumberOfPagesText				{ get { return this.pagingNumberOfPagesText;}				set { this.pagingNumberOfPagesText				= value; } }
-		public string	PagingPreviousPageText				{ get { return this.pagingPreviousPageText; }				set { this.pagingPreviousPageText				= value; } }
-		public string	PagingNextPageText					{ get { return this.pagingNextPageText; }					set { this.pagingNextPageText					= value; } }
-		public string	PagingNextIncrementText				{ get { return this.pagingNextIncrementText; }				set { this.pagingNextIncrementText				= value; } }
-		public string	PagingPreviousIncrementText			{ get { return this.pagingPreviousIncrementText; }			set { this.pagingPreviousIncrementText			= value; } }
-		public string	PagingPreviousPageToolTipText		{ get { return this.pagingPreviousPageToolTipText; }		set { this.pagingPreviousPageToolTipText		= value; } }
-		public string	PagingNextPageToolTipText			{ get { return this.pagingNextPageToolTipText; }			set { this.pagingNextPageToolTipText			= value; } }
-		public string	PagingNextIncrementToolTipText		{ get { return this.pagingNextIncrementToolTipText; }		set { this.pagingNextIncrementToolTipText		= value; } }
-		public string	PagingPreviousIncrementToolTipText	{ get { return this.pagingPreviousIncrementToolTipText; }	set { this.pagingPreviousIncrementToolTipText	= value; } }
+		public string PagingResultText { get { return this.pagingResultText; } set { this.pagingResultText = value; } }
+		public string PagingNumberOfPagesText { get { return this.pagingNumberOfPagesText; } set { this.pagingNumberOfPagesText = value; } }
+		public string PagingPreviousPageText { get { return this.pagingPreviousPageText; } set { this.pagingPreviousPageText = value; } }
+		public string PagingNextPageText { get { return this.pagingNextPageText; } set { this.pagingNextPageText = value; } }
+		public string PagingNextIncrementText { get { return this.pagingNextIncrementText; } set { this.pagingNextIncrementText = value; } }
+		public string PagingPreviousIncrementText { get { return this.pagingPreviousIncrementText; } set { this.pagingPreviousIncrementText = value; } }
+		public string PagingPreviousPageToolTipText { get { return this.pagingPreviousPageToolTipText; } set { this.pagingPreviousPageToolTipText = value; } }
+		public string PagingNextPageToolTipText { get { return this.pagingNextPageToolTipText; } set { this.pagingNextPageToolTipText = value; } }
+		public string PagingNextIncrementToolTipText { get { return this.pagingNextIncrementToolTipText; } set { this.pagingNextIncrementToolTipText = value; } }
+		public string PagingPreviousIncrementToolTipText { get { return this.pagingPreviousIncrementToolTipText; } set { this.pagingPreviousIncrementToolTipText = value; } }
 
-		public int		PagingNumberOfPages					{ get {return this.pagingNumberOfPages; }					set { this.pagingNumberOfPages					= value; }}
-		public int		TotalNumberOfItems					{ get {return this.totalNumberOfItems; }					set { this.totalNumberOfItems					= value; }}
-		public bool		DisablePaging						{ get {return this.disablePaging; }						set { this.disablePaging						= value; }}
-		public string	HeaderPagingId						{ get {return this.headerPagingId; }						set { this.headerPagingId						= value; }}
-		public string	FooterPagingId						{ get {return this.footerPagingId; }						set { this.footerPagingId						= value; }}
+		public int PagingNumberOfPages { get { return this.pagingNumberOfPages; } set { this.pagingNumberOfPages = value; } }
+		public int TotalNumberOfItems { get; set; }
+		public bool DisablePaging { get; set; }
+		public string HeaderPagingId { get { return this.headerPagingId; } set { this.headerPagingId = value; } }
+		public string FooterPagingId { get { return this.footerPagingId; } set { this.footerPagingId = value; } }
 
-		public Paging	HeaderPaging {
+		public Paging HeaderPaging {
 			get {
 				return this.headerPaging;
 			}
@@ -100,7 +98,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 		}
 
-		public Paging	FooterPaging {
+		public Paging FooterPaging {
 			get {
 				return this.footerPaging;
 			}
@@ -122,7 +120,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				if(this.FooterPaging != null) {
 					this.FooterPaging.CurrentPageNumber = value;
 				}
-				this.currentPageNumber	= value;
+				this.currentPageNumber = value;
 			}
 		}
 		public int ItemsPerPage {
@@ -149,7 +147,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		#endregion
 
 		#region Event Activators
-		protected override void OnInit(EventArgs e){
+		protected override void OnInit(EventArgs e) {
 			base.OnInit(e);
 			if(this.headerPaging == null) {
 				if(!string.IsNullOrEmpty(this.headerPagingId) && this.Parent != null) {
@@ -193,23 +191,23 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			InitPaging(this.FooterPaging);
 			DataBindPaging();
 			if(this.HeaderPaging != null) {
-				this.PagingResultText			= this.HeaderPaging.ResultText;
-				this.PagingNumberOfPagesText	= this.HeaderPaging.NumberOfPagesText;
+				this.PagingResultText = this.HeaderPaging.ResultText;
+				this.PagingNumberOfPagesText = this.HeaderPaging.NumberOfPagesText;
 			}
 			if(this.FooterPaging != null) {
-				this.PagingResultText			= this.FooterPaging.ResultText;
-				this.PagingNumberOfPagesText	= this.FooterPaging.NumberOfPagesText;
+				this.PagingResultText = this.FooterPaging.ResultText;
+				this.PagingNumberOfPagesText = this.FooterPaging.NumberOfPagesText;
 			}
 		}
 		#endregion
 
 		#region Methods
 		protected virtual void PopulatePaging() {
-			if(!this.DisablePaging){
+			if(!this.DisablePaging) {
 				this.ListCollection = GetPagedCollection(this.InnerListCollection);
 			}
 		}
-		protected void DataBindPaging(){
+		protected void DataBindPaging() {
 			if(this.HeaderPaging != null) {
 				this.HeaderPaging.DataBind();
 			}
@@ -220,21 +218,21 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		#endregion
 
 		#region Helper Methods
-		private void InitPaging(Paging paging){
+		private void InitPaging(Paging paging) {
 			if(paging != null) {
-				paging.ItemsPerPage	= this.ItemsPerPage;
-				paging.Count						= this.TotalNumberOfItems;			
-				paging.CurrentPageNumber			= this.CurrentPageNumber;
-				paging.ResultText					= this.PagingResultText;
-				paging.NumberOfPagesText			= this.PagingNumberOfPagesText;
-				paging.PreviousPageText				= this.PagingPreviousPageText;
-				paging.NextPageText					= this.PagingNextPageText;
-				paging.PreviousIncrementText		= this.PagingPreviousIncrementText;
-				paging.NextIncrementText			= this.PagingNextIncrementText;
-				paging.PreviousPageToolTipText		= this.PagingPreviousPageToolTipText;
-				paging.NextPageToolTipText			= this.PagingNextPageToolTipText;
-				paging.PreviousIncrementToolTipText	= this.PagingPreviousIncrementToolTipText;
-				paging.NextIncrementToolTipText		= this.PagingNextIncrementToolTipText;
+				paging.ItemsPerPage = this.ItemsPerPage;
+				paging.Count = this.TotalNumberOfItems;
+				paging.CurrentPageNumber = this.CurrentPageNumber;
+				paging.ResultText = this.PagingResultText;
+				paging.NumberOfPagesText = this.PagingNumberOfPagesText;
+				paging.PreviousPageText = this.PagingPreviousPageText;
+				paging.NextPageText = this.PagingNextPageText;
+				paging.PreviousIncrementText = this.PagingPreviousIncrementText;
+				paging.NextIncrementText = this.PagingNextIncrementText;
+				paging.PreviousPageToolTipText = this.PagingPreviousPageToolTipText;
+				paging.NextPageToolTipText = this.PagingNextPageToolTipText;
+				paging.PreviousIncrementToolTipText = this.PagingPreviousIncrementToolTipText;
+				paging.NextIncrementToolTipText = this.PagingNextIncrementToolTipText;
 			}
 		}
 		private ArrayList GetPagedCollection(ArrayList list) {
@@ -243,15 +241,15 @@ namespace nJupiter.Web.UI.Controls.Listings {
 					if(list.Count > this.ItemsPerPage) {
 						list.RemoveRange(this.ItemsPerPage, list.Count - this.ItemsPerPage);
 					}
-				} else {					
+				} else {
 					// tail
 					int index = this.currentPageNumber * this.ItemsPerPage;
 					if(index < list.Count) {
 						list.RemoveRange(index, list.Count - index);
 					}
-					list.RemoveRange(0, (this.currentPageNumber - 1) * this.ItemsPerPage);				
+					list.RemoveRange(0, (this.currentPageNumber - 1) * this.ItemsPerPage);
 				}
-			} catch(ArgumentException){}
+			} catch(ArgumentException) { }
 			return list;
 		}
 		#endregion

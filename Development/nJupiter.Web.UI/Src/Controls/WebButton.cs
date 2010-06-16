@@ -32,40 +32,40 @@ namespace nJupiter.Web.UI.Controls {
 
 	[ToolboxItem(true), DefaultEvent("Click")]
 	public class WebButton : HtmlButton, IPostBackDataHandler, INamingContainer {
-		
+
 		#region Constants
-		private const string BrTag					= "<" + HtmlTag.Br + " />";
-		private const string InnerSpanKey			= "v_InnerSpan";
-		private const string CommandNameKey			= "v_CommandName";
-		private const string CommandArgKey			= "v_CommandArgument";
-		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
-		private const string TrailingBreakKey		= "v_TrailingBreak";
+		private const string BrTag = "<" + HtmlTag.Br + " />";
+		private const string InnerSpanKey = "v_InnerSpan";
+		private const string CommandNameKey = "v_CommandName";
+		private const string CommandArgKey = "v_CommandArgument";
+		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
+		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
-		
+
 		#region Static Holders
-		private static readonly object eventCommand		= new object();
-		private static readonly object eventClick		= new object();
-        private static readonly object eventServerClick	= new object();
+		private static readonly object EventCommand = new object();
+		private static readonly object EventClick = new object();
+		private static readonly object EventServerClick = new object();
 		#endregion
-		
-		#region Events 
+
+		#region Events
 		new public event EventHandler ServerClick {
 			add {
-				base.Events.AddHandler(WebButton.eventServerClick, value);
+				base.Events.AddHandler(WebButton.EventServerClick, value);
 			}
 			remove {
-				base.Events.RemoveHandler(WebButton.eventServerClick, value);
+				base.Events.RemoveHandler(WebButton.EventServerClick, value);
 			}
 		}
 
 		public event EventHandler Click {
-			add { base.Events.AddHandler(WebButton.eventClick, value); }
-			remove { base.Events.RemoveHandler(WebButton.eventClick, value); }
+			add { base.Events.AddHandler(WebButton.EventClick, value); }
+			remove { base.Events.RemoveHandler(WebButton.EventClick, value); }
 		}
 
 		public event CommandEventHandler Command {
-			add { base.Events.AddHandler(WebButton.eventCommand, value); }
-			remove { base.Events.RemoveHandler(WebButton.eventCommand, value); }
+			add { base.Events.AddHandler(WebButton.EventCommand, value); }
+			remove { base.Events.RemoveHandler(WebButton.EventCommand, value); }
 		}
 		#endregion
 
@@ -73,7 +73,7 @@ namespace nJupiter.Web.UI.Controls {
 		public string Type {
 			get {
 				string result = this.ViewState[HtmlAttribute.Type] as string;
-				if (result != null) {
+				if(result != null) {
 					return result;
 				}
 				return HtmlAttributeValue.Submit;
@@ -86,7 +86,7 @@ namespace nJupiter.Web.UI.Controls {
 		public string CssClass {
 			get {
 				string result = this.ViewState[HtmlAttribute.Class] as string;
-				if (result != null) {
+				if(result != null) {
 					return result;
 				}
 				return string.Empty;
@@ -111,8 +111,8 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string CommandArgument {
 			get {
-				string commandArgument = (string) this.ViewState[CommandArgKey];
-				if (commandArgument != null) {
+				string commandArgument = (string)this.ViewState[CommandArgKey];
+				if(commandArgument != null) {
 					return commandArgument;
 				}
 				return string.Empty;
@@ -124,8 +124,8 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string CommandName {
 			get {
-				string commandName = (string) this.ViewState[CommandNameKey];
-				if (commandName != null) {
+				string commandName = (string)this.ViewState[CommandNameKey];
+				if(commandName != null) {
 					return commandName;
 				}
 				return string.Empty;
@@ -137,7 +137,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public bool InnerSpan {
 			get {
-				if (this.ViewState[InnerSpanKey] == null) {
+				if(this.ViewState[InnerSpanKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[InnerSpanKey];
@@ -150,7 +150,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false)]
 		public bool TrailingBreak {
 			get {
-				if (this.ViewState[TrailingBreakKey] == null) {
+				if(this.ViewState[TrailingBreakKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingBreakKey];
@@ -163,7 +163,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool TrailingLinefeed {
 			get {
-				if (this.ViewState[TrailingLinefeedKey] == null) {
+				if(this.ViewState[TrailingLinefeedKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingLinefeedKey];
@@ -184,7 +184,7 @@ namespace nJupiter.Web.UI.Controls {
 		#region Event Handlers
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
-			if(ControlHandler.IsPreIE7){
+			if(ControlHandler.IsPreIE7) {
 				string onClick = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
 				string currentOnclick = this.OnClick;
 				if(currentOnclick.IndexOf(onClick) < 0)
@@ -195,20 +195,20 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected virtual void OnClickEvent(EventArgs e) {
-			EventHandler handler = (EventHandler)base.Events[WebButton.eventClick];
-			if (handler != null)
+			EventHandler handler = (EventHandler)base.Events[WebButton.EventClick];
+			if(handler != null)
 				handler(this, e);
 		}
 
 		protected virtual void OnCommandEvent(CommandEventArgs e) {
-			CommandEventHandler handler = (CommandEventHandler)base.Events[WebButton.eventCommand];
-			if (handler != null)
+			CommandEventHandler handler = (CommandEventHandler)base.Events[WebButton.EventCommand];
+			if(handler != null)
 				handler(this, e);
 			base.RaiseBubbleEvent(this, e);
 		}
 
 		protected override void OnServerClick(EventArgs e) {
-			EventHandler handler = (EventHandler)base.Events[WebButton.eventServerClick];
+			EventHandler handler = (EventHandler)base.Events[WebButton.EventServerClick];
 			if(handler != null) {
 				handler(this, e);
 			}
@@ -223,13 +223,13 @@ namespace nJupiter.Web.UI.Controls {
 			this.Attributes.Add(HtmlAttribute.Name, this.UniqueID);
 			base.Attributes.Remove(CommandArgKey);
 			base.Attributes.Remove(CommandNameKey);
-            
-			bool eventServerClickExists = base.Events[WebButton.eventServerClick] != null;
-            if ((this.Page != null) && eventServerClickExists){
-                ControlHandler.WriteOnClickAttribute(writer, this, false, true, this.CausesValidation && (this.Page.GetValidators(this.ValidationGroup).Count > 0), this.ValidationGroup);
-            }
-		
-			base.RenderAttributes (writer);
+
+			bool eventServerClickExists = base.Events[WebButton.EventServerClick] != null;
+			if((this.Page != null) && eventServerClickExists) {
+				ControlHandler.WriteOnClickAttribute(writer, this, false, true, this.CausesValidation && (this.Page.GetValidators(this.ValidationGroup).Count > 0), this.ValidationGroup);
+			}
+
+			base.RenderAttributes(writer);
 		}
 
 		protected override void RenderBeginTag(HtmlTextWriter writer) {
@@ -241,14 +241,14 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void RenderEndTag(HtmlTextWriter writer) {
 			if(this.InnerSpan)
 				writer.WriteEndTag(HtmlTag.Span);
-			base.RenderEndTag (writer);
+			base.RenderEndTag(writer);
 			if(this.TrailingBreak)
 				writer.Write(BrTag);
 			if(this.TrailingLinefeed)
 				writer.WriteLine();
 		}
 		#endregion
-		
+
 		#region Implementation of IPostBackDataHandler
 		bool IPostBackDataHandler.LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection) {
 			return LoadPostData();

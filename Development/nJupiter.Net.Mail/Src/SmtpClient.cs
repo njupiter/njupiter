@@ -39,14 +39,14 @@ namespace nJupiter.Net.Mail {
 	public class SmtpClient {
 
 		#region Members
-		private readonly string	host		= "localhost";
-		private readonly string	userName	= string.Empty;
-		private readonly string	password	= string.Empty;
-		private readonly int	timeout	= 100;
+		private readonly string host = "localhost";
+		private readonly string userName = string.Empty;
+		private readonly string password = string.Empty;
+		private readonly int timeout = 100;
 		#endregion
 
 		#region Static Members
-		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Constructors
@@ -56,44 +56,47 @@ namespace nJupiter.Net.Mail {
 			if(host == null) {
 				throw new ArgumentNullException("host");
 			}
-			this.host	= host;
+			this.host = host;
 		}
 
-		public SmtpClient(string host, int timeout) : this(host) {
+		public SmtpClient(string host, int timeout)
+			: this(host) {
 			if(timeout <= 0) {
 				throw new ArgumentOutOfRangeException("timeout", "Timeout can not be less than 1 second.");
 			}
-			this.timeout	= timeout;
+			this.timeout = timeout;
 		}
 
-		public SmtpClient(string host, string userName, string password) : this(host) {
+		public SmtpClient(string host, string userName, string password)
+			: this(host) {
 			if(userName == null) {
 				throw new ArgumentNullException("userName");
 			}
 			if(password == null) {
 				throw new ArgumentNullException("password");
 			}
-			this.userName	= userName;
-			this.password	= password;
+			this.userName = userName;
+			this.password = password;
 		}
 
-		public SmtpClient(string host, string userName, string password, int timeout) : this(host, userName, password) {
+		public SmtpClient(string host, string userName, string password, int timeout)
+			: this(host, userName, password) {
 			if(timeout <= 0) {
 				throw new ArgumentOutOfRangeException("timeout", "Timeout can not be less than 1 second.");
 			}
-			this.host		= host;
-			this.timeout	= timeout;
+			this.host = host;
+			this.timeout = timeout;
 		}
 		#endregion
 
 		#region Enums
 		private enum SmtpReplyCode {
-			ConnectSuccess	= 220,
-			QuitSuccess		= 221,
-			AuthSuccess		= 235,
-			GenericSuccess	= 250,
-			AuthRequest		= 334,
-			DataSuccess		= 354
+			ConnectSuccess = 220,
+			QuitSuccess = 221,
+			AuthSuccess = 235,
+			GenericSuccess = 250,
+			AuthRequest = 334,
+			DataSuccess = 354
 		}
 		#endregion
 
@@ -110,10 +113,10 @@ namespace nJupiter.Net.Mail {
 				IPHostEntry ipHost = Dns.GetHostEntry(this.host);
 				ipAddress = ipHost.AddressList[0];
 			}
-			IPEndPoint	endPoint	= new IPEndPoint(ipAddress, 25);
+			IPEndPoint endPoint = new IPEndPoint(ipAddress, 25);
 
 			using(Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)) {
-				if(log.IsDebugEnabled) { log.Debug("Connecting to SMTP-server [" + this.host + "]"); }
+				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Connecting to SMTP-server [{0}]", this.host)); }
 
 				socket.Connect(endPoint);
 				WaitForResponse(socket, SmtpReplyCode.ConnectSuccess);
@@ -138,9 +141,9 @@ namespace nJupiter.Net.Mail {
 		#region Helper Methods
 		private SmtpResponse SendData(Socket socket, string message, SmtpReplyCode expectedResponse) {
 			byte[] msg = Encoding.UTF8.GetBytes(message);
-			if(log.IsDebugEnabled) { log.Debug("Sending data [" + message + "] to SMTP-server " + this.host); }
+			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Sending data [{0}] to SMTP-server {1}", message, this.host)); }
 			socket.Send(msg, 0, msg.Length, SocketFlags.None);
-			if(!expectedResponse.Equals(SmtpReplyCode.QuitSuccess)){
+			if(!expectedResponse.Equals(SmtpReplyCode.QuitSuccess)) {
 				return this.WaitForResponse(socket, expectedResponse);
 			}
 			return null;
@@ -150,7 +153,7 @@ namespace nJupiter.Net.Mail {
 			DateTime timeStamp = DateTime.Now.AddSeconds(this.timeout);
 			while(socket.Available == 0) {
 				if(DateTime.Now > timeStamp) {
-					throw new SmtpTimeoutException("Connection timeout while sending data to the server [" + this.host + "].");
+					throw new SmtpTimeoutException(string.Format("Connection timeout while sending data to the server [{0}].", this.host));
 				}
 				Thread.Sleep(10);
 			}
@@ -158,22 +161,22 @@ namespace nJupiter.Net.Mail {
 			byte[] bytes = new byte[1024];
 
 			socket.Receive(bytes, 0, socket.Available, SocketFlags.None);
-			
-			string	response	= Encoding.UTF8.GetString(bytes);
-			int		replyCode	= int.Parse(response.Substring(0, 3), NumberFormatInfo.InvariantInfo);
-			string	message		= response.Substring(4, response.Length - 4);
+
+			string response = Encoding.UTF8.GetString(bytes);
+			int replyCode = int.Parse(response.Substring(0, 3), NumberFormatInfo.InvariantInfo);
+			string message = response.Substring(4, response.Length - 4);
 
 			if(replyCode != (int)expectedResponse) {
-				switch(expectedResponse){
+				switch(expectedResponse) {
 					case SmtpReplyCode.ConnectSuccess:
-						throw new SmtpConnectionException("Failed to connect to SMTP-server [" + this.host + "]. Code: " + replyCode + " Message: " + message);
+					throw new SmtpConnectionException(string.Format("Failed to connect to SMTP-server [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
 					case SmtpReplyCode.AuthSuccess:
 					case SmtpReplyCode.AuthRequest:
-						throw new SmtpAuthenticationException("Authentication to SMTP-server failed [" + this.host + "]. Code: " + replyCode + " Message: " + message);
+					throw new SmtpAuthenticationException(string.Format("Authentication to SMTP-server failed [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
 					case SmtpReplyCode.DataSuccess:
-						throw new SmtpDataTransferException("Failed to send data to SMTP-server [" + this.host + "]. Code: " + replyCode + " Message: " + message);
+					throw new SmtpDataTransferException(string.Format("Failed to send data to SMTP-server [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
 					default:
-						throw new SmtpException("Failed to send mail through SMTP-server [" + this.host + "]. Code: " + replyCode + " Message: " + message);
+					throw new SmtpException(string.Format("Failed to send mail through SMTP-server [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
 				}
 			}
 
@@ -188,10 +191,10 @@ namespace nJupiter.Net.Mail {
 			}
 		}
 
-		private void Authenticate(Socket socket) { 
+		private void Authenticate(Socket socket) {
 			if(this.userName.Length > 0 || this.password.Length > 0) {
 				SmtpResponse smtpResponse = SendData(socket, string.Format(CultureInfo.InvariantCulture, "EHLO {0}\r\n", Dns.GetHostName()), SmtpReplyCode.GenericSuccess);
-				
+
 				if(smtpResponse.Message.IndexOf("AUTH=LOGIN") >= 0) {
 					SendData(socket, "AUTH LOGIN\r\n", SmtpReplyCode.AuthRequest);
 
@@ -201,7 +204,7 @@ namespace nJupiter.Net.Mail {
 					bytes = Encoding.UTF8.GetBytes(this.password);
 					SendData(socket, Convert.ToBase64String(bytes) + Environment.NewLine, SmtpReplyCode.AuthSuccess);
 				} else {
-					throw new SmtpAuthenticationException("Authentication to SMTP-server failed [" + this.host + "]. Code: " + smtpResponse.ReplyCode + " Message: " + smtpResponse.Message);
+					throw new SmtpAuthenticationException(string.Format("Authentication to SMTP-server failed [{0}]. Code: {1} Message: {2}", this.host, smtpResponse.ReplyCode, smtpResponse.Message));
 				}
 			} else {
 				SendData(socket, string.Format(CultureInfo.InvariantCulture, "HELO {0}\r\n", Dns.GetHostName()), SmtpReplyCode.GenericSuccess);
@@ -210,13 +213,13 @@ namespace nJupiter.Net.Mail {
 		#endregion
 
 		#region Helper Classes
-		private class SmtpResponse {
-			public readonly int		ReplyCode;
-			public readonly string	Message;
-			
+		private sealed class SmtpResponse {
+			public readonly int ReplyCode;
+			public readonly string Message;
+
 			public SmtpResponse(int code, string message) {
-				ReplyCode	= code;
-				Message		= message;
+				ReplyCode = code;
+				Message = message;
 			}
 		}
 		#endregion

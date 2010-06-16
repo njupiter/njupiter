@@ -32,8 +32,8 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public abstract class Attribute {
 		#region Variables
-		private readonly string	name;
-		private object			value;
+		private readonly string name;
+		private object value;
 		#endregion
 
 		#region Constructors
@@ -41,10 +41,10 @@ namespace nJupiter.Services.Forum {
 			if(attributeName == null) {
 				throw new ArgumentNullException("attributeName");
 			}
-			if(attributeName.Length > 100) { 
+			if(attributeName.Length > 100) {
 				throw new ArgumentOutOfRangeException("attributeName");
 			}
-			this.name	= attributeName;
+			this.name = attributeName;
 		}
 		#endregion
 
@@ -78,7 +78,7 @@ namespace nJupiter.Services.Forum {
 		public abstract object DeserializeAttributeValue(string value);
 		public sealed override bool Equals(object obj) {
 			Attribute attribute = obj as Attribute;
-			return attribute != null && 
+			return attribute != null &&
 				this.GetType().Equals(attribute.GetType()) &&
 				this.name.Equals(attribute.name);
 		}
@@ -109,7 +109,7 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public class StringAttribute : Attribute {
 		#region Constructors
-		public StringAttribute(string attributeName) : base(attributeName) {}
+		public StringAttribute(string attributeName) : base(attributeName) { }
 		#endregion
 
 		#region Properties
@@ -138,14 +138,14 @@ namespace nJupiter.Services.Forum {
 		#endregion
 
 		#region Constructors
-		public DateTimeAttribute(string attributeName) : base(attributeName) {}
+		public DateTimeAttribute(string attributeName) : base(attributeName) { }
 		#endregion
 
 		#region Properties
 		public override object DefaultValue { get { return DateTime.MinValue; } }
 		new public DateTime Value { get { return (DateTime)base.Value; } set { base.Value = value; } }
 		public override Type AttributeValueType { get { return typeof(DateTime); } }
-		#endregion 
+		#endregion
 
 		#region Methods
 		public override string ToSerializedString() {
@@ -162,7 +162,7 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public class BoolAttribute : Attribute {
 		#region Constructors
-		public BoolAttribute(string attributeName) : base(attributeName) {}
+		public BoolAttribute(string attributeName) : base(attributeName) { }
 		#endregion
 
 		#region Properties
@@ -190,13 +190,13 @@ namespace nJupiter.Services.Forum {
 		#endregion
 
 		#region Constructors
-		public IntAttribute(string attributeName) : base(attributeName) {}
+		public IntAttribute(string attributeName) : base(attributeName) { }
 		#endregion
 
 		#region Properties
 		public override object DefaultValue { get { return 0; } }
 		new public int Value { get { return (int)base.Value; } set { base.Value = value; } }
-		public override Type AttributeValueType { get {	return typeof(int); } }
+		public override Type AttributeValueType { get { return typeof(int); } }
 		#endregion
 
 		#region Methods
@@ -216,7 +216,7 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public class BinaryAttribute : Attribute {
 		#region Constructors
-		public BinaryAttribute(string attributeName) : base(attributeName) {}
+		public BinaryAttribute(string attributeName) : base(attributeName) { }
 		#endregion
 
 		#region Properties
@@ -224,7 +224,7 @@ namespace nJupiter.Services.Forum {
 		public override Type AttributeValueType { get { return typeof(object); } }
 		public override bool SerializationPreservesOrder { get { return false; } }
 		#endregion
-		
+
 		#region Methods
 		public override string ToSerializedString() {
 			if(this.IsEmpty) {
@@ -246,7 +246,7 @@ namespace nJupiter.Services.Forum {
 		#endregion
 	}
 	#endregion
-	
+
 	#endregion
 
 }

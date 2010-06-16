@@ -26,13 +26,13 @@ using System;
 using System.Collections;
 
 namespace nJupiter.DataAccess.Users {
-	
+
 	[Serializable]
 	internal sealed class ContextualPropertyCollectionTable : ICollection {
 		#region Members
-		private		Hashtable	innerHash;
+		private Hashtable innerHash;
 		#endregion
-		
+
 		#region Constructors
 		internal ContextualPropertyCollectionTable() {
 			this.innerHash = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
@@ -40,7 +40,7 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Indexers
-		public PropertyCollection this[Context context] { get{ return (PropertyCollection) InnerHash[context]; } }
+		public PropertyCollection this[Context context] { get { return (PropertyCollection)InnerHash[context]; } }
 		#endregion
 
 		#region Properties
@@ -55,9 +55,9 @@ namespace nJupiter.DataAccess.Users {
 		internal void Remove(Context context) {
 			InnerHash.Remove(context);
 		}
-		
+
 		internal bool Contains(Context context) {
-			return(InnerHash.Contains(context));
+			return (InnerHash.Contains(context));
 		}
 
 		public void CopyTo(Array array, int index) {
@@ -80,33 +80,33 @@ namespace nJupiter.DataAccess.Users {
 			return new ContextualPropertyCollectionTableEnumerator(this);
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerHash.IsSynchronized; } }
-		public int		Count			{ get { return InnerHash.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerHash.IsSynchronized; } }
+		public int Count { get { return InnerHash.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 	}
-	
+
 	#region ContextualPropertyCollectionTableEnumerator
 	[Serializable]
 	internal class ContextualPropertyCollectionTableEnumerator : IEnumerator {
 		private readonly IEnumerator innerEnumerator;
-		
+
 		internal ContextualPropertyCollectionTableEnumerator(ContextualPropertyCollectionTable enumerable) {
 			innerEnumerator = enumerable.InnerHash.GetEnumerator();
 		}
-		
+
 		#region Implementation of IEnumerator
 		public void Reset() {
 			innerEnumerator.Reset();
 		}
-		
+
 		public bool MoveNext() {
 			return innerEnumerator.MoveNext();
 		}
-		
-		public object Current { get { return ((DictionaryEntry) innerEnumerator.Current).Value; } }
+
+		public object Current { get { return ((DictionaryEntry)innerEnumerator.Current).Value; } }
 		#endregion
 	}
 	#endregion

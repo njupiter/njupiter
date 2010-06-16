@@ -44,7 +44,7 @@ namespace nJupiter.Globalization {
 				return GetCultureInfo(System.Threading.Thread.CurrentThread.CurrentUICulture);
 			}
 		}
-		
+
 		public static CultureInfo GetCultureInfo(int culture) {
 			return GetCultureInfo((new CultureInfo(culture))); // Can this be done nicer?
 		}
@@ -62,19 +62,19 @@ namespace nJupiter.Globalization {
 			}
 			CultureInfo cultureInfo = null;
 			if(cultureInfoCache.ContainsKey(name)) {
-				cultureInfo = cultureInfoCache[name];	
+				cultureInfo = cultureInfoCache[name];
 			}
 			if(cultureInfo != null)
 				return (CultureInfo)cultureInfo.Clone();
-			
+
 			cultureInfo = new CultureInfo(name);
 
 			Config config = ConfigHandler.GetSystemConfig();
 
 			string dateTimeFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/dateTimeFormat", name);
-			if(config.ContainsKey(dateTimeFormatConfigKey)){
+			if(config.ContainsKey(dateTimeFormatConfigKey)) {
 				Config dateTimeFormatConfig = config.GetConfigSection(dateTimeFormatConfigKey);
-				
+
 				string[] abbreviatedMonthGenitiveNames = dateTimeFormatConfig.GetValueArray("abbreviatedMonthGenitiveNames", "abbreviatedMonthGenitiveName");
 				if(abbreviatedMonthGenitiveNames.Length > 0) {
 					try {
@@ -92,7 +92,7 @@ namespace nJupiter.Globalization {
 						throw new ConfigurationException(string.Format("[{0}/monthGenitiveNames] {1}", dateTimeFormatConfigKey, ex.Message));
 					}
 				}
-				
+
 				string[] abbreviatedDayNames = dateTimeFormatConfig.GetValueArray("abbreviatedDayNames", "abbreviatedDayName");
 				if(abbreviatedDayNames.Length > 0) {
 					try {
@@ -110,7 +110,7 @@ namespace nJupiter.Globalization {
 						throw new ConfigurationException(string.Format("[{0}/shortestDayNames] {1}", dateTimeFormatConfigKey, ex.Message));
 					}
 				}
-			
+
 				string[] abbreviatedMonthNames = dateTimeFormatConfig.GetValueArray("abbreviatedMonthNames", "abbreviatedMonthName");
 				if(abbreviatedMonthNames.Length > 0) {
 					try {
@@ -131,7 +131,7 @@ namespace nJupiter.Globalization {
 
 
 				string[] monthNames = dateTimeFormatConfig.GetValueArray("monthNames", "monthName");
-				if(monthNames.Length > 0){
+				if(monthNames.Length > 0) {
 					try {
 						cultureInfo.DateTimeFormat.MonthNames = monthNames;
 					} catch(ArgumentException ex) {
@@ -203,7 +203,7 @@ namespace nJupiter.Globalization {
 
 			string numberFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/numberFormat", name);
 
-			if(config.ContainsKey(numberFormatConfigKey)){
+			if(config.ContainsKey(numberFormatConfigKey)) {
 				Config numberFormatConfig = config.GetConfigSection(numberFormatConfigKey);
 
 				if(numberFormatConfig.ContainsKey("currencyDecimalDigits")) {

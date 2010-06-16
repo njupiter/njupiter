@@ -33,9 +33,9 @@ namespace nJupiter.DataAccess {
 	public abstract class Command : IDisposable {
 		#region Members
 		private Transaction transaction;
-		private bool		disposed;
+		private bool disposed;
 		#endregion
-		
+
 		#region Properties
 		/// <summary>
 		/// Gets or sets the transaction associated with the command.
@@ -87,7 +87,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="name">The name of the parameter.</param>
 		/// <param name="type">The type of the parameter.</param>
 		/// <param name="size">The size of the parameter.</param>
-		public void AddOutParameter(string name, DbType type, int size){
+		public void AddOutParameter(string name, DbType type, int size) {
 			this.AddParameter(name, type, size, ParameterDirection.Output, true, 0, 0, string.Empty, DataRowVersion.Default, DBNull.Value);
 		}
 		/// <summary>
@@ -95,7 +95,7 @@ namespace nJupiter.DataAccess {
 		/// </summary>
 		/// <param name="name">The name of the parameter.</param>
 		/// <param name="type">The type of the parameter.</param>
-		public void AddInParameter(string name, DbType type){
+		public void AddInParameter(string name, DbType type) {
 			this.AddParameter(name, type, ParameterDirection.Input, string.Empty, DataRowVersion.Default, null);
 		}
 		/// <summary>
@@ -104,7 +104,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="name">The name of the parameter.</param>
 		/// <param name="type">The type of the parameter.</param>
 		/// <param name="value">The value of the parameter.</param>
-		public void AddInParameter(string name, DbType type, object value){
+		public void AddInParameter(string name, DbType type, object value) {
 			this.AddParameter(name, type, ParameterDirection.Input, string.Empty, DataRowVersion.Default, value);
 		}
 		/// <summary>
@@ -114,7 +114,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="type">The type of the parameter.</param>
 		/// <param name="column">The column of the parameter.</param>
 		/// <param name="rowVersion">The row version.</param>
-		public void AddInParameter(string name, DbType type, string column, DataRowVersion rowVersion){
+		public void AddInParameter(string name, DbType type, string column, DataRowVersion rowVersion) {
 			this.AddParameter(name, type, 0, ParameterDirection.Input, true, 0, 0, column, rowVersion, null);
 		}
 		/// <summary>
@@ -135,11 +135,11 @@ namespace nJupiter.DataAccess {
 		/// </summary>
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected virtual void Dispose(bool disposing) {
-			if (!this.disposed) {
+			if(!this.disposed) {
 				this.disposed = true;
-   
+
 				// Suppress finalization of this disposed instance.
-				if (disposing) 
+				if(disposing)
 					GC.SuppressFinalize(this);
 			}
 		}

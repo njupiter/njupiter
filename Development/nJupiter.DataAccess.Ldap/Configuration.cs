@@ -37,7 +37,7 @@ namespace nJupiter.DataAccess.Ldap {
 		private UsersConfig usersConfig;
 		private GroupsConfig groupsConfig;
 
-		private static readonly Dictionary<string, Configuration> Configurations = new Dictionary<string,Configuration>();
+		private static readonly Dictionary<string, Configuration> Configurations = new Dictionary<string, Configuration>();
 		private static readonly object Padlock = new object();
 
 		public ServerConfig Server {
@@ -212,7 +212,7 @@ namespace nJupiter.DataAccess.Ldap {
 						groups.RdnAttribute = "cn";
 					}
 
-					
+
 					List<AttributeDefinition> groupAttributeDefinitionList = new List<AttributeDefinition>();
 					if(configSection.ContainsKey("groups", "attributes")) {
 						string[] attributes = configSection.GetValueArray("groups/attributes", "attribute");
@@ -308,13 +308,13 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 
-		public class UsersConfig { 
+		public class UsersConfig {
 
 			public string Filter { get; internal set; }
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
-			public List<AttributeDefinition> Attributes  { get; internal set; }
+			public List<AttributeDefinition> Attributes { get; internal set; }
 			public string MembershipAttribute { get; internal set; }
 			public string EmailAttribute { get; internal set; }
 			public string CreationDateAttribute { get; internal set; }
@@ -327,13 +327,13 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 
 		}
-		public class GroupsConfig { 
+		public class GroupsConfig {
 
 			public string Filter { get; internal set; }
 			public string Base { get; internal set; }
 			public string Path { get; internal set; }
 			public string RdnAttribute { get; internal set; }
-			public List<AttributeDefinition> Attributes  { get; internal set; }
+			public List<AttributeDefinition> Attributes { get; internal set; }
 			public string MembershipAttribute { get; internal set; }
 			public NameType NameType { get; internal set; }
 

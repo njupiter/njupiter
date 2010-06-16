@@ -33,72 +33,67 @@ namespace nJupiter.Services.Forum.UI.Web {
 
 	public class CategorySelector : UserControl {
 		#region Constants
-		private const Category.Property	SORTPROPERTY							= Category.Property.Name;
-		private const bool				SORTASCENDING							= true;
-		private const bool				LOADATTRIBUTES							= false;
-		private const bool				DEFAULT_INCLUDEHIDDEN					= false;
-		private const bool				DEFAULT_INCLUDENOSELECTIONITEM			= true;
-		private const bool				DEFAULT_AUTOPOSTBACK					= true;
+		private const Category.Property Sortproperty = Category.Property.Name;
+		private const bool Sortascending = true;
+		private const bool Loadattributes = false;
+		private const bool DefaultIncludehidden = false;
+		private const bool DefaultIncludenoselectionitem = true;
+		private const bool DefaultAutopostback = true;
 
 #if DEBUG
-		private const string			DEBUG_PREFIX							= "_";
+		private const string			DebugPrefix							= "_";
 #else
-		private const string			DEBUG_PREFIX							= "";
+		private const string DebugPrefix = "";
 #endif
-		private const string			DEFAULT_FIELDSETLABELTEXT				= DEBUG_PREFIX + "Input fields";
-		private const string			DEFAULT_CATEGORYSELECTORLABELTEXT		= DEBUG_PREFIX + "Categories";
-		private const string			DEFAULT_SUBMITBUTTONTEXT				= DEBUG_PREFIX + "Submit";
-		private const string			DEFAULT_NOSELECTIONITEMTEXT				= DEBUG_PREFIX + "Choose a category";
+		private const string DefaultFieldsetlabeltext = DebugPrefix + "Input fields";
+		private const string DefaultCategoryselectorlabeltext = DebugPrefix + "Categories";
+		private const string DefaultSubmitbuttontext = DebugPrefix + "Submit";
+		private const string DefaultNoselectionitemtext = DebugPrefix + "Choose a category";
 		#endregion
 
 		#region Variables
-		private ForumDao				m_ForumDao;
-		private bool					m_DataBound;
-		private string					m_Domain;
-		private bool					m_IncludeHidden							= DEFAULT_INCLUDEHIDDEN;
-		private CategoryCollection		m_CategoryCollection;
+		private ForumDao forumDao;
+		private bool dataBound;
+		private bool includeHidden = DefaultIncludehidden;
 
-		private string					m_NoSelectionItemText					= DEFAULT_NOSELECTIONITEMTEXT;
-		private bool					m_IncludeNoSelectionItem				= DEFAULT_INCLUDENOSELECTIONITEM;
-		private string					m_RedirectUrlWithoutTrailingCategoryId;
+		private string noSelectionItemText = DefaultNoselectionitemtext;
+		private bool includeNoSelectionItem = DefaultIncludenoselectionitem;
 
-		private CategoryId				m_SelectedCategoryId;
-
-		private static readonly object	s_EventCategorySelected					= new object();
+		private static readonly object EventCategorySelected = new object();
 		#endregion
 
 		#region Events
-		public event CategorySelectedEventHandler CategorySelected { 
-			add { base.Events.AddHandler(s_EventCategorySelected, value); } 
-			remove { base.Events.RemoveHandler(s_EventCategorySelected, value); } 
+		public event CategorySelectedEventHandler CategorySelected {
+			add { base.Events.AddHandler(EventCategorySelected, value); }
+			remove { base.Events.RemoveHandler(EventCategorySelected, value); }
 		}
 		#endregion
 
 		#region UI Members
 		protected WebGenericControl ctrlFieldSetLabel;
-		protected WebLabel			lblCategories;
-		protected WebDropDownList	ctrlCategories;
-		protected WebPlaceHolder	ctrlNoScript;
-		protected WebButton			btnSubmit;
+		protected WebLabel lblCategories;
+		protected WebDropDownList ctrlCategories;
+		protected WebPlaceHolder ctrlNoScript;
+		protected WebButton btnSubmit;
 		#endregion
 
 		#region Properties
-		public ForumDao ForumDao { get { return this.m_ForumDao ?? (this.m_ForumDao = ForumDao.GetInstance()); } set { m_ForumDao = value; } }
-		
-		public bool IncludeHidden { get { return m_IncludeHidden; } set { m_IncludeHidden = value; } }
-		public string Domain { get { return m_Domain; } set { m_Domain = value; } }
-		public CategoryCollection CategoryCollection { get { return m_CategoryCollection; } set { m_CategoryCollection = value; } }
+		public ForumDao ForumDao { get { return this.forumDao ?? (this.forumDao = ForumDao.GetInstance()); } set { this.forumDao = value; } }
 
-		public bool IncludeNoSelectionItem { get { return m_IncludeNoSelectionItem; } set { m_IncludeNoSelectionItem = value; } }
-		public string NoSelectionItemText { get { return m_NoSelectionItemText; } set { m_NoSelectionItemText = value; } }
+		public bool IncludeHidden { get { return this.includeHidden; } set { this.includeHidden = value; } }
+		public string Domain { get; set; }
+		public CategoryCollection CategoryCollection { get; set; }
+
+		public bool IncludeNoSelectionItem { get { return this.includeNoSelectionItem; } set { this.includeNoSelectionItem = value; } }
+		public string NoSelectionItemText { get { return this.noSelectionItemText; } set { this.noSelectionItemText = value; } }
 		public bool AutoPostBack { get { return ctrlCategories.AutoPostBack; } set { ctrlCategories.AutoPostBack = value; } }
 		public string FieldSetLabelText { get { return ctrlFieldSetLabel.InnerText; } set { ctrlFieldSetLabel.InnerText = value; } }
 		public string CategorySelectorLabelText { get { return lblCategories.InnerText; } set { lblCategories.InnerText = value; } }
 		public string SubmitButtonText { get { return btnSubmit.InnerText; } set { btnSubmit.InnerText = value; } }
-		public string RedirectUrlWithoutTrailingCategoryId { get { return m_RedirectUrlWithoutTrailingCategoryId; } set { m_RedirectUrlWithoutTrailingCategoryId = value; } }
+		public string RedirectUrlWithoutTrailingCategoryId { get; set; }
 
-		public CategoryId SelectedCategoryId { get { return m_SelectedCategoryId; } set { m_SelectedCategoryId = value; } }
-		#endregion 
+		public CategoryId SelectedCategoryId { get; set; }
+		#endregion
 
 		#region Event Handlers
 		private void SelectedIndexChanged(object sender, EventArgs e) {
@@ -112,7 +107,7 @@ namespace nJupiter.Services.Forum.UI.Web {
 
 		#region Event Activators
 		protected virtual void OnCategorySelected(EventArgs e) {
-			CategorySelectedEventHandler eventHandler = base.Events[s_EventCategorySelected] as CategorySelectedEventHandler;
+			CategorySelectedEventHandler eventHandler = base.Events[EventCategorySelected] as CategorySelectedEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
@@ -123,20 +118,20 @@ namespace nJupiter.Services.Forum.UI.Web {
 		protected override void OnInit(EventArgs e) {
 			ctrlFieldSetLabel.EnableViewState = lblCategories.EnableViewState = ctrlNoScript.EnableViewState = false;
 
-			this.FieldSetLabelText			= DEFAULT_FIELDSETLABELTEXT;
-			this.CategorySelectorLabelText	= DEFAULT_CATEGORYSELECTORLABELTEXT;
-			this.SubmitButtonText			= DEFAULT_SUBMITBUTTONTEXT;
-			this.AutoPostBack				= DEFAULT_AUTOPOSTBACK;
+			this.FieldSetLabelText = DefaultFieldsetlabeltext;
+			this.CategorySelectorLabelText = DefaultCategoryselectorlabeltext;
+			this.SubmitButtonText = DefaultSubmitbuttontext;
+			this.AutoPostBack = DefaultAutopostback;
 
-			btnSubmit.Click						+= this.SelectedIndexChanged;
-			ctrlCategories.SelectedIndexChanged	+= this.SelectedIndexChanged;
+			btnSubmit.Click += this.SelectedIndexChanged;
+			ctrlCategories.SelectedIndexChanged += this.SelectedIndexChanged;
 			base.OnInit(e);
 		}
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
-			ctrlNoScript.SurroundingTag		= this.AutoPostBack ? HtmlTag.Noscript : null;
-			ctrlFieldSetLabel.Visible		= this.FieldSetLabelText != null && !this.FieldSetLabelText.Length.Equals(0);
-			if(!m_DataBound) {
+			ctrlNoScript.SurroundingTag = this.AutoPostBack ? HtmlTag.Noscript : null;
+			ctrlFieldSetLabel.Visible = this.FieldSetLabelText != null && !this.FieldSetLabelText.Length.Equals(0);
+			if(!this.dataBound) {
 				this.DataBind();
 			}
 		}
@@ -145,17 +140,17 @@ namespace nJupiter.Services.Forum.UI.Web {
 				if(this.CategoryCollection != null && !this.CategoryCollection.Count.Equals(0)) {
 					ctrlCategories.Items.AddRange(GetListItemsFromCategories(this.CategoryCollection));
 				} else {
-					CategoriesResultConfiguration resultConfiguration			= new CategoriesResultConfiguration(this.IncludeHidden, LOADATTRIBUTES, SORTPROPERTY, SORTASCENDING);
-					ThreadedPostsResultConfiguration postsResultConfiguration	= new ThreadedPostsResultConfiguration(0);
-					ctrlCategories.Items.AddRange(GetListItemsFromCategories(this.Domain == null ? 
+					CategoriesResultConfiguration resultConfiguration = new CategoriesResultConfiguration(this.IncludeHidden, Loadattributes, Sortproperty, Sortascending);
+					ThreadedPostsResultConfiguration postsResultConfiguration = new ThreadedPostsResultConfiguration(0);
+					ctrlCategories.Items.AddRange(GetListItemsFromCategories(this.Domain == null ?
 						this.ForumDao.GetCategories(resultConfiguration, postsResultConfiguration) : this.ForumDao.GetCategories(this.Domain, resultConfiguration, postsResultConfiguration)));
 				}
 				if(this.IncludeNoSelectionItem) {
 					ctrlCategories.Items.Insert(0, new ListItem(this.NoSelectionItemText, string.Empty));
 				}
 			}
-			ctrlCategories.SelectedValue	= this.SelectedCategoryId == null ? string.Empty : this.SelectedCategoryId.ToString();
-			m_DataBound						= true;
+			ctrlCategories.SelectedValue = this.SelectedCategoryId == null ? string.Empty : this.SelectedCategoryId.ToString();
+			this.dataBound = true;
 		}
 		#endregion
 

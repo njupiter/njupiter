@@ -57,7 +57,7 @@ namespace nJupiter.DataAccess.Ldap {
 					builder.Append(String.Format("({0}={1})", otherAttributes.Name, escapedUsername));
 				}
 			}
-			return String.Format("(&{0}(|({1}={2}){3}))", userFilter, config.Users.RdnAttribute, escapedUsername, builder) ;
+			return String.Format("(&{0}(|({1}={2}){3}))", userFilter, config.Users.RdnAttribute, escapedUsername, builder);
 		}
 
 		public string CreateUserEmailFilter(string emailToMatch) {

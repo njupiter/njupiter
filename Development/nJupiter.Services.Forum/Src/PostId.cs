@@ -27,10 +27,10 @@ using System;
 namespace nJupiter.Services.Forum {
 
 	[Serializable]
-	public sealed class PostId : GuidId {	
+	public sealed class PostId : GuidId {
 		#region Constructors
-		internal PostId(Guid value) : base(value) {}
-		internal PostId() {}
+		internal PostId(Guid value) : base(value) { }
+		internal PostId() { }
 		#endregion
 
 		#region Methods

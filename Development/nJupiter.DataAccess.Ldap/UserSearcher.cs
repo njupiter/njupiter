@@ -27,10 +27,10 @@ using System.DirectoryServices;
 namespace nJupiter.DataAccess.Ldap {
 	internal class UserSearcher : Searcher {
 
-		public UserSearcher(Configuration config) : base(config) {}
+		public UserSearcher(Configuration config) : base(config) { }
 
 		public override DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope) {
-			
+
 			DirectorySearcher searcher = base.CreateSearcher(entry, searchScope, this.Config.Users.RdnAttribute, this.Config.Users.Attributes);
 
 			searcher.PropertiesToLoad.Add(this.Config.Users.EmailAttribute);
@@ -41,10 +41,10 @@ namespace nJupiter.DataAccess.Ldap {
 			if(!string.IsNullOrEmpty(this.Config.Users.LastLoginDateAttribute)) {
 				searcher.PropertiesToLoad.Add(this.Config.Users.LastLoginDateAttribute);
 			}
-			if(!string.IsNullOrEmpty(this.Config.Users.LastPasswordChangedDateAttribute)){
+			if(!string.IsNullOrEmpty(this.Config.Users.LastPasswordChangedDateAttribute)) {
 				searcher.PropertiesToLoad.Add(this.Config.Users.LastPasswordChangedDateAttribute);
 			}
-			if(!string.IsNullOrEmpty(this.Config.Users.DescriptionAttribute)){
+			if(!string.IsNullOrEmpty(this.Config.Users.DescriptionAttribute)) {
 				searcher.PropertiesToLoad.Add(this.Config.Users.DescriptionAttribute);
 			}
 

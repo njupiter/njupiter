@@ -28,58 +28,58 @@ using System.Globalization;
 namespace nJupiter.Globalization {
 
 	public static class DateHandler {
-		public static DateTime FirstDateOfWeek(DateTime date){
+		public static DateTime FirstDateOfWeek(DateTime date) {
 			return FirstDateOfWeek(date, CultureInfo.CurrentCulture);
 		}
 
-		public static DateTime FirstDateOfWeek(DateTime date, CultureInfo culture){
+		public static DateTime FirstDateOfWeek(DateTime date, CultureInfo culture) {
 			if(culture == null)
 				throw new ArgumentNullException("culture");
-			
+
 			return date.AddDays(DaysToFirstDayInWeek(culture.DateTimeFormat.FirstDayOfWeek, date.DayOfWeek));
 		}
 
-		public static DateTime LastDateOfWeek(DateTime date){
+		public static DateTime LastDateOfWeek(DateTime date) {
 			return LastDateOfWeek(date, CultureInfo.CurrentCulture);
 		}
 
-		public static DateTime LastDateOfWeek(DateTime date, CultureInfo culture){
+		public static DateTime LastDateOfWeek(DateTime date, CultureInfo culture) {
 			if(culture == null)
 				throw new ArgumentNullException("culture");
 
 			return date.AddDays(DaysToLastDayInWeek(culture.DateTimeFormat.FirstDayOfWeek, date.DayOfWeek));
 		}
 
-		public static int WeekNumber(DateTime date){
+		public static int WeekNumber(DateTime date) {
 			return WeekNumber(date, CultureInfo.CurrentCulture);
 		}
 
-		public static int WeekNumber(DateTime date, CultureInfo culture){
+		public static int WeekNumber(DateTime date, CultureInfo culture) {
 			if(culture == null)
 				throw new ArgumentNullException("culture");
 
 			return culture.Calendar.GetWeekOfYear(LastDateOfWeek(date, culture), culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
 		}
 
-		public static int DaysToFirstDayInWeek(DayOfWeek firstDayOfWeek, DayOfWeek currentDayOfWeek){
+		public static int DaysToFirstDayInWeek(DayOfWeek firstDayOfWeek, DayOfWeek currentDayOfWeek) {
 			return DaysToLastDayInWeek(firstDayOfWeek, currentDayOfWeek) - 6;
 		}
 
-		public static int DaysToLastDayInWeek(DayOfWeek firstDayOfWeek, DayOfWeek currentDayOfWeek){
+		public static int DaysToLastDayInWeek(DayOfWeek firstDayOfWeek, DayOfWeek currentDayOfWeek) {
 			return ((((int)firstDayOfWeek + 6) - (int)currentDayOfWeek) % 7);
 		}
 
-		public static DayOfWeek[] SortedDaysOfWeek(){
+		public static DayOfWeek[] SortedDaysOfWeek() {
 			return SortedDaysOfWeek(CultureInfo.CurrentCulture);
 		}
 
-		public static DayOfWeek[] SortedDaysOfWeek(CultureInfo culture){
+		public static DayOfWeek[] SortedDaysOfWeek(CultureInfo culture) {
 			if(culture == null)
 				throw new ArgumentNullException("culture");
 
 			DayOfWeek[] daysOfWeek = new DayOfWeek[7];
-			int firstDayOfWeek	= (int)culture.DateTimeFormat.FirstDayOfWeek;
-			for(int i = 0; i < 7; i++){
+			int firstDayOfWeek = (int)culture.DateTimeFormat.FirstDayOfWeek;
+			for(int i = 0; i < 7; i++) {
 				daysOfWeek[i] = (DayOfWeek)(i + (((firstDayOfWeek + 6) - i) % 7) - 6);
 			}
 			return daysOfWeek;

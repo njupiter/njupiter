@@ -33,21 +33,20 @@ namespace nJupiter.Web.UI.Controls.Listings {
 #if DEBUG
 		private const string	DebugPrefix		= "_";
 #else
-		private const string	DebugPrefix		= "";
+		private const string DebugPrefix = "";
 #endif
-		private const string	DefaultAllitemtext	= DebugPrefix + "All";
+		private const string DefaultAllitemtext = DebugPrefix + "All";
 
-		private const int		AllitemValue		= int.MaxValue;
+		private const int AllitemValue = int.MaxValue;
 		#endregion
 
 		#region Members
-		private bool	includeAllItem;
-		private string	allItemText		= DefaultAllitemtext;
+		private string allItemText = DefaultAllitemtext;
 		#endregion
 
 		#region Properties
-		public bool		IncludeAllItem	{ get { return this.includeAllItem; }	set { this.includeAllItem = value; } }
-		public string	AllItemText		{ get { return this.allItemText; }		set { this.allItemText = value; } }
+		public bool IncludeAllItem { get; set; }
+		public string AllItemText { get { return this.allItemText; } set { this.allItemText = value; } }
 		#endregion
 
 		#region Overridden Methods

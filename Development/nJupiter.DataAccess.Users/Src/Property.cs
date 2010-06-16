@@ -34,23 +34,23 @@ namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public abstract class AbstractProperty {
 		#region Members
-		private readonly	string	name;
-		private readonly	Context	context;
-		private				object	value;
-		private				bool	isDirty;
+		private readonly string name;
+		private readonly Context context;
+		private object value;
+		private bool isDirty;
 		#endregion
 
 		#region Constructors
 		protected AbstractProperty(string propertyName, Context context) {
-			this.name		= propertyName;
-			this.context	= context;
+			this.name = propertyName;
+			this.context = context;
 		}
 		#endregion
 
 		#region Factory Method
 		internal static AbstractProperty Create(string propertyName, string serializedPropertyValue, Type propertyType, Context context) {
 			object[] constructorArgs = { propertyName, context };
-			AbstractProperty property = (AbstractProperty) Activator.CreateInstance(propertyType, constructorArgs);
+			AbstractProperty property = (AbstractProperty)Activator.CreateInstance(propertyType, constructorArgs);
 			property.value = property.DeserializePropertyValue(serializedPropertyValue);
 			property.IsDirty = false;
 			return property;
@@ -69,7 +69,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public abstract Type GetPropertyValueType();
 
-		public abstract object DefaultValue{ get; }
+		public abstract object DefaultValue { get; }
 
 		public override int GetHashCode() {
 			return this.Name.ToLowerInvariant().GetHashCode();
@@ -82,10 +82,10 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Properties
-		public	string		Name		{ get { return this.name; } }
-		public	Context		Context		{ get { return this.context; } }
+		public string Name { get { return this.name; } }
+		public Context Context { get { return this.context; } }
 
-		
+
 		public bool IsDirty {
 			get {
 				return isDirty;
@@ -100,7 +100,7 @@ namespace nJupiter.DataAccess.Users {
 				if(!this.GetPropertyValueType().IsPrimitive && !(this.value is string) && !(this.value is DateTime)) {
 					this.IsDirty = true;
 				}
-				return ( this.value ?? this.DefaultValue );
+				return (this.value ?? this.DefaultValue);
 			}
 			set {
 				if(!this.GetPropertyValueType().IsPrimitive && !(this.value is string) && !(this.value is DateTime)) {
@@ -131,11 +131,11 @@ namespace nJupiter.DataAccess.Users {
 		[NonSerialized]
 		private readonly string defaultValue = string.Empty;
 
-		public StringProperty(string propertyName, Context context) : base(propertyName, context){}
+		public StringProperty(string propertyName, Context context) : base(propertyName, context) { }
 
 		public override object DefaultValue { get { return this.defaultValue; } }
 
-		public override Type GetPropertyValueType(){ return typeof(string); }
+		public override Type GetPropertyValueType() { return typeof(string); }
 
 		public override string ToSerializedString() {
 			return this.Value;
@@ -144,8 +144,8 @@ namespace nJupiter.DataAccess.Users {
 		public override object DeserializePropertyValue(string value) {
 			return (value ?? this.DefaultValue);
 		}
-		
-		new public string Value { get { return (string) base.Value; } set { base.Value = value; } }
+
+		new public string Value { get { return (string)base.Value; } set { base.Value = value; } }
 
 		public override bool IsEmpty() {
 			return this.Value.Trim().Equals(this.DefaultValue);
@@ -163,11 +163,11 @@ namespace nJupiter.DataAccess.Users {
 		[NonSerialized]
 		private readonly DateTime defaultValue = DateTime.MinValue;
 
-		public DateTimeProperty(string propertyName, Context context) : base(propertyName, context){}
+		public DateTimeProperty(string propertyName, Context context) : base(propertyName, context) { }
 
 		public override object DefaultValue { get { return this.defaultValue; } }
 
-		public override Type GetPropertyValueType(){ return typeof(DateTime); }
+		public override Type GetPropertyValueType() { return typeof(DateTime); }
 
 		public override string ToSerializedString() {
 			return this.Value.Ticks.ToString(Format, NumberFormatInfo.InvariantInfo);
@@ -177,30 +177,31 @@ namespace nJupiter.DataAccess.Users {
 			return value == null ? this.DefaultValue : new DateTime(long.Parse(value, NumberFormatInfo.InvariantInfo));
 		}
 
-		new public DateTime Value { get { return (DateTime) base.Value; } set { base.Value = value; } }
+		new public DateTime Value { get { return (DateTime)base.Value; } set { base.Value = value; } }
 	}
 	#endregion
 
 	#region BoolProperty
 	[Serializable]
 	public class BoolProperty : AbstractProperty {
-		[NonSerialized] private const bool Default = false;
+		[NonSerialized]
+		private const bool Default = false;
 
-		public BoolProperty(string propertyName, Context context) : base(propertyName, context){}
-		
+		public BoolProperty(string propertyName, Context context) : base(propertyName, context) { }
+
 		public override object DefaultValue { get { return Default; } }
 
-		public override Type GetPropertyValueType(){ return typeof(bool); }
+		public override Type GetPropertyValueType() { return typeof(bool); }
 
 		public override string ToSerializedString() {
 			return this.Value.ToString();
 		}
 
 		public override object DeserializePropertyValue(string value) {
-			return value == null ?  this.DefaultValue : bool.Parse(value);
+			return value == null ? this.DefaultValue : bool.Parse(value);
 		}
 
-		new public bool Value { get { return (bool) base.Value; } set { base.Value = value; } }
+		new public bool Value { get { return (bool)base.Value; } set { base.Value = value; } }
 	}
 	#endregion
 
@@ -211,13 +212,14 @@ namespace nJupiter.DataAccess.Users {
 		private const string Format = "D10";
 		#endregion
 
-		[NonSerialized] private const int Default = 0;
+		[NonSerialized]
+		private const int Default = 0;
 
-		public IntProperty(string propertyName, Context context) : base(propertyName, context){}
+		public IntProperty(string propertyName, Context context) : base(propertyName, context) { }
 
 		public override object DefaultValue { get { return Default; } }
 
-		public override Type GetPropertyValueType(){ return typeof(int); }
+		public override Type GetPropertyValueType() { return typeof(int); }
 
 		public override string ToSerializedString() {
 			//convert to a non negative value for being able to sort lexicographically
@@ -228,36 +230,37 @@ namespace nJupiter.DataAccess.Users {
 		public override object DeserializePropertyValue(string value) {
 			return value == null ? this.DefaultValue : (int)(long.Parse(value, NumberFormatInfo.InvariantInfo) + int.MinValue);
 		}
-		
-		new public int Value { get { return (int) base.Value; } set { base.Value = value; } }
+
+		new public int Value { get { return (int)base.Value; } set { base.Value = value; } }
 	}
 	#endregion
 
 	#region BinaryProperty
 	[Serializable]
 	public class BinaryProperty : AbstractProperty {
-		[NonSerialized] private const object Default = null;
+		[NonSerialized]
+		private const object Default = null;
 
-		public BinaryProperty(string propertyName, Context context) : base(propertyName, context){}
+		public BinaryProperty(string propertyName, Context context) : base(propertyName, context) { }
 
 		public override object DefaultValue { get { return Default; } }
 		public override bool SerializationPreservesOrder { get { return false; } }
 
-		public override Type GetPropertyValueType() { 
-			return typeof(object); 
+		public override Type GetPropertyValueType() {
+			return typeof(object);
 		}
 
 		public override string ToSerializedString() {
-			if(this.Value == this.DefaultValue) 
+			if(this.Value == this.DefaultValue)
 				return null;
-			using(MemoryStream stream = new MemoryStream()){
+			using(MemoryStream stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, this.Value);
 				return Convert.ToBase64String(stream.ToArray());
 			}
 		}
 
 		public override object DeserializePropertyValue(string value) {
-			if(value == null) 
+			if(value == null)
 				return null;
 			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
 				return new BinaryFormatter().Deserialize(stream);
@@ -269,59 +272,60 @@ namespace nJupiter.DataAccess.Users {
 	#region XmlSerializedProperty
 	[Serializable]
 	public class XmlSerializedProperty : AbstractProperty {
-		[NonSerialized] private const object Default = null;
+		[NonSerialized]
+		private const object Default = null;
 
-		public XmlSerializedProperty(string propertyName, Context context) : base(propertyName, context){}
+		public XmlSerializedProperty(string propertyName, Context context) : base(propertyName, context) { }
 
 		public override object DefaultValue { get { return Default; } }
 		public override bool SerializationPreservesOrder { get { return false; } }
 
-		public override Type GetPropertyValueType() { 
-			return typeof(object); 
+		public override Type GetPropertyValueType() {
+			return typeof(object);
 		}
 
 		public override string ToSerializedString() {
-			if(this.Value == this.DefaultValue) 
+			if(this.Value == this.DefaultValue)
 				return null;
 			Type type = this.Value.GetType();
-			XmlSerializer serializer	= new XmlSerializer(type);
-			StringWriter stringwriter	= new StringWriter(CultureInfo.InvariantCulture);
-			XmlTextWriter xmlwriter		= new XmlTextWriter( stringwriter );
+			XmlSerializer serializer = new XmlSerializer(type);
+			StringWriter stringwriter = new StringWriter(CultureInfo.InvariantCulture);
+			XmlTextWriter xmlwriter = new XmlTextWriter(stringwriter);
 			serializer.Serialize(xmlwriter, this.Value);
 			string xmlSerializedData = stringwriter.ToString();
 			ValueWrapper valueWrapper = new ValueWrapper(type, xmlSerializedData);
-			using(MemoryStream stream = new MemoryStream()){
+			using(MemoryStream stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, valueWrapper);
 				return Convert.ToBase64String(stream.ToArray());
 			}
 		}
 
 		public override object DeserializePropertyValue(string value) {
-			if(value == null) 
+			if(value == null)
 				return null;
 			ValueWrapper valueWrapper;
 			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
 				valueWrapper = (new BinaryFormatter()).Deserialize(stream) as ValueWrapper;
 			}
-			if(valueWrapper == null || valueWrapper.Type ==  null || valueWrapper.Value == null)
+			if(valueWrapper == null || valueWrapper.Type == null || valueWrapper.Value == null)
 				return null;
 
-			XmlSerializer serializer	= new XmlSerializer(valueWrapper.Type);
-			StringReader stringReader	= new StringReader(valueWrapper.Value);
-			XmlTextReader xmlReader		= new XmlTextReader(stringReader);
+			XmlSerializer serializer = new XmlSerializer(valueWrapper.Type);
+			StringReader stringReader = new StringReader(valueWrapper.Value);
+			XmlTextReader xmlReader = new XmlTextReader(stringReader);
 			return serializer.Deserialize(xmlReader);
 		}
 
 		[Serializable]
 		private sealed class ValueWrapper {
-			private readonly Type	type;
-			private readonly string	value;
+			private readonly Type type;
+			private readonly string value;
 			public ValueWrapper(Type type, string value) {
 				this.type = type;
 				this.value = value;
 			}
-			public Type		Type { get { return this.type; } }
-			public string	Value { get { return this.value; } }
+			public Type Type { get { return this.type; } }
+			public string Value { get { return this.value; } }
 		}
 	}
 	#endregion

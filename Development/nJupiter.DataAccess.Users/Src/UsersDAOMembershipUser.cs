@@ -246,9 +246,9 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public virtual string UserDAOId{
+		public virtual string UserDAOId {
 			get {
-				return id;		
+				return id;
 			}
 		}
 		#endregion

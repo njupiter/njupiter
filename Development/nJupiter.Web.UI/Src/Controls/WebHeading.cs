@@ -28,15 +28,15 @@ using System.Web.UI;
 namespace nJupiter.Web.UI.Controls {
 
 	public class WebHeading : WebGenericControl {
-	
+
 		#region Constants
-		private const string Tag				= "h";
-		private const string InnerSpanKey		= "v_InnerSpan";
-		private const string HeadingLevelKey	= "v_HeadingLevel";
+		private const string Tag = "h";
+		private const string InnerSpanKey = "v_InnerSpan";
+		private const string HeadingLevelKey = "v_HeadingLevel";
 		#endregion
 
 		#region Properties
-		public int Level{
+		public int Level {
 			get {
 				if(this.ViewState[HeadingLevelKey] == null)
 					return 3;
@@ -49,7 +49,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public bool InnerSpan {
 			get {
-				if (this.ViewState[InnerSpanKey] == null) {
+				if(this.ViewState[InnerSpanKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[InnerSpanKey];
@@ -59,20 +59,23 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 		#endregion
-		
+
 		#region Constructors
-		public WebHeading() {}
-		
+		public WebHeading() { }
+
 #pragma warning disable 168
+		// ReSharper disable UnusedParameter.Local
+		//
 		//This is needed for functioning (part of the contract of being an HtmlControl)
-		public WebHeading(string tag) : this(){}
+		public WebHeading(string tag) : this() { }
+		// ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
 		#endregion
 
 		#region Event Handlers
 		protected override void OnPreRender(EventArgs e) {
 			this.TagName = Tag + this.Level;
-			base.OnPreRender (e);
+			base.OnPreRender(e);
 		}
 
 		protected override void RenderBeginTag(HtmlTextWriter writer) {
@@ -84,11 +87,11 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void RenderEndTag(HtmlTextWriter writer) {
 			if(this.InnerSpan)
 				writer.WriteEndTag(HtmlTag.Span);
-			base.RenderEndTag (writer);
+			base.RenderEndTag(writer);
 		}
 
 		protected override bool IsAttribute(string name) {
-			if(	name == InnerSpanKey ||
+			if(name == InnerSpanKey ||
 				name == HeadingLevelKey) {
 				return false;
 			}

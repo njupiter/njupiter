@@ -37,61 +37,61 @@ namespace nJupiter.Messaging.Server {
 	/// <summary>
 	/// The class that keep track of MessageProducers and its MessageConsumers. 
 	/// </summary>
-	[XmlTypeAttribute(Namespace="urn:njupiter:messaging:server:messageconsumermap")]
+	[XmlTypeAttribute(Namespace = "urn:njupiter:messaging:server:messageconsumermap")]
 	[Serializable]
 	internal sealed class MessageConsumerMap {
 
 		#region Constants
 		private const string MessageServicesSection = "messageServices";
 		private const string MessageServiceSection = MessageServicesSection + "/messageService";
-		private const string MessageServiceSectionFormat = MessageServiceSection + "[@value='{0}']";	
+		private const string MessageServiceSectionFormat = MessageServiceSection + "[@value='{0}']";
 		private const string SettingsSectionFormat = MessageServiceSectionFormat + "/settings";
 		#endregion
 
 		#region Private static members
-        private static readonly string consumersFilename = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue("consumerFilename");
+		private static readonly string ConsumersFilename = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue("consumerFilename");
 		#endregion
 
 		#region Private instance members
-		private		Hashtable		messageConsumers		= new Hashtable();
+		private Hashtable messageConsumers = new Hashtable();
 		#endregion
-		
+
 		#region Properties
 		[XmlElement("consumers")]
-		public  	Hashtable		ProducerConsumerMap		{ get {return this.messageConsumers;}		set {this.messageConsumers = value;}}
+		public Hashtable ProducerConsumerMap { get { return this.messageConsumers; } set { this.messageConsumers = value; } }
 		#endregion
 
 		#region Methods
-		internal void AddMessageConsumer(MessageConsumer consumer ) {
-			if (consumer == null)
+		internal void AddMessageConsumer(MessageConsumer consumer) {
+			if(consumer == null)
 				throw new ArgumentNullException("consumer");
-			ArrayList consumers = this.messageConsumers[ consumer.Destination ] as ArrayList ?? new ArrayList();
-			if (!consumers.Contains(consumer)){
+			ArrayList consumers = this.messageConsumers[consumer.Destination] as ArrayList ?? new ArrayList();
+			if(!consumers.Contains(consumer)) {
 				consumers.Add(consumer);
 			}
-			this.messageConsumers[consumer.Destination] = consumers;		
+			this.messageConsumers[consumer.Destination] = consumers;
 		}
 
 		internal ArrayList GetMessageConsumers(MessageDestination messageDestination) {
-			if (messageDestination == null)
+			if(messageDestination == null)
 				throw new ArgumentNullException("messageDestination");
 			return (ArrayList)this.messageConsumers[messageDestination];
 		}
-		
-		public void Serialize(){
-			if (this.messageConsumers != null && this.messageConsumers.Count>0) {
-				using (Stream stream = new FileStream(consumersFilename , FileMode.Create, FileAccess.Write, FileShare.None)){			
+
+		public void Serialize() {
+			if(this.messageConsumers != null && this.messageConsumers.Count > 0) {
+				using(Stream stream = new FileStream(ConsumersFilename, FileMode.Create, FileAccess.Write, FileShare.None)) {
 					SoapFormatter formatter = new SoapFormatter();
 					formatter.Serialize(stream, this);
 				}
 			}
 		}
-		
-		static public MessageConsumerMap Deserialize(){
-			if (File.Exists(consumersFilename)) {
-				using (Stream stream = new FileStream(consumersFilename, FileMode.Open, FileAccess.Read, FileShare.Read)){
-					SoapFormatter formatter				= new SoapFormatter();
-					MessageConsumerMap messageConsMap	= (MessageConsumerMap)formatter.Deserialize(stream); 
+
+		static public MessageConsumerMap Deserialize() {
+			if(File.Exists(ConsumersFilename)) {
+				using(Stream stream = new FileStream(ConsumersFilename, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+					SoapFormatter formatter = new SoapFormatter();
+					MessageConsumerMap messageConsMap = (MessageConsumerMap)formatter.Deserialize(stream);
 					return messageConsMap;
 				}
 			}

@@ -26,18 +26,18 @@ using System;
 using System.Collections;
 
 namespace nJupiter.DataAccess.DirectoryService {
-	
+
 	public class DirectoryObject {
 
 		#region Members
-		private readonly Hashtable	innerHash = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+		private readonly Hashtable innerHash = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 		#endregion
-		
+
 		#region Properties
 		public string Id { get; set; }
 
-		public string this [string propertyName] {
-			get { 
+		public string this[string propertyName] {
+			get {
 				CheckIfKey(propertyName);
 				return ((Property)this.innerHash[propertyName]).Value;
 			}
@@ -48,7 +48,7 @@ namespace nJupiter.DataAccess.DirectoryService {
 		}
 
 		public Property[] Properties {
-			get { 
+			get {
 				Property[] properties = new Property[this.innerHash.Values.Count];
 				this.innerHash.Values.CopyTo(properties, 0);
 				return properties;
@@ -66,7 +66,7 @@ namespace nJupiter.DataAccess.DirectoryService {
 		#endregion
 
 		#region Methods
-		public bool Contains(string propertyName){
+		public bool Contains(string propertyName) {
 			return this.innerHash.ContainsKey(propertyName);
 		}
 		#endregion
@@ -78,6 +78,6 @@ namespace nJupiter.DataAccess.DirectoryService {
 			}
 		}
 		#endregion
-	
+
 	}
 }

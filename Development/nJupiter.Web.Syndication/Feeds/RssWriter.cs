@@ -30,7 +30,7 @@ namespace nJupiter.Web.Syndication {
 
 	internal class RssWriter : FeedWriter {
 
-		public RssWriter(Stream stream, FeedType type) : base(stream, type) {}
+		public RssWriter(Stream stream, FeedType type) : base(stream, type) { }
 
 		#region Methods
 		private void WriteHeader(IFeed feed) {
@@ -38,13 +38,13 @@ namespace nJupiter.Web.Syndication {
 			this.XmlWriter.WriteStartElement("rss");
 			this.XmlWriter.WriteAttributeString("version", "2.0");
 			this.XmlWriter.WriteAttributeString("xmlns", "atom", null, "http://www.w3.org/2005/Atom");
-		
+
 			this.XmlWriter.WriteStartElement("channel");
 
 			this.XmlWriter.WriteElementString("title", feed.Title);
 			this.XmlWriter.WriteElementString("link", feed.Uri.ToString());
 
-			this.XmlWriter.WriteStartElement("atom","link", null);
+			this.XmlWriter.WriteStartElement("atom", "link", null);
 			this.XmlWriter.WriteAttributeString("href", feed.FeedUri.ToString());
 			this.XmlWriter.WriteAttributeString("rel", "self");
 			this.XmlWriter.WriteAttributeString("type", "application/rss+xml");
@@ -67,7 +67,7 @@ namespace nJupiter.Web.Syndication {
 				}
 				if(!feed.Image.Size.IsEmpty) {
 					int width = feed.Image.Size.Width <= 144 ? feed.Image.Size.Width : 144;
-					int height =feed.Image.Size.Height <= 400 ? feed.Image.Size.Height : 400;
+					int height = feed.Image.Size.Height <= 400 ? feed.Image.Size.Height : 400;
 					this.XmlWriter.WriteElementString("width", width.ToString(NumberFormatInfo.InvariantInfo));
 					this.XmlWriter.WriteElementString("height", height.ToString(NumberFormatInfo.InvariantInfo));
 				}

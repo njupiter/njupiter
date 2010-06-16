@@ -24,19 +24,19 @@
 
 namespace nJupiter.Services.Forum {
 
-	public sealed class PagingConfiguration {	
+	public sealed class PagingConfiguration {
 		#region Constants
-		internal const int	DefaultPageSize		= -1;
-		internal const int	DefaultPageNumber	= -1;
+		internal const int DefaultPageSize = -1;
+		internal const int DefaultPageNumber = -1;
 		#endregion
 
 		#region Constructors
 		public PagingConfiguration(int pageSize, int pageNumber) {
-			this.PageSize	= pageSize;
-			this.PageNumber	= pageNumber;
+			this.PageSize = pageSize;
+			this.PageNumber = pageNumber;
 		}
-		public PagingConfiguration() : this(DefaultPageSize, DefaultPageNumber) {}
-		public PagingConfiguration(int pageSize) : this(pageSize, DefaultPageNumber) {}
+		public PagingConfiguration() : this(DefaultPageSize, DefaultPageNumber) { }
+		public PagingConfiguration(int pageSize) : this(pageSize, DefaultPageNumber) { }
 		#endregion
 
 		#region Properties

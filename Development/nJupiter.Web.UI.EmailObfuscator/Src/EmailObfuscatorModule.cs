@@ -36,14 +36,14 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 		private const string ObfuscationDisabledKey = "NJUPITER_EMAIL_OBFUSCATION_DISABLED";
 
 		static void ReleaseRequestState(object sender, EventArgs e) {
-            HttpResponse response = HttpContext.Current.Response;
-            if(response.ContentType.Contains("html") && !EmailObfuscatorModule.DisableObfuscationForCurrentRequest){
-                response.Filter = new EmailObfuscatorFilter(response.Filter);      
+			HttpResponse response = HttpContext.Current.Response;
+			if(response.ContentType.Contains("html") && !EmailObfuscatorModule.DisableObfuscationForCurrentRequest) {
+				response.Filter = new EmailObfuscatorFilter(response.Filter);
 			}
 		}
 
 		public static bool DisableObfuscationForCurrentRequest {
-			get{
+			get {
 				return HttpContext.Current.Items[ObfuscationDisabledKey] != null;
 			}
 			set {
@@ -64,39 +64,39 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 	internal class EmailObfuscatorFilter : Stream {
 
 		#region Private Constants
-		private const string HeadEndPattern	= @"</(head|HEAD)>";
-		private const string EmailPattern		= @"^((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*""\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*"")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)$";
-		private const string ScriptTag		= @"<script type=""text/javascript"" src=""{0}""></script>";
-		private const string ScriptPath		= @"/nJupiter/nJupiter.Web.UI.EmailObfuscator/Web/Scripts/EmailObfuscator.js";
+		private const string HeadEndPattern = @"</(head|HEAD)>";
+		private const string EmailPattern = @"^((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*""\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*"")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)$";
+		private const string ScriptTag = @"<script type=""text/javascript"" src=""{0}""></script>";
+		private const string ScriptPath = @"/nJupiter/nJupiter.Web.UI.EmailObfuscator/Web/Scripts/EmailObfuscator.js";
 
-		private static readonly string script	= string.Format(CultureInfo.InvariantCulture, ScriptTag, ScriptPath);
+		private static readonly string Script = string.Format(CultureInfo.InvariantCulture, ScriptTag, ScriptPath);
 		#endregion
 
-		readonly Stream		responseStream;
-		StringBuilder		content;
+		readonly Stream responseStream;
+		StringBuilder content;
 
 		public EmailObfuscatorFilter(Stream inputStream) {
-			this.responseStream	= inputStream;
+			this.responseStream = inputStream;
 		}
 
 		#region Overrides
-		public override	bool	CanRead		{ get { return this.responseStream.CanRead; } }
-		public override	bool	CanSeek		{ get { return this.responseStream.CanSeek; } }
-		public override	bool	CanWrite	{ get { return this.responseStream.CanWrite; } }
-		public override	long	Length		{ get { return this.responseStream.Length; } }
-		public override	long	Position	{ get { return this.responseStream.Position; }	set { this.responseStream.Position = value; } }
+		public override bool CanRead { get { return this.responseStream.CanRead; } }
+		public override bool CanSeek { get { return this.responseStream.CanSeek; } }
+		public override bool CanWrite { get { return this.responseStream.CanWrite; } }
+		public override long Length { get { return this.responseStream.Length; } }
+		public override long Position { get { return this.responseStream.Position; } set { this.responseStream.Position = value; } }
 
-		public override	void	Close() { this.responseStream.Close(); }
-		
-		public override	long	Seek(long offset, SeekOrigin origin) {
+		public override void Close() { this.responseStream.Close(); }
+
+		public override long Seek(long offset, SeekOrigin origin) {
 			return this.responseStream.Seek(offset, origin);
 		}
 
-		public override	void	SetLength(long length) {
+		public override void SetLength(long length) {
 			this.responseStream.SetLength(length);
 		}
 
-		public override	int		Read(byte[] buffer, int offset, int count) {
+		public override int Read(byte[] buffer, int offset, int count) {
 			return this.responseStream.Read(buffer, offset, count);
 		}
 
@@ -110,25 +110,25 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 			this.content.Append(System.Text.Encoding.UTF8.GetString(buffer, offset, count));
 		}
 
-		public override	void	Flush() {
+		public override void Flush() {
 			if(this.content == null) {
 				this.responseStream.Flush();
 				return;
 			}
 
 			string contentString = this.content.ToString();
-			
+
 			StringBuilder contentBuilder = new StringBuilder();
-			
-			bool openTag					= false;
-			bool areaOpen					= false;
-			bool containsEmail				= false;
-			bool currentElementCompleted	= false;
-			bool currentAttributeCompleted	= true;
-			char openingQuote				= char.MinValue;
-			StringBuilder currentElement	= new StringBuilder();
-			StringBuilder currentAttribute	= new StringBuilder();
-			
+
+			bool openTag = false;
+			bool areaOpen = false;
+			bool containsEmail = false;
+			bool currentElementCompleted = false;
+			bool currentAttributeCompleted = true;
+			char openingQuote = char.MinValue;
+			StringBuilder currentElement = new StringBuilder();
+			StringBuilder currentAttribute = new StringBuilder();
+
 			// Parse the document, much faster than regular expressions
 			for(int i = 0; i < contentString.Length; i++) {
 				char currentChar = contentString[i];
@@ -139,12 +139,12 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 						currentElement.Append(currentChar);
 					}
 				}
-				if(currentChar == '<'){
+				if(currentChar == '<') {
 					openTag = true;
 					currentElementCompleted = false;
 					currentElement.Remove(0, currentElement.Length);
 				}
-				if(currentChar == '>'){
+				if(currentChar == '>') {
 					openTag = false;
 					openingQuote = char.MinValue;
 					currentAttributeCompleted = true;
@@ -174,7 +174,7 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 					if(!openingQuote.Equals(char.MinValue) && currentChar.Equals(openingQuote)) {
 						currentElementCompleted = true;
 						openingQuote = char.MinValue;
-					}else if(openingQuote.Equals(char.MinValue) && (currentChar == '\'' || currentChar == '"')) {
+					} else if(openingQuote.Equals(char.MinValue) && (currentChar == '\'' || currentChar == '"')) {
 						openingQuote = currentChar;
 					}
 				}
@@ -185,12 +185,12 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 				} else if(areaOpen && element.Equals("/textarea", StringComparison.InvariantCultureIgnoreCase)) {
 					areaOpen = false;
 				}
-				
+
 				if(!areaOpen && currentChar == '@' && i > 0
 					&& !element.Equals("input", StringComparison.InvariantCultureIgnoreCase)
 					&& !element.Equals("option", StringComparison.InvariantCultureIgnoreCase)) {
-					StringBuilder beforeAt		= new StringBuilder();
-					StringBuilder beforeColon	= new StringBuilder();
+					StringBuilder beforeAt = new StringBuilder();
+					StringBuilder beforeColon = new StringBuilder();
 					bool checkForMailTo = false;
 					for(int j = i - 1; j >= 0; j--) {
 						// build the address before the at-character
@@ -199,7 +199,7 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 							if(beforeColon.Length > 5)
 								break;
 							beforeColon.Insert(0, c);
-						}else if(char.IsLetterOrDigit(c) || CharInString(c, "._%+-")){
+						} else if(char.IsLetterOrDigit(c) || CharInString(c, "._%+-")) {
 							beforeAt.Insert(0, c);
 						} else if(j < i - 2 && c == ':') {
 							checkForMailTo = true;
@@ -216,12 +216,12 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 								afterAt.Append(c);
 							} else {
 								break;
-							}					
+							}
 						}
 						if(afterAt.Length > 0) { //Potential email
 							bool mailto = false;
-							string name		= beforeAt.ToString().TrimStart('.','_','%','+','-');
-							string domain	= afterAt.ToString().TrimEnd('.','_','%','+','-');
+							string name = beforeAt.ToString().TrimStart('.', '_', '%', '+', '-');
+							string domain = afterAt.ToString().TrimEnd('.', '_', '%', '+', '-');
 							if(name.Length > 0 && domain.Length > 0) {
 								string email = string.Format(CultureInfo.InvariantCulture, "{0}@{1}", name, domain);
 								int beforeIndex = name.Length;
@@ -282,8 +282,8 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 		}
 		#endregion
 
-		private static string HeadEndMatch(Match m){
-			return string.Format(CultureInfo.InvariantCulture, "{0}<style type=\"text/css\">.hasJavascript span.eoImage img{{ display: none; }}</style></head>", script);
+		private static string HeadEndMatch(Match m) {
+			return string.Format(CultureInfo.InvariantCulture, "{0}<style type=\"text/css\">.hasJavascript span.eoImage img{{ display: none; }}</style></head>", Script);
 		}
 
 	}

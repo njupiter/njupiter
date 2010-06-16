@@ -36,22 +36,23 @@ namespace nJupiter.DataAccess.Sql {
 	public sealed class SqlCommand : Command {
 
 		#region Members
-		private readonly SqlClient.SqlCommand	command;
-		private bool							disposed;
+		private readonly SqlClient.SqlCommand command;
+		private bool disposed;
 		#endregion
 
 		#region Static Members
-		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Constructors
 		internal SqlCommand(string command, CommandType commandType) {
-			if(log.IsDebugEnabled) { log.Debug(string.Format("Creating Sql Command {0} of type {1}", (command != null ? "[" + command + "]" : string.Empty), commandType)); }
+			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Creating Sql Command {0} of type {1}", (command != null ? "[" + command + "]" : string.Empty), commandType)); }
 			this.command = new SqlClient.SqlCommand { CommandText = command, CommandType = commandType };
 		}
 
-		internal SqlCommand(string command, CommandType commandType, object[] parameters) : this(command, commandType) {
-			if(parameters != null){
+		internal SqlCommand(string command, CommandType commandType, object[] parameters)
+			: this(command, commandType) {
+			if(parameters != null) {
 				this.command.Parameters.AddRange(parameters);
 			}
 		}
@@ -62,12 +63,12 @@ namespace nJupiter.DataAccess.Sql {
 		/// Gets the <see cref="IDbCommand"/> associated with the command.
 		/// </summary>
 		/// <value>The <see cref="IDbCommand"/> associated with the command.</value>
-		public override	IDbCommand	DbCommand		{ get { return this.command; } }
+		public override IDbCommand DbCommand { get { return this.command; } }
 		/// <summary>
 		/// Gets or sets the timeout for the command.
 		/// </summary>
 		/// <value>The command timeout.</value>
-		public override	int			CommandTimeout	{ get { return this.command.CommandTimeout; }	set { this.command.CommandTimeout = value; } }
+		public override int CommandTimeout { get { return this.command.CommandTimeout; } set { this.command.CommandTimeout = value; } }
 		#endregion
 
 		#region Methods
@@ -93,13 +94,13 @@ namespace nJupiter.DataAccess.Sql {
 		/// </summary>
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected override void Dispose(bool disposing) {
-			try{
-				if (!this.disposed) {
+			try {
+				if(!this.disposed) {
 					// Dispose managed resources.
 					this.command.Dispose();
 					this.disposed = true;
 				}
-			}finally{
+			} finally {
 				base.Dispose(disposing);
 			}
 		}
@@ -107,20 +108,20 @@ namespace nJupiter.DataAccess.Sql {
 
 		#region Private Methods
 		private SqlClient.SqlParameter CreateParameter(string name, DbType type, int size, ParameterDirection direction, bool nullable, byte precision, byte scale, string column, DataRowVersion rowVersion, object value) {
-			if(log.IsDebugEnabled) { log.Debug(string.Format("Creating Sql Parameter {0} of type {1}", (name != null ? "[" + name + "]" : string.Empty), type)); }
-			
+			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Creating Sql Parameter {0} of type {1}", (name != null ? "[" + name + "]" : string.Empty), type)); }
+
 			SqlClient.SqlParameter param = this.command.CreateParameter();
 			param.ParameterName = AddParameterPrefix(name);
 
-			param.Size			= size;
-			param.Scale			= scale;
-			param.Precision		= precision;
-			param.Direction		= direction;
-			param.IsNullable	= nullable;
-			param.SourceColumn	= column;
-			param.SourceVersion	= rowVersion;
+			param.Size = size;
+			param.Scale = scale;
+			param.Precision = precision;
+			param.Direction = direction;
+			param.IsNullable = nullable;
+			param.SourceColumn = column;
+			param.SourceVersion = rowVersion;
 
-			if (type.Equals(DbType.Object) && value is byte[])
+			if(type.Equals(DbType.Object) && value is byte[])
 				param.SqlDbType = SqlDbType.Image;
 			else
 				param.DbType = type;

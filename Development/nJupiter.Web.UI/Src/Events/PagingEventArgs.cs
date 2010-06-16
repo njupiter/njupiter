@@ -24,24 +24,23 @@
 
 using System;
 
-namespace nJupiter.Web.UI.Events
-{
+namespace nJupiter.Web.UI.Events {
 	[Serializable]
 	public class PagingEventArgs : EventArgs {
 		#region Members
-		private readonly int		pageNumber;
+		private readonly int pageNumber;
 		#endregion
 
 		#region Properties
-		public int		PageNumber	{get { return this.pageNumber; } }
+		public int PageNumber { get { return this.pageNumber; } }
 		#endregion
 
 		#region Constructors
-	
+
 		public PagingEventArgs(int pageNumber) {
 			this.pageNumber = pageNumber;
 		}
-		#endregion 
+		#endregion
 	}
 
 	public delegate void PagingEventHandler(object sender, PagingEventArgs e);

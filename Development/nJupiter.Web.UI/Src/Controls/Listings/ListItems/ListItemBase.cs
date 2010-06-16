@@ -33,31 +33,31 @@ namespace nJupiter.Web.UI.Controls.Listings {
 	[ToolboxItem(true)]
 	public class ListItemBase : UserControl {
 		#region Constants
-		private const string CommandNameKey					= "v_CommandName";
-		private const string CommandArgKey					= "v_CommandArgument";
-		private const string EnableViewstateChangedKey		= "v_EnableViewStateChanged";
-		private const string ViewstateDisabledByDefaultKey	= "v_ViewStateDisabledByDefault";
+		private const string CommandNameKey = "v_CommandName";
+		private const string CommandArgKey = "v_CommandArgument";
+		private const string EnableViewstateChangedKey = "v_EnableViewStateChanged";
+		private const string ViewstateDisabledByDefaultKey = "v_ViewStateDisabledByDefault";
 		#endregion
-		
+
 		#region Members
-		private object			listItem;
-		private GeneralListing	listingObject;
-		private bool			alternatingItem;
-		private int				itemIndex;
-		private RepeaterItem	repeaterItem;
+		private object listItem;
+		private GeneralListing listingObject;
+		private bool alternatingItem;
+		private int itemIndex;
+		private RepeaterItem repeaterItem;
 		#endregion
 
 		#region Properties
-		public object			ListItem		{ get { return this.listItem; }			set { this.listItem = value; } }
-		public GeneralListing	ListingObject	{ get { return this.listingObject; }	set { this.listingObject = value; } }
-		public bool				AlternatingItem	{ get { return this.alternatingItem; }	set { this.alternatingItem = value; } }
-		public int				ItemIndex		{ get { return this.itemIndex; }		set { this.itemIndex = value; } }
-		public RepeaterItem		RepeaterItem	{ get { return this.repeaterItem; }		set { this.repeaterItem = value; } }
+		public object ListItem { get { return this.listItem; } set { this.listItem = value; } }
+		public GeneralListing ListingObject { get { return this.listingObject; } set { this.listingObject = value; } }
+		public bool AlternatingItem { get { return this.alternatingItem; } set { this.alternatingItem = value; } }
+		public int ItemIndex { get { return this.itemIndex; } set { this.itemIndex = value; } }
+		public RepeaterItem RepeaterItem { get { return this.repeaterItem; } set { this.repeaterItem = value; } }
 
 		public string CommandArgument {
 			get {
-				string commandArgument = (string) this.ViewState[CommandArgKey];
-				if (commandArgument != null) {
+				string commandArgument = (string)this.ViewState[CommandArgKey];
+				if(commandArgument != null) {
 					return commandArgument;
 				}
 				return string.Empty;
@@ -67,8 +67,8 @@ namespace nJupiter.Web.UI.Controls.Listings {
 
 		public string CommandName {
 			get {
-				string commandName = (string) this.ViewState[CommandNameKey];
-				if (commandName != null) {
+				string commandName = (string)this.ViewState[CommandNameKey];
+				if(commandName != null) {
 					return commandName;
 				}
 				return string.Empty;
@@ -91,7 +91,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				}
 				return (bool)this.ViewState[EnableViewstateChangedKey];
 			}
-			set { this.ViewState[EnableViewstateChangedKey] = value;	}
+			set { this.ViewState[EnableViewstateChangedKey] = value; }
 		}
 
 		protected bool ViewStateDisabledByDefault {
@@ -133,17 +133,17 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			this.items = new ArrayList();
 		}
 		#endregion
-		
+
 		#region Properties
-		public int Count					{ get { return this.items.Count;} }
-		public bool IsReadOnly				{ get { return this.items.IsReadOnly; } }
-		public bool IsSynchronized			{ get { return this.items.IsSynchronized; } }
-		public ListItemBase this[int index]	{ get {	return (ListItemBase)this.items[index]; } }
-		public object SyncRoot				{ get { return this; } }
+		public int Count { get { return this.items.Count; } }
+		public bool IsReadOnly { get { return this.items.IsReadOnly; } }
+		public bool IsSynchronized { get { return this.items.IsSynchronized; } }
+		public ListItemBase this[int index] { get { return (ListItemBase)this.items[index]; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 
 		#region Methods
-		internal void Add(ListItemBase item){
+		internal void Add(ListItemBase item) {
 			this.items.Add(item);
 		}
 

@@ -25,7 +25,7 @@ namespace nJupiter.DataAccess.Ldap {
 				return attributeValueCollection.Count;
 			}
 		}
-	
+
 		public bool Contains(object item) {
 			return attributeValueCollection.Contains(item);
 		}

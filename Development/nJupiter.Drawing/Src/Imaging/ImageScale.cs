@@ -36,8 +36,8 @@ namespace nJupiter.Drawing.Imaging {
 		#region Enums
 		[Flags]
 		public enum ResizeFlags {
-			None			= 0,
-			AllowEnlarging	= 1,
+			None = 0,
+			AllowEnlarging = 1,
 			AllowStretching = 2
 		}
 		#endregion
@@ -124,7 +124,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newWidth">The new width of the image. Set to 0 to let the height decide.</param>
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		/// <param name="resizeFlags">Specify the different flags in the ResizeFlags enumeration to deviate from the default behaviour.</param>
- 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
+		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
 		/// <returns>A memory stream containing the resized image.
@@ -313,9 +313,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
 		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-			using(Image origImage = Image.FromFile(imagePath)){
+			using(Image origImage = Image.FromFile(imagePath)) {
 				Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
-			}	
+			}
 		}
 
 		/// <summary>
@@ -407,7 +407,7 @@ namespace nJupiter.Drawing.Imaging {
 				MemoryStream ms = new MemoryStream();
 				Resize(imageStream, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
 				return ms;
-			} catch(OutOfMemoryException){
+			} catch(OutOfMemoryException) {
 				// If not image
 			}
 			return null;
@@ -437,9 +437,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
 		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-				using(Image origImage = Image.FromStream(imageStream)){
-					Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
-				}	
+			using(Image origImage = Image.FromStream(imageStream)) {
+				Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+			}
 		}
 		#endregion
 
@@ -456,7 +456,7 @@ namespace nJupiter.Drawing.Imaging {
 			if(newWidth == 0 && newHeight == 0) {
 				return origPhysSize;
 			}
-			
+
 			Size newSize;
 			float ratio = (float)origPhysSize.Width / origPhysSize.Height;
 
@@ -467,7 +467,7 @@ namespace nJupiter.Drawing.Imaging {
 				newSize = new Size(newWidth, (int)Math.Ceiling(newWidth / ratio));
 			}
 
-			if(((newSize.Height > origPhysSize.Height || newSize.Width > origPhysSize.Width) && allowEnlarge) || 
+			if(((newSize.Height > origPhysSize.Height || newSize.Width > origPhysSize.Width) && allowEnlarge) ||
 				newSize.Width < origPhysSize.Width || newSize.Height < origPhysSize.Height) {
 				return newSize;
 			}

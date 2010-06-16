@@ -26,6 +26,6 @@ namespace nJupiter.DataAccess.Ldap {
 	internal enum NameType {
 		Dn = 0,
 		Rdn = 1,
-		Cn =  2
+		Cn = 2
 	}
 }

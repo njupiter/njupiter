@@ -30,13 +30,13 @@ namespace nJupiter.DataAccess.Users {
 	public class User {
 
 		#region Members
-		private readonly	ContextualPropertyCollectionTable	contextProperties;
-		private readonly	Properties							properties;
-		private readonly	string								id;
-		private readonly	string								domain;
-		private	readonly	string								userName;
-		private				PropertyCollection					globalProperties;
-		private				Context[]							contexts;
+		private readonly ContextualPropertyCollectionTable contextProperties;
+		private readonly Properties properties;
+		private readonly string id;
+		private readonly string domain;
+		private readonly string userName;
+		private PropertyCollection globalProperties;
+		private Context[] contexts;
 		#endregion
 
 		#region Constructors
@@ -44,29 +44,30 @@ namespace nJupiter.DataAccess.Users {
 			this.contextProperties = ContextualPropertyCollectionTable.Synchronized(new ContextualPropertyCollectionTable());
 		}
 
-		public User(string userId, string userName, string domain, PropertyCollection properties, CommonPropertyNames propertyNames) : this() {
+		public User(string userId, string userName, string domain, PropertyCollection properties, CommonPropertyNames propertyNames)
+			: this() {
 			if(string.IsNullOrEmpty(userName))
 				throw new UserNameEmptyException("User name can not be empty.");
-			this.id							= userId;
-			this.domain						= (domain ?? string.Empty);
-			this.globalProperties			= properties;
-			this.properties					= new Properties(this, propertyNames);
-			this.properties.CreationDate	= this.properties.CreationDate > DateTime.MinValue ? this.properties.CreationDate : DateTime.UtcNow;
-			this.userName					= userName;
+			this.id = userId;
+			this.domain = (domain ?? string.Empty);
+			this.globalProperties = properties;
+			this.properties = new Properties(this, propertyNames);
+			this.properties.CreationDate = this.properties.CreationDate > DateTime.MinValue ? this.properties.CreationDate : DateTime.UtcNow;
+			this.userName = userName;
 		}
 		#endregion
 
 		#region Properties
-		public	string				Id			{ get { return this.id; } }
-		public	string				UserName	{ get { return this.userName; } }
-		public	string				Domain		{ get { return this.domain; } }
-		public	Properties			Properties	{ get { return this.properties; } }
-		
+		public string Id { get { return this.id; } }
+		public string UserName { get { return this.userName; } }
+		public string Domain { get { return this.domain; } }
+		public Properties Properties { get { return this.properties; } }
+
 		internal Context[] AttachedContexts {
-			get{
+			get {
 				// We want the ContextualPropertyCollectionTable to be internal
 				// so we copy the contexts to an array instead of make it public
-				if(this.contexts == null){
+				if(this.contexts == null) {
 					this.contexts = new Context[this.contextProperties.Count];
 					this.contextProperties.CopyTo(this.contexts, 0);
 				}
@@ -88,14 +89,14 @@ namespace nJupiter.DataAccess.Users {
 			return null;
 		}
 
-		public PropertyCollection GetProperties(){
+		public PropertyCollection GetProperties() {
 			return this.globalProperties;
 		}
 
-		public PropertyCollection GetProperties(Context context){
+		public PropertyCollection GetProperties(Context context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
-			
+
 			if(this.contextProperties.Contains(context))
 				return this.contextProperties[context];
 			return null;
@@ -103,7 +104,7 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Public Methods
-		public bool ContainsPropertiesForContext(Context context){
+		public bool ContainsPropertiesForContext(Context context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
 			return this.contextProperties.Contains(context);
@@ -113,7 +114,7 @@ namespace nJupiter.DataAccess.Users {
 
 			if(properties == null)
 				throw new ArgumentNullException("properties");
-			
+
 			if(properties.Count > 0) {
 				PropertyCollection newProperties = new PropertyCollection(properties.PropertySchemas);
 				Context context = null;

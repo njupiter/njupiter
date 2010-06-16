@@ -33,7 +33,7 @@ using nJupiter.Configuration;
 namespace nJupiter.Web.UI.ControlAdapters {
 	public abstract class ControlAdapterBase : ControlAdapter {
 
-		private static readonly object padLock = new object();
+		private static readonly object PadLock = new object();
 		private static Dictionary<string, List<string>> excludedPathArray;
 
 		static ControlAdapterBase() {
@@ -41,7 +41,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		}
 
 		private static void Configure(object sender, EventArgs e) {
-			lock(padLock) {
+			lock(PadLock) {
 				Dictionary<string, List<string>> array = new Dictionary<string, List<string>>();
 				Config config = ConfigHandler.GetSystemConfig();
 				if(config != null) {

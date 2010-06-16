@@ -64,89 +64,89 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
-			if (this.Page != null) {
+			if(this.Page != null) {
 				this.Page.VerifyRenderingInServerForm(this);
 			}
 
 			string text = this.Text;
-			string clientID = this.ClientID;
-			if (text.Length != 0) {
-				if (this.TextAlign == System.Web.UI.WebControls.TextAlign.Left) {
-					RenderLabel(writer, text, clientID);
-					RenderInputTag(writer, clientID);
+			string clientId = this.ClientID;
+			if(text.Length != 0) {
+				if(this.TextAlign == System.Web.UI.WebControls.TextAlign.Left) {
+					RenderLabel(writer, text, clientId);
+					RenderInputTag(writer, clientId);
 				} else {
-					RenderInputTag(writer, clientID);
-					RenderLabel(writer, text, clientID);
+					RenderInputTag(writer, clientId);
+					RenderLabel(writer, text, clientId);
 				}
 			} else {
-				this.RenderInputTag(writer, clientID);
+				this.RenderInputTag(writer, clientId);
 			}
 		}
 
-		private void RenderInputTag(HtmlTextWriter writer, string clientID) {
+		private void RenderInputTag(HtmlTextWriter writer, string clientId) {
 
 			string onClick = null;
-			if (this.Attributes.Count > 0) {
+			if(this.Attributes.Count > 0) {
 				System.Web.UI.AttributeCollection attributes = base.Attributes;
 				string attributeValue = attributes[HtmlAttribute.Value];
-				if (attributeValue != null) {
+				if(attributeValue != null) {
 					attributes.Remove(HtmlAttribute.Value);
 				}
 				onClick = attributes[HtmlAttribute.Onclick];
-				if (onClick != null) {
+				if(onClick != null) {
 					attributes.Remove(HtmlAttribute.Onclick);
 				}
-				if (attributes.Count != 0) {
+				if(attributes.Count != 0) {
 					attributes.AddAttributes(writer);
 				}
-				if (attributeValue != null) {
+				if(attributeValue != null) {
 					attributes[HtmlAttribute.Value] = attributeValue;
 				}
 			}
 
-			writer.AddAttribute(HtmlTextWriterAttribute.Id, clientID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, clientId);
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, HtmlAttributeValue.Radio);
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueGroupName);
 			writer.AddAttribute(HtmlTextWriterAttribute.Value, this.ValueAttribute);
 
 			string toolTip = this.ToolTip;
-			if (toolTip.Length > 0) {
+			if(toolTip.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Title, toolTip);
 			}
 
-			if (this.CssClass.Length > 0)
+			if(this.CssClass.Length > 0)
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
 
-			if (this.Checked) {
+			if(this.Checked) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Checked, HtmlAttributeValue.Checked);
 			}
-			if (!this.Enabled) {
+			if(!this.Enabled) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Disabled, HtmlAttributeValue.Disabled);
 			}
-			if (this.AutoPostBack) {
-				if (onClick != null)
+			if(this.AutoPostBack) {
+				if(onClick != null)
 					onClick = onClick + this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
 				else
 					onClick = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-			} else if (onClick != null) {
+			} else if(onClick != null) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
 			}
 
 			string accessKey = this.AccessKey;
-			if (accessKey.Length > 0) {
+			if(accessKey.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey);
 			}
 			int tabIndex = this.TabIndex;
-			if (tabIndex != 0) {
+			if(tabIndex != 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, tabIndex.ToString(NumberFormatInfo.InvariantInfo));
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();
 		}
 
-		private static void RenderLabel(HtmlTextWriter writer, string text, string clientID) {
-			writer.AddAttribute(HtmlTextWriterAttribute.For, clientID);
+		private static void RenderLabel(HtmlTextWriter writer, string text, string clientId) {
+			writer.AddAttribute(HtmlTextWriterAttribute.For, clientId);
 			writer.RenderBeginTag(HtmlTextWriterTag.Label);
 			writer.Write(text);
 			writer.RenderEndTag();
@@ -154,16 +154,16 @@ namespace nJupiter.Web.UI.Controls {
 
 		private string UniqueGroupName {
 			get {
-				if(this.uniqueGroupName == null){
+				if(this.uniqueGroupName == null) {
 					string groupName = this.GroupName;
-					string uniqueID = this.UniqueID;
-					if(uniqueID != null) {
+					string uniqueId = this.UniqueID;
+					if(uniqueId != null) {
 						if(this.NamingContainer is WebRadioButtonList) {
-							int lastIndexOf = uniqueID.LastIndexOf(base.IdSeparator);
-							groupName = uniqueID.Substring(0, lastIndexOf);
+							int lastIndexOf = uniqueId.LastIndexOf(base.IdSeparator);
+							groupName = uniqueId.Substring(0, lastIndexOf);
 						}
 						if(groupName.Length == 0) {
-							groupName = uniqueID;
+							groupName = uniqueId;
 						}
 					}
 					this.uniqueGroupName = groupName;
@@ -175,14 +175,14 @@ namespace nJupiter.Web.UI.Controls {
 		protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection) {
 			string uniqueId = postCollection[this.UniqueGroupName];
 			bool loadPostData = false;
-			if ((uniqueId != null) && uniqueId.Equals(this.ValueAttribute)) {
-				if (!this.Checked) {
+			if((uniqueId != null) && uniqueId.Equals(this.ValueAttribute)) {
+				if(!this.Checked) {
 					this.Checked = true;
 					loadPostData = true;
 				}
 				return loadPostData;
 			}
-			if (this.Checked) {
+			if(this.Checked) {
 				this.Checked = false;
 			}
 			return loadPostData;

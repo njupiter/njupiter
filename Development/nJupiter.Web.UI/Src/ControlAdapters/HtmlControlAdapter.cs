@@ -34,18 +34,18 @@ namespace nJupiter.Web.UI.ControlAdapters {
 	public class HtmlControlAdapter : ControlAdapterBase {
 		private HtmlControl htmlControl;
 
-		private const string RenderIdAttributeName			= "RenderId";
-		private const string RenderOriginalIdAttributeName	= "RenderOriginalId";
-		private const string RenderContentOnlyAttributeName	= "RenderContentOnly";
-		private const string TrailingLinefeedAttributeName	= "TrailingLinefeed";
-		private const string TrailingBreakAttributeName		= "TrailingBreak";
-		private const string CssClassAttributeName			= "CssClass";
-		private const string InnerSpanAttributeName			= "InnerSpan";
-		
-		private const string InnerHtmlAttributeName			= "innerhtml";
-		private const string True							= "true";
+		private const string RenderIdAttributeName = "RenderId";
+		private const string RenderOriginalIdAttributeName = "RenderOriginalId";
+		private const string RenderContentOnlyAttributeName = "RenderContentOnly";
+		private const string TrailingLinefeedAttributeName = "TrailingLinefeed";
+		private const string TrailingBreakAttributeName = "TrailingBreak";
+		private const string CssClassAttributeName = "CssClass";
+		private const string InnerSpanAttributeName = "InnerSpan";
 
-		protected const string BrTag	= "<" + HtmlTag.Br + " />";
+		private const string InnerHtmlAttributeName = "innerhtml";
+		private const string True = "true";
+
+		protected const string BrTag = "<" + HtmlTag.Br + " />";
 
 		bool renderId;
 		bool renderOriginalId;
@@ -59,13 +59,13 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			get {
 				if(this.htmlControl == null) {
 					this.htmlControl = base.Control as HtmlControl;
-					if(	this.htmlControl is WebGenericControl ||
+					if(this.htmlControl is WebGenericControl ||
 						this.htmlControl is WebButton) {
 						this.htmlControl = null;
 					}
 				}
 				return this.htmlControl;
-			} 
+			}
 		}
 
 		protected virtual bool RenderElement {
@@ -93,7 +93,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 
 		protected bool HasAttributes {
 			get {
-			 	IEnumerator enumerator = this.htmlControl.Attributes.Keys.GetEnumerator();
+				IEnumerator enumerator = this.htmlControl.Attributes.Keys.GetEnumerator();
 
 				while(enumerator.MoveNext()) {
 					string attributeName = enumerator.Current as string;
@@ -109,7 +109,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		}
 
 		protected virtual bool IsAttribute(string name) {
-			if(	name == RenderIdAttributeName ||
+			if(name == RenderIdAttributeName ||
 				name == RenderOriginalIdAttributeName ||
 				name == RenderContentOnlyAttributeName ||
 				name == TrailingLinefeedAttributeName ||
@@ -122,13 +122,13 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			return true;
 		}
 
-		protected bool RenderId				{ get { return renderId; } }
-		protected bool RenderOriginalId		{ get { return renderOriginalId; } }
-		protected bool RenderContentOnly	{ get { return renderContentOnly; } }
-		protected bool TrailingLinefeed		{ get { return trailingLinefeed; } }
-		protected bool TrailingBreak		{ get { return trailingBreak; } }
-		protected bool InnerSpan			{ get { return innerSpan; } }
-		protected string CssClass			{ get { return cssClass; } }
+		protected bool RenderId { get { return renderId; } }
+		protected bool RenderOriginalId { get { return renderOriginalId; } }
+		protected bool RenderContentOnly { get { return renderContentOnly; } }
+		protected bool TrailingLinefeed { get { return trailingLinefeed; } }
+		protected bool TrailingBreak { get { return trailingBreak; } }
+		protected bool InnerSpan { get { return innerSpan; } }
+		protected string CssClass { get { return cssClass; } }
 
 		protected override void Render(HtmlTextWriter writer) {
 			if(this.HtmlControl != null && this.AdapterEnabled) {
@@ -159,7 +159,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			renderContentOnly = string.Compare(this.HtmlControl.Attributes[RenderContentOnlyAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
 			trailingLinefeed = string.Compare(this.HtmlControl.Attributes[TrailingLinefeedAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
 			trailingBreak = string.Compare(this.HtmlControl.Attributes[TrailingBreakAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
-			innerSpan =  string.Compare(this.HtmlControl.Attributes[InnerSpanAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
+			innerSpan = string.Compare(this.HtmlControl.Attributes[InnerSpanAttributeName], True, StringComparison.InvariantCultureIgnoreCase) == 0;
 			cssClass = this.HtmlControl.Attributes[CssClassAttributeName];
 		}
 
@@ -168,7 +168,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			this.RenderAttributes(writer);
 			if(HtmlTag.RequiresEndTag(this.HtmlControl.TagName) || this.Control.Controls.Count > 0) {
 				writer.Write('>');
-				if(this.InnerSpan){
+				if(this.InnerSpan) {
 					writer.WriteFullBeginTag(HtmlTag.Span);
 				}
 			} else {
@@ -202,7 +202,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			this.HtmlControl.Attributes.Remove(CssClassAttributeName);
 			this.HtmlControl.Attributes.Remove(InnerHtmlAttributeName);
 			this.HtmlControl.Attributes.Remove(InnerSpanAttributeName);
-            this.HtmlControl.Attributes.Render(writer);
+			this.HtmlControl.Attributes.Render(writer);
 		}
 	}
 }

@@ -31,67 +31,67 @@ using nJupiter.Configuration;
 
 namespace nJupiter.Messaging {
 
-	public abstract class MessageService : MarshalByRefObject {	
-		
+	public abstract class MessageService : MarshalByRefObject {
+
 		#region Constants
-		private const string MessageServicesSection			= "messageServices";
-		private const string MessageServiceSection			= MessageServicesSection + "/messageService";
-		private const string MessageServiceSectionFormat	= MessageServiceSection + "[@value='{0}']";	
-		private const string SettingsSectionFormat			= MessageServiceSectionFormat + "/settings";
+		private const string MessageServicesSection = "messageServices";
+		private const string MessageServiceSection = MessageServicesSection + "/messageService";
+		private const string MessageServiceSectionFormat = MessageServiceSection + "[@value='{0}']";
+		private const string SettingsSectionFormat = MessageServiceSectionFormat + "/settings";
 		#endregion
 
 		#region Static Members
-		private static readonly Hashtable services = Hashtable.Synchronized(new Hashtable());
+		private static readonly Hashtable Services = Hashtable.Synchronized(new Hashtable());
 		#endregion
-		
+
 		#region Members
-		private Config		settings;
+		private Config settings;
 		#endregion
-		
+
 		#region Protected Properties
 		protected Config Settings { get { return this.settings; } }
 		#endregion
 
-		public abstract void	Register(MessageConsumer messageConsumer);
-		public abstract void	Publish(Message message);
-		public abstract void	GetMessageConsumers();
-		public abstract void	GetMessageConsumers(MessageDestination messageDestination);
-		public abstract void	GetMessageDestinations();
-		public abstract void	RemoveMessageDestination(MessageDestination messageDestination);
-		public abstract void	RemoveMessageConsumer(MessageConsumer messageConsumer);
-		
-		public MessageConsumer	CreateMessageConsumer(string messageDestination, Uri notificationUrl) {
+		public abstract void Register(MessageConsumer messageConsumer);
+		public abstract void Publish(Message message);
+		public abstract void GetMessageConsumers();
+		public abstract void GetMessageConsumers(MessageDestination messageDestination);
+		public abstract void GetMessageDestinations();
+		public abstract void RemoveMessageDestination(MessageDestination messageDestination);
+		public abstract void RemoveMessageConsumer(MessageConsumer messageConsumer);
+
+		public MessageConsumer CreateMessageConsumer(string messageDestination, Uri notificationUrl) {
 			return CreateMessageConsumer(CreateMessageDestination(messageDestination), notificationUrl);
 		}
 
-		public MessageConsumer	CreateMessageConsumer(MessageDestination messageDestination, Uri notificationUri) {
-			if (messageDestination == null)
+		public MessageConsumer CreateMessageConsumer(MessageDestination messageDestination, Uri notificationUri) {
+			if(messageDestination == null)
 				throw new ArgumentNullException("messageDestination");
-			if (notificationUri == null)
+			if(notificationUri == null)
 				throw new ArgumentNullException("notificationUri");
 
-			MessageConsumer	messageConsumer		=	new MessageConsumer();
-			messageConsumer.NotificationUrl		=	notificationUri.AbsoluteUri;
-			messageConsumer.Created				=	DateTime.Now;
-			messageConsumer.Destination			=	messageDestination;			
+			MessageConsumer messageConsumer = new MessageConsumer();
+			messageConsumer.NotificationUrl = notificationUri.AbsoluteUri;
+			messageConsumer.Created = DateTime.Now;
+			messageConsumer.Destination = messageDestination;
 			return messageConsumer;
 		}
-		public MessageDestination	CreateMessageDestination(string messageDestination){
-			if (messageDestination == null)
+		public MessageDestination CreateMessageDestination(string messageDestination) {
+			if(messageDestination == null)
 				throw new ArgumentNullException("messageDestination");
-			
+
 			return new MessageDestination(messageDestination);
 		}
-		
+
 		public Message CreateMessage(DateTime startPublish, DateTime stopPublish, string message, MessageDestination messageDestination) {
-			if (message == null)
+			if(message == null)
 				throw new ArgumentNullException("message");
-			if (messageDestination == null)
+			if(messageDestination == null)
 				throw new ArgumentNullException("messageDestination");
-			
+
 			return new Message(startPublish, stopPublish, message, messageDestination);
 		}
-		
+
 		public static MessageService GetInstance() {
 			const string section = MessageServiceSection + "[@default='true']";
 			return GetServiceFromSection(section);
@@ -103,18 +103,18 @@ namespace nJupiter.Messaging {
 		}
 
 		private static MessageService GetServiceFromSection(string section) {
-			const string assemblyPathKey	= "assemblyPath";
-			const string assemblyKey		= "assembly";
-			const string typeKey			= "type";
+			const string assemblyPathKey = "assemblyPath";
+			const string assemblyKey = "assembly";
+			const string typeKey = "type";
 
 			Config config = ConfigHandler.GetConfig();
 			string name = config.GetValue(section);
 
-			if(services.ContainsKey(name))
-				return (MessageService)services[name];
+			if(Services.ContainsKey(name))
+				return (MessageService)Services[name];
 
-			lock(services.SyncRoot) {
-				if(!services.ContainsKey(name)) {
+			lock(Services.SyncRoot) {
+				if(!Services.ContainsKey(name)) {
 
 					string assemblyPath = config.GetValue(section, assemblyPathKey);
 					string assemblyName = config.GetValue(section, assemblyKey);
@@ -127,28 +127,26 @@ namespace nJupiter.Messaging {
 
 					messageService.settings = config.GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, name));
 
-					services.Add(name, messageService);
+					Services.Add(name, messageService);
 					return messageService;
 				}
-				return (MessageService)services[name];
+				return (MessageService)Services[name];
 			}
 		}
-		
+
 		private static object CreateInstance(string assemblyPath, string assemblyName, string typeName) {
 			Assembly assembly;
 			if(!string.IsNullOrEmpty(assemblyPath)) {
 				assembly = Assembly.LoadFrom(assemblyPath);
-			}
-			else if(assemblyName == null || assemblyName.Length.Equals(0) || 
+			} else if(assemblyName == null || assemblyName.Length.Equals(0) ||
 				Assembly.GetExecutingAssembly().GetName().Name.Equals(assemblyName)) {
 				assembly = Assembly.GetExecutingAssembly();	//Load current assembly
-			}
-			else {
+			} else {
 				assembly = Assembly.Load(assemblyName); // Late binding to an assembly on disk (current directory)
 			}
 			return assembly.CreateInstance(
-				typeName, false, 
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | 
+				typeName, false,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
 				BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.ExactBinding,
 				null, null, null, null);
 		}

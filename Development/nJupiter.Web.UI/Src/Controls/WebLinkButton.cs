@@ -30,24 +30,24 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 
 namespace nJupiter.Web.UI.Controls {
-	
+
 	public class WebLinkButton : LinkButton {
 		#region Constants
-		private const string BrTag					= "<" + HtmlTag.Br + " />";
-		private const string InnerSpanKey			= "v_InnerSpan";
-		private const string NoLinkKey				= "v_NoLink";
-		private const string DisableEncodingKey		= "v_DisableEncoding";
-		private const string HasControlsKey			= "v_HasControls";
-		private const string SuppressPostback		= "v_SuppressJavascriptPostBack";
-		private const string RenderIDKey			= "v_RenderId";
-		private const string RenderOriginalIDKey	= "v_RenderOriginalId";
-		private const string NavigateUrlKey			= "v_NavigateUrl";
-		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
-		private const string TrailingBreakKey		= "v_TrailingBreak";
+		private const string BrTag = "<" + HtmlTag.Br + " />";
+		private const string InnerSpanKey = "v_InnerSpan";
+		private const string NoLinkKey = "v_NoLink";
+		private const string DisableEncodingKey = "v_DisableEncoding";
+		private const string HasControlsKey = "v_HasControls";
+		private const string SuppressPostback = "v_SuppressJavascriptPostBack";
+		private const string RenderIdKey = "v_RenderId";
+		private const string RenderOriginalIdKey = "v_RenderOriginalId";
+		private const string NavigateUrlKey = "v_NavigateUrl";
+		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
+		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
 
 		#region Properties
-		public bool DisableEncoding{
+		public bool DisableEncoding {
 			get {
 				if(this.ViewState[DisableEncodingKey] == null)
 					return false;
@@ -58,7 +58,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
-		private bool HasControlsInternal{
+		private bool HasControlsInternal {
 			get {
 				if(this.ViewState[HasControlsKey] == null)
 					return false;
@@ -88,7 +88,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public bool InnerSpan {
 			get {
-				if (this.ViewState[InnerSpanKey] == null) {
+				if(this.ViewState[InnerSpanKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[InnerSpanKey];
@@ -100,26 +100,26 @@ namespace nJupiter.Web.UI.Controls {
 
 		public bool RenderId {
 			get {
-				if(this.ViewState[RenderIDKey] == null)
+				if(this.ViewState[RenderIdKey] == null)
 					return false;
-				return (bool)this.ViewState[RenderIDKey];
+				return (bool)this.ViewState[RenderIdKey];
 			}
-			set { this.ViewState[RenderIDKey] = value; }
+			set { this.ViewState[RenderIdKey] = value; }
 		}
-		
+
 		public bool RenderOriginalId {
 			get {
-				if(this.ViewState[RenderOriginalIDKey] == null)
+				if(this.ViewState[RenderOriginalIdKey] == null)
 					return false;
-				return (bool)this.ViewState[RenderOriginalIDKey];
+				return (bool)this.ViewState[RenderOriginalIdKey];
 			}
-			set { this.ViewState[RenderOriginalIDKey] = value; }
+			set { this.ViewState[RenderOriginalIdKey] = value; }
 		}
-		
+
 		public string NavigateUrl {
 			get {
-				string navigateUrl = (string) this.ViewState[NavigateUrlKey];
-				if (navigateUrl != null)
+				string navigateUrl = (string)this.ViewState[NavigateUrlKey];
+				if(navigateUrl != null)
 					return navigateUrl;
 				return string.Empty;
 			}
@@ -131,7 +131,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false)]
 		public bool TrailingBreak {
 			get {
-				if (this.ViewState[TrailingBreakKey] == null) {
+				if(this.ViewState[TrailingBreakKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingBreakKey];
@@ -144,7 +144,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool TrailingLinefeed {
 			get {
-				if (this.ViewState[TrailingLinefeedKey] == null) {
+				if(this.ViewState[TrailingLinefeedKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingLinefeedKey];
@@ -157,7 +157,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Method
 		protected override void AddParsedSubObject(object obj) {
-			if (!(obj is LiteralControl) && !(obj is Literal))
+			if(!(obj is LiteralControl) && !(obj is Literal))
 				this.DisableEncoding = true;
 			this.HasControlsInternal = true;
 			base.AddParsedSubObject(obj);
@@ -170,25 +170,25 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 		protected override void Render(HtmlTextWriter writer) {
-			if(this.NoLink){
+			if(this.NoLink) {
 				if(this.InnerSpan) {
 					if(!string.IsNullOrEmpty(this.CssClass)) {
 						writer.WriteBeginTag(HtmlTag.Span);
 						writer.WriteAttribute(HtmlAttribute.Class, this.CssClass);
 						writer.Write(HtmlTextWriter.TagRightChar);
-					} else { 
+					} else {
 						writer.WriteFullBeginTag(HtmlTag.Span);
 					}
 				}
 				this.RenderContents(writer);
 				if(this.InnerSpan)
 					writer.WriteEndTag(HtmlTag.Span);
-			}else{
-				if(!this.RenderOriginalId && this.NavigateUrl.Length > 0 && this.SuppressJavascriptPostBack){
-					string originalID = this.ID;
+			} else {
+				if(!this.RenderOriginalId && this.NavigateUrl.Length > 0 && this.SuppressJavascriptPostBack) {
+					string originalId = this.ID;
 					this.ID = null;
 					if(this.RenderId)
-						this.Attributes.Add(HtmlAttribute.Id, originalID);
+						this.Attributes.Add(HtmlAttribute.Id, originalId);
 				}
 				base.Render(new CustomHtmlTextWriter(writer.InnerWriter, HtmlTextWriter.DefaultTabString, this.NavigateUrl, this.SuppressJavascriptPostBack));
 			}
@@ -219,26 +219,27 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Inner Classes
 		private sealed class CustomHtmlTextWriter : HtmlTextWriter {
-			
-			private readonly string	href;
-			private readonly bool	suppressJavascriptPostBack;
-			
-			public CustomHtmlTextWriter(TextWriter writer, string tabString, string altHref, bool suppressJavaScriptPostBack) : base(writer, tabString) {
-				this.href							= altHref;
-				this.suppressJavascriptPostBack	= suppressJavaScriptPostBack;
+
+			private readonly string href;
+			private readonly bool suppressJavascriptPostBack;
+
+			public CustomHtmlTextWriter(TextWriter writer, string tabString, string altHref, bool suppressJavaScriptPostBack)
+				: base(writer, tabString) {
+				this.href = altHref;
+				this.suppressJavascriptPostBack = suppressJavaScriptPostBack;
 			}
 
 			public override void AddAttribute(HtmlTextWriterAttribute key, string value) {
 				if(value == null) {
 					throw new ArgumentNullException("value");
 				}
-				if(key.Equals(HtmlTextWriterAttribute.Href)){
+				if(key.Equals(HtmlTextWriterAttribute.Href)) {
 					if(!string.IsNullOrEmpty(this.href)) {
 						base.AddAttribute(HtmlTextWriterAttribute.Href, this.href);
 						if(value.StartsWith("javascript:") && !this.suppressJavascriptPostBack) {
 							base.AddAttribute(HtmlTextWriterAttribute.Onclick, value.Substring("javascript:".Length) + "; return false;");
 						}
-					}else if(!value.Equals("javascript:void(0)")) {
+					} else if(!value.Equals("javascript:void(0)")) {
 						if(value.StartsWith("javascript:")) {
 							base.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 							if(!this.suppressJavascriptPostBack) {
@@ -250,13 +251,13 @@ namespace nJupiter.Web.UI.Controls {
 					} else {
 						base.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 					}
-				}else{
+				} else {
 					base.AddAttribute(key, value);
 				}
 			}
 		}
 		#endregion
-	
+
 	}
 
 }

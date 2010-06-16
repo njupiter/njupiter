@@ -32,16 +32,16 @@ namespace nJupiter.Configuration {
 	internal sealed class WatchedConfigHandler : IDisposable {
 
 		#region Members
-		private readonly	FileInfo			configFile;
-		private readonly	string				configKey;
-		private readonly	FileSystemWatcher	watcher;
-		private readonly	object				padLock = new object();
-		private				bool				eventTriggered;
-		private				bool				disposed;
+		private readonly FileInfo configFile;
+		private readonly string configKey;
+		private readonly FileSystemWatcher watcher;
+		private readonly object padLock = new object();
+		private bool eventTriggered;
+		private bool disposed;
 		#endregion
 
 		#region Static Members
-		private static readonly ILog	log		= LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Constructors
@@ -96,7 +96,7 @@ namespace nJupiter.Configuration {
 					this.eventTriggered = true;
 				} catch(ConfigurationException ex) {
 					// Catch error and log to avoid crashing the application
-					if(log.IsFatalEnabled) { log.Fatal(string.Format("Error while configure configfile with key {0}", this.configKey), ex); }
+					if(Log.IsFatalEnabled) { Log.Fatal(string.Format("Error while configure configfile with key {0}", this.configKey), ex); }
 				}
 			}
 		}
@@ -104,7 +104,7 @@ namespace nJupiter.Configuration {
 
 		#region IDisposable Members
 		private void Dispose(bool disposing) {
-			if (!this.disposed) {
+			if(!this.disposed) {
 				this.disposed = true;
 
 				if(this.watcher != null) {
@@ -121,7 +121,7 @@ namespace nJupiter.Configuration {
 		public void Dispose() {
 			Dispose(true);
 		}
-		
+
 		// Disposable types implement a finalizer.
 		~WatchedConfigHandler() {
 			Dispose(false);

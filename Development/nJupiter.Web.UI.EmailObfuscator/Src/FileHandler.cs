@@ -29,11 +29,11 @@ using System.Text;
 namespace nJupiter.Web.UI.EmailObfuscator {
 
 	public sealed class FileHandler : IHttpHandler {
-		
+
 		public void ProcessRequest(HttpContext context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
-			string encstr		= context.Request["encstr"];
+			string encstr = context.Request["encstr"];
 			//string encimage	= context.Request["encimage"];
 			//string encanchor	= context.Request["encanchor"];
 

@@ -37,18 +37,18 @@ namespace nJupiter.Web {
 	public class MimeType {
 
 		#region Members
-		private readonly string					type;
-		private readonly string					discreteType;
-		private readonly string					compositeType;
-		private readonly NameValueCollection	parameters;
+		private readonly string type;
+		private readonly string discreteType;
+		private readonly string compositeType;
+		private readonly NameValueCollection parameters;
 		#endregion
 
 		#region Properties
-		public string				Type			{ get { return this.type; } }
-		public string				DiscreteType	{ get { return this.discreteType; } }
-		public string				CompositeType	{ get { return this.compositeType; } }
-		public NameValueCollection	Parameters		{ get { return this.parameters; } }
-		
+		public string Type { get { return this.type; } }
+		public string DiscreteType { get { return this.discreteType; } }
+		public string CompositeType { get { return this.compositeType; } }
+		public NameValueCollection Parameters { get { return this.parameters; } }
+
 		#region Auto Generated Properties
 		//This properties are generated on the fly because the object isn't fully imutable
 		// and that the parameters collection can and should be able to change on the fly
@@ -101,20 +101,20 @@ namespace nJupiter.Web {
 			if(mimeType == null)
 				throw new ArgumentNullException("mimeType");
 
-			string[] types	= mimeType.Split(';', ':');
+			string[] types = mimeType.Split(';', ':');
 
-			this.parameters	= new NameValueCollection();
+			this.parameters = new NameValueCollection();
 
-			this.type	= types[0].Trim();
-			
+			this.type = types[0].Trim();
+
 			string[] mime = this.type.Split('/');
-			
+
 			if(mime.Length != 2)
 				throw new ArgumentException("Parameter value [" + mimeType + "] is not a mime-type.", "mimeType");
 
-			this.discreteType		= mime[0].Trim();
-			this.compositeType		= mime[1].Trim();
-			
+			this.discreteType = mime[0].Trim();
+			this.compositeType = mime[1].Trim();
+
 			if(types.Length > 1) {
 				for(int i = 1; i < types.Length; i++) {
 					string acceptParam = types[i];
@@ -144,14 +144,14 @@ namespace nJupiter.Web {
 		}
 
 		public bool EqualsType(MimeType mimeType) {
-			return mimeType != null && 
+			return mimeType != null &&
 				this.DiscreteType.Equals(mimeType.DiscreteType) &&
 				(this.CompositeType.Equals(mimeType.CompositeType) || this.CompositeType.Equals("*") || mimeType.CompositeType.Equals("*"));
 		}
 
 		public bool EqualsExactType(MimeType mimeType) {
-			return mimeType != null && 
-				this.DiscreteType.Equals(mimeType.DiscreteType) && 
+			return mimeType != null &&
+				this.DiscreteType.Equals(mimeType.DiscreteType) &&
 				this.CompositeType.Equals(mimeType.CompositeType);
 		}
 
@@ -159,6 +159,6 @@ namespace nJupiter.Web {
 			return this.ContentType;
 		}
 		#endregion
-	
+
 	}
 }

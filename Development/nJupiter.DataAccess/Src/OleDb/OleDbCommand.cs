@@ -34,8 +34,8 @@ namespace nJupiter.DataAccess.OleDb {
 	public sealed class OleDbCommand : Command {
 
 		#region Members
-		private readonly OleDbClient.OleDbCommand	command;
-		private bool								disposed;
+		private readonly OleDbClient.OleDbCommand command;
+		private bool disposed;
 		#endregion
 
 		#region Constructors
@@ -43,7 +43,8 @@ namespace nJupiter.DataAccess.OleDb {
 			this.command = new OleDbClient.OleDbCommand { CommandText = command, CommandType = commandType };
 		}
 
-		internal OleDbCommand(string command, CommandType commandType, object[] parameters) : this(command, commandType) {
+		internal OleDbCommand(string command, CommandType commandType, object[] parameters)
+			: this(command, commandType) {
 			if(parameters != null) {
 				this.command.Parameters.AddRange(parameters);
 			}
@@ -55,12 +56,12 @@ namespace nJupiter.DataAccess.OleDb {
 		/// Gets the <see cref="IDbCommand"/> associated with the command.
 		/// </summary>
 		/// <value>The <see cref="IDbCommand"/> associated with the command.</value>
-		public override	IDbCommand	DbCommand		{ get { return this.command; } }
+		public override IDbCommand DbCommand { get { return this.command; } }
 		/// <summary>
 		/// Gets or sets the timeout for the command.
 		/// </summary>
 		/// <value>The command timeout.</value>
-		public override	int			CommandTimeout	{ get { return this.command.CommandTimeout; }	set { this.command.CommandTimeout = value; } }
+		public override int CommandTimeout { get { return this.command.CommandTimeout; } set { this.command.CommandTimeout = value; } }
 		#endregion
 
 		#region Methods
@@ -86,13 +87,13 @@ namespace nJupiter.DataAccess.OleDb {
 		/// </summary>
 		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
 		protected override void Dispose(bool disposing) {
-			try{
-				if (!this.disposed) {
+			try {
+				if(!this.disposed) {
 					// Dispose managed resources.
 					this.command.Dispose();
 					this.disposed = true;
 				}
-			}finally{
+			} finally {
 				base.Dispose(disposing);
 			}
 		}
@@ -103,13 +104,13 @@ namespace nJupiter.DataAccess.OleDb {
 			OleDbClient.OleDbParameter param = this.command.CreateParameter();
 			param.ParameterName = name;
 
-			param.Size			= size;
-			param.Scale			= scale;
-			param.Precision		= precision;
-			param.Direction		= direction;
-			param.IsNullable	= nullable;
-			param.SourceColumn	= column;
-			param.SourceVersion	= rowVersion;
+			param.Size = size;
+			param.Scale = scale;
+			param.Precision = precision;
+			param.Direction = direction;
+			param.IsNullable = nullable;
+			param.SourceColumn = column;
+			param.SourceVersion = rowVersion;
 			param.DbType = type;
 
 			param.Value = value ?? DBNull.Value;

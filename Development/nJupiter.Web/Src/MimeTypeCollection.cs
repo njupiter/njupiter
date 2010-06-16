@@ -26,28 +26,28 @@ using System;
 using System.Collections;
 
 namespace nJupiter.Web {
-	
+
 	public sealed class MimeTypeCollection : ICollection {
 		#region Members
-		private readonly Hashtable	innerHash;
+		private readonly Hashtable innerHash;
 		#endregion
-		
+
 		#region Constructors
 		internal MimeTypeCollection() {
-			this.innerHash  = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+			this.innerHash = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 		}
 		#endregion
 
 		#region Indexers
 		public MimeType this[string mimeType] {
-			get{
+			get {
 				return InnerHash[mimeType] as MimeType;
 			}
 		}
 		#endregion
 
 		#region Properties
-		internal	Hashtable	InnerHash	{ get { return this.innerHash; } }
+		internal Hashtable InnerHash { get { return this.innerHash; } }
 		#endregion
 
 		#region Public Methods
@@ -58,7 +58,7 @@ namespace nJupiter.Web {
 			this.innerHash[mimeType.ContentType] = mimeType;
 		}
 
-		public void Remove(MimeType mimeType) { 
+		public void Remove(MimeType mimeType) {
 			this.innerHash.Remove(mimeType);
 		}
 
@@ -97,7 +97,7 @@ namespace nJupiter.Web {
 			MimeType result = null;
 			foreach(MimeType m in this) {
 				if(((exactType && m.EqualsExactType(mime)) || m.EqualsType(mime)) && (result == null || result.Quality < m.Quality))
-					result =  m;
+					result = m;
 			}
 			return result;
 		}
@@ -114,34 +114,34 @@ namespace nJupiter.Web {
 			return new MimeTypeCollectionEnumerator(this);
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerHash.IsSynchronized; } }
-		public int		Count			{ get { return InnerHash.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerHash.IsSynchronized; } }
+		public int Count { get { return InnerHash.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 	}
-	
+
 	#region MimeTypeCollectionEnumerator
 	[Serializable]
 	public class MimeTypeCollectionEnumerator : IEnumerator {
 		private readonly IEnumerator innerEnumerator;
-		
-		internal MimeTypeCollectionEnumerator (MimeTypeCollection enumerable) {
+
+		internal MimeTypeCollectionEnumerator(MimeTypeCollection enumerable) {
 			innerEnumerator = enumerable.InnerHash.GetEnumerator();
 		}
-	
+
 		#region Implementation of IEnumerator
 		public void Reset() {
 			innerEnumerator.Reset();
 		}
-		
+
 		public bool MoveNext() {
 			return innerEnumerator.MoveNext();
 		}
-		
-		object IEnumerator.Current { get { return ((DictionaryEntry) innerEnumerator.Current).Value; } }
-		public MimeType Current { get { return (MimeType)((DictionaryEntry) innerEnumerator.Current).Value; } }
+
+		object IEnumerator.Current { get { return ((DictionaryEntry)innerEnumerator.Current).Value; } }
+		public MimeType Current { get { return (MimeType)((DictionaryEntry)innerEnumerator.Current).Value; } }
 		#endregion
 	}
 	#endregion

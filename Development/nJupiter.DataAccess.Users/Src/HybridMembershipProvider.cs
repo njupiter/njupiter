@@ -34,9 +34,9 @@ namespace nJupiter.DataAccess.Users {
 	public class HybridMembershipProvider : UsersDAOMembershipProvider {
 
 		#region Fields
-		private MembershipProvider	primaryMembershipProvider;
-		private string				primaryMembershipProviderName;
-		private readonly object		padLock = new object();
+		private MembershipProvider primaryMembershipProvider;
+		private string primaryMembershipProviderName;
+		private readonly object padLock = new object();
 		#endregion
 
 		#region Private Methods
@@ -90,7 +90,7 @@ namespace nJupiter.DataAccess.Users {
 		public MembershipProvider PrimaryMembershipProvider {
 			get {
 				if(primaryMembershipProvider == null) {
-					primaryMembershipProvider =  Membership.Providers[primaryMembershipProviderName];
+					primaryMembershipProvider = Membership.Providers[primaryMembershipProviderName];
 					if(primaryMembershipProvider == null) {
 						throw new ConfigurationErrorsException(string.Format("The MembershipProvider {0} configured as the primary provider does not exist", primaryMembershipProviderName));
 					}
@@ -147,7 +147,7 @@ namespace nJupiter.DataAccess.Users {
 				try {
 					Guid guid = new Guid(providerId.ToString());
 					userId = guid.ToString("N");
-				}catch(FormatException) {
+				} catch(FormatException) {
 					userId = HashToString(providerId.ToString());
 				}
 				base.CreateUser(username, password, email, passwordQuestion, passwordAnswer, isApproved, userId, out status);

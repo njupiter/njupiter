@@ -30,16 +30,16 @@ namespace nJupiter.Services.Forum.UI {
 
 	public class WebTextFormatter : TextFormatter {
 		#region Constants
-		private const bool		DefaultAutoHyperlink			= true;
-		private const bool		DefaultHtmlEncode				= true;
-		private const bool		DefaultConvertNewLinesToBr		= true;
+		private const bool DefaultAutoHyperlink = true;
+		private const bool DefaultHtmlEncode = true;
+		private const bool DefaultConvertNewLinesToBr = true;
 		#endregion
 
 		#region Variables
-		private bool	autoHyperlink			= DefaultAutoHyperlink;
-		private bool	htmlEncode				= DefaultHtmlEncode;
-		private bool	convertNewLinesToBr		= DefaultConvertNewLinesToBr;
-	
+		private bool autoHyperlink = DefaultAutoHyperlink;
+		private bool htmlEncode = DefaultHtmlEncode;
+		private bool convertNewLinesToBr = DefaultConvertNewLinesToBr;
+
 		#endregion
 
 		#region Properties
@@ -49,11 +49,11 @@ namespace nJupiter.Services.Forum.UI {
 		#endregion
 
 		#region Constructors
-		public WebTextFormatter() {}
+		public WebTextFormatter() { }
 		public WebTextFormatter(bool autoHyperlink, bool convertNewLinesToBr, bool htmlEncode) {
-			this.autoHyperlink			= autoHyperlink;
-			this.convertNewLinesToBr	= convertNewLinesToBr;
-			this.htmlEncode				= htmlEncode;
+			this.autoHyperlink = autoHyperlink;
+			this.convertNewLinesToBr = convertNewLinesToBr;
+			this.htmlEncode = htmlEncode;
 		}
 		#endregion
 
@@ -67,7 +67,7 @@ namespace nJupiter.Services.Forum.UI {
 				output = HtmlHandler.ConvertNewLinesToBr(output);
 			}
 			if(this.AutoHyperlink) {
-			    output = HtmlHandler.AutoHyperlinkText(output, true);
+				output = HtmlHandler.AutoHyperlinkText(output, true);
 			}
 			return output;
 		}

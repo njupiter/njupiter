@@ -31,7 +31,8 @@ namespace nJupiter.DataAccess.Users {
 
 		private readonly MembershipUser primaryMembershipUser;
 
-		public HybridMembershipUser(MembershipUser membershipUser, User user, string provider) : base(user, provider) {
+		public HybridMembershipUser(MembershipUser membershipUser, User user, string provider)
+			: base(user, provider) {
 			primaryMembershipUser = membershipUser;
 		}
 
@@ -49,11 +50,11 @@ namespace nJupiter.DataAccess.Users {
 
 		public override DateTime CreationDate {
 			get {
-				try{
+				try {
 					if(primaryMembershipUser.CreationDate.ToUniversalTime().Equals(DateTime.MinValue))
 						return base.CreationDate;
 					return primaryMembershipUser.CreationDate;
-				} catch (NotSupportedException) { }
+				} catch(NotSupportedException) { }
 				return base.CreationDate;
 			}
 		}
@@ -100,17 +101,17 @@ namespace nJupiter.DataAccess.Users {
 
 		public override DateTime LastActivityDate {
 			get {
-				try{
-					if (primaryMembershipUser.LastActivityDate.ToUniversalTime().Equals(DateTime.MinValue))
+				try {
+					if(primaryMembershipUser.LastActivityDate.ToUniversalTime().Equals(DateTime.MinValue))
 						return base.LastActivityDate;
 					return primaryMembershipUser.LastActivityDate;
-				}catch(NotSupportedException) {}
+				} catch(NotSupportedException) { }
 				return base.LastActivityDate;
 			}
 			set {
 				try {
 					primaryMembershipUser.LastActivityDate = value;
-				} catch (NotSupportedException) {}
+				} catch(NotSupportedException) { }
 				base.LastActivityDate = value;
 			}
 		}
@@ -118,10 +119,10 @@ namespace nJupiter.DataAccess.Users {
 		public override DateTime LastLockoutDate {
 			get {
 				try {
-					if (primaryMembershipUser.LastLockoutDate.ToUniversalTime().Equals(DateTime.MinValue))
+					if(primaryMembershipUser.LastLockoutDate.ToUniversalTime().Equals(DateTime.MinValue))
 						return base.LastLockoutDate;
 					return primaryMembershipUser.LastLockoutDate;
-				} catch (NotSupportedException) {}
+				} catch(NotSupportedException) { }
 				return base.LastLockoutDate;
 			}
 		}
@@ -132,13 +133,13 @@ namespace nJupiter.DataAccess.Users {
 					if(primaryMembershipUser.LastLoginDate.ToUniversalTime().Equals(DateTime.MinValue))
 						return base.LastLoginDate;
 					return primaryMembershipUser.LastLoginDate;
-				}catch(NotSupportedException){}
+				} catch(NotSupportedException) { }
 				return base.LastLoginDate;
 			}
 			set {
 				try {
 					primaryMembershipUser.LastLoginDate = value;
-				} catch (NotSupportedException) { }
+				} catch(NotSupportedException) { }
 				base.LastLoginDate = value;
 			}
 		}
@@ -149,7 +150,7 @@ namespace nJupiter.DataAccess.Users {
 					if(primaryMembershipUser.LastPasswordChangedDate.ToUniversalTime().Equals(DateTime.MinValue))
 						return base.LastPasswordChangedDate;
 					return primaryMembershipUser.LastPasswordChangedDate;
-				} catch (NotSupportedException) { }
+				} catch(NotSupportedException) { }
 				return base.LastPasswordChangedDate;
 			}
 		}

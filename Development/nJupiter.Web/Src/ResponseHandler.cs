@@ -29,8 +29,8 @@ namespace nJupiter.Web {
 
 	public static class ResponseHandler {
 		#region Constants
-		private const string HtmlMimeType	= "text/html";
-		private const string XhtmlMimeType	= "application/xhtml+xml";
+		private const string HtmlMimeType = "text/html";
+		private const string XhtmlMimeType = "application/xhtml+xml";
 		#endregion
 
 		#region Constructors

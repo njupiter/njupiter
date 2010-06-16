@@ -36,15 +36,15 @@ namespace nJupiter.Configuration {
 	public class Config : IDisposable {
 
 		#region Members
-		private		readonly ConfigCollection			innerConfigurations = new ConfigCollection();
-		private		readonly Dictionary<string, object> configHandlers = new Dictionary<string,object>();
-		private		readonly object						padlock = new object();
-		private		readonly FileInfo					configFile;
-		private		readonly Uri						configUri;
-		private		readonly string						configKey;
-		private		bool								disposed;
-		internal	XmlElement							configXml;
-		internal	WatchedConfigHandler				watcher;
+		private readonly ConfigCollection innerConfigurations = new ConfigCollection();
+		private readonly Dictionary<string, object> configHandlers = new Dictionary<string, object>();
+		private readonly object padlock = new object();
+		private readonly FileInfo configFile;
+		private readonly Uri configUri;
+		private readonly string configKey;
+		private bool disposed;
+		private XmlElement configXml;
+		private WatchedConfigHandler watcher;
 		#endregion
 
 		#region Constants
@@ -56,23 +56,23 @@ namespace nJupiter.Configuration {
 		/// Gets the unique key for this configuration object. This is in most cases equal to the assembly name which the configuration object belongs to.
 		/// </summary>
 		/// <value>The config key.</value>
-		public		string					ConfigKey	{ get { return this.configKey; } }
+		public string ConfigKey { get { return this.configKey; } }
 		/// <summary>
 		/// Gets the Xml Element associated with the configuration object.
 		/// </summary>
 		/// <value>The config XML.</value>
-		public		XmlElement				ConfigXML	{ get { return this.configXml; } }
+		public XmlElement ConfigXML { get { return this.configXml; } internal set { configXml = value; } }
 		/// <summary>
 		/// If the Xml associated with the configuration object is stored localy on fire this property return the <see cref="FileInfo" /> for the Xml file.
 		/// </summary>
 		/// <value>The <see cref="FileInfo" /> object associated with the Xml if it is stored as a file on the local machine; otherwise, <c>null</c>.</value>
-		public		FileInfo				ConfigFile	{ get { return this.configFile; } }
+		public FileInfo ConfigFile { get { return this.configFile; } }
 		/// <summary>
 		/// Gets the <see cref="Uri" /> that contains the stream for the Xml.
 		/// </summary>
 		/// <value>If exists, the <see cref="Uri" /> associated with the Xml; otherwise, <c>null</c>.</value>
-		public		Uri						ConfigUri	{ get { return this.configUri; } }
-		internal	WatchedConfigHandler	Watcher		{ get { return this.watcher; }		set { this.watcher = value; }  }
+		public Uri ConfigUri { get { return this.configUri; } }
+		internal WatchedConfigHandler Watcher { get { return this.watcher; } set { this.watcher = value; } }
 		#endregion
 
 		#region Events
@@ -87,14 +87,16 @@ namespace nJupiter.Configuration {
 		/// Initializes a new instance of the <see cref="Config"/> class.
 		/// </summary>
 		/// <param name="element">The Xml element accociated with the config object.</param>
-		public Config(XmlElement element) : this(Guid.NewGuid().ToString(), element, null, null) {
+		public Config(XmlElement element)
+			: this(Guid.NewGuid().ToString(), element, null, null) {
 		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Config"/> class.
 		/// </summary>
 		/// <param name="configKey">The config key for the config object.</param>
-		public Config(string configKey) : this(configKey, null, null, null) {
+		public Config(string configKey)
+			: this(configKey, null, null, null) {
 		}
 
 		/// <summary>
@@ -102,7 +104,8 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="configKey">The config key for the config object.</param>
 		/// <param name="element">The Xml element accociated with the config object.</param>
-		public Config(string configKey, XmlElement element) : this(configKey, element, null, null) {
+		public Config(string configKey, XmlElement element)
+			: this(configKey, element, null, null) {
 		}
 
 		/// <summary>
@@ -110,7 +113,8 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="configKey">The config key for the config object.</param>
 		/// <param name="configFile">The config file accociated with the config object.</param>
-		public Config(string configKey, FileInfo configFile) : this(configKey, null, configFile, null) {
+		public Config(string configKey, FileInfo configFile)
+			: this(configKey, null, configFile, null) {
 		}
 
 		/// <summary>
@@ -119,7 +123,8 @@ namespace nJupiter.Configuration {
 		/// <param name="configKey">The config key for the config object.</param>
 		/// <param name="element">The Xml element accociated with the config object.</param>
 		/// <param name="configFile">The config file accociated with the config object.</param>
-		public Config(string configKey, XmlElement element, FileInfo configFile) : this(configKey, element, configFile, null) {
+		public Config(string configKey, XmlElement element, FileInfo configFile)
+			: this(configKey, element, configFile, null) {
 		}
 
 		/// <summary>
@@ -127,7 +132,8 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="configKey">The config key for the config object.</param>
 		/// <param name="configUri">The URI that contains a stream of the Xml associated with the config object.</param>
-		public Config(string configKey, Uri configUri) : this(configKey, null, null, configUri) {
+		public Config(string configKey, Uri configUri)
+			: this(configKey, null, null, configUri) {
 		}
 
 		/// <summary>
@@ -136,7 +142,8 @@ namespace nJupiter.Configuration {
 		/// <param name="configKey">The config key for the config object.</param>
 		/// <param name="element">The Xml element accociated with the config object.</param>
 		/// <param name="configUri">The URI that contains a stream of the Xml associated with the config object.</param>
-		public Config(string configKey, XmlElement element, Uri configUri) : this(configKey, element, null, configUri) {
+		public Config(string configKey, XmlElement element, Uri configUri)
+			: this(configKey, element, null, configUri) {
 		}
 
 		/// <summary>
@@ -147,9 +154,9 @@ namespace nJupiter.Configuration {
 		/// <param name="configFile">The config file accociated with the config object.</param>
 		/// <param name="configUri">The URI that contains a stream of the Xml associated with the config object.</param>
 		private Config(string configKey, XmlElement element, FileInfo configFile, Uri configUri) {
-			this.configKey		= configKey;
-			this.configXml		= element;
-			this.configFile	= configFile;
+			this.configKey = configKey;
+			this.configXml = element;
+			this.configFile = configFile;
 
 			this.configUri = configFile != null ? new Uri(configFile.FullName) : configUri;
 		}
@@ -161,7 +168,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The bool value for the key.</returns>
-		public bool GetBoolValue(string key){
+		public bool GetBoolValue(string key) {
 			return GetBoolValue(".", key);
 		}
 
@@ -171,7 +178,7 @@ namespace nJupiter.Configuration {
 		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The bool value for the key.</returns>
-		public bool GetBoolValue(string section, string key){
+		public bool GetBoolValue(string section, string key) {
 			return string.Compare(GetValue(section, key), "true", true, CultureInfo.InvariantCulture) == 0;
 		}
 
@@ -180,7 +187,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The int value for the key.</returns>
-		public int GetIntValue(string key){
+		public int GetIntValue(string key) {
 			return GetIntValue(".", key);
 		}
 
@@ -190,10 +197,10 @@ namespace nJupiter.Configuration {
 		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The int value for the key.</returns>
-		public int GetIntValue(string section, string key){
-			try{
+		public int GetIntValue(string section, string key) {
+			try {
 				return int.Parse(GetValue(section, key), NumberFormatInfo.InvariantInfo);
-			}catch(FormatException){
+			} catch(FormatException) {
 				throw new InvalidConfigValueException(string.Format("Value [{0}/{1}] is not of type integer.", section, key));
 			}
 		}
@@ -203,7 +210,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The string value for the key.</returns>
-		public string GetValue(string key){
+		public string GetValue(string key) {
 			return GetValue(".", key);
 		}
 
@@ -213,9 +220,9 @@ namespace nJupiter.Configuration {
 		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The string value for the key.</returns>
-		public string GetValue(string section, string key){
+		public string GetValue(string section, string key) {
 			XmlNode node = this.GetKey(section, key);
-			if(node != null){
+			if(node != null) {
 				return GetXmlNodeValue(node, null);
 			}
 			throw new ConfigValueNotFoundException(string.Format("Value [{0}/{1}] was not found in the config with key [{2}].", section, key, this.ConfigKey));
@@ -227,7 +234,7 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
 		/// <returns>The int value of the attribute.</returns>
-		public int GetIntAttribute(string key, string attribute){
+		public int GetIntAttribute(string key, string attribute) {
 			return GetIntAttribute(".", key, attribute);
 		}
 
@@ -238,21 +245,21 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
 		/// <returns>The int value of the attribute.</returns>
-		public int GetIntAttribute(string section, string key, string attribute){
-			try{
+		public int GetIntAttribute(string section, string key, string attribute) {
+			try {
 				return int.Parse(GetAttribute(section, key, attribute), NumberFormatInfo.InvariantInfo);
-			}catch(FormatException){
+			} catch(FormatException) {
 				throw new InvalidConfigValueException(string.Format("Attribute [{0}/{1}/@{2}] is not of type integer.", section, key, attribute));
 			}
 		}
-		
+
 		/// <summary>
 		/// Gets a given attribute for the element given in the key parameter as a bool.
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
 		/// <returns>The bool value of the attribute.</returns>
-		public bool GetBoolAttribute(string key, string attribute){
+		public bool GetBoolAttribute(string key, string attribute) {
 			return GetBoolAttribute(".", key, attribute);
 		}
 
@@ -263,17 +270,17 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
 		/// <returns>The bool value of the attribute.</returns>
-		public bool GetBoolAttribute(string section, string key, string attribute){
+		public bool GetBoolAttribute(string section, string key, string attribute) {
 			return string.Compare(GetAttribute(section, key, attribute), "true", true, CultureInfo.InvariantCulture) == 0;
 		}
-		
+
 		/// <summary>
 		/// Gets a given attribute for the element given in the key parameter as a string.
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
 		/// <returns>The string value of the attribute.</returns>
-		public string GetAttribute(string key, string attribute){
+		public string GetAttribute(string key, string attribute) {
 			return GetAttribute(".", key, attribute);
 		}
 
@@ -284,11 +291,11 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
 		/// <returns>The string value of the attribute.</returns>
-		public string GetAttribute(string section, string key, string attribute){
+		public string GetAttribute(string section, string key, string attribute) {
 			XmlNode node = this.GetKey(section, key);
-			if(node != null){
+			if(node != null) {
 				XmlAttribute xmlattr = node.Attributes[attribute];
-				if(xmlattr != null){
+				if(xmlattr != null) {
 					return xmlattr.Value;
 				}
 				throw new ConfigValueNotFoundException(string.Format("Attribute [{0}/{1}/@{2}] was not found in the config with key [{3}].", section, key, attribute, this.ConfigKey));
@@ -301,7 +308,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="key">The element name. The parameter can contain XPath syntax.</param>
 		/// <returns>An <see cref="XmlNode"/> for the given key.</returns>
-		public XmlNode GetKey(string key){
+		public XmlNode GetKey(string key) {
 			return GetKey(".", key);
 		}
 
@@ -311,7 +318,7 @@ namespace nJupiter.Configuration {
 		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
 		/// <param name="key">The element name. The parameter can contain XPath syntax.</param>
 		/// <returns>An <see cref="XmlNode"/> for the given key.</returns>
-		public XmlNode GetKey(string section, string key){
+		public XmlNode GetKey(string section, string key) {
 			return this.ConfigXML.SelectSingleNode(section + "/" + key);
 		}
 
@@ -321,7 +328,7 @@ namespace nJupiter.Configuration {
 		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
 		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
 		/// <returns>A string array.</returns>
-		public string[] GetValueArray(string section, string key){
+		public string[] GetValueArray(string section, string key) {
 			return GetAttributeArray(section, key, null);
 		}
 
@@ -332,11 +339,11 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attributes. The parameter can contain XPath syntax.</param>
 		/// <returns>A string array.</returns>
-		public string[] GetAttributeArray(string section, string key, string attribute){
+		public string[] GetAttributeArray(string section, string key, string attribute) {
 			XmlNodeList nodeList = this.ConfigXML.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
 			if(nodeList != null) {
 				string[] result = new string[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++){
+				for(int i = 0; i < nodeList.Count; i++) {
 					result[i] = GetXmlNodeValue(nodeList[i], attribute);
 				}
 				return result;
@@ -350,7 +357,7 @@ namespace nJupiter.Configuration {
 		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
 		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
 		/// <returns>A int array.</returns>
-		public int[] GetIntValueArray(string section, string key){
+		public int[] GetIntValueArray(string section, string key) {
 			return GetIntAttributeArray(section, key, null);
 		}
 
@@ -361,14 +368,14 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
 		/// <param name="attribute">The name of the attributes. The parameter can contain XPath syntax.</param>
 		/// <returns>A int array.</returns>
-		public int[] GetIntAttributeArray(string section, string key, string attribute){
+		public int[] GetIntAttributeArray(string section, string key, string attribute) {
 			XmlNodeList nodeList = this.ConfigXML.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
 			if(nodeList != null) {
 				int[] result = new int[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++){
-					try{
+				for(int i = 0; i < nodeList.Count; i++) {
+					try {
 						result[i] = int.Parse(GetXmlNodeValue(nodeList[i], attribute), CultureInfo.InvariantCulture);
-					}catch(FormatException){
+					} catch(FormatException) {
 						throw new InvalidConfigValueException(string.Format("Value [{0}/{1}[{2}]] is not of type integer.", section, key, i));
 					}
 				}
@@ -382,15 +389,15 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="section">The XPath to the section.</param>
 		/// <returns>A <see cref="Config"/> object.</returns>
-		public Config GetConfigSection(string section){
+		public Config GetConfigSection(string section) {
 			string key = this.ConfigKey + ":" + section;
 			if(this.innerConfigurations.Contains(key))
 				return this.innerConfigurations[key];
-			lock(padlock){
-				if(!this.innerConfigurations.Contains(key)){
+			lock(padlock) {
+				if(!this.innerConfigurations.Contains(key)) {
 					XmlNode node = this.ConfigXML.SelectSingleNode(section);
 					XmlElement configElement = node as XmlElement;
-				
+
 					if(configElement == null)
 						return null;
 
@@ -408,9 +415,9 @@ namespace nJupiter.Configuration {
 		/// <returns>
 		/// 	<c>true</c> if the current configuration contains the specified key; otherwise, <c>false</c>.
 		/// </returns>
-		public bool ContainsKey(string section, string key){
+		public bool ContainsKey(string section, string key) {
 			XmlNode node = this.GetKey(section, key);
-			if(node != null){
+			if(node != null) {
 				return true;
 			}
 			return false;
@@ -423,10 +430,10 @@ namespace nJupiter.Configuration {
 		/// <returns>
 		/// 	<c>true</c> if the current configuration contains the specified key; otherwise, <c>false</c>.
 		/// </returns>
-		public bool ContainsKey(string key){
+		public bool ContainsKey(string key) {
 			return ContainsKey(".", key);
 		}
-		
+
 		/// <summary>
 		/// Determines whether the current configuration contains a specified attribute.
 		/// </summary>
@@ -436,11 +443,11 @@ namespace nJupiter.Configuration {
 		/// <returns>
 		/// 	<c>true</c> if the current configuration contains the specified attribute; otherwise, <c>false</c>.
 		/// </returns>
-		public bool ContainsAttribute(string section, string key, string attribute){
+		public bool ContainsAttribute(string section, string key, string attribute) {
 			XmlNode node = this.GetKey(section, key);
-			if(node != null){
+			if(node != null) {
 				XmlAttribute xmlattr = node.Attributes[attribute];
-				if(xmlattr != null){
+				if(xmlattr != null) {
 					return true;
 				}
 			}
@@ -455,7 +462,7 @@ namespace nJupiter.Configuration {
 		/// <returns>
 		/// 	<c>true</c> if the current configuration contains the specified attribute; otherwise, <c>false</c>.
 		/// </returns>
-		public bool ContainsAttribute(string key, string attribute){
+		public bool ContainsAttribute(string key, string attribute) {
 			return ContainsAttribute(".", key, attribute);
 		}
 
@@ -503,9 +510,9 @@ namespace nJupiter.Configuration {
 
 		#region IDisposable Members
 		private void Dispose(bool disposing) {
-			if (!this.disposed) {
+			if(!this.disposed) {
 				this.disposed = true;
-				if(this.watcher !=  null)
+				if(this.watcher != null)
 					this.watcher.Dispose();
 
 				// Suppress finalization of this disposed instance.
@@ -524,7 +531,7 @@ namespace nJupiter.Configuration {
 		public void Dispose() {
 			Dispose(true);
 		}
-		
+
 		/// <summary>
 		/// Releases unmanaged resources and performs other cleanup operations before the
 		/// <see cref="Config"/> is reclaimed by garbage collection.

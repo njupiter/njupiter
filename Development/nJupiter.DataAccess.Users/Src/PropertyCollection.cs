@@ -29,26 +29,26 @@ namespace nJupiter.DataAccess.Users {
 	// TODO: Implement clonable
 	[Serializable]
 	public sealed class PropertyCollection : ICollection {
-		
+
 		#region Members
-		private				Hashtable			innerHash;
-		private readonly	PropertySchemaTable	propertySchemaTable;
+		private Hashtable innerHash;
+		private readonly PropertySchemaTable propertySchemaTable;
 		#endregion
-		
+
 		#region Constructors
 		internal PropertyCollection(PropertySchemaTable pst) {
 			this.innerHash = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			this.propertySchemaTable =  (pst ?? new PropertySchemaTable());
+			this.propertySchemaTable = (pst ?? new PropertySchemaTable());
 		}
 		#endregion
 
 		#region Indexers
-		public AbstractProperty this[string propertyName]	{ get { return (AbstractProperty) InnerHash[propertyName]; } }
+		public AbstractProperty this[string propertyName] { get { return (AbstractProperty)InnerHash[propertyName]; } }
 		#endregion
 
 		#region Properties
 		internal Hashtable InnerHash { get { return this.innerHash; } }
-		internal PropertySchemaTable PropertySchemas  { get { return this.propertySchemaTable; } }
+		internal PropertySchemaTable PropertySchemas { get { return this.propertySchemaTable; } }
 		#endregion
 
 		#region Public Methods
@@ -61,13 +61,13 @@ namespace nJupiter.DataAccess.Users {
 		public AbstractProperty[] ToArray() {
 			return (AbstractProperty[])(new ArrayList(InnerHash.Values)).ToArray(typeof(AbstractProperty));
 		}
-		
+
 		public bool Contains(AbstractProperty property) {
-			return(InnerHash.ContainsValue(property));
+			return (InnerHash.ContainsValue(property));
 		}
-		
+
 		public bool Contains(string propertyName) {
-			return(InnerHash.Contains(propertyName));
+			return (InnerHash.Contains(propertyName));
 		}
 
 		public void CopyTo(Array array, int index) {
@@ -97,21 +97,21 @@ namespace nJupiter.DataAccess.Users {
 			return new PropertyCollectionEnumerator(this);
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerHash.IsSynchronized; } }
-		public int		Count			{ get { return InnerHash.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerHash.IsSynchronized; } }
+		public int Count { get { return InnerHash.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 
 	}
-	
+
 	#region PropertyCollectionEnumerator
 	[Serializable]
 	public class PropertyCollectionEnumerator : IEnumerator {
 		private readonly IEnumerator innerEnumerator;
-		
-		public PropertyCollectionEnumerator (PropertyCollection enumerable) {
+
+		public PropertyCollectionEnumerator(PropertyCollection enumerable) {
 			if(enumerable == null)
 				throw new ArgumentNullException("enumerable");
 			innerEnumerator = enumerable.InnerHash.GetEnumerator();
@@ -121,13 +121,13 @@ namespace nJupiter.DataAccess.Users {
 		public void Reset() {
 			innerEnumerator.Reset();
 		}
-		
+
 		public bool MoveNext() {
 			return innerEnumerator.MoveNext();
 		}
-		
-		object IEnumerator.Current			{ get { return ((DictionaryEntry) innerEnumerator.Current).Value; } }
-		public AbstractProperty Current		{ get { return (AbstractProperty)((DictionaryEntry) innerEnumerator.Current).Value; } }
+
+		object IEnumerator.Current { get { return ((DictionaryEntry)innerEnumerator.Current).Value; } }
+		public AbstractProperty Current { get { return (AbstractProperty)((DictionaryEntry)innerEnumerator.Current).Value; } }
 		#endregion
 	}
 	#endregion

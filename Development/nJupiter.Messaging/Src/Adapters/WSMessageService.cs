@@ -31,32 +31,32 @@ namespace nJupiter.Messaging.Adapters {
 
 	public sealed class WSMessageService : MessageService {
 		public override void Publish(Message message) {
-			if (message == null)
+			if(message == null)
 				throw new ArgumentNullException("message");
 			WebServiceProxy service = new WebServiceProxy(new Uri(Settings.GetValue("uri")));
 			service.BeginPublish(message, PublishCompleted, service);
 		}
-		
+
 		private static void PublishCompleted(IAsyncResult ar) {
-			WebServiceProxy service = (WebServiceProxy) ar.AsyncState;
+			WebServiceProxy service = (WebServiceProxy)ar.AsyncState;
 			service.EndPublish(ar);
 		}
-		
-		public override void Register(MessageConsumer messageConsumer)	{
-			if (messageConsumer == null)
+
+		public override void Register(MessageConsumer messageConsumer) {
+			if(messageConsumer == null)
 				throw new ArgumentNullException("messageConsumer");
 			WebServiceProxy service = new WebServiceProxy(new Uri(Settings.GetValue("uri")));
 			service.BeginRegister(messageConsumer, RegisterCompleted, service);
 		}
-		
-		public override void	GetMessageConsumers(){throw new NotImplementedException();}
-		public override void	GetMessageConsumers(MessageDestination messageDestination){throw new NotImplementedException();}
-		public override void	GetMessageDestinations(){throw new NotImplementedException();}
-		public override void	RemoveMessageDestination(MessageDestination messageDestination){throw new NotImplementedException();}
-		public override void	RemoveMessageConsumer(MessageConsumer messageConsumer){throw new NotImplementedException();}
-		
+
+		public override void GetMessageConsumers() { throw new NotImplementedException(); }
+		public override void GetMessageConsumers(MessageDestination messageDestination) { throw new NotImplementedException(); }
+		public override void GetMessageDestinations() { throw new NotImplementedException(); }
+		public override void RemoveMessageDestination(MessageDestination messageDestination) { throw new NotImplementedException(); }
+		public override void RemoveMessageConsumer(MessageConsumer messageConsumer) { throw new NotImplementedException(); }
+
 		private static void RegisterCompleted(IAsyncResult ar) {
-			WebServiceProxy service = (WebServiceProxy) ar.AsyncState;
+			WebServiceProxy service = (WebServiceProxy)ar.AsyncState;
 			service.EndRegister(ar);
 		}
 	}

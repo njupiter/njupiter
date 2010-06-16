@@ -28,43 +28,43 @@ namespace nJupiter.Services.Forum {
 
 	public sealed class AttributeCriterion {
 		#region Constants
-		private const Comparison	DefaultComparison	= Comparison.Equal;
-		private const bool			DefaultRequired		= true;
+		private const Comparison DefaultComparison = Comparison.Equal;
+		private const bool DefaultRequired = true;
 		#endregion
 
 		#region Variables
-		private Attribute	attribute;
-		private Comparison	comparison;
-		private bool		required;
+		private Attribute attribute;
+		private Comparison comparison;
 		#endregion
 
 		#region Constructors
-		public AttributeCriterion(Attribute attribute) : this(attribute, DefaultComparison, DefaultRequired) {}
+		public AttributeCriterion(Attribute attribute) : this(attribute, DefaultComparison, DefaultRequired) { }
 		public AttributeCriterion(Attribute attribute, Comparison comparison, bool required) {
-			this.comparison	= comparison; //order is significant here
-			this.Attribute	= attribute;
-			this.required		= required;
+			this.comparison = comparison; //order is significant here
+			this.Attribute = attribute;
+			this.Required = required;
 		}
 		#endregion
 
 		#region Properties
-		public Attribute Attribute { 
-			get { return this.attribute; } 
+		public Attribute Attribute {
+			get { return this.attribute; }
 			set {
 				if(value == null) {
 					throw new ArgumentNullException("value");
 				}
 				CheckAttributeComparison(value, this.Comparison);
 				this.attribute = value;
-			} 
+			}
 		}
-		public Comparison Comparison { 
-			get { return this.comparison; } 
+		public Comparison Comparison {
+			get { return this.comparison; }
 			set {
 				CheckAttributeComparison(this.Attribute, value);
-				this.comparison = value; } 
+				this.comparison = value;
+			}
 		}
-		public bool Required { get { return this.required; } set { this.required = value; } }
+		public bool Required { get; set; }
 		#endregion
 
 		#region Helper Methods
@@ -74,10 +74,10 @@ namespace nJupiter.Services.Forum {
 				case Comparison.GreaterEqual:
 				case Comparison.Less:
 				case Comparison.LessEqual:
-					if(!typeof(IComparable).IsAssignableFrom(attribute.AttributeValueType)) {
-						throw new InvalidOperationException("Can not use inequality comparison on an attribute whose underlying type is not comparable.");
-					}
-					break;
+				if(!typeof(IComparable).IsAssignableFrom(attribute.AttributeValueType)) {
+					throw new InvalidOperationException("Can not use inequality comparison on an attribute whose underlying type is not comparable.");
+				}
+				break;
 			}
 		}
 		#endregion

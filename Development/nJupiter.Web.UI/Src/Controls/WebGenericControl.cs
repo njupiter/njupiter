@@ -30,43 +30,43 @@ using System.Collections;
 
 namespace nJupiter.Web.UI.Controls {
 
-	
-	[ToolboxItem(true),	ConstructorNeedsTag(false)]
+
+	[ToolboxItem(true), ConstructorNeedsTag(false)]
 	public class WebGenericControl : HtmlGenericControl {
-	
+
 		#region Constants
-		private const string BrTag					= "<" + HtmlTag.Br + " />";
-		private const string RenderIDKey			= "v_RenderId";
-		private const string RenderOriginalIDKey	= "v_RenderOriginalId";
-		private const string RenderContentOnlyKey	= "v_RenderContentOnly";
-		private const string TrailingLinefeedKey	= "v_TrailingLinefeed";
-		private const string TrailingBreakKey		= "v_TrailingBreak";
+		private const string BrTag = "<" + HtmlTag.Br + " />";
+		private const string RenderIdKey = "v_RenderId";
+		private const string RenderOriginalIdKey = "v_RenderOriginalId";
+		private const string RenderContentOnlyKey = "v_RenderContentOnly";
+		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
+		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
 
 		#region Properties
-		public bool RenderId{
+		public bool RenderId {
 			get {
-				if(this.ViewState[RenderIDKey] == null)
+				if(this.ViewState[RenderIdKey] == null)
 					return false;
-				return (bool)this.ViewState[RenderIDKey];
+				return (bool)this.ViewState[RenderIdKey];
 			}
 			set {
-				this.ViewState[RenderIDKey] = value;
-			}
-		}
-		
-		public bool RenderOriginalId{
-			get {
-				if(this.ViewState[RenderOriginalIDKey] == null)
-					return false;
-				return (bool)this.ViewState[RenderOriginalIDKey];
-			}
-			set {
-				this.ViewState[RenderOriginalIDKey] = value;
+				this.ViewState[RenderIdKey] = value;
 			}
 		}
 
-		public bool RenderContentOnly{
+		public bool RenderOriginalId {
+			get {
+				if(this.ViewState[RenderOriginalIdKey] == null)
+					return false;
+				return (bool)this.ViewState[RenderOriginalIdKey];
+			}
+			set {
+				this.ViewState[RenderOriginalIdKey] = value;
+			}
+		}
+
+		public bool RenderContentOnly {
 			get {
 				if(this.ViewState[RenderContentOnlyKey] == null)
 					return false;
@@ -80,7 +80,7 @@ namespace nJupiter.Web.UI.Controls {
 		public string CssClass {
 			get {
 				string result = this.ViewState[HtmlAttribute.Class] as string;
-				if (result != null)
+				if(result != null)
 					return result;
 				return string.Empty;
 			}
@@ -94,7 +94,7 @@ namespace nJupiter.Web.UI.Controls {
 				return base.InnerHtml;
 			}
 			set {
-				if (value == null)
+				if(value == null)
 					base.InnerHtml = string.Empty;
 				base.InnerHtml = value;
 			}
@@ -113,7 +113,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false)]
 		public bool TrailingBreak {
 			get {
-				if (this.ViewState[TrailingBreakKey] == null) {
+				if(this.ViewState[TrailingBreakKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingBreakKey];
@@ -126,7 +126,7 @@ namespace nJupiter.Web.UI.Controls {
 		[DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool TrailingLinefeed {
 			get {
-				if (this.ViewState[TrailingLinefeedKey] == null) {
+				if(this.ViewState[TrailingLinefeedKey] == null) {
 					return false;
 				}
 				return (bool)this.ViewState[TrailingLinefeedKey];
@@ -138,7 +138,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected bool HasAttributes {
 			get {
-			 	IEnumerator enumerator = this.Attributes.Keys.GetEnumerator();
+				IEnumerator enumerator = this.Attributes.Keys.GetEnumerator();
 
 				while(enumerator.MoveNext()) {
 					string attributeName = enumerator.Current as string;
@@ -154,12 +154,12 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected virtual bool IsAttribute(string name) {
-			if(	
-				name == RenderIDKey ||		
-				name == RenderOriginalIDKey ||
+			if(
+				name == RenderIdKey ||
+				name == RenderOriginalIdKey ||
 				name == RenderContentOnlyKey ||
-				name == TrailingLinefeedKey ||	
-				name == TrailingBreakKey ||	
+				name == TrailingLinefeedKey ||
+				name == TrailingBreakKey ||
 				name == "innerhtml") {
 				return false;
 			}
@@ -186,7 +186,8 @@ namespace nJupiter.Web.UI.Controls {
 			this.TagName = HtmlTag.Div;
 		}
 
-		public WebGenericControl(string tag) : this(){
+		public WebGenericControl(string tag)
+			: this() {
 			if(tag == null)
 				throw new ArgumentNullException("tag");
 
@@ -228,13 +229,13 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void RenderAttributes(HtmlTextWriter writer) {
 			if(this.CssClass.Length > 0)
 				this.Attributes.Add(HtmlAttribute.Class, this.CssClass);
-			if(!this.RenderOriginalId){
-				string originalID = this.ID;
+			if(!this.RenderOriginalId) {
+				string originalId = this.ID;
 				this.ID = null;
 				if(this.RenderId)
-					this.Attributes.Add(HtmlAttribute.Id, originalID);
+					this.Attributes.Add(HtmlAttribute.Id, originalId);
 			}
-			base.RenderAttributes (writer);
+			base.RenderAttributes(writer);
 		}
 		#endregion
 

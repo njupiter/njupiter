@@ -34,15 +34,15 @@ namespace nJupiter.DataAccess {
 	/// </summary>
 	public sealed class Transaction : IDbTransaction {
 		#region Members
-		private readonly	IsolationLevel	isolationLevel;
-		private readonly	DataSource		dataAccess;
-		private				IDbConnection	connection;
-		private				IDbTransaction	dbTransaction;
-		private bool						disposed;
+		private readonly IsolationLevel isolationLevel;
+		private readonly DataSource dataAccess;
+		private IDbConnection connection;
+		private IDbTransaction dbTransaction;
+		private bool disposed;
 		#endregion
 
 		#region Static Members
-		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Constructors
@@ -52,9 +52,9 @@ namespace nJupiter.DataAccess {
 		/// <param name="dataSource">The data source associated with the transaction.</param>
 		/// <param name="isolationLevel">The isolation level of the transaction.</param>
 		private Transaction(DataSource dataSource, IsolationLevel isolationLevel) {
-			if(log.IsDebugEnabled) { log.Debug("Creating transaction"); }
-			this.dataAccess		=	dataSource;
-			this.isolationLevel	=	isolationLevel;
+			if(Log.IsDebugEnabled) { Log.Debug("Creating transaction"); }
+			this.dataAccess = dataSource;
+			this.isolationLevel = isolationLevel;
 		}
 		#endregion
 
@@ -66,7 +66,7 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The Connection object to associate with the transaction.
 		/// </returns>
-		public IDbConnection	Connection		{ get { return this.connection; } }
+		public IDbConnection Connection { get { return this.connection; } }
 		/// <summary>
 		/// Specifies the <see cref="T:System.Data.IsolationLevel"/> for this transaction.
 		/// </summary>
@@ -74,12 +74,12 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The <see cref="T:System.Data.IsolationLevel"/> for this transaction. The default is ReadCommitted.
 		/// </returns>
-		public IsolationLevel	IsolationLevel	{ get { return this.isolationLevel; } }
+		public IsolationLevel IsolationLevel { get { return this.isolationLevel; } }
 		/// <summary>
 		/// Gets the <see cref="IDbTransaction" /> associated with the transaction.
 		/// </summary>
 		/// <value>The <see cref="IDbTransaction" /> associated with the transaction.</value>
-		public IDbTransaction	DbTransaction	{ get { return this.dbTransaction; } }
+		public IDbTransaction DbTransaction { get { return this.dbTransaction; } }
 		#endregion
 
 		#region Simple Factory Methods
@@ -107,11 +107,11 @@ namespace nJupiter.DataAccess {
 		}
 
 		internal static Transaction GetTransaction(DataSource dataSource, IsolationLevel isolationLevel, bool beginTransaction) {
-			if(log.IsDebugEnabled) { log.Debug("Getting transaction"); }
+			if(Log.IsDebugEnabled) { Log.Debug("Getting transaction"); }
 			Transaction transaction = new Transaction(dataSource, isolationLevel);
 			transaction.connection = transaction.dataAccess.OpenConnection();
 			if(beginTransaction) {
-				if(log.IsDebugEnabled) { log.Debug("Beginning transaction"); }
+				if(Log.IsDebugEnabled) { Log.Debug("Beginning transaction"); }
 				transaction.Begin();
 			}
 			return transaction;
@@ -123,8 +123,8 @@ namespace nJupiter.DataAccess {
 		/// Start the database transaction.
 		/// </summary>
 		public void Begin() {
-			if(log.IsDebugEnabled) { log.Debug("Beginning transaction"); }
-			this.dbTransaction =  this.connection.BeginTransaction(this.isolationLevel);
+			if(Log.IsDebugEnabled) { Log.Debug("Beginning transaction"); }
+			this.dbTransaction = this.connection.BeginTransaction(this.isolationLevel);
 		}
 
 		/// <summary>
@@ -139,7 +139,7 @@ namespace nJupiter.DataAccess {
 		/// The connection is broken.
 		/// </exception>
 		public void Commit() {
-			if(log.IsDebugEnabled) { log.Debug("Commiting transaction"); }
+			if(Log.IsDebugEnabled) { Log.Debug("Commiting transaction"); }
 			this.dbTransaction.Commit();
 		}
 
@@ -155,7 +155,7 @@ namespace nJupiter.DataAccess {
 		/// The connection is broken.
 		/// </exception>
 		public void Rollback() {
-			if(log.IsDebugEnabled) { log.Debug("Rollback transaction"); }
+			if(Log.IsDebugEnabled) { Log.Debug("Rollback transaction"); }
 			this.dbTransaction.Rollback();
 		}
 
@@ -170,7 +170,7 @@ namespace nJupiter.DataAccess {
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
 		public void Dispose() {
-			if(log.IsDebugEnabled) { log.Debug("Ending transaction"); }
+			if(Log.IsDebugEnabled) { Log.Debug("Ending transaction"); }
 			Dispose(true);
 		}
 
@@ -184,7 +184,7 @@ namespace nJupiter.DataAccess {
 					this.connection.Close();
 
 				// Suppress finalization of this disposed instance.
-				if (disposing) 
+				if(disposing)
 					GC.SuppressFinalize(this);
 
 				this.disposed = true;
@@ -195,7 +195,7 @@ namespace nJupiter.DataAccess {
 		/// Releases unmanaged resources and performs other cleanup operations before the
 		/// <see cref="Transaction"/> is reclaimed by garbage collection.
 		/// </summary>
-		~Transaction(){
+		~Transaction() {
 			Dispose(false);
 		}
 		#endregion

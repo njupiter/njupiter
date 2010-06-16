@@ -26,26 +26,26 @@ namespace nJupiter.Services.Forum {
 
 	public sealed class SearchCriteria {
 		#region Constants
-		private const FullTextSearchType	DefaultFulltextSearchType	= FullTextSearchType.Normal;
+		private const FullTextSearchType DefaultFulltextSearchType = FullTextSearchType.Normal;
 		#endregion
 
 		#region Variables
-		private readonly AttributeCriterionCollection	attributeCriteria;
+		private readonly AttributeCriterionCollection attributeCriteria;
 		#endregion
 
 		#region Constructors
 		public SearchCriteria(string fullTextSearchText, FullTextSearchType fullTextSearchType, string userIdentity, AttributeCriterionCollection attributeCriteria) {
-			this.FullTextSearchText	= fullTextSearchText;
-			this.FullTextSearchType	= fullTextSearchType;
-			this.UserIdentity		= userIdentity;
-			this.attributeCriteria	= attributeCriteria ?? new AttributeCriterionCollection();
+			this.FullTextSearchText = fullTextSearchText;
+			this.FullTextSearchType = fullTextSearchType;
+			this.UserIdentity = userIdentity;
+			this.attributeCriteria = attributeCriteria ?? new AttributeCriterionCollection();
 		}
-		public SearchCriteria(string fullTextSearchText, string userIdentity, AttributeCriterionCollection attributeCriteria) : this(fullTextSearchText, DefaultFulltextSearchType, userIdentity, attributeCriteria) {}
-		public SearchCriteria() : this(null, DefaultFulltextSearchType, null, null) {}
-		public SearchCriteria(string fullTextSearchText, FullTextSearchType fullTextSearchType) : this(fullTextSearchText, fullTextSearchType, null, null) {}
-		public SearchCriteria(string fullTextSearchText) : this(fullTextSearchText, DefaultFulltextSearchType) {}
-		public SearchCriteria(string fullTextSearchText, AttributeCriterionCollection attributeCriteria) : this(fullTextSearchText, DefaultFulltextSearchType, null, attributeCriteria) {}
-		public SearchCriteria(AttributeCriterionCollection attributeCriteria) : this(null, attributeCriteria) {}
+		public SearchCriteria(string fullTextSearchText, string userIdentity, AttributeCriterionCollection attributeCriteria) : this(fullTextSearchText, DefaultFulltextSearchType, userIdentity, attributeCriteria) { }
+		public SearchCriteria() : this(null, DefaultFulltextSearchType, null, null) { }
+		public SearchCriteria(string fullTextSearchText, FullTextSearchType fullTextSearchType) : this(fullTextSearchText, fullTextSearchType, null, null) { }
+		public SearchCriteria(string fullTextSearchText) : this(fullTextSearchText, DefaultFulltextSearchType) { }
+		public SearchCriteria(string fullTextSearchText, AttributeCriterionCollection attributeCriteria) : this(fullTextSearchText, DefaultFulltextSearchType, null, attributeCriteria) { }
+		public SearchCriteria(AttributeCriterionCollection attributeCriteria) : this(null, attributeCriteria) { }
 		#endregion
 
 		#region Properties

@@ -48,9 +48,9 @@ namespace nJupiter.Web.UI {
 		#endregion
 
 		#region Properties
-		public static bool IsIE	{ get { return HttpContext.Current.Request.UserAgent != null && HttpContext.Current.Request.UserAgent.IndexOf("MSIE") > 0; } }
-		
-		public static bool IsPreIE7	{
+		public static bool IsIE { get { return HttpContext.Current.Request.UserAgent != null && HttpContext.Current.Request.UserAgent.IndexOf("MSIE") > 0; } }
+
+		public static bool IsPreIE7 {
 			get {
 				if(HttpContext.Current.Request.UserAgent != null) {
 					int i = HttpContext.Current.Request.UserAgent.IndexOf("MSIE");
@@ -73,23 +73,23 @@ namespace nJupiter.Web.UI {
 		#endregion
 
 		#region Methods
-		public static Control FindControl(Control rootControl, string uniqueId){
+		public static Control FindControl(Control rootControl, string uniqueId) {
 			return FindControl(rootControl, uniqueId, false);
 		}
-		public static Control FindControl(Control rootControl, string uniqueId, bool ensureChildControls){
+		public static Control FindControl(Control rootControl, string uniqueId, bool ensureChildControls) {
 			return FindControlsRecursive(rootControl, uniqueId, ensureChildControls);
 		}
-		public static Control[] FindControlsOnType(Control rootControl, Type type){
+		public static Control[] FindControlsOnType(Control rootControl, Type type) {
 			return FindControlsOnType(rootControl, type, false);
 		}
-		public static Control[] FindControlsOnType(Control rootControl, Type type, bool ensureChildControls){
+		public static Control[] FindControlsOnType(Control rootControl, Type type, bool ensureChildControls) {
 			ArrayList container = FindControlsOnTypeRecursive(rootControl, type, new ArrayList(), false, ensureChildControls);
 			return (Control[])container.ToArray(type);
 		}
-		public static Control FindFirstControlOnType(Control rootControl, Type type){
+		public static Control FindFirstControlOnType(Control rootControl, Type type) {
 			return FindFirstControlOnType(rootControl, type, false);
 		}
-		public static Control FindFirstControlOnType(Control rootControl, Type type, bool ensureChildControls){
+		public static Control FindFirstControlOnType(Control rootControl, Type type, bool ensureChildControls) {
 			ArrayList container = FindControlsOnTypeRecursive(rootControl, type, new ArrayList(), true, ensureChildControls);
 			if(container.Count > 0) {
 				return (Control)container[0];
@@ -102,29 +102,29 @@ namespace nJupiter.Web.UI {
 				switch(targetPreference) {
 					case RegisterTargetPreference.Auto:
 					case RegisterTargetPreference.ScriptHolder:
-						WebScriptHolder webScriptHolder = HttpContext.Current.Items[typeof(WebScriptHolder)] as WebScriptHolder;
-						if(webScriptHolder != null) {
-							webScriptHolder.RegisterClientScriptBlock(type, key, script);
-							break;
-						}
-						goto case RegisterTargetPreference.Head;
-					case RegisterTargetPreference.Head:
-						HtmlHeadAdapter htmlHeadAdapter = HttpContext.Current.Items[typeof(HtmlHeadAdapter)] as HtmlHeadAdapter;
-						if(htmlHeadAdapter != null) {
-							htmlHeadAdapter.RegisterClientScriptBlock(type, key, script);
-							break;
-						}
-						WebHead webHead = HttpContext.Current.Items[typeof(WebHead)] as WebHead;
-						if(webHead != null) {
-							webHead.RegisterClientScriptBlock(type, key, script);
-							break;
-						}
-						goto case RegisterTargetPreference.Page;
-					case RegisterTargetPreference.Page:
-						Page page = HttpContext.Current.CurrentHandler as Page;
-						if(page != null)
-							page.ClientScript.RegisterClientScriptBlock(type, key, script);
+					WebScriptHolder webScriptHolder = HttpContext.Current.Items[typeof(WebScriptHolder)] as WebScriptHolder;
+					if(webScriptHolder != null) {
+						webScriptHolder.RegisterClientScriptBlock(type, key, script);
 						break;
+					}
+					goto case RegisterTargetPreference.Head;
+					case RegisterTargetPreference.Head:
+					HtmlHeadAdapter htmlHeadAdapter = HttpContext.Current.Items[typeof(HtmlHeadAdapter)] as HtmlHeadAdapter;
+					if(htmlHeadAdapter != null) {
+						htmlHeadAdapter.RegisterClientScriptBlock(type, key, script);
+						break;
+					}
+					WebHead webHead = HttpContext.Current.Items[typeof(WebHead)] as WebHead;
+					if(webHead != null) {
+						webHead.RegisterClientScriptBlock(type, key, script);
+						break;
+					}
+					goto case RegisterTargetPreference.Page;
+					case RegisterTargetPreference.Page:
+					Page page = HttpContext.Current.CurrentHandler as Page;
+					if(page != null)
+						page.ClientScript.RegisterClientScriptBlock(type, key, script);
+					break;
 				}
 			}
 		}
@@ -139,7 +139,7 @@ namespace nJupiter.Web.UI {
 		}
 		public static void RegisterClientScriptResource(Type type, string resourceName, RegisterTargetPreference targetPreference) {
 			Page page = HttpContext.Current.CurrentHandler as Page;
-			if(page != null){
+			if(page != null) {
 				string url = page.ClientScript.GetWebResourceUrl(type, resourceName);
 				RegisterClientScriptInclude(type, resourceName, url, targetPreference);
 			}
@@ -150,9 +150,9 @@ namespace nJupiter.Web.UI {
 		#endregion
 
 		#region Helper Methods
-		private static ArrayList FindControlsOnTypeRecursive(Control rootControl, Type type, ArrayList container, bool breakOnHit, bool ensureChildControls){
+		private static ArrayList FindControlsOnTypeRecursive(Control rootControl, Type type, ArrayList container, bool breakOnHit, bool ensureChildControls) {
 			if(ensureChildControls) {
-				rootControl.FindControl(string.Empty); 
+				rootControl.FindControl(string.Empty);
 				// The idiots at microsoft have made some vital metods protected so we have to do this miserable hack to ensure that child controls are built
 			}
 			foreach(Control control in rootControl.Controls) {
@@ -168,12 +168,12 @@ namespace nJupiter.Web.UI {
 			}
 			return container;
 		}
-		private static Control FindControlsRecursive(Control rootControl, string uniqueId, bool ensureChildControls){
+		private static Control FindControlsRecursive(Control rootControl, string uniqueId, bool ensureChildControls) {
 			if(ensureChildControls) {
-				rootControl.FindControl(string.Empty); 
+				rootControl.FindControl(string.Empty);
 				// The idiots at microsoft have made some vital metods protected so we have to do this miserable hack to ensure that child controls are built
 			}
-			foreach(Control control in rootControl.Controls){
+			foreach(Control control in rootControl.Controls) {
 				if(control.UniqueID == uniqueId) {
 					return control;
 				}
@@ -187,7 +187,7 @@ namespace nJupiter.Web.UI {
 			return null;
 		}
 
-		public  static void WriteOnClickAttribute(HtmlTextWriter writer, HtmlControl control, bool submitsAutomatically, bool submitsProgramatically, bool causesValidation, string validationGroup) {
+		public static void WriteOnClickAttribute(HtmlTextWriter writer, HtmlControl control, bool submitsAutomatically, bool submitsProgramatically, bool causesValidation, string validationGroup) {
 			System.Web.UI.AttributeCollection attributes = control.Attributes;
 			string clientValidateEvent = null;
 			if(submitsAutomatically) {

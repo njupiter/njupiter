@@ -30,13 +30,13 @@ namespace nJupiter.Services.Forum {
 	[Serializable]
 	public sealed class AttributeCollection : ICollection {
 		#region Variables
-		private readonly Hashtable	innerHash;
+		private readonly Hashtable innerHash;
 		#endregion
-		
+
 		#region Constructors
-		internal AttributeCollection() : this(new Hashtable()) {}
+		internal AttributeCollection() : this(new Hashtable()) { }
 		private AttributeCollection(Hashtable hashTable) {
-			this.innerHash	= hashTable;
+			this.innerHash = hashTable;
 		}
 		#endregion
 
@@ -88,7 +88,7 @@ namespace nJupiter.Services.Forum {
 			return this.innerHash.Values.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
 		public bool IsSynchronized { get { return this.innerHash.IsSynchronized; } }
 		public int Count { get { return this.innerHash.Count; } }

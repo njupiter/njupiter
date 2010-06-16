@@ -26,7 +26,7 @@ using System;
 
 namespace nJupiter.DataAccess.Ldap.NameParser {
 	internal static class DnParser {
-		
+
 		public static string GetCn(string name) {
 			Dn dn = GetDnObject(name);
 			if(dn == null) {
@@ -56,13 +56,13 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			NameType type = GetNameType(dn);
 			switch(type) {
 				case NameType.Cn:
-					dn = GetDnObject(String.Format("{0}={1},{2}", attribute, name, basePath));
-					break;
+				dn = GetDnObject(String.Format("{0}={1},{2}", attribute, name, basePath));
+				break;
 				case NameType.Rdn:
-					dn = GetDnObject(String.Format("{0},{1}", name, basePath));
-					break;
+				dn = GetDnObject(String.Format("{0},{1}", name, basePath));
+				break;
 				default:
-					break;
+				break;
 			}
 			return dn.ToString();
 		}

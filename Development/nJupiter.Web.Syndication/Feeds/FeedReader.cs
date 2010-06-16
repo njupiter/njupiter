@@ -32,11 +32,11 @@ using System.Xml;
 
 namespace nJupiter.Web.Syndication {
 	public class FeedReader {
-		
+
 		// Inspired by the RSS Parser in RSS Bandit http://rssbandit.org/
 
-		private static readonly XmlDocument elementCreator = new XmlDocument();
-		
+		private static readonly XmlDocument ElementCreator = new XmlDocument();
+
 		public static IFeed GetFeed(Uri url) {
 			WebRequest webRequest = WebRequest.Create(url);
 			HttpWebRequest httpWebRequest = webRequest as HttpWebRequest;
@@ -49,7 +49,7 @@ namespace nJupiter.Web.Syndication {
 		}
 
 		public static IFeed GetFeed(Stream stream, Uri baseUrl) {
-			using(XmlReader xmlReader = XmlReader.Create(stream)){
+			using(XmlReader xmlReader = XmlReader.Create(stream)) {
 				return GetFeed(baseUrl, xmlReader);
 			}
 		}
@@ -63,7 +63,7 @@ namespace nJupiter.Web.Syndication {
 			string language = string.Empty;
 			FeedType feedType;
 			string namespaceUri = reader.NamespaceURI;
-			if(	reader.LocalName.Equals("RDF") &&
+			if(reader.LocalName.Equals("RDF") &&
 				reader.NamespaceURI.Equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#")) {
 				feedType = FeedType.Rdf;
 				reader.Read();
@@ -243,17 +243,17 @@ namespace nJupiter.Web.Syndication {
 				if(!reader.NodeType.Equals(XmlNodeType.Element)) {
 					continue;
 				}
-				
+
 				if(link != null && link.Trim().Length == 0)
 					link = null; // reset on empty elements
 
 				bool nodeNamespaceUriEqual2Item = reader.NamespaceURI.Equals(itemNamespaceUri);
 				if(feedType.Equals(FeedType.Rdf) || feedType.Equals(FeedType.Rss)) {
-					
+
 					if(reader.IsEmptyElement) {
 						continue;
 					}
-				
+
 					if(title == null && nodeNamespaceUriEqual2Item && reader.LocalName.Equals("title")) {
 						title = ReadElementString(reader);
 						continue;
@@ -285,7 +285,7 @@ namespace nJupiter.Web.Syndication {
 					if(description == null || reader.LocalName.Equals("body") || reader.LocalName.Equals("encoded")) {
 						//prefer to replace rss:description/dc:description with content:encoded
 						if(reader.NamespaceURI.Equals("http://www.w3.org/1999/xhtml") && reader.LocalName.Equals("body")) {
-							XmlElement elem = (XmlElement)elementCreator.ReadNode(reader);
+							XmlElement elem = (XmlElement)ElementCreator.ReadNode(reader);
 							description = elem != null ? elem.InnerXml : null;
 							continue;
 						}
@@ -307,7 +307,7 @@ namespace nJupiter.Web.Syndication {
 						}
 					}
 
-				}else if(feedType.Equals(FeedType.Atom)){
+				} else if(feedType.Equals(FeedType.Atom)) {
 					if(title == null) {
 						if(nodeNamespaceUriEqual2Item && reader.LocalName.Equals("title")) {
 							if(!reader.IsEmptyElement) {
@@ -367,7 +367,7 @@ namespace nJupiter.Web.Syndication {
 								continue;
 							}
 						}
-						
+
 					}
 
 					if(author == null && !reader.IsEmptyElement && nodeNamespaceUriEqual2Item && reader.LocalName.Equals("author")) {
@@ -423,7 +423,7 @@ namespace nJupiter.Web.Syndication {
 			string email = null;
 			if(feedType.Equals(FeedType.Rdf) || feedType.Equals(FeedType.Rss)) {
 				email = author = ReadElementString(reader);
-			} 
+			}
 			if(feedType.Equals(FeedType.Atom)) {
 				int depth = reader.Depth;
 				while(reader.Read()) {

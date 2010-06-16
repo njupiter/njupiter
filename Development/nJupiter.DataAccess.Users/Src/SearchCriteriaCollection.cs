@@ -29,9 +29,9 @@ namespace nJupiter.DataAccess.Users {
 
 	public sealed class SearchCriteriaCollection : ICollection {
 		#region Members
-		private		ArrayList		innerArray;
+		private ArrayList innerArray;
 		#endregion
-		
+
 		#region Constructors
 		public SearchCriteriaCollection() {
 			this.innerArray = new ArrayList();
@@ -57,7 +57,7 @@ namespace nJupiter.DataAccess.Users {
 			return (SearchCriteria[])InnerArray.ToArray(typeof(SearchCriteria));
 		}
 		public bool Contains(SearchCriteria searchCriteria) {
-			return(InnerArray.Contains(searchCriteria));
+			return (InnerArray.Contains(searchCriteria));
 		}
 		public void CopyTo(Array array, int index) {
 			InnerArray.CopyTo(array, index);
@@ -83,11 +83,11 @@ namespace nJupiter.DataAccess.Users {
 			return this.innerArray.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerArray.IsSynchronized; } }
-		public int		Count			{ get { return InnerArray.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerArray.IsSynchronized; } }
+		public int Count { get { return InnerArray.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 	}
 }

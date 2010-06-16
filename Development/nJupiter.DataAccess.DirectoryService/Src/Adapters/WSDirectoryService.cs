@@ -33,9 +33,9 @@ namespace nJupiter.DataAccess.DirectoryService.Adapters {
 
 	public sealed class WSDirectoryService : DirectoryService {
 		#region Constructors
-		internal WSDirectoryService() {}
+		internal WSDirectoryService() { }
 		#endregion
-		
+
 		#region Methods
 		public override DirectoryObject GetDirectoryObjectById(string id) {
 			if(id == null) {
@@ -74,9 +74,9 @@ namespace nJupiter.DataAccess.DirectoryService.Adapters {
 			return ConvertWSDirectoryObject(this.GetWebService().CreateDirectoryObjectInstance());
 		}
 		#endregion
-		
+
 		#region Private Methods
-		private static DirectoryObject ConvertWSDirectoryObject(WebService.DirectoryObject wsDirectoryObject){
+		private static DirectoryObject ConvertWSDirectoryObject(WebService.DirectoryObject wsDirectoryObject) {
 			DirectoryObject directoryObject = new DirectoryObject();
 			directoryObject.Id = wsDirectoryObject.Id;
 			Property[] properties = new Property[wsDirectoryObject.Properties.Length];
@@ -90,7 +90,7 @@ namespace nJupiter.DataAccess.DirectoryService.Adapters {
 			return directoryObject;
 		}
 
-		private static WebService.DirectoryObject ConvertDirectoryObject(DirectoryObject directoryObject){
+		private static WebService.DirectoryObject ConvertDirectoryObject(DirectoryObject directoryObject) {
 			WebService.DirectoryObject wsDirectoryObject = new WebService.DirectoryObject();
 			wsDirectoryObject.Id = directoryObject.Id;
 			WebService.Property[] wsProperties = new WebService.Property[directoryObject.Properties.Length];
@@ -103,7 +103,7 @@ namespace nJupiter.DataAccess.DirectoryService.Adapters {
 			wsDirectoryObject.Properties = wsProperties;
 			return wsDirectoryObject;
 		}
-	
+
 		private DirectoryServiceWebService GetWebService() {
 			const string webServiceUrl = "webServiceUrl";
 			const string username = "userName";

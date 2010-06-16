@@ -27,27 +27,28 @@ using System;
 namespace nJupiter.Net.Mail {
 
 	public class MailAddress {
-		
+
 		#region Members
-		private readonly string			name;
-		private readonly string			mail;
+		private readonly string name;
+		private readonly string mail;
 		#endregion
 
 		#region Constructors
 		public MailAddress(string mail) {
 			if(mail == null)
 				throw new ArgumentNullException("mail");
-			this.mail		= mail;
+			this.mail = mail;
 		}
 
-		public MailAddress(string mail, string name) : this(mail){
-			this.name		= name;
+		public MailAddress(string mail, string name)
+			: this(mail) {
+			this.name = name;
 		}
 		#endregion
 
 		#region Properties
-		public string	Mail	{get {return this.mail;}}
-		public string	Name	{get {return this.name;}}
+		public string Mail { get { return this.mail; } }
+		public string Name { get { return this.name; } }
 		#endregion
 
 		#region Methods
@@ -61,7 +62,7 @@ namespace nJupiter.Net.Mail {
 		}
 
 		public override string ToString() {
-			return this.mail.ToString();
+			return this.mail;
 		}
 		#endregion
 	}

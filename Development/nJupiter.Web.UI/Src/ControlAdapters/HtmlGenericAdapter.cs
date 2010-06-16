@@ -25,14 +25,14 @@
 using System.Web.UI.HtmlControls;
 
 namespace nJupiter.Web.UI.ControlAdapters {
-	
+
 	public class HtmlGenericAdapter : HtmlControlAdapter {
 
 		#region Properties
 		private HtmlGenericControl GenericControl {
 			get {
 				return this.HtmlControl as HtmlGenericControl;
-			} 
+			}
 		}
 
 		protected override bool RenderElement {

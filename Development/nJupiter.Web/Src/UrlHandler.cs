@@ -89,7 +89,7 @@ namespace nJupiter.Web {
 			return AddQueryParams(url, key + "=" + value);
 		}
 
-		public static string AddQueryParams(string url, params string[] parameters){
+		public static string AddQueryParams(string url, params string[] parameters) {
 			if(url == null) {
 				throw new ArgumentNullException("url");
 			}
@@ -97,16 +97,16 @@ namespace nJupiter.Web {
 				throw new ArgumentNullException("parameters");
 			}
 
-			if(parameters.Length > 0){
+			if(parameters.Length > 0) {
 				StringBuilder queryString = new StringBuilder(url);
 				int hashPos = url.IndexOf("#");
 				int hashPosFromEnd = hashPos >= 0 ? url.Length - hashPos : hashPos;
-				if(hashPosFromEnd >= 0) { 
+				if(hashPosFromEnd >= 0) {
 					queryString.Insert(queryString.Length - hashPosFromEnd, url.IndexOf("?") > 0 ? "&" : "?");
 				} else {
 					queryString.Append(url.IndexOf("?") > 0 ? "&" : "?");
 				}
-				for(int i = 0; i < parameters.Length; i++){
+				for(int i = 0; i < parameters.Length; i++) {
 					if(parameters[i].Length > 0) {
 						if(hashPosFromEnd >= 0) {
 							queryString.Insert(queryString.Length - hashPosFromEnd, parameters[i]);
@@ -124,7 +124,7 @@ namespace nJupiter.Web {
 			}
 			return url;
 		}
-		public static string AddQueryParams(string url, NameValueCollection queryStringCollection, bool encodeValues){
+		public static string AddQueryParams(string url, NameValueCollection queryStringCollection, bool encodeValues) {
 			if(url == null) {
 				throw new ArgumentNullException("url");
 			}
@@ -134,11 +134,11 @@ namespace nJupiter.Web {
 			string[] parameters = new string[queryStringCollection.Count];
 			int i = 0;
 			foreach(string name in queryStringCollection) {
-				parameters[i++] = string.Format(CultureInfo.InvariantCulture,"{0}={1}", name, (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]));
+				parameters[i++] = string.Format(CultureInfo.InvariantCulture, "{0}={1}", name, (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]));
 			}
 			return AddQueryParams(url, parameters);
 		}
-		public static string AddQueryParams(string url, NameValueCollection queryStringCollection){
+		public static string AddQueryParams(string url, NameValueCollection queryStringCollection) {
 			return AddQueryParams(url, queryStringCollection, false);
 		}
 
@@ -203,7 +203,7 @@ namespace nJupiter.Web {
 				throw new ArgumentNullException("parametersToRemove");
 			}
 			queryStringCollection = new NameValueCollection(queryStringCollection);
-			for(int i = 0; i < parametersToRemove.Length; i++){
+			for(int i = 0; i < parametersToRemove.Length; i++) {
 				queryStringCollection.Remove(parametersToRemove[i]);
 			}
 			return queryStringCollection;
@@ -227,12 +227,12 @@ namespace nJupiter.Web {
 			int hashSeparatorPos = url.IndexOf("#");
 			string path = url;
 			if(queryStringSeparatorPos > -1) {
-				if(hashSeparatorPos > -1) 
+				if(hashSeparatorPos > -1)
 					path = path.Substring(0, queryStringSeparatorPos) + path.Substring(hashSeparatorPos);
-				else 
+				else
 					path = path.Substring(0, queryStringSeparatorPos);
 			}
-			return AddQueryParams(path, UrlHandler.GetQueryString(url, key)); 
+			return AddQueryParams(path, UrlHandler.GetQueryString(url, key));
 		}
 
 		// Fix so even non epi 4.6 components works correctly with friendly url

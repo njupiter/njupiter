@@ -35,7 +35,7 @@ namespace nJupiter.Web {
 		static void ReleaseRequestState(object sender, EventArgs e) {
 			HttpResponse response = HttpContext.Current.Response;
 			if(response.ContentType.Contains("html")) {
-				response.Filter = new IndenterFilter(response.Filter);      
+				response.Filter = new IndenterFilter(response.Filter);
 			}
 		}
 
@@ -51,31 +51,31 @@ namespace nJupiter.Web {
 
 	internal class IndenterFilter : Stream {
 
-		readonly Stream		responseStream;
-		StringBuilder		content;
+		readonly Stream responseStream;
+		StringBuilder content;
 
 		public IndenterFilter(Stream inputStream) {
-			this.responseStream	= inputStream;
+			this.responseStream = inputStream;
 		}
 
 		#region Overrides
-		public override	bool	CanRead		{ get { return this.responseStream.CanRead; } }
-		public override	bool	CanSeek		{ get { return this.responseStream.CanSeek; } }
-		public override	bool	CanWrite	{ get { return this.responseStream.CanWrite; } }
-		public override	long	Length		{ get { return this.responseStream.Length; } }
-		public override	long	Position	{ get { return this.responseStream.Position; }	set { this.responseStream.Position = value; } }
+		public override bool CanRead { get { return this.responseStream.CanRead; } }
+		public override bool CanSeek { get { return this.responseStream.CanSeek; } }
+		public override bool CanWrite { get { return this.responseStream.CanWrite; } }
+		public override long Length { get { return this.responseStream.Length; } }
+		public override long Position { get { return this.responseStream.Position; } set { this.responseStream.Position = value; } }
 
-		public override	void	Close() { this.responseStream.Close(); }
-		
-		public override	long	Seek(long offset, SeekOrigin origin) {
+		public override void Close() { this.responseStream.Close(); }
+
+		public override long Seek(long offset, SeekOrigin origin) {
 			return this.responseStream.Seek(offset, origin);
 		}
 
-		public override	void	SetLength(long length) {
+		public override void SetLength(long length) {
 			this.responseStream.SetLength(length);
 		}
 
-		public override	int		Read(byte[] buffer, int offset, int count) {
+		public override int Read(byte[] buffer, int offset, int count) {
 			return this.responseStream.Read(buffer, offset, count);
 		}
 
@@ -85,14 +85,14 @@ namespace nJupiter.Web {
 			this.content.Append(System.Text.Encoding.UTF8.GetString(buffer, offset, count));
 		}
 
-		public override	void	Flush() {
+		public override void Flush() {
 			if(this.content == null) {
 				this.responseStream.Flush();
 				return;
 			}
 
 			string contentString = this.content.ToString();
-			
+
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(contentString);
 			XmlWriterSettings settings = new XmlWriterSettings();
@@ -100,7 +100,9 @@ namespace nJupiter.Web {
 			settings.Indent = true;
 			settings.IndentChars = "\t";
 			XmlWriter writer = XmlWriter.Create(this.responseStream, settings);
-			doc.Save(writer);
+			if(writer != null) {
+				doc.Save(writer);
+			}
 
 			this.content = null;
 			this.responseStream.Flush();

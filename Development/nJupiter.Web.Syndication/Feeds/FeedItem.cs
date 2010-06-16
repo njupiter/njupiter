@@ -40,19 +40,19 @@ namespace nJupiter.Web.Syndication {
 		#endregion
 
 		#region Constructors
-		public FeedItem(string title, string description, Uri uri, DateTime publishDate) : this(title, string.Empty, description, uri, publishDate, null, null) {}
-		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate) : this(title, "urn:uuid:" + id, description, uri, publishDate, null, null) {}
-		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate) : this(title, id, description, uri, publishDate, null, null) {}
-		public FeedItem(string title, string description, Uri uri, DateTime publishDate, IAuthor author) : this(title, string.Empty, description, uri, publishDate, author, null) {}
-		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate, IAuthor author) : this(title, "urn:uuid:" + id, description, uri, publishDate, author, null) {}
-		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate, IAuthor author) : this(title, id, description, uri, publishDate, author, null) {}
+		public FeedItem(string title, string description, Uri uri, DateTime publishDate) : this(title, string.Empty, description, uri, publishDate, null, null) { }
+		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate) : this(title, "urn:uuid:" + id, description, uri, publishDate, null, null) { }
+		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate) : this(title, id, description, uri, publishDate, null, null) { }
+		public FeedItem(string title, string description, Uri uri, DateTime publishDate, IAuthor author) : this(title, string.Empty, description, uri, publishDate, author, null) { }
+		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate, IAuthor author) : this(title, "urn:uuid:" + id, description, uri, publishDate, author, null) { }
+		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate, IAuthor author) : this(title, id, description, uri, publishDate, author, null) { }
 
 
-		public FeedItem(string title, string description, Uri uri, DateTime publishDate, Dictionary<XmlQualifiedName, string> customElements) : this(title, string.Empty, description, uri, publishDate, null, customElements) {}
-		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate, Dictionary<XmlQualifiedName, string> customElements) : this(title, "urn:uuid:" + id, description, uri, publishDate, null, customElements) {}
-		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate, Dictionary<XmlQualifiedName, string> customElements) : this(title, id, description, uri, publishDate, null, customElements) {}
-		public FeedItem(string title, string description, Uri uri, DateTime publishDate, IAuthor author, Dictionary<XmlQualifiedName, string> customElements) : this(title, string.Empty, description, uri, publishDate, author, customElements) {}
-		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate, IAuthor author, Dictionary<XmlQualifiedName, string> customElements) : this(title, "urn:uuid:" + id, description, uri, publishDate, author, customElements) {}
+		public FeedItem(string title, string description, Uri uri, DateTime publishDate, Dictionary<XmlQualifiedName, string> customElements) : this(title, string.Empty, description, uri, publishDate, null, customElements) { }
+		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate, Dictionary<XmlQualifiedName, string> customElements) : this(title, "urn:uuid:" + id, description, uri, publishDate, null, customElements) { }
+		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate, Dictionary<XmlQualifiedName, string> customElements) : this(title, id, description, uri, publishDate, null, customElements) { }
+		public FeedItem(string title, string description, Uri uri, DateTime publishDate, IAuthor author, Dictionary<XmlQualifiedName, string> customElements) : this(title, string.Empty, description, uri, publishDate, author, customElements) { }
+		public FeedItem(string title, Guid id, string description, Uri uri, DateTime publishDate, IAuthor author, Dictionary<XmlQualifiedName, string> customElements) : this(title, "urn:uuid:" + id, description, uri, publishDate, author, customElements) { }
 		public FeedItem(string title, string id, string description, Uri uri, DateTime publishDate, IAuthor author, Dictionary<XmlQualifiedName, string> customElements) {
 			if(title == null && description == null)
 				throw new ArgumentNullException("title");

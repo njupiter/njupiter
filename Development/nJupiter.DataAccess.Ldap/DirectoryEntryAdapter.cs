@@ -112,7 +112,7 @@ namespace nJupiter.DataAccess.Ldap {
 				} else {
 					directorySearcher.Filter = filterBuilder.AttachFilter(attribute, attributeValue, defaultFilter);
 				}
-				
+
 				foreach(SearchResult result in directorySearcher.FindAll()) {
 					if(directoryEntry != null) {
 						throw new ProviderException(String.Format("More than one entry with value {0} for attribute {1} was found.", attributeValue, attribute));

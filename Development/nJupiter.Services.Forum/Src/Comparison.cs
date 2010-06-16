@@ -28,10 +28,10 @@ namespace nJupiter.Services.Forum {
 		Equal,
 		Greater,
 		GreaterEqual,
-		NotLess			= GreaterEqual,
+		NotLess = GreaterEqual,
 		Less,
 		LessEqual,
-		NotGreater		= LessEqual,
+		NotGreater = LessEqual,
 		NotEqual
 	}
 

@@ -6,7 +6,7 @@
 		public string Name { get { return this.name; } }
 		public bool ExcludeFromNameSearch { get { return this.excludeFromNameSearch; } }
 
-		public AttributeDefinition(string name) : this(name, false) {}
+		public AttributeDefinition(string name) : this(name, false) { }
 		public AttributeDefinition(string name, bool excludeFromNameSearch) {
 			this.name = name;
 			this.excludeFromNameSearch = excludeFromNameSearch;

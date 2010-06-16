@@ -34,7 +34,7 @@ using nJupiter.Configuration;
 
 using log4net;
 
-using ConfigurationException=nJupiter.Configuration.ConfigurationException;
+using ConfigurationException = nJupiter.Configuration.ConfigurationException;
 
 namespace nJupiter.DataAccess {
 
@@ -47,13 +47,13 @@ namespace nJupiter.DataAccess {
 		#endregion
 
 		#region Static Members
-		private static readonly ILog		log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private static readonly Hashtable	dataSourceAdapters = Hashtable.Synchronized(new Hashtable());
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly Hashtable DataSourceAdapters = Hashtable.Synchronized(new Hashtable());
 		#endregion
 
 		#region Members
-		private string	connectionString;
-		private Config	config;
+		private string connectionString;
+		private Config config;
 		#endregion
 
 		#region Properties
@@ -86,7 +86,7 @@ namespace nJupiter.DataAccess {
 		/// </summary>
 		/// <returns></returns>
 		public static DataSource GetInstance() {
-			if(log.IsDebugEnabled) { log.Debug("Getting default instance"); }
+			if(Log.IsDebugEnabled) { Log.Debug("Getting default instance"); }
 			const string section = DataaccessSection + "[@default='true']";
 			return GetDataSourceFromSection(section);
 		}
@@ -99,26 +99,26 @@ namespace nJupiter.DataAccess {
 		public static DataSource GetInstance(string name) {
 			if(name == null)
 				throw new ArgumentNullException("name");
-			if(log.IsDebugEnabled) { log.Debug("Getting instance with name " + name); }
+			if(Log.IsDebugEnabled) { Log.Debug("Getting instance with name " + name); }
 			const string sectionFormat = DataaccessSection + "[@value='{0}']";
 			return GetDataSourceFromSection(string.Format(CultureInfo.InvariantCulture, sectionFormat, name));
 		}
-		
+
 		#region Helper Methods
 		private static DataSource GetDataSourceFromSection(string section) {
-			const string settings		= "settings";
-			const string assemblypath	= "assemblyPath";
-			const string assembly		= "assembly";
-			const string type			= "type";
-			
-			string name = ConfigHandler.GetConfig().GetValue(section);
-			if(dataSourceAdapters.ContainsKey(name))
-				return (DataSource)dataSourceAdapters[name];
+			const string settings = "settings";
+			const string assemblypath = "assemblyPath";
+			const string assembly = "assembly";
+			const string type = "type";
 
-			lock(dataSourceAdapters.SyncRoot) {
+			string name = ConfigHandler.GetConfig().GetValue(section);
+			if(DataSourceAdapters.ContainsKey(name))
+				return (DataSource)DataSourceAdapters[name];
+
+			lock(DataSourceAdapters.SyncRoot) {
 				DataSource dataSource;
-				if(!dataSourceAdapters.ContainsKey(name)) {
-					Config config =	ConfigHandler.GetConfig();
+				if(!DataSourceAdapters.ContainsKey(name)) {
+					Config config = ConfigHandler.GetConfig();
 					string assemblyPath = config.GetValue(section, assemblypath);
 					string assemblyName = config.GetValue(section, assembly);
 					string assemblyType = config.GetValue(section, type);
@@ -127,29 +127,28 @@ namespace nJupiter.DataAccess {
 					dataSource = (DataSource)instance;
 					if(dataSource == null)
 						throw new ConfigurationException(string.Format("Could not load DataSource from {0} {1} {2}.", assemblyName, assemblyType, assemblyPath));
-					dataSource.config = config.GetConfigSection(section + "/" +  settings);
-					dataSourceAdapters.Add(name, dataSource);
-				}
-				else {
-					dataSource = (DataSource)dataSourceAdapters[name];
+					dataSource.config = config.GetConfigSection(section + "/" + settings);
+					DataSourceAdapters.Add(name, dataSource);
+				} else {
+					dataSource = (DataSource)DataSourceAdapters[name];
 				}
 				return dataSource;
 			}
 		}
-		
+
 		private static object CreateInstance(string assemblyPath, string assemblyName, string typeName) {
 			Assembly assembly;
 			if(!string.IsNullOrEmpty(assemblyPath)) {
 				assembly = Assembly.LoadFrom(assemblyPath);
-			} else if(assemblyName == null || assemblyName.Length.Equals(0) || 
+			} else if(assemblyName == null || assemblyName.Length.Equals(0) ||
 				Assembly.GetExecutingAssembly().GetName().Name.Equals(assemblyName)) {
 				assembly = Assembly.GetExecutingAssembly();	//Load current assembly
 			} else {
 				assembly = Assembly.Load(assemblyName); // Late binding to an assembly on disk (current directory)
 			}
 			return assembly.CreateInstance(
-				typeName, false, 
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | 
+				typeName, false,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
 				BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.ExactBinding,
 				null, null, null, null);
 		}
@@ -195,7 +194,7 @@ namespace nJupiter.DataAccess {
 
 		#region Internal Methods
 		internal IDbConnection OpenConnection() {
-			if(log.IsDebugEnabled) { log.Debug("Open Connection"); }
+			if(Log.IsDebugEnabled) { Log.Debug("Open Connection"); }
 			IDbConnection connection = this.GetConnection();
 			connection.Open();
 			return connection;
@@ -207,7 +206,7 @@ namespace nJupiter.DataAccess {
 		/// Creates a Stored Procedure command for the data source.
 		/// </summary>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		public Command CreateSPCommand(){
+		public Command CreateSPCommand() {
 			return CreateSPCommand(string.Empty, null, null);
 		}
 
@@ -216,7 +215,7 @@ namespace nJupiter.DataAccess {
 		/// </summary>
 		/// <param name="spName">Name of the stored procedure.</param>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		public Command CreateSPCommand(string spName){
+		public Command CreateSPCommand(string spName) {
 			return CreateSPCommand(spName, null, null);
 		}
 
@@ -226,20 +225,20 @@ namespace nJupiter.DataAccess {
 		/// <param name="spName">Name of the stored procedure.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		public Command CreateSPCommand(string spName, Transaction transaction){
+		public Command CreateSPCommand(string spName, Transaction transaction) {
 			return CreateSPCommand(spName, transaction, null);
 		}
-		
+
 		/// <summary>
 		/// Creates a Stored Procedure command for the data source.
 		/// </summary>
 		/// <param name="spName">Name of the stored procedure.</param>
 		/// <param name="parameters">The parameters that shall be sent to the stored procedure.</param>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		public Command CreateSPCommand(string spName, params object[] parameters){
+		public Command CreateSPCommand(string spName, params object[] parameters) {
 			return CreateSPCommand(spName, null, parameters);
 		}
-		
+
 		/// <summary>
 		/// Creates a Stored Procedure command for the data source.
 		/// </summary>
@@ -255,39 +254,39 @@ namespace nJupiter.DataAccess {
 		/// Creates a text command for the data source.
 		/// </summary>
 		/// <returns>A <see cref="Command"/> object.</returns>
-		public Command CreateTextCommand(){
+		public Command CreateTextCommand() {
 			return CreateTextCommand(string.Empty, null, null);
 		}
-		
+
 		/// <summary>
 		/// Creates a text command for the data source.
 		/// </summary>
 		/// <param name="command">The command string.</param>
 		/// <returns>A <see cref="Command"/> object.</returns>
-		public Command CreateTextCommand(string command){
+		public Command CreateTextCommand(string command) {
 			return CreateTextCommand(command, null, null);
 		}
-		
+
 		/// <summary>
 		/// Creates a text command for the data source.
 		/// </summary>
 		/// <param name="command">The command string.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>A <see cref="Command"/> object.</returns>
-		public Command CreateTextCommand(string command, Transaction transaction){
+		public Command CreateTextCommand(string command, Transaction transaction) {
 			return CreateTextCommand(command, transaction, null);
 		}
-		
+
 		/// <summary>
 		/// Creates a text command for the data source.
 		/// </summary>
 		/// <param name="command">The command string.</param>
 		/// <param name="parameters">The parameters that shall be sent to the text command.</param>
 		/// <returns>A <see cref="Command"/> object.</returns>
-		public Command CreateTextCommand(string command, params object[] parameters){
+		public Command CreateTextCommand(string command, params object[] parameters) {
 			return CreateTextCommand(command, null, parameters);
 		}
-		
+
 		/// <summary>
 		/// Creates a text command for the data source.
 		/// </summary>
@@ -375,7 +374,7 @@ namespace nJupiter.DataAccess {
 		/// The number of rows successfully updated from the <see cref="DataSet"/>.
 		/// </returns>
 		public int UpdateDataSet(DataSet dataSet, Command insertCommand, Command updateCommand, Command deleteCommand, string tableName) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return UpdateDataSet(dataSet, insertCommand, updateCommand, deleteCommand, tableName, transaction);
 			}
 		}
@@ -396,15 +395,15 @@ namespace nJupiter.DataAccess {
 			if(dataSet == null)
 				throw new ArgumentNullException("dataSet");
 
-			using (DbDataAdapter adapter = this.GetDataAdapter(transaction.Connection)) {
-				
+			using(DbDataAdapter adapter = this.GetDataAdapter(transaction.Connection)) {
+
 				IDbDataAdapter dbAdapter = adapter;
 
-				if (insertCommand != null)
+				if(insertCommand != null)
 					dbAdapter.InsertCommand = insertCommand.DbCommand;
-				if (updateCommand != null)
+				if(updateCommand != null)
 					dbAdapter.UpdateCommand = updateCommand.DbCommand;
-				if (deleteCommand != null)
+				if(deleteCommand != null)
 					dbAdapter.DeleteCommand = deleteCommand.DbCommand;
 
 				if(tableName == null)
@@ -419,8 +418,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="command">The command text.</param>
 		/// <param name="commandType">Type of the command.</param>
 		/// <returns>The resulting data set.</returns>
-		public DataSet ExecuteDataSet(string command, CommandType commandType){
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+		public DataSet ExecuteDataSet(string command, CommandType commandType) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return ExecuteDataSet(command, commandType, transaction);
 			}
 		}
@@ -432,8 +431,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The resulting data set.</returns>
-		public DataSet ExecuteDataSet(string command, CommandType commandType, params object[] parameters){
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+		public DataSet ExecuteDataSet(string command, CommandType commandType, params object[] parameters) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return ExecuteDataSet(command, commandType, transaction, parameters);
 			}
 		}
@@ -445,7 +444,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>The resulting data set.</returns>
-		public DataSet ExecuteDataSet(string command, CommandType commandType, Transaction transaction){
+		public DataSet ExecuteDataSet(string command, CommandType commandType, Transaction transaction) {
 			return ExecuteDataSet(command, commandType, transaction, null);
 		}
 
@@ -457,8 +456,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The resulting data set.</returns>
-		public DataSet ExecuteDataSet(string command, CommandType commandType, Transaction transaction, params object[] parameters){
-			if(commandType == CommandType.StoredProcedure){
+		public DataSet ExecuteDataSet(string command, CommandType commandType, Transaction transaction, params object[] parameters) {
+			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteDataSet(command, transaction, parameters);
 			}
 			Command commandObj = this.CreateTextCommand(command, transaction, parameters);
@@ -472,7 +471,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The resulting data set.</returns>
 		public DataSet ExecuteDataSet(string spName, params object[] parameters) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return this.ExecuteDataSet(spName, transaction, parameters);
 			}
 		}
@@ -495,7 +494,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="spName">Name of the stored procedure that shall be executed.</param>
 		/// <returns>The resulting data set.</returns>
 		public DataSet ExecuteDataSet(string spName) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return this.ExecuteDataSet(spName, transaction);
 			}
 		}
@@ -519,7 +518,7 @@ namespace nJupiter.DataAccess {
 		public virtual DataSet ExecuteDataSet(Command command) {
 			if(command == null)
 				throw new ArgumentNullException("command");
-			
+
 			DataSet dataSet = new DataSet { Locale = CultureInfo.InvariantCulture };
 			GetDataSet(command, dataSet);
 			return dataSet;
@@ -531,8 +530,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="command">The command text.</param>
 		/// <param name="commandType">Type of the command.</param>
 		/// <returns>The number of rows affected.</returns>
-		public int ExecuteNonQuery(string command, CommandType commandType){
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+		public int ExecuteNonQuery(string command, CommandType commandType) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return ExecuteNonQuery(command, commandType, transaction);
 			}
 		}
@@ -544,8 +543,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The number of rows affected.</returns>
-		public int ExecuteNonQuery(string command, CommandType commandType, params object[] parameters){
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+		public int ExecuteNonQuery(string command, CommandType commandType, params object[] parameters) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return ExecuteNonQuery(command, commandType, transaction, parameters);
 			}
 		}
@@ -557,7 +556,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>The number of rows affected.</returns>
-		public int ExecuteNonQuery(string command, CommandType commandType, Transaction transaction){
+		public int ExecuteNonQuery(string command, CommandType commandType, Transaction transaction) {
 			return ExecuteNonQuery(command, commandType, transaction, null);
 		}
 
@@ -569,8 +568,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The number of rows affected.</returns>
-		public int ExecuteNonQuery(string command, CommandType commandType, Transaction transaction, params object[] parameters){
-			if(commandType == CommandType.StoredProcedure){
+		public int ExecuteNonQuery(string command, CommandType commandType, Transaction transaction, params object[] parameters) {
+			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteNonQuery(command, transaction, parameters);
 			}
 			Command commandObj = this.CreateTextCommand(command, transaction, parameters);
@@ -584,7 +583,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The number of rows affected.</returns>
 		public int ExecuteNonQuery(string spName, params object[] parameters) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return this.ExecuteNonQuery(spName, transaction, parameters);
 			}
 		}
@@ -607,7 +606,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="spName">Name of the stored procedure to be executed.</param>
 		/// <returns>The number of rows affected.</returns>
 		public int ExecuteNonQuery(string spName) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return this.ExecuteNonQuery(spName, transaction);
 			}
 		}
@@ -632,8 +631,8 @@ namespace nJupiter.DataAccess {
 			if(command == null)
 				throw new ArgumentNullException("command");
 
-			if(command.Transaction == null){
-				using(Transaction transaction = Transaction.GetTransaction(this, false)){
+			if(command.Transaction == null) {
+				using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 					command.Transaction = transaction;
 					return command.DbCommand.ExecuteNonQuery();
 				}
@@ -647,8 +646,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="command">The command to execute.</param>
 		/// <param name="commandType">Type of the command.</param>
 		/// <returns>The first column of the first row in the resultset.</returns>
-		public object ExecuteScalar(string command, CommandType commandType){
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+		public object ExecuteScalar(string command, CommandType commandType) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return ExecuteScalar(command, commandType, transaction);
 			}
 		}
@@ -662,8 +661,8 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		public object ExecuteScalar(string command, CommandType commandType, params object[] parameters){
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+		public object ExecuteScalar(string command, CommandType commandType, params object[] parameters) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return ExecuteScalar(command, commandType, transaction, parameters);
 			}
 		}
@@ -677,7 +676,7 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		public object ExecuteScalar(string command, CommandType commandType, Transaction transaction){
+		public object ExecuteScalar(string command, CommandType commandType, Transaction transaction) {
 			if(command == null)
 				throw new ArgumentNullException("command");
 
@@ -694,8 +693,8 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		public object ExecuteScalar(string command, CommandType commandType, Transaction transaction, params object[] parameters){
-			if(commandType == CommandType.StoredProcedure){
+		public object ExecuteScalar(string command, CommandType commandType, Transaction transaction, params object[] parameters) {
+			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteScalar(command, transaction, parameters);
 			}
 			Command commandObj = this.CreateTextCommand(command, transaction, parameters);
@@ -711,7 +710,7 @@ namespace nJupiter.DataAccess {
 		/// The first column of the first row in the resultset.
 		/// </returns>
 		public object ExecuteScalar(string spName, params object[] parameters) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return this.ExecuteScalar(spName, transaction, parameters);
 			}
 		}
@@ -738,7 +737,7 @@ namespace nJupiter.DataAccess {
 		/// The first column of the first row in the resultset.
 		/// </returns>
 		public object ExecuteScalar(string spName) {
-			using (Transaction transaction = Transaction.GetTransaction(this, false)) {
+			using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 				return this.ExecuteScalar(spName, transaction);
 			}
 		}
@@ -766,8 +765,8 @@ namespace nJupiter.DataAccess {
 		public object ExecuteScalar(Command command) {
 			if(command == null)
 				throw new ArgumentNullException("command");
-			if(command.Transaction == null){
-				using(Transaction transaction = Transaction.GetTransaction(this, false)){
+			if(command.Transaction == null) {
+				using(Transaction transaction = Transaction.GetTransaction(this, false)) {
 					command.Transaction = transaction;
 					return command.DbCommand.ExecuteScalar();
 				}
@@ -782,7 +781,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="behavior">One of the <see cref="CommandBehavior" /> values.</param>
 		/// <returns>An <see cref="IDataReader" /> object.</returns>
-		public IDataReader ExecuteReader(string command, CommandType commandType, CommandBehavior behavior){
+		public IDataReader ExecuteReader(string command, CommandType commandType, CommandBehavior behavior) {
 			return ExecuteReader(command, commandType, behavior);
 		}
 
@@ -794,7 +793,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		public IDataReader ExecuteReader(string command, CommandType commandType, CommandBehavior behavior, params object[] parameters){
+		public IDataReader ExecuteReader(string command, CommandType commandType, CommandBehavior behavior, params object[] parameters) {
 			return ExecuteReader(command, commandType, null, behavior, parameters);
 		}
 
@@ -806,7 +805,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		public IDataReader ExecuteReader(string command, CommandType commandType, Transaction transaction, CommandBehavior behavior){
+		public IDataReader ExecuteReader(string command, CommandType commandType, Transaction transaction, CommandBehavior behavior) {
 			return ExecuteReader(command, commandType, transaction, behavior, null);
 		}
 
@@ -819,8 +818,8 @@ namespace nJupiter.DataAccess {
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		public IDataReader ExecuteReader(string command, CommandType commandType, Transaction transaction, CommandBehavior behavior, params object[] parameters){
-			if(commandType == CommandType.StoredProcedure){
+		public IDataReader ExecuteReader(string command, CommandType commandType, Transaction transaction, CommandBehavior behavior, params object[] parameters) {
+			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteReader(command, transaction, behavior, parameters);
 			}
 			Command commandObj = this.CreateTextCommand(command, transaction, parameters);
@@ -913,7 +912,7 @@ namespace nJupiter.DataAccess {
 		/// </remarks>
 		public IDataParameter CreateInputParameter(string name, object value) {
 			if(value is DateTime)
-				throw new ArgumentException ("Date Parameters should be created with the CreateDateInputParameter method.", "value");
+				throw new ArgumentException("Date Parameters should be created with the CreateDateInputParameter method.", "value");
 			//Check for null parameters (Required?);
 			if(value == null) {
 				value = DBNull.Value;
@@ -932,9 +931,9 @@ namespace nJupiter.DataAccess {
 		/// CreateStringInputParameter instead.
 		/// </remarks>		
 		public IDataParameter CreateInputParameter(string name, DbType type, object value) {
-			if (value is string)
-				throw new ArgumentException ("String Parameters should be created with the CreateStringInputParameter method.", "value");
-			if (value == null)
+			if(value is string)
+				throw new ArgumentException("String Parameters should be created with the CreateStringInputParameter method.", "value");
+			if(value == null)
 				value = DBNull.Value;
 			IDataParameter parameter = CreateParameter(name, type);
 			parameter.Value = value;
@@ -947,7 +946,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="type">The DbType of the parameter.</param>
 		/// <param name="value">The value of parameter.</param>
 		/// <returns>IDataParameter object.</returns>
-		public IDataParameter CreateStringInputParameter (string name, DbType type, string value) {
+		public IDataParameter CreateStringInputParameter(string name, DbType type, string value) {
 			return CreateStringInputParameter(name, type, value, false);
 		}
 		/// <summary>
@@ -959,7 +958,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="value">The value of parameter.</param>
 		/// <param name="useNullIfEmpty">true to create a parameter with a null value if the string is empty, otherwise false.</param>
 		/// <returns>IDataParameter object.</returns>
-		public IDataParameter CreateStringInputParameter (string name, DbType type, string value, bool useNullIfEmpty) {
+		public IDataParameter CreateStringInputParameter(string name, DbType type, string value, bool useNullIfEmpty) {
 			object pramVal;
 			if(value == null || (useNullIfEmpty && value.Length.Equals(0))) {
 				pramVal = DBNull.Value;
@@ -988,7 +987,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="name">The name of the parameter.</param>
 		/// <param name="type">The DbType of the parameter.</param>
 		/// <returns></returns>
-		public IDataParameter CreateOutputParameter (string name, DbType type) {
+		public IDataParameter CreateOutputParameter(string name, DbType type) {
 			IDataParameter parameter = CreateParameter(name, type);
 			parameter.Direction = ParameterDirection.Output;
 			return parameter;
@@ -999,7 +998,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="name">The name of the parameter.</param>
 		/// <param name="type">The DbType of the parameter.</param>
 		/// <returns></returns>
-		public IDataParameter CreateInputOutputParameter (string name, DbType type) {
+		public IDataParameter CreateInputOutputParameter(string name, DbType type) {
 			IDataParameter parameter = CreateParameter(name, type);
 			parameter.Direction = ParameterDirection.InputOutput;
 			return parameter;

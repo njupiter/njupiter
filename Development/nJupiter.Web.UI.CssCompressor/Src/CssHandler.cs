@@ -35,18 +35,18 @@ using nJupiter.Configuration;
 namespace nJupiter.Web.UI.CssCompressor {
 
 	public sealed class CssHandler : IHttpHandler {
-		
+
 		#region Members
-		private static readonly Regex	commentsRegex	= new Regex("/\\*.*?\\*/");
-		private static readonly Regex	importsRegex	= new Regex("^*@import\\surl\\((.*)\\).*$", RegexOptions.Multiline);
-		private HttpContext	httpContext;
-		private ArrayList	parsedFiles;
+		private static readonly Regex CommentsRegex = new Regex("/\\*.*?\\*/");
+		private static readonly Regex ImportsRegex = new Regex("^*@import\\surl\\((.*)\\).*$", RegexOptions.Multiline);
+		private HttpContext httpContext;
+		private ArrayList parsedFiles;
 		#endregion
 
 		public void ProcessRequest(HttpContext context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
-			
+
 			this.httpContext = context;
 
 			string path = this.httpContext.Server.MapPath(this.httpContext.Request.Url.AbsolutePath);
@@ -60,9 +60,9 @@ namespace nJupiter.Web.UI.CssCompressor {
 			if(minutesToCache > 0) {
 				// Check if the client has this file and return 304 if it does
 				string ifModifiedSince = context.Request.Headers.Get("If-Modified-Since");
-				if(ifModifiedSince != null && File.Exists(path)){
+				if(ifModifiedSince != null && File.Exists(path)) {
 					DateTime ifModifiedSinceDate;
-					if(DateTime.TryParse(ifModifiedSince, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out ifModifiedSinceDate)){
+					if(DateTime.TryParse(ifModifiedSince, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out ifModifiedSinceDate)) {
 						if(!ifModifiedSinceDate.Equals(DateTime.MinValue) && ifModifiedSinceDate < File.GetLastWriteTime(path)) {
 							this.httpContext.Response.StatusCode = 304;
 							this.httpContext.Response.End();
@@ -107,9 +107,9 @@ namespace nJupiter.Web.UI.CssCompressor {
 			Uri uri = new Uri(this.httpContext.Request.Url, cssFileUrl);
 			string filePath = HttpContext.Current.Server.MapPath(uri.AbsolutePath);
 			string css = null;
-			if(File.Exists(filePath)){
+			if(File.Exists(filePath)) {
 				css = File.ReadAllText(filePath);
-			}else if(HostingEnvironment.VirtualPathProvider.FileExists(cssFileUrl)) {
+			} else if(HostingEnvironment.VirtualPathProvider.FileExists(cssFileUrl)) {
 				VirtualFile virtualFile = HostingEnvironment.VirtualPathProvider.GetFile(cssFileUrl);
 				using(Stream virtualFileStream = virtualFile.Open()) {
 					StreamReader sr = new StreamReader(virtualFileStream);
@@ -118,9 +118,9 @@ namespace nJupiter.Web.UI.CssCompressor {
 			}
 			if(css != null) {
 				this.parsedFiles.Add(cssFileUrl);
-				css = commentsRegex.Replace(css, " ");
+				css = CommentsRegex.Replace(css, " ");
 
-				MatchCollection matches = importsRegex.Matches(css);
+				MatchCollection matches = ImportsRegex.Matches(css);
 				if(matches.Count > 0) {
 					foreach(Match match in matches) {
 						if(match.Groups.Count >= 2) {
@@ -143,7 +143,7 @@ namespace nJupiter.Web.UI.CssCompressor {
 		/// <param name="sourceUrl">Base absolute url</param>
 		/// <param name="relativeUrl">Url relative to base url</param>
 		/// <returns>An absolute url</returns>
-		private string GetAbsoluteUrl(string sourceUrl, string relativeUrl){
+		private string GetAbsoluteUrl(string sourceUrl, string relativeUrl) {
 			sourceUrl = this.httpContext.Request.Url.Scheme + "://" + this.httpContext.Request.Url.Host + System.Web.VirtualPathUtility.GetDirectory(sourceUrl);
 			Uri sourceUri = new Uri(sourceUrl);
 			Uri combinedUri = new Uri(sourceUri, relativeUrl);

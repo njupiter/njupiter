@@ -30,13 +30,13 @@ using nJupiter.Configuration;
 
 namespace nJupiter.Messaging.Web {
 
-	[WebService(Namespace="urn:njupiter:messaging:web")]
-	public class Messaging	{
-		
-		private const string WebServicesSection	= "webService";
-		private const string ConsumerSection	= WebServicesSection + "/messageConsumer";
-		private const string ServerConfig		= "server";
-	
+	[WebService(Namespace = "urn:njupiter:messaging:web")]
+	public class Messaging {
+
+		private const string WebServicesSection = "webService";
+		private const string ConsumerSection = WebServicesSection + "/messageConsumer";
+		private const string ServerConfig = "server";
+
 		[WebMethod]
 		public void Publish(Message message) {
 			MessageService.GetInstance(ServerConfig).Publish(message);
@@ -49,12 +49,12 @@ namespace nJupiter.Messaging.Web {
 
 		[WebMethod]
 		public void Notify(Message message) {
-            string assemblyName	= ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "assembly");
-            string className	= ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "className");
+			string assemblyName = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "assembly");
+			string className = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "className");
 			Assembly assembly = System.Reflection.Assembly.Load(assemblyName);
-			if(assembly != null && assembly.Location != null){
+			if(assembly != null && assembly.Location != null) {
 				Assembly managerAssembly = Assembly.LoadFrom(assembly.Location);
-				MessageConsumer msgCons	= (MessageConsumer)managerAssembly.CreateInstance(className);
+				MessageConsumer msgCons = (MessageConsumer)managerAssembly.CreateInstance(className);
 				msgCons.Notify(message);
 			}
 		}

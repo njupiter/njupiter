@@ -31,16 +31,16 @@ using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 
 namespace nJupiter.Web.UI.Controls {
-	
+
 	[ToolboxItem(true)]
 	public class WebForm : HtmlForm {
 
 		#region Constants
-		private const string XhtmlStrictRendering	= "v_XHTMLStrictRendering";
+		private const string XhtmlStrictRendering = "v_XHTMLStrictRendering";
 		#endregion
 
 		#region Properties
-		public bool XHTMLStrictRendering{
+		public bool XHTMLStrictRendering {
 			get {
 				if(this.ViewState[XhtmlStrictRendering] == null)
 					return true;
@@ -53,7 +53,7 @@ namespace nJupiter.Web.UI.Controls {
 		public string CssClass {
 			get {
 				string result = this.ViewState[HtmlAttribute.Class] as string;
-				if (result != null)
+				if(result != null)
 					return result;
 				return string.Empty;
 			}
@@ -70,7 +70,7 @@ namespace nJupiter.Web.UI.Controls {
 
 			base.RenderAttributes(writer);
 		}
-		protected override void Render(HtmlTextWriter writer){
+		protected override void Render(HtmlTextWriter writer) {
 			if(this.XHTMLStrictRendering && writer.GetType().Equals(typeof(HtmlTextWriter))) {
 				StrictHtmlTextWriter w = new StrictHtmlTextWriter(writer);
 				base.Render(w);
@@ -88,13 +88,15 @@ namespace nJupiter.Web.UI.Controls {
 	}
 
 	public class StrictHtmlTextWriter : HtmlTextWriter {
-		public StrictHtmlTextWriter(TextWriter writer) : this(writer, DefaultTabString) {
+		public StrictHtmlTextWriter(TextWriter writer)
+			: this(writer, DefaultTabString) {
 		}
 
-		public StrictHtmlTextWriter(TextWriter writer, string tabString) : base(writer, tabString) {
+		public StrictHtmlTextWriter(TextWriter writer, string tabString)
+			: base(writer, tabString) {
 		}
 
-		private const string InputBeginning	= "<input type=\"hidden\" name=\"";
+		private const string InputBeginning = "<input type=\"hidden\" name=\"";
 
 		private bool openInput;
 		private bool removeNext;
@@ -108,7 +110,7 @@ namespace nJupiter.Web.UI.Controls {
 				return this.idnMapping;
 			}
 		}
-		
+
 		public override bool IsValidFormAttribute(string attribute) {
 			if(attribute == null) {
 				throw new ArgumentNullException("attribute");
@@ -122,18 +124,18 @@ namespace nJupiter.Web.UI.Controls {
 			switch(key) {
 				case HtmlTextWriterAttribute.Href:
 				case HtmlTextWriterAttribute.Src:
-					Uri uri;
-					try {
-						if(Uri.TryCreate(value, UriKind.Absolute, out uri)) {
-							//if an absolute valid uri, then convert to ascii (renders navigatable international domain names)
-							if(!string.IsNullOrEmpty(uri.Host)) {
-								UriBuilder newUri = new UriBuilder(uri);
-								newUri.Host = this.IdnMapping.GetAscii(uri.Host);
-								value = newUri.Uri.AbsoluteUri;
-							}
+				Uri uri;
+				try {
+					if(Uri.TryCreate(value, UriKind.Absolute, out uri)) {
+						//if an absolute valid uri, then convert to ascii (renders navigatable international domain names)
+						if(!string.IsNullOrEmpty(uri.Host)) {
+							UriBuilder newUri = new UriBuilder(uri);
+							newUri.Host = this.IdnMapping.GetAscii(uri.Host);
+							value = newUri.Uri.AbsoluteUri;
 						}
-					} catch(System.UriFormatException) { }
-					break;
+					}
+				} catch(System.UriFormatException) { }
+				break;
 			}
 			base.AddAttribute(key, value);
 		}
@@ -160,15 +162,15 @@ namespace nJupiter.Web.UI.Controls {
 		// right way from the beginning. But what shall we expect from
 		// a company that close every damn thing down and think security
 		// is equivalent with obscurity... Viva open source!
-		private string ProcessString(string s) { 
-			const string correctScriptStart		= "\r\n<script type=\"text/javascript\">\r\n<!--//--><![CDATA[//><!--\r\n";
-			const string correctScriptEnd		= "//--><!]]>\r\n</script>\r\n";
+		private string ProcessString(string s) {
+			const string correctScriptStart = "\r\n<script type=\"text/javascript\">\r\n<!--//--><![CDATA[//><!--\r\n";
+			const string correctScriptEnd = "//--><!]]>\r\n</script>\r\n";
 			// Before .NET 2.50727.832
-			const string wrongScriptStartOld	= "\r\n<script type=\"text/javascript\">\r\n<!--\r\n";
-			const string wrongScriptEndOld		= "// -->\r\n</script>\r\n";
+			const string wrongScriptStartOld = "\r\n<script type=\"text/javascript\">\r\n<!--\r\n";
+			const string wrongScriptEndOld = "// -->\r\n</script>\r\n";
 			// After .NET 2.50727.832
-			const string wrongScriptStart		= "\r\n<script type=\"text/javascript\">\r\n//<![CDATA[\r\n";
-			const string wrongScriptEnd			= "//]]>\r\n</script>\r\n";
+			const string wrongScriptStart = "\r\n<script type=\"text/javascript\">\r\n//<![CDATA[\r\n";
+			const string wrongScriptEnd = "//]]>\r\n</script>\r\n";
 
 
 			if(s == null)
@@ -177,11 +179,11 @@ namespace nJupiter.Web.UI.Controls {
 				return correctScriptStart;
 			}
 
-			if(s.Equals(wrongScriptEnd) || s.Equals(wrongScriptEndOld)){
+			if(s.Equals(wrongScriptEnd) || s.Equals(wrongScriptEndOld)) {
 				return correctScriptEnd;
 			}
 
-			if(this.removeNext){
+			if(this.removeNext) {
 				if(s.StartsWith("\"")) {
 					s = s.Substring("\"".Length);
 					this.removeNext = false;
@@ -189,12 +191,12 @@ namespace nJupiter.Web.UI.Controls {
 					return string.Empty;
 				}
 			}
-			if(this.openInput && s.Equals("\" id=\"")){
+			if(this.openInput && s.Equals("\" id=\"")) {
 				this.removeNext = true;
 				this.openInput = false;
 				return "\"";
 			}
-			if(s.EndsWith(InputBeginning)){
+			if(s.EndsWith(InputBeginning)) {
 				this.openInput = true;
 			}
 			return s;

@@ -25,51 +25,49 @@
 using System;
 using System.Xml.Serialization;
 
-namespace nJupiter.Messaging{
+namespace nJupiter.Messaging {
 
 	[Serializable]
 	public class MessageConsumer {
 
 		#region Private instance Members
-		private MessageDestination	messageDestination; 
-		private DateTime			dateCreated;
-		private string				notificationUrl;
+		private MessageDestination messageDestination;
+		private DateTime dateCreated;
+		private string notificationUrl;
 		#endregion
 
 		#region Properties - Xml serializable
-        [XmlAttribute(DataType = "dateTime", AttributeName = "created")]
-		public DateTime				Created				{ get {return this.dateCreated;}			set { this.dateCreated		= value;}}
+		[XmlAttribute(DataType = "dateTime", AttributeName = "created")]
+		public DateTime Created { get { return this.dateCreated; } set { this.dateCreated = value; } }
 
 		[XmlAttribute(DataType = "string", AttributeName = "notificationurl")]
-		public string				NotificationUrl		{ get {return this.notificationUrl;}		set { this.notificationUrl	= value;}}
+		public string NotificationUrl { get { return this.notificationUrl; } set { this.notificationUrl = value; } }
 
 		[XmlElement("messagedestination")]
-		public MessageDestination	Destination			{ get {return this.messageDestination;}	set { this.messageDestination	= value;}}
+		public MessageDestination Destination { get { return this.messageDestination; } set { this.messageDestination = value; } }
 		#endregion
-	
+
 		#region MessageConsumer Members
 		/// <summary>
 		/// Implemented by the client
 		/// </summary>
 		/// <param name="message">The message that the client will recive</param>
-		public virtual void Notify(Message message){
+		public virtual void Notify(Message message) {
 			throw new NotImplementedException();
 		}
-		#endregion 
-        
-        public override bool Equals(object obj)
-        {
-            MessageConsumer msgConsumer = obj as MessageConsumer;
+		#endregion
 
-            if (msgConsumer == null)
-                return false;
+		public override bool Equals(object obj) {
+			MessageConsumer msgConsumer = obj as MessageConsumer;
 
-            return this.Destination.Equals(msgConsumer.Destination) && this.NotificationUrl.Equals(msgConsumer.NotificationUrl);
-        }
+			if(msgConsumer == null)
+				return false;
 
-        public override int GetHashCode()
-        {
-            return this.Destination.GetHashCode() + this.NotificationUrl.GetHashCode() * 17;
-        }
+			return this.Destination.Equals(msgConsumer.Destination) && this.NotificationUrl.Equals(msgConsumer.NotificationUrl);
+		}
+
+		public override int GetHashCode() {
+			return this.Destination.GetHashCode() + this.NotificationUrl.GetHashCode() * 17;
+		}
 	}
 }

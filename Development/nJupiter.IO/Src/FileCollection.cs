@@ -32,12 +32,12 @@ namespace nJupiter.IO {
 	public sealed class FileCollection : ICloneable, IList {
 
 		#region Members
-		private		ArrayList		innerArray;
+		private ArrayList innerArray;
 		#endregion
-		
+
 		#region Constructors
 		public FileCollection() {
-		
+
 			this.innerArray = new ArrayList();
 		}
 		#endregion
@@ -47,7 +47,7 @@ namespace nJupiter.IO {
 		#endregion
 
 		#region Public Methods
-		public FileInfo this[int index] { get { return (FileInfo)InnerArray[index]; }	set { InnerArray[index] = value; }	}
+		public FileInfo this[int index] { get { return (FileInfo)InnerArray[index]; } set { InnerArray[index] = value; } }
 
 		public void Add(FileInfo file) {
 			InnerArray.Add(file);
@@ -99,12 +99,12 @@ namespace nJupiter.IO {
 		#endregion
 
 		#region Implementation of ICloneable
-		public FileCollection Clone(){
+		public FileCollection Clone() {
 			FileCollection collection = new FileCollection();
 			collection.innerArray = (ArrayList)this.InnerArray.Clone();
 			return collection;
 		}
-		
+
 		object ICloneable.Clone() {
 			return Clone();
 		}
@@ -115,11 +115,11 @@ namespace nJupiter.IO {
 			return this.innerArray.GetEnumerator();
 		}
 		#endregion
-		
+
 		#region Implementation of ICollection
-		public bool		IsSynchronized	{ get { return InnerArray.IsSynchronized; } }
-		public int		Count			{ get { return InnerArray.Count; } }
-		public object	SyncRoot		{ get { return this; } }
+		public bool IsSynchronized { get { return InnerArray.IsSynchronized; } }
+		public int Count { get { return InnerArray.Count; } }
+		public object SyncRoot { get { return this; } }
 		#endregion
 
 		#region Implementation of IList
@@ -132,7 +132,7 @@ namespace nJupiter.IO {
 			set {
 				if(!(value is FileInfo))
 					throw new InvalidCastException();
-				InnerArray[index] = value; 
+				InnerArray[index] = value;
 			}
 		}
 

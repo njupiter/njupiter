@@ -13,78 +13,78 @@
 // 
 namespace nJupiter.DataAccess.DirectoryService.Adapters.WebService {
 	using System.Net;
-    
+
 	/// <remarks/>
 	[System.Diagnostics.DebuggerStepThroughAttribute]
 	[System.ComponentModel.DesignerCategoryAttribute("code")]
-	[System.Web.Services.WebServiceBindingAttribute(Name="DirectoryServiceWebServiceSoap", Namespace="urn:services:dataaccess.directoryservice")]
+	[System.Web.Services.WebServiceBindingAttribute(Name = "DirectoryServiceWebServiceSoap", Namespace = "urn:services:dataaccess.directoryservice")]
 	public class DirectoryServiceWebService : System.Web.Services.Protocols.SoapHttpClientProtocol {
-        
+
 		/// <remarks/>
 		public DirectoryServiceWebService(string url, ICredentials credential) {
 			this.Url = url;
 			this.Credentials = credential;
 		}
-        
+
 		/// <remarks/>
-		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/GetDirectoryObjectById", RequestNamespace="urn:services:dataaccess.directoryservice", ResponseNamespace="urn:services:dataaccess.directoryservice", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-		[return: System.Xml.Serialization.XmlElementAttribute("DirectoryObject", IsNullable=true)]
-		public DirectoryObject GetDirectoryObjectById(string Id) {
+		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/GetDirectoryObjectById", RequestNamespace = "urn:services:dataaccess.directoryservice", ResponseNamespace = "urn:services:dataaccess.directoryservice", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+		[return: System.Xml.Serialization.XmlElementAttribute("DirectoryObject", IsNullable = true)]
+		public DirectoryObject GetDirectoryObjectById(string id) {
 			object[] results = this.Invoke("GetDirectoryObjectById", new object[] {
-																					  Id});
+																					  id});
 			return ((DirectoryObject)(results[0]));
 		}
-        
+
 		/// <remarks/>
-		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/GetDirectoryEntriesBySearchCriteria", RequestNamespace="urn:services:dataaccess.directoryservice", ResponseNamespace="urn:services:dataaccess.directoryservice", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/GetDirectoryEntriesBySearchCriteria", RequestNamespace = "urn:services:dataaccess.directoryservice", ResponseNamespace = "urn:services:dataaccess.directoryservice", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
 		[return: System.Xml.Serialization.XmlArrayAttribute("DirectoryObjects")]
-		public DirectoryObject[] GetDirectoryEntriesBySearchCriteria([System.Xml.Serialization.XmlElementAttribute("SearchCriteria")] SearchCriteria[] SearchCriteria) {
+		public DirectoryObject[] GetDirectoryEntriesBySearchCriteria([System.Xml.Serialization.XmlElementAttribute("SearchCriteria")] SearchCriteria[] searchCriteria) {
 			object[] results = this.Invoke("GetDirectoryEntriesBySearchCriteria", new object[] {
-																								   SearchCriteria});
+																								   searchCriteria});
 			return ((DirectoryObject[])(results[0]));
 		}
-        
+
 		/// <remarks/>
-		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/SaveDirectoryObject", RequestNamespace="urn:services:dataaccess.directoryservice", ResponseNamespace="urn:services:dataaccess.directoryservice", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-		public void SaveDirectoryObject(DirectoryObject DirectoryObject) {
+		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/SaveDirectoryObject", RequestNamespace = "urn:services:dataaccess.directoryservice", ResponseNamespace = "urn:services:dataaccess.directoryservice", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+		public void SaveDirectoryObject(DirectoryObject directoryObject) {
 			this.Invoke("SaveDirectoryObject", new object[] {
-																DirectoryObject});
+																directoryObject});
 		}
-        
+
 		/// <remarks/>
-		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/CreateDirectoryObjectInstance", RequestNamespace="urn:services:dataaccess.directoryservice", ResponseNamespace="urn:services:dataaccess.directoryservice", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-		[return: System.Xml.Serialization.XmlElementAttribute("DirectoryObject", IsNullable=true)]
+		[System.Web.Services.Protocols.SoapDocumentMethodAttribute("urn:services:dataaccess.directoryservice/CreateDirectoryObjectInstance", RequestNamespace = "urn:services:dataaccess.directoryservice", ResponseNamespace = "urn:services:dataaccess.directoryservice", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+		[return: System.Xml.Serialization.XmlElementAttribute("DirectoryObject", IsNullable = true)]
 		public DirectoryObject CreateDirectoryObjectInstance() {
 			object[] results = this.Invoke("CreateDirectoryObjectInstance", new object[0]);
 			return ((DirectoryObject)(results[0]));
 		}
 	}
-    
+
 	/// <remarks/>
-	[System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:services:dataaccess.directoryservice")]
+	[System.Xml.Serialization.XmlTypeAttribute(Namespace = "urn:services:dataaccess.directoryservice")]
 	public class DirectoryObject {
-        
+
 		/// <remarks/>
 		public string Id;
-        
+
 		/// <remarks/>
 		public Property[] Properties;
 	}
-    
+
 	/// <remarks/>
-	[System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:services:dataaccess.directoryservice")]
+	[System.Xml.Serialization.XmlTypeAttribute(Namespace = "urn:services:dataaccess.directoryservice")]
 	[System.Xml.Serialization.XmlIncludeAttribute(typeof(SearchCriteria))]
 	public class Property {
-        
+
 		/// <remarks/>
 		public string Name;
-        
+
 		/// <remarks/>
 		public string Value;
 	}
-    
+
 	/// <remarks/>
-	[System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:services:dataaccess.directoryservice")]
+	[System.Xml.Serialization.XmlTypeAttribute(Namespace = "urn:services:dataaccess.directoryservice")]
 	public class SearchCriteria : Property {
 		/// <remarks/>
 		public bool Required;

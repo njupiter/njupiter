@@ -24,6 +24,6 @@
 
 namespace nJupiter.Messaging {
 
-	public sealed class MessageProducer {}
+	public sealed class MessageProducer { }
 
 }

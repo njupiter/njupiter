@@ -22,7 +22,6 @@
 */
 #endregion
 
-using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.OracleClient;
@@ -35,7 +34,7 @@ namespace nJupiter.DataAccess.Oracle {
 	public class OracleDataSource : DataSource {
 
 		#region Constructors
-		internal OracleDataSource() {}
+		internal OracleDataSource() { }
 		#endregion
 
 		#region Methods
@@ -70,7 +69,7 @@ namespace nJupiter.DataAccess.Oracle {
 		/// <returns></returns>
 		public override Command CreateCommand(string command, Transaction transaction, CommandType commandType, params object[] parameters) {
 			OracleCommand commandObj = new OracleCommand(command, commandType, parameters);
-			if(transaction != null){
+			if(transaction != null) {
 				commandObj.DbCommand.Connection = transaction.Connection;
 				commandObj.Transaction = transaction;
 			}
@@ -97,7 +96,7 @@ namespace nJupiter.DataAccess.Oracle {
 			OracleParameter param = new OracleParameter();
 			param.ParameterName = name;
 			param.DbType = type;
-			if(type == DbType.Guid){
+			if(type == DbType.Guid) {
 				param.Size = 16;
 				param.OracleType = OracleType.Raw;
 			}

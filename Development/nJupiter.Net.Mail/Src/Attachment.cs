@@ -33,15 +33,15 @@ namespace nJupiter.Net.Mail {
 	public class Attachment : IDisposable {
 
 		#region Members
-		private readonly	FileInfo	fileInfo;
-		private readonly	Stream		fileStream;
-		private readonly	string		fileName;
-		private readonly	MimeType	contentType;
-		private				bool		disposed;
+		private readonly FileInfo fileInfo;
+		private readonly Stream fileStream;
+		private readonly string fileName;
+		private readonly MimeType contentType;
+		private bool disposed;
 		#endregion
 
 		#region Constructors
-		public Attachment(FileInfo file) { 
+		public Attachment(FileInfo file) {
 			if(file == null)
 				throw new ArgumentNullException("file");
 			if(!file.Exists)
@@ -49,7 +49,8 @@ namespace nJupiter.Net.Mail {
 			this.fileInfo = file;
 		}
 
-		public Attachment(FileInfo file, string name) : this(file) { 
+		public Attachment(FileInfo file, string name)
+			: this(file) {
 			if(name == null)
 				throw new ArgumentNullException("name");
 			if(name.Length == 0)
@@ -57,7 +58,8 @@ namespace nJupiter.Net.Mail {
 			this.fileName = name;
 		}
 
-		public Attachment(FileInfo file, string name, string contentType) : this(file, name) { 
+		public Attachment(FileInfo file, string name, string contentType)
+			: this(file, name) {
 			if(contentType == null)
 				throw new ArgumentNullException("contentType");
 			if(contentType.Length == 0)
@@ -65,19 +67,20 @@ namespace nJupiter.Net.Mail {
 			this.contentType = new MimeType(contentType);
 		}
 
-		public Attachment(Stream fileStream, string name) { 
+		public Attachment(Stream fileStream, string name) {
 			if(fileStream == null)
 				throw new ArgumentNullException("fileStream");
 			if(name == null)
 				throw new ArgumentNullException("name");
 			if(name.Length == 0)
 				throw new ArgumentException("Parameter can not be of zero length.", "name");
-			
-			this.fileStream	= fileStream;
-			this.fileName		= name;
+
+			this.fileStream = fileStream;
+			this.fileName = name;
 		}
 
-		public Attachment(Stream fileStream, string name, string contentType) : this(fileStream, name) { 
+		public Attachment(Stream fileStream, string name, string contentType)
+			: this(fileStream, name) {
 			if(contentType == null)
 				throw new ArgumentNullException("contentType");
 			if(contentType.Length == 0)
@@ -88,7 +91,7 @@ namespace nJupiter.Net.Mail {
 
 		#region Properties
 		public string FileName {
-			get{
+			get {
 				if(this.fileName != null)
 					return this.fileName;
 				if(this.fileInfo != null)
@@ -98,17 +101,17 @@ namespace nJupiter.Net.Mail {
 		}
 
 		public MimeType ContentType {
-			get{
+			get {
 				MimeType result = null;
-				
-				if(this.contentType != null){
+
+				if(this.contentType != null) {
 					result = this.contentType;
 				} else if(this.fileInfo != null) {
 					result = FileHandler.GetMimeType(this.fileInfo);
 				} else if(this.fileStream != null) {
 					result = FileHandler.GetMimeType(this.fileStream);
 				}
-				
+
 				if(result != null && result.Parameters["file"] == null) {
 					result.Parameters.Add("file", this.FileName);
 				}
@@ -118,24 +121,24 @@ namespace nJupiter.Net.Mail {
 		#endregion
 
 		#region Methods
-		public Stream OpenRead() { 
-			if (this.disposed)
+		public Stream OpenRead() {
+			if(this.disposed)
 				throw new ObjectDisposedException(base.GetType().FullName);
 			if(this.fileInfo != null)
 				return this.fileInfo.OpenRead();
 			return this.fileStream;
 		}
 
-		public void Dispose(){
-            this.Dispose(true);
-        }
+		public void Dispose() {
+			this.Dispose(true);
+		}
 
-        protected virtual void Dispose(bool disposing) {
-            if (disposing && !this.disposed) {
-                this.disposed = true;
+		protected virtual void Dispose(bool disposing) {
+			if(disposing && !this.disposed) {
+				this.disposed = true;
 				if(this.fileStream != null)
 					((IDisposable)this.fileStream).Dispose();
-            }
+			}
 		}
 		#endregion
 

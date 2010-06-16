@@ -39,30 +39,30 @@ namespace nJupiter.IO {
 		///	</summary>
 		/// <param name="stream">Stream containing the file</param>
 		/// <returns>Returns a MimeType object</returns>
-		public static MimeType GetMimeType(Stream stream){
+		public static MimeType GetMimeType(Stream stream) {
 			if(stream == null) {
 				throw new ArgumentNullException("stream");
 			}
 
 			int maxContent = (int)stream.Length;
-			
-			if (maxContent > 4096)
+
+			if(maxContent > 4096)
 				maxContent = 4096;
 
 			byte[] buf = new byte[maxContent];
 			stream.Read(buf, 0, maxContent);
-			
+
 			string mime;
-			
+
 			//note: the CLR frees the data automatically returned in ppwzMimeOut     
 			int result = NativeMethods.FindMimeFromData(IntPtr.Zero, null, buf, maxContent, null, 0, out mime, 0);
-			
-			if (result != 0) 
+
+			if(result != 0)
 				Marshal.ThrowExceptionForHR(result);
-			
+
 			if(mime != null && mime.IndexOf("/") > 0)
 				return new MimeType(mime);
-			
+
 			return null;
 		}
 		/// <summary>
@@ -70,7 +70,7 @@ namespace nJupiter.IO {
 		/// </summary>
 		/// <param name="file">FileInfo object containing the file</param>
 		/// <returns>Returns a MimeType object</returns>
-		public static MimeType GetMimeType(FileInfo file){
+		public static MimeType GetMimeType(FileInfo file) {
 			if(file == null) {
 				throw new ArgumentNullException("file");
 			}
@@ -78,11 +78,11 @@ namespace nJupiter.IO {
 				throw new FileNotFoundException(file + " not found");
 			}
 
-			using(FileStream fs = file.OpenRead()){
+			using(FileStream fs = file.OpenRead()) {
 				return GetMimeType(fs);
 			}
 		}
-		public static MimeType GetMimeType(byte[] bytes){
+		public static MimeType GetMimeType(byte[] bytes) {
 			if(bytes == null) {
 				throw new ArgumentNullException("bytes");
 			}
@@ -91,13 +91,13 @@ namespace nJupiter.IO {
 			}
 		}
 
-		public static string FormatSize(long bytes){
+		public static string FormatSize(long bytes) {
 			double size = bytes;
 			double result = size / 1024;
-			if(result > 1){
+			if(result > 1) {
 				size = result;
 				result = size / 1024;
-				if(result > 1){
+				if(result > 1) {
 					size = result;
 					return Math.Round(size, 1) + " MB";
 				}
@@ -109,8 +109,8 @@ namespace nJupiter.IO {
 	}
 
 	internal static class NativeMethods {
-		[DllImport("urlmon.dll", EntryPoint="FindMimeFromData", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
-		internal static extern int FindMimeFromData(IntPtr pBC,
+		[DllImport("urlmon.dll", EntryPoint = "FindMimeFromData", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
+		internal static extern int FindMimeFromData(IntPtr pbc,
 			[MarshalAs(UnmanagedType.LPWStr)] string pwzUrl,
 			[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1, SizeParamIndex = 3)] byte[] pBuffer,
 			int cbSize,

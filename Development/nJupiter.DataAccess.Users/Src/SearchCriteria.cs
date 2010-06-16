@@ -33,10 +33,10 @@ namespace nJupiter.DataAccess.Users {
 			NotEqual,
 			GreaterThan,
 			GreaterThanOrEqual,
-			NotLessThan			= GreaterThanOrEqual,
+			NotLessThan = GreaterThanOrEqual,
 			LessThan,
 			LessThanOrEqual,
-			NotGreaterThan		= LessThanOrEqual,
+			NotGreaterThan = LessThanOrEqual,
 			StartsWith,
 			NotStartsWith,
 			EndsWith,
@@ -46,67 +46,67 @@ namespace nJupiter.DataAccess.Users {
 			ContainsStartsWith
 		}
 		#endregion
-		
+
 		#region Members
-		private AbstractProperty	property;
-		private bool				required;
-		private string				domain;
-		private CompareCondition	condition;
+		private AbstractProperty property;
+		private bool required;
+		private string domain;
+		private CompareCondition condition;
 		#endregion
 
 		#region Properties
-		public AbstractProperty	Property { 
-			get { return this.property; }	
+		public AbstractProperty Property {
+			get { return this.property; }
 			set {
 				if(value == null) {
 					throw new ArgumentNullException("value");
 				}
 				CheckPropertyCompareCondition(value, this.Condition);
-				this.property = value; 
-			} 
+				this.property = value;
+			}
 		}
-		public CompareCondition	Condition { 
-			get { return this.condition; }	
-			set { 
+		public CompareCondition Condition {
+			get { return this.condition; }
+			set {
 				CheckPropertyCompareCondition(this.Property, value);
-				this.condition = value; 
-			} 
+				this.condition = value;
+			}
 		}
-		public bool				Required		{ get { return this.required; }	set { this.required = value; } }
-		public string			Domain			{ get { return this.domain; }		set { this.domain = value; } }
+		public bool Required { get { return this.required; } set { this.required = value; } }
+		public string Domain { get { return this.domain; } set { this.domain = value; } }
 		#endregion
 
 		//TODO: Implement overloads for Int, DateTime, Binary, Bool also
 		#region Constructors
-		public SearchCriteria(AbstractProperty property, string domain) : this(property, domain, CompareCondition.Equal, false) {}
-		public SearchCriteria(AbstractProperty property, string domain, CompareCondition condition) : this(property, domain, condition, false) {}
-		public SearchCriteria(AbstractProperty property, string domain, bool required) : this(property, domain, CompareCondition.Equal, required) {}
-		public SearchCriteria(AbstractProperty property, string domain, CompareCondition condition, bool required){
+		public SearchCriteria(AbstractProperty property, string domain) : this(property, domain, CompareCondition.Equal, false) { }
+		public SearchCriteria(AbstractProperty property, string domain, CompareCondition condition) : this(property, domain, condition, false) { }
+		public SearchCriteria(AbstractProperty property, string domain, bool required) : this(property, domain, CompareCondition.Equal, required) { }
+		public SearchCriteria(AbstractProperty property, string domain, CompareCondition condition, bool required) {
 			this.InitCriteria(property, domain, condition, required);
 		}
 
-		public SearchCriteria(AbstractProperty property) : this(property, CompareCondition.Equal, false) {}
-		public SearchCriteria(AbstractProperty property, CompareCondition condition) : this(property, condition, false) {}
-		public SearchCriteria(AbstractProperty property, bool required) : this(property, CompareCondition.Equal, required) {}
-		public SearchCriteria(AbstractProperty property, CompareCondition condition, bool required){
+		public SearchCriteria(AbstractProperty property) : this(property, CompareCondition.Equal, false) { }
+		public SearchCriteria(AbstractProperty property, CompareCondition condition) : this(property, condition, false) { }
+		public SearchCriteria(AbstractProperty property, bool required) : this(property, CompareCondition.Equal, required) { }
+		public SearchCriteria(AbstractProperty property, CompareCondition condition, bool required) {
 			this.InitCriteria(property, null, condition, required);
 		}
 
-		public SearchCriteria(string propertyName, string propertyValue, string domain) : this(propertyName, propertyValue, domain, null, CompareCondition.Equal, false){}
-		public SearchCriteria(string propertyName, string propertyValue, string domain, bool required) : this(propertyName, propertyValue, domain, null, CompareCondition.Equal, required){}
-		public SearchCriteria(string propertyName, string propertyValue, string domain, CompareCondition condition) : this(propertyName, propertyValue, domain, null, condition, false){}
-		public SearchCriteria(string propertyName, string propertyValue, string domain, CompareCondition condition, bool required) : this(propertyName, propertyValue, domain, null, condition, required){}
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, false){}
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, bool required) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, required){}
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, CompareCondition condition) : this(propertyName, propertyValue, domain, context, condition, false){}
-		
-		public SearchCriteria(string propertyName, string propertyValue) : this(propertyName, propertyValue, null, null, CompareCondition.Equal, false){}
-		public SearchCriteria(string propertyName, string propertyValue, bool required) : this(propertyName, propertyValue, null, null, CompareCondition.Equal, required){}
-		public SearchCriteria(string propertyName, string propertyValue, CompareCondition condition) : this(propertyName, propertyValue, null, null, condition, false){}
-		public SearchCriteria(string propertyName, string propertyValue, CompareCondition condition, bool required) : this(propertyName, propertyValue, null, null, condition, required){}
-		public SearchCriteria(string propertyName, string propertyValue, Context context) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, false){}
-		public SearchCriteria(string propertyName, string propertyValue, Context context, bool required) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, required){}
-		public SearchCriteria(string propertyName, string propertyValue, Context context, CompareCondition condition) : this(propertyName, propertyValue, null, context, condition, false){}
+		public SearchCriteria(string propertyName, string propertyValue, string domain) : this(propertyName, propertyValue, domain, null, CompareCondition.Equal, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, bool required) : this(propertyName, propertyValue, domain, null, CompareCondition.Equal, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, CompareCondition condition) : this(propertyName, propertyValue, domain, null, condition, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, CompareCondition condition, bool required) : this(propertyName, propertyValue, domain, null, condition, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, bool required) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, CompareCondition condition) : this(propertyName, propertyValue, domain, context, condition, false) { }
+
+		public SearchCriteria(string propertyName, string propertyValue) : this(propertyName, propertyValue, null, null, CompareCondition.Equal, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, bool required) : this(propertyName, propertyValue, null, null, CompareCondition.Equal, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, CompareCondition condition) : this(propertyName, propertyValue, null, null, condition, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, CompareCondition condition, bool required) : this(propertyName, propertyValue, null, null, condition, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, Context context) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, Context context, bool required) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, Context context, CompareCondition condition) : this(propertyName, propertyValue, null, context, condition, false) { }
 
 		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, CompareCondition condition, bool required) {
 			if(propertyName == null) {
@@ -119,11 +119,11 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Private methods
-		private void InitCriteria(AbstractProperty property, string domain, CompareCondition condition, bool required){
-			this.condition	= condition;	//order is significant here
-			this.Property	= property;
-			this.domain		= domain;
-			this.required	= required;
+		private void InitCriteria(AbstractProperty property, string domain, CompareCondition condition, bool required) {
+			this.condition = condition;	//order is significant here
+			this.Property = property;
+			this.domain = domain;
+			this.required = required;
 		}
 		#endregion
 
@@ -134,10 +134,10 @@ namespace nJupiter.DataAccess.Users {
 				case CompareCondition.GreaterThanOrEqual:
 				case CompareCondition.LessThan:
 				case CompareCondition.LessThanOrEqual:
-					if(!typeof(IComparable).IsAssignableFrom(property.GetPropertyValueType())) {
-						throw new InvalidOperationException("Can not use inequality comparison on a property whose underlying type is not comparable.");
-					}
-					break;
+				if(!typeof(IComparable).IsAssignableFrom(property.GetPropertyValueType())) {
+					throw new InvalidOperationException("Can not use inequality comparison on a property whose underlying type is not comparable.");
+				}
+				break;
 				case CompareCondition.ContainsStartsWith:
 				case CompareCondition.Contains:
 				case CompareCondition.NotContains:
@@ -145,10 +145,10 @@ namespace nJupiter.DataAccess.Users {
 				case CompareCondition.NotEndsWith:
 				case CompareCondition.StartsWith:
 				case CompareCondition.NotStartsWith:
-					if(!property.GetPropertyValueType().Equals(typeof(string))) {
-						throw new InvalidOperationException("Can not use string comparisons on a property whose underlying type is not a string.");
-					}
-					break;
+				if(!property.GetPropertyValueType().Equals(typeof(string))) {
+					throw new InvalidOperationException("Can not use string comparisons on a property whose underlying type is not a string.");
+				}
+				break;
 			}
 		}
 		#endregion

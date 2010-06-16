@@ -27,18 +27,17 @@ using System.ComponentModel;
 namespace nJupiter.Messaging.Server {
 
 	[RunInstaller(true)]
-	public class ServerInstaller : System.Configuration.Install.Installer
-	{
-		private System.ServiceProcess.ServiceProcessInstaller	serviceProcessInstaller;
-		private System.ServiceProcess.ServiceInstaller			serviceInstaller;
+	public class ServerInstaller : System.Configuration.Install.Installer {
+		private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller;
+		private System.ServiceProcess.ServiceInstaller serviceInstaller;
 
 		public ServerInstaller() {
 			InitializeComponent();
 		}
 
-		protected override void Dispose( bool disposing ) {
+		protected override void Dispose(bool disposing) {
 			try {
-				if( disposing ) {
+				if(disposing) {
 					if(this.serviceProcessInstaller != null) {
 						this.serviceProcessInstaller.Dispose();
 					}
@@ -47,17 +46,17 @@ namespace nJupiter.Messaging.Server {
 					}
 				}
 			} finally {
-				base.Dispose( disposing );
+				base.Dispose(disposing);
 			}
 		}
 		#region Component Designer generated code
-		private void InitializeComponent()	{
-			this.serviceProcessInstaller			= new System.ServiceProcess.ServiceProcessInstaller();
-			this.serviceInstaller					= new System.ServiceProcess.ServiceInstaller();
-			this.serviceProcessInstaller.Account	= System.ServiceProcess.ServiceAccount.NetworkService;
-			this.serviceProcessInstaller.Password	= null;
-			this.serviceProcessInstaller.Username	= null;
-			this.serviceInstaller.ServiceName		= "nJupiter Messaging Server";
+		private void InitializeComponent() {
+			this.serviceProcessInstaller = new System.ServiceProcess.ServiceProcessInstaller();
+			this.serviceInstaller = new System.ServiceProcess.ServiceInstaller();
+			this.serviceProcessInstaller.Account = System.ServiceProcess.ServiceAccount.NetworkService;
+			this.serviceProcessInstaller.Password = null;
+			this.serviceProcessInstaller.Username = null;
+			this.serviceInstaller.ServiceName = "nJupiter Messaging Server";
 			this.Installers.AddRange(new System.Configuration.Install.Installer[] {
 																					  this.serviceProcessInstaller,
 																					  this.serviceInstaller});

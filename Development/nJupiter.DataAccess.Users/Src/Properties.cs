@@ -30,13 +30,13 @@ namespace nJupiter.DataAccess.Users {
 	public sealed class Properties {
 
 		#region Members
-		private readonly User					user;
-		private readonly CommonPropertyNames	propertyNames;
+		private readonly User user;
+		private readonly CommonPropertyNames propertyNames;
 		#endregion
 
 		#region Indexers
-		public AbstractProperty this[string propertyName] { get{ return this.user.GetProperty(propertyName); } }
-		public AbstractProperty this[string propertyName, Context context] { get{ return this.user.GetProperty(propertyName, context); } }
+		public AbstractProperty this[string propertyName] { get { return this.user.GetProperty(propertyName); } }
+		public AbstractProperty this[string propertyName, Context context] { get { return this.user.GetProperty(propertyName, context); } }
 		#endregion
 
 		#region Properties
@@ -47,8 +47,8 @@ namespace nJupiter.DataAccess.Users {
 			this.propertyNames = propertyNames;
 		}
 
-		public string UserName{
-			get{
+		public string UserName {
+			get {
 				if(this.propertyNames == null)
 					return this.user.UserName;
 				string userName = this.GetPropertyFromKey(this.propertyNames.UserName, this.propertyNames.Contexts.UserName);
@@ -58,7 +58,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public string DisplayName{
+		public string DisplayName {
 			get {
 				if(!string.IsNullOrEmpty(this.FullName))
 					return this.FullName;
@@ -69,40 +69,40 @@ namespace nJupiter.DataAccess.Users {
 				return this.UserName;
 			}
 		}
-		
-		public string FullName{
-			get{
+
+		public string FullName {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.FullName, this.propertyNames.Contexts.FullName);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.FullName, this.propertyNames.Contexts.FullName);
 			}
 		}
 
-		public string FirstName{
-			get{
+		public string FirstName {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.FirstName, this.propertyNames.Contexts.FirstName);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.FirstName, this.propertyNames.Contexts.FirstName);
 			}
 		}
 
-		public string LastName{
-			get{
+		public string LastName {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.LastName, this.propertyNames.Contexts.LastName);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.LastName, this.propertyNames.Contexts.LastName);
@@ -110,52 +110,52 @@ namespace nJupiter.DataAccess.Users {
 
 		}
 
-		public string Description{
-			get{
+		public string Description {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Description, this.propertyNames.Contexts.Description);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Description, this.propertyNames.Contexts.Description);
 			}
 		}
 
-		public string Email{
-			get{
+		public string Email {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Email, this.propertyNames.Contexts.Email);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Email, this.propertyNames.Contexts.Email);
 			}
 		}
 
-		public string HomePage{
-			get{
+		public string HomePage {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.HomePage, this.propertyNames.Contexts.HomePage);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.HomePage, this.propertyNames.Contexts.HomePage);
 			}
 		}
 
-		public string StreetAddress{
-			get{
+		public string StreetAddress {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.StreetAddress, this.propertyNames.Contexts.StreetAddress);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.StreetAddress, this.propertyNames.Contexts.StreetAddress);
@@ -163,65 +163,65 @@ namespace nJupiter.DataAccess.Users {
 
 		}
 
-		public string Company{
-			get{
+		public string Company {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Company, this.propertyNames.Contexts.Company);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Company, this.propertyNames.Contexts.Company);
 			}
 		}
-		
-		public string Department{
-			get{
+
+		public string Department {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Department, this.propertyNames.Contexts.Department);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Department, this.propertyNames.Contexts.Department);
 			}
 		}
 
-		public string City{
-			get{
+		public string City {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.City, this.propertyNames.Contexts.City);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.City, this.propertyNames.Contexts.City);
 			}
 		}
 
-		public string Telephone{
-			get{
+		public string Telephone {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Telephone, this.propertyNames.Contexts.Telephone);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Telephone, this.propertyNames.Contexts.Telephone);
 			}
 		}
 
-		public string Fax{
-			get{
+		public string Fax {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Fax, this.propertyNames.Contexts.Fax);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Fax, this.propertyNames.Contexts.Fax);
@@ -229,86 +229,86 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 
-		public string HomeTelephone{
-			get{
+		public string HomeTelephone {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.HomeTelephone, this.propertyNames.Contexts.HomeTelephone);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.HomeTelephone, this.propertyNames.Contexts.HomeTelephone);
 			}
 		}
 
-		public string MobileTelephone{
-			get{
+		public string MobileTelephone {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.MobileTelephone, this.propertyNames.Contexts.MobileTelephone);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.MobileTelephone, this.propertyNames.Contexts.MobileTelephone);
 			}
 		}
-		
-		public string PostOfficeBox{
-			get{
+
+		public string PostOfficeBox {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.PostOfficeBox, this.propertyNames.Contexts.PostOfficeBox);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.PostOfficeBox, this.propertyNames.Contexts.PostOfficeBox);
 			}
 		}
-		
-		public string PostalCode{
-			get{
+
+		public string PostalCode {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.PostalCode, this.propertyNames.Contexts.PostalCode);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.PostalCode, this.propertyNames.Contexts.PostalCode);
 			}
 		}
-		
-		public string Country{
-			get{
+
+		public string Country {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Country, this.propertyNames.Contexts.Country);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Country, this.propertyNames.Contexts.Country);
 			}
 		}
 
-		public string Title{
-			get{
+		public string Title {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.Title, this.propertyNames.Contexts.Title);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Title, this.propertyNames.Contexts.Title);
 			}
 		}
 
-		public bool Active{
-			get{
+		public bool Active {
+			get {
 				if(this.propertyNames == null)
 					return false;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.Active, this.propertyNames.Contexts.Active);
@@ -316,41 +316,41 @@ namespace nJupiter.DataAccess.Users {
 					return false;
 				return (bool)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Active, this.propertyNames.Contexts.Active);
 			}
 		}
-		
+
 		public string PasswordQuestion {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.PasswordQuestion, this.propertyNames.Contexts.PasswordQuestion);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.PasswordQuestion, this.propertyNames.Contexts.PasswordQuestion);
 			}
 		}
-		
-		public string PasswordAnswer{
-			get{
+
+		public string PasswordAnswer {
+			get {
 				if(this.propertyNames == null)
 					return null;
 				return this.GetPropertyFromKey(this.propertyNames.PasswordAnswer, this.propertyNames.Contexts.PasswordAnswer);
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.PasswordAnswer, this.propertyNames.Contexts.PasswordAnswer);
 			}
 		}
 
-		public DateTime LastActivityDate{
-			get{
+		public DateTime LastActivityDate {
+			get {
 				if(this.propertyNames == null)
 					return DateTime.MinValue;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastActivityDate, this.propertyNames.Contexts.LastActivityDate);
@@ -358,7 +358,7 @@ namespace nJupiter.DataAccess.Users {
 					return DateTime.MinValue;
 				return (DateTime)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.LastActivityDate, this.propertyNames.Contexts.LastActivityDate);
@@ -366,7 +366,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public DateTime CreationDate {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return DateTime.MinValue;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.CreationDate, this.propertyNames.Contexts.CreationDate);
@@ -374,7 +374,7 @@ namespace nJupiter.DataAccess.Users {
 					return DateTime.MinValue;
 				return (DateTime)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.CreationDate, this.propertyNames.Contexts.CreationDate);
@@ -382,7 +382,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public DateTime LastLockoutDate {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return DateTime.MinValue;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastLockoutDate, this.propertyNames.Contexts.LastLockoutDate);
@@ -390,7 +390,7 @@ namespace nJupiter.DataAccess.Users {
 					return DateTime.MinValue;
 				return (DateTime)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.LastLockoutDate, this.propertyNames.Contexts.LastLockoutDate);
@@ -398,7 +398,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public DateTime LastLoginDate {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return DateTime.MinValue;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastLoginDate, this.propertyNames.Contexts.LastLoginDate);
@@ -406,7 +406,7 @@ namespace nJupiter.DataAccess.Users {
 					return DateTime.MinValue;
 				return (DateTime)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.LastLoginDate, this.propertyNames.Contexts.LastLoginDate);
@@ -414,7 +414,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public DateTime LastPasswordChangedDate {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return DateTime.MinValue;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastPasswordChangedDate, this.propertyNames.Contexts.LastPasswordChangedDate);
@@ -422,7 +422,7 @@ namespace nJupiter.DataAccess.Users {
 					return DateTime.MinValue;
 				return (DateTime)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.LastPasswordChangedDate, this.propertyNames.Contexts.LastPasswordChangedDate);
@@ -430,7 +430,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public bool Locked {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return false;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.Locked, this.propertyNames.Contexts.Locked);
@@ -438,7 +438,7 @@ namespace nJupiter.DataAccess.Users {
 					return false;
 				return (bool)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.Locked, this.propertyNames.Contexts.Locked);
@@ -446,7 +446,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public DateTime LastUpdatedDate {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return DateTime.MinValue;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastUpdatedDate, this.propertyNames.Contexts.LastUpdatedDate);
@@ -454,7 +454,7 @@ namespace nJupiter.DataAccess.Users {
 					return DateTime.MinValue;
 				return (DateTime)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.LastUpdatedDate, this.propertyNames.Contexts.LastUpdatedDate);
@@ -462,7 +462,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public bool IsAnonymous {
-			get{
+			get {
 				if(this.propertyNames == null)
 					return false;
 				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.IsAnonymous, this.propertyNames.Contexts.IsAnonymous);
@@ -470,7 +470,7 @@ namespace nJupiter.DataAccess.Users {
 					return false;
 				return (bool)ap.Value;
 			}
-			set{
+			set {
 				if(this.propertyNames == null)
 					return;
 				this.SetPropertyFromKey(value, this.propertyNames.IsAnonymous, this.propertyNames.Contexts.IsAnonymous);
@@ -481,36 +481,36 @@ namespace nJupiter.DataAccess.Users {
 			if(string.IsNullOrEmpty(key))
 				return null;
 			AbstractProperty property = null;
-			
-			if(contextKey != null){
+
+			if(contextKey != null) {
 				Context context = null;
-				foreach(Context c in this.user.AttachedContexts){
-					if(c.Name.Equals(contextKey)){
+				foreach(Context c in this.user.AttachedContexts) {
+					if(c.Name.Equals(contextKey)) {
 						context = c;
 						break;
-					} 
+					}
 				}
-				if(context != null){
+				if(context != null) {
 					property = this.user.Properties[key, context];
 				}
-			}else{
+			} else {
 				property = this.user.Properties[key];
 			}
-			
+
 			if(property == null || property.Value == null)
 				return null;
-			
+
 			return property;
 		}
 
-		private string GetPropertyFromKey(string key, string contextKey){
+		private string GetPropertyFromKey(string key, string contextKey) {
 			AbstractProperty property = this.GetAbstractPropertyFromKey(key, contextKey);
 			if(property == null || property.Value == null)
 				return null;
 			return property.Value.ToString();
 		}
 
-		private void SetPropertyFromKey(object value, string key, string contextKey){
+		private void SetPropertyFromKey(object value, string key, string contextKey) {
 			AbstractProperty property = this.GetAbstractPropertyFromKey(key, contextKey);
 			if(property == null || property.Value == null)
 				return;

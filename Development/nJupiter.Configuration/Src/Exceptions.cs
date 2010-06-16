@@ -25,28 +25,27 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace nJupiter.Configuration
-{
+namespace nJupiter.Configuration {
 	/// <summary>
 	/// Configuration Exception
 	/// </summary>
-	[Serializable] 
+	[Serializable]
 	public class ConfigurationException : Exception {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigurationException"/> class.
 		/// </summary>
-		public ConfigurationException(){}
+		public ConfigurationException() { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigurationException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
-		public ConfigurationException(string message) : base(message){}
+		public ConfigurationException(string message) : base(message) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigurationException"/> class.
 		/// </summary>
 		/// <param name="message">The exception message.</param>
 		/// <param name="inner">The inner exeption.</param>
-		public ConfigurationException(string message, Exception inner) : base(message, inner){}
+		public ConfigurationException(string message, Exception inner) : base(message, inner) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigurationException"/> class.
 		/// </summary>
@@ -58,29 +57,29 @@ namespace nJupiter.Configuration
 		/// <exception cref="T:System.Runtime.Serialization.SerializationException">
 		/// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
 		/// </exception>
-		protected ConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		protected ConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 	/// <summary>
 	/// Excetpion thrown when errors occur in <see href="Configurator" />
 	/// </summary>
-	[Serializable] 
+	[Serializable]
 	public class ConfiguratorException : ConfigurationException {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
 		/// </summary>
-		public ConfiguratorException(){}
+		public ConfiguratorException() { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
-		public ConfiguratorException(string message) : base(message){}
+		public ConfiguratorException(string message) : base(message) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
 		/// <param name="inner">The inner excetption.</param>
-		public ConfiguratorException(string message, Exception inner) : base(message, inner){}
+		public ConfiguratorException(string message, Exception inner) : base(message, inner) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
 		/// </summary>
@@ -92,29 +91,29 @@ namespace nJupiter.Configuration
 		/// <exception cref="T:System.Runtime.Serialization.SerializationException">
 		/// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
 		/// </exception>
-		protected ConfiguratorException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		protected ConfiguratorException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 	/// <summary>
 	/// Excetpion thrown when a configurated value is invalid
 	/// </summary>
-	[Serializable] 
+	[Serializable]
 	public class InvalidConfigValueException : ConfigurationException {
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InvalidConfigValueException"/> class.
 		/// </summary>
-		public InvalidConfigValueException(){}
+		public InvalidConfigValueException() { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InvalidConfigValueException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
-		public InvalidConfigValueException(string message) : base(message){}
+		public InvalidConfigValueException(string message) : base(message) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InvalidConfigValueException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
 		/// <param name="inner">The inner excetption.</param>
-		public InvalidConfigValueException(string message, Exception inner) : base(message, inner){}
+		public InvalidConfigValueException(string message, Exception inner) : base(message, inner) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="InvalidConfigValueException"/> class.
 		/// </summary>
@@ -126,7 +125,7 @@ namespace nJupiter.Configuration
 		/// <exception cref="T:System.Runtime.Serialization.SerializationException">
 		/// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
 		/// </exception>
-		protected InvalidConfigValueException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		protected InvalidConfigValueException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 	/// <summary>
@@ -137,18 +136,18 @@ namespace nJupiter.Configuration
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigValueNotFoundException"/> class.
 		/// </summary>
-		public ConfigValueNotFoundException(){}
+		public ConfigValueNotFoundException() { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigValueNotFoundException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
-		public ConfigValueNotFoundException(string message) : base(message){}
+		public ConfigValueNotFoundException(string message) : base(message) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigValueNotFoundException"/> class.
 		/// </summary>
 		/// <param name="message">The excetption message.</param>
 		/// <param name="inner">The inner excetption.</param>
-		public ConfigValueNotFoundException(string message, Exception inner) : base(message, inner){}
+		public ConfigValueNotFoundException(string message, Exception inner) : base(message, inner) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConfigValueNotFoundException"/> class.
 		/// </summary>
@@ -160,7 +159,7 @@ namespace nJupiter.Configuration
 		/// <exception cref="T:System.Runtime.Serialization.SerializationException">
 		/// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
 		/// </exception>
-		protected ConfigValueNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context){}
+		protected ConfigValueNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 

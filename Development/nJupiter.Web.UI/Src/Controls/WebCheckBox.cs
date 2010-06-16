@@ -33,7 +33,7 @@ namespace nJupiter.Web.UI.Controls {
 		public string Value {
 			get {
 				string result = this.ViewState[HtmlAttribute.Value] as string;
-				if (result != null) {
+				if(result != null) {
 					return result;
 				}
 				return string.Empty;
@@ -46,42 +46,42 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
-			if (this.Page != null) {
+			if(this.Page != null) {
 				this.Page.VerifyRenderingInServerForm(this);
 			}
 
 			string text = this.Text;
-			string clientID = this.ClientID;
-			if (text.Length != 0) {
-				if (this.TextAlign == TextAlign.Left) {
-					RenderLabel(writer, text, clientID);
-					RenderInputTag(writer, clientID);
+			string clientId = this.ClientID;
+			if(text.Length != 0) {
+				if(this.TextAlign == TextAlign.Left) {
+					RenderLabel(writer, text, clientId);
+					RenderInputTag(writer, clientId);
 				} else {
-					RenderInputTag(writer, clientID);
-					RenderLabel(writer, text, clientID);
+					RenderInputTag(writer, clientId);
+					RenderLabel(writer, text, clientId);
 				}
 			} else {
-				this.RenderInputTag(writer, clientID);
+				this.RenderInputTag(writer, clientId);
 			}
 		}
 
-		private void RenderInputTag(HtmlTextWriter writer, string clientID) {
+		private void RenderInputTag(HtmlTextWriter writer, string clientId) {
 			//TODO: we should take care of CheckBox.InputAttributes here also
 			string onClick = null;
-			if (this.Attributes.Count > 0) {
+			if(this.Attributes.Count > 0) {
 				AttributeCollection attributes = base.Attributes;
 				string attributeValue = attributes[HtmlAttribute.Value];
-				if (attributeValue != null) {
+				if(attributeValue != null) {
 					attributes.Remove(HtmlAttribute.Value);
 				}
 				onClick = attributes[HtmlAttribute.Onclick];
-				if (onClick != null) {
+				if(onClick != null) {
 					attributes.Remove(HtmlAttribute.Onclick);
 				}
-				if (attributes.Count != 0) {
+				if(attributes.Count != 0) {
 					attributes.AddAttributes(writer);
 				}
-				if (attributeValue != null) {
+				if(attributeValue != null) {
 					attributes[HtmlAttribute.Value] = attributeValue;
 				}
 			}
@@ -89,49 +89,49 @@ namespace nJupiter.Web.UI.Controls {
 				writer.AddAttribute(HtmlTextWriterAttribute.Value, this.Value);
 			}
 
-			writer.AddAttribute(HtmlTextWriterAttribute.Id, clientID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, clientId);
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, HtmlAttributeValue.Checkbox);
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
 
 			string toolTip = this.ToolTip;
-			if (toolTip.Length > 0) {
+			if(toolTip.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Title, toolTip);
 			}
 
 			if(this.CssClass.Length > 0)
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
 
-			if (this.Checked) {
+			if(this.Checked) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Checked, HtmlAttributeValue.Checked);
 			}
-			if (!this.Enabled) {
+			if(!this.Enabled) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Disabled, HtmlAttributeValue.Disabled);
 			}
-			if (this.AutoPostBack) {
+			if(this.AutoPostBack) {
 				if(onClick != null)
 					onClick = onClick + this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
 				else
 					onClick = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-			} else if (onClick != null) {
+			} else if(onClick != null) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
 			}
-			
+
 			string accessKey = this.AccessKey;
-			if (accessKey.Length > 0) {
+			if(accessKey.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey);
 			}
 			int tabIndex = this.TabIndex;
-			if (tabIndex != 0) {
+			if(tabIndex != 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, tabIndex.ToString(NumberFormatInfo.InvariantInfo));
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();
 		}
 
-		private static void RenderLabel(HtmlTextWriter writer, string text, string clientID) {
+		private static void RenderLabel(HtmlTextWriter writer, string text, string clientId) {
 			//TODO: we should take care of CheckBox.LabelAttributes here also
-			writer.AddAttribute(HtmlTextWriterAttribute.For, clientID);
+			writer.AddAttribute(HtmlTextWriterAttribute.For, clientId);
 			writer.RenderBeginTag(HtmlTextWriterTag.Label);
 			writer.Write(text);
 			writer.RenderEndTag();

@@ -22,7 +22,6 @@
 */
 #endregion
 
-using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
@@ -35,7 +34,7 @@ namespace nJupiter.DataAccess.Odbc {
 	public class OdbcDataSource : DataSource {
 
 		#region Constructors
-		internal OdbcDataSource() {}
+		internal OdbcDataSource() { }
 		#endregion
 
 		#region Methods
@@ -70,7 +69,7 @@ namespace nJupiter.DataAccess.Odbc {
 		/// <returns></returns>
 		public override Command CreateCommand(string command, Transaction transaction, CommandType commandType, params object[] parameters) {
 			OdbcCommand commandObj = new OdbcCommand(command, commandType, parameters);
-			if(transaction != null){
+			if(transaction != null) {
 				commandObj.DbCommand.Connection = transaction.Connection;
 				commandObj.Transaction = transaction;
 			}

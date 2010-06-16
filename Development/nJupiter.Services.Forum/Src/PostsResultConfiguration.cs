@@ -26,30 +26,30 @@ using System;
 
 namespace nJupiter.Services.Forum {
 
-	public sealed class PostsResultConfiguration {	
+	public sealed class PostsResultConfiguration {
 		#region Constants
-		private const bool					DefaultIncludeHidden		= false;
-		private const bool					DefaultLoadAttributes		= true;
-		private static readonly	DateTime	defaultDateFilterFrom		= DateTime.MinValue;
-		private static readonly	DateTime	defaultDateFilterTo			= DateTime.MaxValue;
-		private const Post.DateProperty		DefaultDateFilterProperty	= Post.DateProperty.TimePosted;
+		private const bool DefaultIncludeHidden = false;
+		private const bool DefaultLoadAttributes = true;
+		private static readonly DateTime DefaultDateFilterFrom = DateTime.MinValue;
+		private static readonly DateTime DefaultDateFilterTo = DateTime.MaxValue;
+		private const Post.DateProperty DefaultDateFilterProperty = Post.DateProperty.TimePosted;
 		#endregion
 
 		#region Constructors
 		public PostsResultConfiguration(bool includeHidden, bool loadAttributes, Post.Property sortProperty, string sortAttributeName, bool sortAscending, DateTime dateFilterFrom, DateTime dateFilterTo, Post.DateProperty dateFilterProperty) {
-			this.IncludeHidden		= includeHidden;
-			this.LoadAttributes		= loadAttributes;
-			this.SortProperty		= sortProperty;
-			this.SortAttributeName	= sortAttributeName;
-			this.SortAscending		= sortAscending;
-			this.DateFilterFrom		= dateFilterFrom;
-			this.DateFilterTo		= dateFilterTo;
-			this.DateFilterProperty	= dateFilterProperty;
+			this.IncludeHidden = includeHidden;
+			this.LoadAttributes = loadAttributes;
+			this.SortProperty = sortProperty;
+			this.SortAttributeName = sortAttributeName;
+			this.SortAscending = sortAscending;
+			this.DateFilterFrom = dateFilterFrom;
+			this.DateFilterTo = dateFilterTo;
+			this.DateFilterProperty = dateFilterProperty;
 		}
-		public PostsResultConfiguration() : this(DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, null, Post.DefaultSortAscending, defaultDateFilterFrom, defaultDateFilterTo, DefaultDateFilterProperty) {}
-		public PostsResultConfiguration(bool includeHidden, bool loadAttributes, Post.Property sortProperty, bool sortAscending) : this(includeHidden, loadAttributes, sortProperty, null, sortAscending, defaultDateFilterFrom, defaultDateFilterTo, DefaultDateFilterProperty) {}
-		public PostsResultConfiguration(bool includeHidden, string sortAttributeName, bool sortAscending) : this(includeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, sortAttributeName, sortAscending, defaultDateFilterFrom, defaultDateFilterTo, DefaultDateFilterProperty) {}
-		public PostsResultConfiguration(DateTime dateFilterFrom, DateTime dateFilterTo, Post.DateProperty dateFilterProperty) : this(DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, null, Post.DefaultSortAscending, dateFilterFrom, dateFilterTo, dateFilterProperty) {}
+		public PostsResultConfiguration() : this(DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, null, Post.DefaultSortAscending, DefaultDateFilterFrom, DefaultDateFilterTo, DefaultDateFilterProperty) { }
+		public PostsResultConfiguration(bool includeHidden, bool loadAttributes, Post.Property sortProperty, bool sortAscending) : this(includeHidden, loadAttributes, sortProperty, null, sortAscending, DefaultDateFilterFrom, DefaultDateFilterTo, DefaultDateFilterProperty) { }
+		public PostsResultConfiguration(bool includeHidden, string sortAttributeName, bool sortAscending) : this(includeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, sortAttributeName, sortAscending, DefaultDateFilterFrom, DefaultDateFilterTo, DefaultDateFilterProperty) { }
+		public PostsResultConfiguration(DateTime dateFilterFrom, DateTime dateFilterTo, Post.DateProperty dateFilterProperty) : this(DefaultIncludeHidden, DefaultLoadAttributes, Post.DefaultSortProperty, null, Post.DefaultSortAscending, dateFilterFrom, dateFilterTo, dateFilterProperty) { }
 		#endregion
 
 		#region Properties

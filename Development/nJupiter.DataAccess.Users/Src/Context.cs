@@ -29,29 +29,30 @@ namespace nJupiter.DataAccess.Users {
 	public class Context {
 
 		#region Members
-		private readonly string					name;
-		private readonly PropertySchemaTable	propertySchemaTable;
+		private readonly string name;
+		private readonly PropertySchemaTable propertySchemaTable;
 		#endregion
-		
+
 		#region Constructors
 		private Context() {
 		}
 
-		internal Context(string contextName, PropertySchemaTable schemaTable) : this() {
+		internal Context(string contextName, PropertySchemaTable schemaTable)
+			: this() {
 			if(contextName == null)
 				throw new ArgumentNullException("contextName");
 			if(schemaTable == null)
 				throw new ArgumentNullException("schemaTable");
 			if(contextName.Length == 0)
 				throw new ArgumentException("The context name can not be empty.", "contextName");
-			this.name					= contextName;
-			this.propertySchemaTable	= schemaTable;
+			this.name = contextName;
+			this.propertySchemaTable = schemaTable;
 		}
 		#endregion
 
 		#region Properties
-		public	string				Name			{ get { return this.name; } }
-		public	PropertySchemaTable	PropertySchemas	{ get { return this.propertySchemaTable; } }
+		public string Name { get { return this.name; } }
+		public PropertySchemaTable PropertySchemas { get { return this.propertySchemaTable; } }
 		#endregion
 
 		#region Methods

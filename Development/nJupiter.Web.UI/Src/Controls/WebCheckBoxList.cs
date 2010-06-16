@@ -27,10 +27,10 @@ using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls {
 	public class WebCheckBoxList : WebCheckListControl {
-		public WebCheckBoxList() : base(new WebCheckBox()) {}
+		public WebCheckBoxList() : base(new WebCheckBox()) { }
 
-		public int[] SelectedIndexes { 
-			get{
+		public int[] SelectedIndexes {
+			get {
 				ArrayList al = new ArrayList();
 				for(int i = 0; i < this.Items.Count; i++) {
 					ListItem li = this.Items[i];
@@ -50,7 +50,7 @@ namespace nJupiter.Web.UI.Controls {
 						al.Add(li.Value);
 				}
 				return (string[])al.ToArray(typeof(string));
-			
+
 			}
 		}
 

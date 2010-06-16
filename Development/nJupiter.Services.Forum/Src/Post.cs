@@ -30,55 +30,55 @@ namespace nJupiter.Services.Forum {
 	public sealed class Post {
 		#region Constants
 		public enum Property {
-			Id						= 0,
-			ParentId				= 1,
-			CategoryId				= 2,
-			UserIdentity			= 3,
-			Author					= 4,
-			Title					= 5,
-			Body					= 6,
-			TimePosted				= 7,
-			Visible					= 8,
-			PostCount				= 9,
-			TimeLastPost			= 10,
-			SearchRelevance			= 11,
-			EffectivelyVisible		= 12,
-			EffectiveCategoryId		= 13,
-			EffectiveCategoryName	= 14,
-			ConcurrencyIdentity		= 15,
-			RootPostId				= 16,
-			RootPostTitle			= 17
+			Id = 0,
+			ParentId = 1,
+			CategoryId = 2,
+			UserIdentity = 3,
+			Author = 4,
+			Title = 5,
+			Body = 6,
+			TimePosted = 7,
+			Visible = 8,
+			PostCount = 9,
+			TimeLastPost = 10,
+			SearchRelevance = 11,
+			EffectivelyVisible = 12,
+			EffectiveCategoryId = 13,
+			EffectiveCategoryName = 14,
+			ConcurrencyIdentity = 15,
+			RootPostId = 16,
+			RootPostTitle = 17
 		}
 		public enum DateProperty {
 			TimePosted,
 			TimeLastPost
 		}
 
-		internal const Post.Property DefaultSortProperty	= Post.Property.TimePosted;
-		internal const bool DefaultSortAscending			= true;
+		internal const Post.Property DefaultSortProperty = Post.Property.TimePosted;
+		internal const bool DefaultSortAscending = true;
 		#endregion
 
 		#region Variables
-		private readonly PostId					id;
-		private readonly PostId					parentId;
-		private readonly CategoryId				categoryId;
-		private readonly PostId					rootPostId;
-		private readonly string					rootPostTitle;
-		private readonly CategoryId				effectiveCategoryId;
-		private readonly string					effectiveCategoryName;
-		private string							title;
-		private string							body;
-		private string							userIdentity;
-		private string							author;
-		private readonly DateTime				timePosted;
-		private bool							visible				= true;
-		private readonly bool					effectivelyVisible;
-		private readonly int					postCount;
-		private readonly DateTime				timeLastPost;
-		private readonly float					searchRelevance;
-		private readonly AttributeCollection	attributes;
-		private readonly PostCollection			posts;
-		private readonly string					concurrencyIdentity;
+		private readonly PostId id;
+		private readonly PostId parentId;
+		private readonly CategoryId categoryId;
+		private readonly PostId rootPostId;
+		private readonly string rootPostTitle;
+		private readonly CategoryId effectiveCategoryId;
+		private readonly string effectiveCategoryName;
+		private string title;
+		private string body;
+		private string userIdentity;
+		private string author;
+		private readonly DateTime timePosted;
+		private bool visible = true;
+		private readonly bool effectivelyVisible;
+		private readonly int postCount;
+		private readonly DateTime timeLastPost;
+		private readonly float searchRelevance;
+		private readonly AttributeCollection attributes;
+		private readonly PostCollection posts;
+		private readonly string concurrencyIdentity;
 		#endregion
 
 		#region Constructors
@@ -92,21 +92,21 @@ namespace nJupiter.Services.Forum {
 			if(searchRelevance > 1 || searchRelevance < 0) {
 				throw new ArgumentOutOfRangeException("searchRelevance");
 			}
-			this.id						= id;
-			this.parentId				= parentId;
-			this.categoryId				= categoryId;
-			this.rootPostId				= rootPostId;
-			this.rootPostTitle			= rootPostTitle;
-			this.effectiveCategoryId	= effectiveCategoryId;
-			this.effectiveCategoryName	= effectiveCategoryName;
-			this.attributes				= attributes;
-			this.posts					= posts;
-			this.timePosted				= timePosted;
-			this.timeLastPost			= timeLastPost;
-			this.postCount				= postCount;
-			this.searchRelevance		= searchRelevance;
-			this.effectivelyVisible		= effectivelyVisible;
-			this.concurrencyIdentity	= concurrencyIdentity;
+			this.id = id;
+			this.parentId = parentId;
+			this.categoryId = categoryId;
+			this.rootPostId = rootPostId;
+			this.rootPostTitle = rootPostTitle;
+			this.effectiveCategoryId = effectiveCategoryId;
+			this.effectiveCategoryName = effectiveCategoryName;
+			this.attributes = attributes;
+			this.posts = posts;
+			this.timePosted = timePosted;
+			this.timeLastPost = timeLastPost;
+			this.postCount = postCount;
+			this.searchRelevance = searchRelevance;
+			this.effectivelyVisible = effectivelyVisible;
+			this.concurrencyIdentity = concurrencyIdentity;
 		}
 		internal Post(PostId parentId, AttributeCollection attributes) : this(new PostId(), parentId, null, null, null, null, null, attributes, null, DateTime.MinValue, DateTime.MinValue, 0, 0, false, null) { }
 		internal Post(CategoryId categoryId, AttributeCollection attributes) : this(new PostId(), null, categoryId, null, null, null, null, attributes, null, DateTime.MinValue, DateTime.MinValue, 0, 0, false, null) { }
@@ -120,27 +120,27 @@ namespace nJupiter.Services.Forum {
 		public string RootPostTitle { get { return this.rootPostTitle; } }
 		public CategoryId EffectiveCategoryId { get { return this.effectiveCategoryId; } }
 		public string EffectiveCategoryName { get { return this.effectiveCategoryName; } }
-		public string Title { 
-			get { return this.title; } 
+		public string Title {
+			get { return this.title; }
 			set {
 				ValidateStringLength(value);
-				this.title = value; 
-			} 
+				this.title = value;
+			}
 		}
 		public string Body { get { return this.body; } set { this.body = value; } }
-		public string UserIdentity { 
-			get { return this.userIdentity; } 
+		public string UserIdentity {
+			get { return this.userIdentity; }
 			set {
 				ValidateStringLength(value);
-				this.userIdentity = value; 
-			} 
+				this.userIdentity = value;
+			}
 		}
-		public string Author { 
-			get { return this.author; } 
-			set { 
+		public string Author {
+			get { return this.author; }
+			set {
 				ValidateStringLength(value);
-				this.author = value; 
-			} 
+				this.author = value;
+			}
 		}
 		public bool Visible { get { return this.visible; } set { this.visible = value; } }
 		public DateTime TimePosted { get { return this.timePosted; } }
