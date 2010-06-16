@@ -114,6 +114,7 @@ namespace nJupiter.Web.UI {
 		public const string Tfoot			= "tfoot";
 		public const string Th				= "th";
 		public const string Thead			= "thead";
+		public const string Time			= "time";
 		public const string Title			= "title";
 		public const string Tr				= "tr";
 		public const string Tt				= "tt";

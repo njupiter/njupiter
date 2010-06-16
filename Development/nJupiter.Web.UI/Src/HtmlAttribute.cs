@@ -39,6 +39,7 @@ namespace nJupiter.Web.UI {
 		public const string Cols		= "cols";
 		public const string Colspan		= "colspan";
 		public const string Content		= "content";
+		public const string Datetime	= "datetime";
 		public const string Disabled	= "disabled";
 		public const string Enctype		= "enctype";
 		public const string Frameborder	= "frameborder";
