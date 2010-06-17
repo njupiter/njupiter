@@ -46,7 +46,7 @@
 <body>
 	<form id="form1" runat="server">
 		<p>
-			<Control:WebLabel For="nJupiterMailCheckBox" runat="server">Use nJupiter.Net.Mail</Control:WebLabel><br />
+			<Control:WebLabel For="nJupiterMailCheckBox" runat="server">Use nJupiter.Net.Mail (System.Net.Mail if unchecked)</Control:WebLabel><br />
 			<asp:CheckBox ID="nJupiterMailCheckBox" Checked="true" runat="server" />
 		</p>
 		<p>
