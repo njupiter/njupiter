@@ -7,52 +7,70 @@
 <script language="C#" runat="server">
 	protected override void OnInit(EventArgs e) {
 		base.OnInit(e);
-		WebButton btnSend = (WebButton)this.FindControl("btnSend");
-		btnSend.Click += new EventHandler(btnSend_Click);
+		WebButton sendButton = (WebButton)this.FindControl("sendButton");
+		sendButton.Click += this.SendButtonClick;
 	}
 
-	void btnSend_Click(object sender, EventArgs e) {
-		TextBox txtServer	= (TextBox)this.FindControl("txtServer");
-		TextBox txtFrom		= (TextBox)this.FindControl("txtFrom");
-		TextBox txtTo		= (TextBox)this.FindControl("txtTo");
-		TextBox txtSubject	= (TextBox)this.FindControl("txtSubject");
-		TextBox txtBody		= (TextBox)this.FindControl("txtBody");
-		
-		nJupiter.Net.Mail.MailAddress from	= new nJupiter.Net.Mail.MailAddress(txtFrom.Text);
-		nJupiter.Net.Mail.MailAddress to		= new nJupiter.Net.Mail.MailAddress(txtTo.Text);
-		
-		nJupiter.Net.Mail.Mail mail = new nJupiter.Net.Mail.Mail(to, from, txtBody.Text, txtSubject.Text);
-		
-		nJupiter.Net.Mail.SmtpClient smtpClient = new nJupiter.Net.Mail.SmtpClient(txtServer.Text);
-		
-		smtpClient.Send(mail);
-	}
+	void SendButtonClick(object sender, EventArgs e) {
+		TextBox serverTextBox	= (TextBox)this.FindControl("serverTextBox");
+		TextBox fromTextBox		= (TextBox)this.FindControl("fromTextBox");
+		TextBox toTextBox		= (TextBox)this.FindControl("toTextBox");
+		TextBox subjectTextBox	= (TextBox)this.FindControl("subjectTextBox");
+		TextBox bodyTextBox		= (TextBox)this.FindControl("bodyTextBox");
+		CheckBox checkBox		= (CheckBox)this.FindControl("nJupiterMailCheckBox");
+
+		if(checkBox.Checked) {
+			nJupiter.Net.Mail.MailAddress from = new nJupiter.Net.Mail.MailAddress(fromTextBox.Text);
+			nJupiter.Net.Mail.MailAddress to = new nJupiter.Net.Mail.MailAddress(toTextBox.Text);
+
+			nJupiter.Net.Mail.Mail mail = new nJupiter.Net.Mail.Mail(to, from, bodyTextBox.Text, subjectTextBox.Text);
+
+			nJupiter.Net.Mail.SmtpClient smtpClient = new nJupiter.Net.Mail.SmtpClient(serverTextBox.Text);
+
+			smtpClient.Send(mail);
+		} else {
+			System.Net.Mail.MailAddress from = new System.Net.Mail.MailAddress(fromTextBox.Text);
+			System.Net.Mail.MailAddress to = new System.Net.Mail.MailAddress(toTextBox.Text);
+			
+			System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage(from, to);
+			mail.Subject = subjectTextBox.Text;
+			mail.Body = bodyTextBox.Text;
+			
+			System.Net.Mail.SmtpClient smtpClient = new System.Net.Mail.SmtpClient(serverTextBox.Text);
+			
+			smtpClient.Send(mail);
+		}
+ }
  </script>
 </head>
 <body>
 	<form id="form1" runat="server">
 		<p>
-			<Control:WebLabel For="txtServer" runat="server">Server</Control:WebLabel><br />
-			<asp:TextBox ID="txtServer" runat="server" Text="localhost" />
+			<Control:WebLabel For="nJupiterMailCheckBox" runat="server">Use nJupiter.Net.Mail</Control:WebLabel><br />
+			<asp:CheckBox ID="nJupiterMailCheckBox" Checked="true" runat="server" />
 		</p>
 		<p>
-			<Control:WebLabel For="txtFrom" runat="server">From</Control:WebLabel><br />
-			<asp:TextBox ID="txtFrom" runat="server" Text="m4@njupiter.org" />
+			<Control:WebLabel For="serverTextBox" runat="server">Server</Control:WebLabel><br />
+			<asp:TextBox ID="serverTextBox" runat="server" Text="localhost" />
 		</p>
 		<p>
-			<Control:WebLabel For="txtTo" runat="server">To</Control:WebLabel><br />
-			<asp:TextBox ID="txtTo" runat="server" Text="m4@njupiter.org" />
+			<Control:WebLabel For="fromTextBox" runat="server">From</Control:WebLabel><br />
+			<asp:TextBox ID="fromTextBox" runat="server" Text="m4@njupiter.org" />
 		</p>
 		<p>
-			<Control:WebLabel For="txtSubject" runat="server">Subject</Control:WebLabel><br />
-			<asp:TextBox ID="txtSubject" runat="server" Text="Test Mail" />
+			<Control:WebLabel For="toTextBox" runat="server">To</Control:WebLabel><br />
+			<asp:TextBox ID="toTextBox" runat="server" Text="m4@njupiter.org" />
 		</p>
 		<p>
-			<Control:WebLabel For="txtBody" runat="server">Bodytext</Control:WebLabel><br />
-			<asp:TextBox ID="txtBody" runat="server" TextMode="MultiLine" Text="Lorem ipsum" />
+			<Control:WebLabel For="subjectTextBox" runat="server">Subject</Control:WebLabel><br />
+			<asp:TextBox ID="subjectTextBox" runat="server" Text="Test Mail" />
 		</p>
 		<p>
-			<Control:WebButton ID="btnSend" runat="server">Send</Control:WebButton>
+			<Control:WebLabel For="txbodyTextBoxtBody" runat="server">Bodytext</Control:WebLabel><br />
+			<asp:TextBox ID="bodyTextBox" runat="server" TextMode="MultiLine" Text="Lorem ipsum" />
+		</p>
+		<p>
+			<Control:WebButton ID="sendButton" runat="server">Send</Control:WebButton>
 		</p>
 	</form>
 </body>
