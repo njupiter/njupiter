@@ -6,7 +6,6 @@
 <%@ Import namespace="System.Security.Cryptography" %>
 <%@ Import namespace="nJupiter.Configuration" %>
 <%@ Import namespace="nJupiter.Web" %>
-<%@ Import namespace="nJupiter.Collections.Generics" %>
 <%@ Register TagPrefix="Control" Namespace="nJupiter.Web.UI.Controls" Assembly="nJupiter.Web.UI" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11.dtd">
 <html>
@@ -32,10 +31,6 @@
 			}
 		}
 
-		protected override void OnLoad(EventArgs e) {
-			base.OnLoad(e);
-		}
-
 		private void rptConfigList_ItemDataBound(object sender, RepeaterItemEventArgs e) {
 			if(e == null) throw new ArgumentNullException("e");
 
@@ -58,14 +53,14 @@
 		private void PopulateFileList() {
 			hgcTitle.InnerText = ltrHeading.Text = Request.Url.Host + " " + Request.Path.Substring(0, Request.Path.LastIndexOf("/") + 1);
 
-			rptConfigList.ItemDataBound +=new RepeaterItemEventHandler(rptConfigList_ItemDataBound);
+			rptConfigList.ItemDataBound +=this.rptConfigList_ItemDataBound;
 			
-			SortableCollection<FileInfo> files = this.GetConfigFiles();
+			List<FileInfo> files = this.GetConfigFiles();
 			
 			if(files.Count == 0) {
 				phlErrorMessage.InnerText = "No configuration files found";
 			} else {
-				Comparison<FileInfo> c = new Comparison<FileInfo>(delegate(FileInfo x, FileInfo y){ return x.FullName.CompareTo(y.FullName); });
+				Comparison<FileInfo> c = (x, y) => x.FullName.CompareTo(y.FullName);
 				files.Sort(c);
 				rptConfigList.DataSource = files;
 				rptConfigList.DataBind();
@@ -74,13 +69,13 @@
 
 		private void PopulateFieldset(string configKey) {
 			FileInfo file = this.GetConfigFile(configKey);
-			btnCancel.Click += new EventHandler(btnCancel_Click);
+			btnCancel.Click += this.btnCancel_Click;
 			if(file == null) {
 				phlErrorMessage.InnerText = "File not found";
 				prgTextBox.Visible = btnSave.Visible = false;
 			} else {
 				hgcTitle.InnerText = ltrHeading.Text = "Edit " + file.Name;
-				btnSave.Click += new EventHandler(btnSave_Click);
+				btnSave.Click += this.btnSave_Click;
 				prgTextBox.Visible = btnSave.Visible = true;
 				using(StreamReader sr = file.OpenText()) {
 					txbEditConfig.Text = sr.ReadToEnd();
@@ -109,8 +104,8 @@
 			this.Response.Redirect(UrlHandler.RemoveQueryKey(this.Request.Url.AbsolutePath, EDITCONFIG_QUERY_KEY));
 		}
 		
-		private SortableCollection<FileInfo> GetConfigFiles() {
-			SortableCollection<FileInfo> files = new SortableCollection<FileInfo>();
+		private List<FileInfo> GetConfigFiles() {
+			List<FileInfo> files = new List<FileInfo>();
 			foreach(Config config in ConfigHandler.Configurations){
 				if(config.ConfigFile != null && !files.Contains(config.ConfigFile)) {
 					files.Add(config.ConfigFile);
@@ -157,7 +152,7 @@
 		<Control:WebGenericControl TagName="fieldset" ID="flsFieldset" runat="server">
 			<Control:WebParagraph ID="prgTextBox" runat="server">
 				<Control:WebLabel For="txbEditConfig" runat="server">Edit Config</Control:WebLabel>
-				<asp:TextBox Wrap="false" ID="txbEditConfig" TextMode="MultiLine" rows="30" style=width:100%" runat="server" />
+				<asp:TextBox Wrap="false" ID="txbEditConfig" TextMode="MultiLine" rows="30" style="width:100%" runat="server" />
 			</Control:WebParagraph>
 			<p>
 				<Control:WebButton ID="btnSave" runat="server">Save</Control:WebButton>
