@@ -34,6 +34,7 @@ namespace nJupiter.Web.UI {
 		public const string Bordercolor	= "bordercolor";
 		public const string Cellpadding	= "cellpadding";
 		public const string Cellspacing	= "cellspacing";
+		public const string Charset		= "charset";
 		public const string Checked		= "checked";
 		public const string Class		= "class";
 		public const string Cols		= "cols";
