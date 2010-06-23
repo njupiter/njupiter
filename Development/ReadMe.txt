@@ -25,3 +25,8 @@ Branching
 ---------------------------------------------------------------------------------
 Change the version number in Shared Resources\SharedAssemblyInfo.cs when
 branching
+
+Contact
+---------------------------------------------------------------------------------
+Contact the project owners by mailing them with their username plus @gmail.com
+
