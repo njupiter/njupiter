@@ -105,7 +105,7 @@ namespace nJupiter.Web.UI {
 					if(!htmlLink.Attributes.Count.Equals(0)) {
 						linkAttributes = new StringBuilder();
 						foreach(string attribute in htmlLink.Attributes.Keys) {
-							linkAttributes.AppendFormat(CultureInfo.InvariantCulture, FormatAttribute, attribute, HttpUtility.HtmlAttributeEncode(htmlLink.Attributes[attribute]));
+							linkAttributes.AppendFormat(CultureInfo.InvariantCulture, FormatAttribute, attribute, htmlLink.Attributes[attribute]);
 						}
 					}
 				}
