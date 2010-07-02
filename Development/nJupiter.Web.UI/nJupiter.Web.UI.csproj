@@ -72,6 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\HtmlEntity.cs" />
+    <Compile Include="Src\HtmlLink.cs" />
     <Compile Include="Src\HtmlStyle.cs" />
     <Compile Include="Src\Controls\WebNavigation.cs" />
     <Compile Include="Src\Controls\WebScriptHolder.cs" />
