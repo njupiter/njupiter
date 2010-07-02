@@ -23,9 +23,10 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Globalization;
+using System.Web;
 
 namespace nJupiter.Web.UI {
 
@@ -36,8 +37,9 @@ namespace nJupiter.Web.UI {
 	public static class HtmlHandler {
 		#region Constants
 		private const string Colon = ":";
-		private const string FormatReplaceUrl = "<" + HtmlTag.A + " {0}" + HtmlAttribute.Href + @"=""{1}"">{2}</" + HtmlTag.A + ">";
-		private const string NoFollowAttribute = "rel=\"external nofollow\" ";
+		private const string FormatReplaceUrl = "<" + HtmlTag.A + " {0}{1}" + HtmlAttribute.Href + @"=""{2}"">{3}</" + HtmlTag.A + ">";
+		private const string NoFollowAttribute = HtmlAttribute.Rel + "=\"external nofollow\" ";
+		private const string FormatAttribute = " {0}=\"{1}\" ";
 		private const string RegexpatternInformalurlPrefix = @"\w+:";
 		private const string RegexpatternInformalurlEmail = @"((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*""\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*"")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)";
 		private const string RegexpatternInformalurl = RegexpatternInformalurlEmail + "|((" + RegexpatternInformalurlPrefix + @"//|[nN][eE][wW][sS]:|[mM][aA][iI][lL][tT][oO]:|[wW][wW][wW]\.|[fF][tT][pP]\.)[^\\{}|[\]^<>""'\s]*[^\\{}|[\]^<>""'\s.,;?:!])";
@@ -86,6 +88,7 @@ namespace nJupiter.Web.UI {
 			return InformalUrlRegex.Replace(text, delegate(Match match) {
 				string linkText = match.Value;
 				string linkUrl;
+				StringBuilder linkAttributes = null;
 				if(InformalUrlPrefixRegex.IsMatch(linkText)) {
 					linkUrl = linkText;
 				} else if(InformalUrlEmailRegex.IsMatch(linkText)) {
@@ -99,10 +102,17 @@ namespace nJupiter.Web.UI {
 					HtmlLink htmlLink = htmlLinkEvaluator(new HtmlLink(linkUrl, linkText));
 					linkUrl = htmlLink.Url;
 					linkText = htmlLink.Text;
+					if(!htmlLink.Attributes.Count.Equals(0)) {
+						linkAttributes = new StringBuilder();
+						foreach(string attribute in htmlLink.Attributes.Keys) {
+							linkAttributes.AppendFormat(CultureInfo.InvariantCulture, FormatAttribute, attribute, HttpUtility.HtmlAttributeEncode(htmlLink.Attributes[attribute]));
+						}
+					}
 				}
 				return string.Format(CultureInfo.InvariantCulture, 
 					FormatReplaceUrl, 
 					noFollow ? NoFollowAttribute : string.Empty, 
+					linkAttributes,
 					linkUrl, 
 					linkText);
 			});
