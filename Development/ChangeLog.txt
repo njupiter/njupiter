@@ -9,6 +9,13 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for upcoming version
+===============================================================================
+**** nJupiter.Web.UI
+ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
+     thereby makes it possible to change the url or the text of the link.
+
+===============================================================================
 Changes for V3.15.1.0  - 2010-06-15
 ===============================================================================
 **** nJupiter.DataAccess.Ldap

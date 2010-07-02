@@ -29,6 +29,10 @@ using System.Globalization;
 
 namespace nJupiter.Web.UI {
 
+	#region Delegates
+	public delegate HtmlLink HtmlLinkEvaluator(HtmlLink htmlLink);
+	#endregion
+
 	public static class HtmlHandler {
 		#region Constants
 		private const string Colon = ":";
@@ -70,44 +74,43 @@ namespace nJupiter.Web.UI {
 			return text.ToString();
 		}
 		public static string AutoHyperlinkText(string text) {
-			return AutoHyperlinkText(text, false);
+			return AutoHyperlinkText(text, false, null);
 		}
-
 		public static string AutoHyperlinkText(string text, bool noFollow) {
-			if(noFollow) {
-				return InformalUrlRegex.Replace(text, HyperlinkMatchNoFollowEvaluator);
-			}
-			return InformalUrlRegex.Replace(text, HyperlinkMatchEvaluator);
+			return AutoHyperlinkText(text, noFollow, null);
+		}
+		public static string AutoHyperlinkText(string text, HtmlLinkEvaluator htmlLinkEvaluator) {
+			return AutoHyperlinkText(text, false, htmlLinkEvaluator);
+		}
+		public static string AutoHyperlinkText(string text, bool noFollow, HtmlLinkEvaluator htmlLinkEvaluator) {
+			return InformalUrlRegex.Replace(text, delegate(Match match) {
+				string linkText = match.Value;
+				string linkUrl;
+				if(InformalUrlPrefixRegex.IsMatch(linkText)) {
+					linkUrl = linkText;
+				} else if(InformalUrlEmailRegex.IsMatch(linkText)) {
+					linkUrl = Uri.UriSchemeMailto + Colon + linkText;
+				} else if(string.Compare(linkText.Substring(0, 3), Uri.UriSchemeFtp, true, CultureInfo.InvariantCulture).Equals(0)) {
+					linkUrl = Uri.UriSchemeFtp + Uri.SchemeDelimiter + linkText;
+				} else {
+					linkUrl = Uri.UriSchemeHttp + Uri.SchemeDelimiter + linkText;
+				}
+				if(htmlLinkEvaluator != null) {
+					HtmlLink htmlLink = htmlLinkEvaluator(new HtmlLink(linkUrl, linkText));
+					linkUrl = htmlLink.Url;
+					linkText = htmlLink.Text;
+				}
+				return string.Format(CultureInfo.InvariantCulture, 
+					FormatReplaceUrl, 
+					noFollow ? NoFollowAttribute : string.Empty, 
+					linkUrl, 
+					linkText);
+			});
 		}
 		public static string ConvertNewLinesToBr(string text) {
 			return text == null ? null : text.Replace(Environment.NewLine, "<" + HtmlTag.Br + "/>");
 		}
 		#endregion
 
-		#region Helper Methods
-		private static string HyperlinkMatchEvaluator(Match match) {
-			return EvaluateHyperlinkMatch(match, false);
-		}
-
-		private static string HyperlinkMatchNoFollowEvaluator(Match match) {
-			return EvaluateHyperlinkMatch(match, true);
-		}
-
-		private static string EvaluateHyperlinkMatch(Capture match, bool noFollow) {
-			string matchValue = match.Value;
-			string address;
-
-			if(InformalUrlPrefixRegex.IsMatch(matchValue)) {
-				address = matchValue;
-			} else if(InformalUrlEmailRegex.IsMatch(matchValue)) {
-				address = Uri.UriSchemeMailto + Colon + matchValue;
-			} else if(string.Compare(matchValue.Substring(0, 3), Uri.UriSchemeFtp, true, CultureInfo.InvariantCulture).Equals(0)) {
-				address = Uri.UriSchemeFtp + Uri.SchemeDelimiter + matchValue;
-			} else {
-				address = Uri.UriSchemeHttp + Uri.SchemeDelimiter + matchValue;
-			}
-			return string.Format(CultureInfo.InvariantCulture, FormatReplaceUrl, noFollow ? NoFollowAttribute : string.Empty, address, matchValue);
-		}
-		#endregion
 	}
 }
