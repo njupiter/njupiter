@@ -15,6 +15,10 @@ Changes for upcoming version
 ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
      thereby makes it possible to change the url or the text of the link and
      add custom attributes
+BUG: HtmlHandler.AutoHyperlinkText made an end parenthesis trailing the url 
+     part of the url. This should not be included in the url unless the 
+     character after the parenthesis is a character part of a normal url. If it 
+     is a space for instance we should end the url before the parenthesis.
 
 ===============================================================================
 Changes for V3.15.1.0  - 2010-06-15
