@@ -28,8 +28,10 @@ namespace nJupiter.Web.UI {
 		public const string Checkbox	= "checkbox";
 		public const string Checked		= "checked";
 		public const string Disabled	= "disabled";
+		public const string Ismap		= "ismap";
 		public const string Radio		= "radio";
         public const string Required    = "required";
+		public const string Selected	= "selected";
 		public const string Submit		= "submit";
 	}
 }
