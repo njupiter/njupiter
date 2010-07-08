@@ -63,8 +63,11 @@ namespace nJupiter.Web.UI {
 		public const string Onclick		= "onclick";
 		public const string Onmouseover	= "onmouseover";
 		public const string Onmouseout	= "onmouseout";
+        public const string Pattern     = "pattern";
+        public const string Placeholder = "placeholder";
 		public const string ReadOnly	= "readonly";
 		public const string Rel			= "rel";
+        public const string Required    = "required";
 		public const string Rev			= "rev";
 		public const string Rows		= "rows";
 		public const string Rowspan		= "rowspan";

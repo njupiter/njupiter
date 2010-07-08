@@ -29,6 +29,7 @@ namespace nJupiter.Web.UI {
 		public const string Checked		= "checked";
 		public const string Disabled	= "disabled";
 		public const string Radio		= "radio";
+        public const string Required    = "required";
 		public const string Submit		= "submit";
 	}
 }
