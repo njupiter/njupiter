@@ -22,6 +22,15 @@ BUG: HtmlHandler.AutoHyperlinkText made an end parenthesis trailing the url
      part of the url. This should not be included in the url unless the 
      character after the parenthesis is a character part of a normal url. If it 
      is a space for instance we should end the url before the parenthesis.
+ENH: In Paging, added the CurrentPageForceInnerSpan property to be able to 
+     force an inner span on the control for the current page (anchor, 
+     linkbutton or button) and the CurrentPageCssClass to be able to set a CSS 
+     class on the HTML element of the current page. CurrentPageForceInnerSpan 
+     is needed to render an HTML element for the current page in anchor and 
+     linkbutton modes when InnerSpan is set to false because otherwise it would 
+     just be a text node there. CurrentPageCssClass will not be rendered in the
+     anchor and linkbutton modes unless InnerSpan is set to true or 
+     CurrentPageForceInnerSpan is set to true.
 
 ===============================================================================
 Changes for V3.15.1.0  - 2010-06-15
