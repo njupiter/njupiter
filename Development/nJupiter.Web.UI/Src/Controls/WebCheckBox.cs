@@ -66,7 +66,6 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		private void RenderInputTag(HtmlTextWriter writer, string clientId) {
-			//TODO: we should take care of CheckBox.InputAttributes here also
 			string onClick = null;
 			if(this.Attributes.Count > 0) {
 				AttributeCollection attributes = base.Attributes;
@@ -124,6 +123,9 @@ namespace nJupiter.Web.UI.Controls {
 			int tabIndex = this.TabIndex;
 			if(tabIndex != 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, tabIndex.ToString(NumberFormatInfo.InvariantInfo));
+			}
+			if(!this.InputAttributes.Count.Equals(0)) {
+				this.InputAttributes.AddAttributes(writer);
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();

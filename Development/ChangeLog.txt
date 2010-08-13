@@ -31,6 +31,10 @@ ENH: In Paging, added the CurrentPageForceInnerSpan property to be able to
      just be a text node there. CurrentPageCssClass will not be rendered in the
      anchor and linkbutton modes unless InnerSpan is set to true or 
      CurrentPageForceInnerSpan is set to true.
+BUG: WebCheckBox did not render the attributes in the InputAttributes 
+     collection.
+BUG: WebCheckListControl did not clear the controlToRepeat.Attributes 
+     collection on each rendering of a list item.
 
 ===============================================================================
 Changes for V3.15.1.0  - 2010-06-15

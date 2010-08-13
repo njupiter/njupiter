@@ -254,6 +254,7 @@ namespace nJupiter.Web.UI.Controls {
 			this.controlToRepeat.Checked = listItem.Selected;
 			this.controlToRepeat.Enabled = listItem.Enabled && this.Enabled;
 
+			this.controlToRepeat.Attributes.Clear();
 			foreach(string key in listItem.Attributes.Keys){
 				this.controlToRepeat.Attributes.Add(key, listItem.Attributes[key]);
 			}
