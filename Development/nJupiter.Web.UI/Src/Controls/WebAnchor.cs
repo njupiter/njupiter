@@ -39,6 +39,7 @@ namespace nJupiter.Web.UI.Controls {
 		private const string RenderOriginalIdKey = "v_RenderOriginalId";
 		private const string NoLinkKey = "v_NoLink";
 		private const string DisableEncodingKey = "v_DisableEncoding";
+		private const string HasControlsKey = "v_HasControls";
 		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
 		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
@@ -81,6 +82,18 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[DisableEncodingKey] = value;
 			}
 		}
+
+		private bool HasControlsInternal {
+			get {
+				if(this.ViewState[HasControlsKey] == null)
+					return false;
+				return (bool)this.ViewState[HasControlsKey];
+			}
+			set {
+				this.ViewState[HasControlsKey] = value;
+			}
+		}
+
 		public bool InnerSpan {
 			get {
 				if(this.ViewState[InnerSpanKey] == null) {
@@ -124,6 +137,7 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void AddParsedSubObject(object obj) {
 			if(!(obj is LiteralControl) && !(obj is Literal))
 				this.DisableEncoding = true;
+			this.HasControlsInternal = true;
 			base.AddParsedSubObject(obj);
 		}
 
@@ -196,7 +210,7 @@ namespace nJupiter.Web.UI.Controls {
 					image.AlternateText = text;
 				}
 				image.RenderControl(writer);
-			} else if(this.HasControls()) {
+			} else if(this.HasControlsInternal || this.HasControls()) {
 				base.RenderContents(writer);
 			} else {
 				writer.Write(this.DisableEncoding ? this.Text : HttpUtility.HtmlEncode(this.Text));
