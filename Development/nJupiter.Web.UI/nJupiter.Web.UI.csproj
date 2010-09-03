@@ -71,6 +71,7 @@
     <Compile Include="Src\ControlHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\HtmlStyleUnit.cs" />
     <Compile Include="Src\HtmlEntity.cs" />
     <Compile Include="Src\HtmlLink.cs" />
     <Compile Include="Src\HtmlStyle.cs" />
