@@ -249,15 +249,15 @@ namespace nJupiter.Web.UI.Controls {
 			
 			ListItem listItem = this.Items[repeatIndex];
 			
-			this.controlToRepeat.ID = repeatIndex.ToString(NumberFormatInfo.InvariantInfo);
-			this.controlToRepeat.Attributes[HtmlAttribute.Value] = listItem.Value;
-			this.controlToRepeat.Checked = listItem.Selected;
-			this.controlToRepeat.Enabled = listItem.Enabled && this.Enabled;
-
 			this.controlToRepeat.Attributes.Clear();
+			this.controlToRepeat.Attributes[HtmlAttribute.Value] = listItem.Value;
 			foreach(string key in listItem.Attributes.Keys){
 				this.controlToRepeat.Attributes.Add(key, listItem.Attributes[key]);
 			}
+			this.controlToRepeat.ID = repeatIndex.ToString(NumberFormatInfo.InvariantInfo);
+			this.controlToRepeat.Checked = listItem.Selected;
+			this.controlToRepeat.Enabled = listItem.Enabled && this.Enabled;
+
 
 			this.HtmlTextWriter.WriteFullBeginTag(HtmlTag.P);
 			this.controlToRepeat.RenderControl(this.HtmlTextWriter);
