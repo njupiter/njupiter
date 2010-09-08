@@ -11,6 +11,13 @@ NEW - New feature
 ===============================================================================
 Changes for upcoming version
 ===============================================================================
+**** nJupiter.Text.SimpleTextParser
+NEW: A simple text parser added to nJupiter. Can for now only parse text by
+     using regular expressions that can be configured in a config file that can
+     be changed in runtime, but can esily be expanded with new formatters by
+     impelmenting the IFormatter interface.
+     Some example config how to parse for example BBCode to Xhtml added in
+     nJupiter.Text.SimpleTextParser.config
 **** nJupiter.Web.UI
 ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
      thereby makes it possible to change the url or the text of the link and
@@ -27,9 +34,9 @@ ENH: In Paging, added the CurrentPageForceInnerSpan property to be able to
      linkbutton or button) and the CurrentPageCssClass to be able to set a CSS 
      class on the HTML element of the current page. CurrentPageForceInnerSpan 
      is needed to render an HTML element for the current page in anchor and 
-     linkbutton modes when InnerSpan is set to false because otherwise it would 
-     just be a text node there. CurrentPageCssClass will not be rendered in the
-     anchor and linkbutton modes unless InnerSpan is set to true or 
+     linkbutton modes when InnerSpan is set to false because otherwise it
+     would just be a text node there. CurrentPageCssClass will not be rendered
+     in the anchor and linkbutton modes unless InnerSpan is set to true or 
      CurrentPageForceInnerSpan is set to true.
 BUG: WebCheckBox did not render the attributes in the InputAttributes 
      collection.

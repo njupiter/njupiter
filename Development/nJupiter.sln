@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Drawing", "nJupite
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Globalization", "nJupiter.Globalization\nJupiter.Globalization.csproj", "{37BF44F7-41D3-4343-B217-B98034DB1F2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Text.SimpleTextParser", "nJupiter.Text.SimpleTextParser\nJupiter.Text.SimpleTextParser.csproj", "{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -213,6 +215,12 @@ Global
 		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
 		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -241,5 +249,6 @@ Global
 		{00A1BB7C-3D6A-4B30-8D40-5F910C8E4CAA} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
 		{B7D3803A-6C86-43D3-B6E0-919641AB9DCE} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
 		{37BF44F7-41D3-4343-B217-B98034DB1F2D} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
+		{DCD0D93A-CDEA-4458-B0BB-1E45C660D88F} = {74DBF799-6215-4036-BED8-C95DF284D9FF}
 	EndGlobalSection
 EndGlobal
