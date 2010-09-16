@@ -37,13 +37,13 @@
 				<PropertyValue name="OnRunWhenErrors">4</PropertyValue>
 				<PropertyValue name="OnRunWhenOutOfDate">4</PropertyValue>
 				<PropertyValue name="AlwaysShowSolutionNode">true</PropertyValue>
-				<PropertyValue name="ProjectItemTemplatesLocation">C:\Projects\CreunaPlatform\Development\Shared Resources\Templates\ItemTemplates</PropertyValue>
+				<PropertyValue name="ProjectItemTemplatesLocation">C:\Projects\nJupiter\Development\Shared Resources\Templates\ItemTemplates</PropertyValue>
 				<PropertyValue name="OnlySaveStartupProjectsAndDependencies">false</PropertyValue>
 				<PropertyValue name="ShowAdvancedBuildConfigurations">true</PropertyValue>
 				<PropertyValue name="DefaultBehaviorForStartupProjects">1</PropertyValue>
 				<PropertyValue name="OnRunOrPreview">0</PropertyValue>
 				<PropertyValue name="MSBuildOutputVerbosity">1</PropertyValue>
-				<PropertyValue name="ProjectTemplatesLocation">C:\Projects\CreunaPlatform\Development\Shared Resources\Templates\ProjectTemplates</PropertyValue>
+				<PropertyValue name="ProjectTemplatesLocation">C:\Projects\nJupiter\Development\Shared Resources\Templates\ProjectTemplates</PropertyValue>
 				<PropertyValue name="ShowTaskListAfterBuild">true</PropertyValue>
 				<PropertyValue name="ConcurrentBuilds">4</PropertyValue>
 				<PropertyValue name="SaveNewProjects">true</PropertyValue>
@@ -772,7 +772,7 @@
 						<Folder Name="%MyDocs%\Code Snippets\Visual C#\My Code Snippets\"/>
 						<Folder Name="%InstallRoot%\VC#\Snippets\%LCID%\NetFX30\"/>
 						<Folder Name="%InstallRoot%\VC#\Snippets\%LCID%\OfficeDevelopment\"/>
-						<Folder Name="C:\Projects\CreunaPlatform\Development\Shared Resources\Snippets\Visual C#\"/>
+						<Folder Name="C:\Projects\nJupiter\Development\Shared Resources\Snippets\Visual C#\"/>
 					</Path>
 				</Language>
 				<Language Guid="{f6819a78-a205-47b5-be1c-675b3c7f0b8e}">
