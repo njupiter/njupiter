@@ -13,7 +13,7 @@ namespace nJupiter.Text.SimpleTextParser {
 		}
 
 		internal static IFormatter GetFormatter(Config config) {
-			FormatterDecorator formatters = new FormatterDecorator();
+			CompositeFormatter formatters = new CompositeFormatter();
 			string[] patterns = config.GetAttributeArray(".", "rule", "pattern");
 			foreach(string pattern in patterns) {
 				string replacement = config.GetAttribute(".", string.Format("rule[@pattern='{0}']", pattern), "replacement");
