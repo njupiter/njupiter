@@ -37,8 +37,8 @@ namespace nJupiter.DataAccess.Ldap {
 		private string appName;
 		private string ldapServer;
 		private Configuration configuration;
-		private Searcher userSeracher;
-		private Searcher groupSeracher;
+		private Searcher userSearcher;
+		private Searcher groupSearcher;
 		private FilterBuilder filterBuilder;
 		private DirectoryEntryAdapter directoryEntryAdapter;
 		private LdapNameHandler ldapNameHandler;
@@ -60,10 +60,10 @@ namespace nJupiter.DataAccess.Ldap {
 			this.ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
 			this.configuration = Configuration.GetConfig(this.ldapServer);
-			this.userSeracher = SearcherFactory.GetSearcher("user", configuration);
-			this.groupSeracher = SearcherFactory.GetSearcher("group", configuration);
+			this.userSearcher = SearcherFactory.GetSearcher("user", configuration);
+			this.groupSearcher = SearcherFactory.GetSearcher("group", configuration);
 			this.filterBuilder = FilterBuilder.GetInstance(this.configuration);
-			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSeracher, this.groupSeracher, this.filterBuilder);
+			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSearcher, this.groupSearcher, this.filterBuilder);
 			this.ldapNameHandler = LdapNameHandler.GetInstance(configuration);
 
 			base.Initialize(this.providerName, config);
@@ -95,7 +95,7 @@ namespace nJupiter.DataAccess.Ldap {
 						}
 					}
 				} else {
-					DirectorySearcher searcher = this.userSeracher.Create(entry, SearchScope.Base);
+					DirectorySearcher searcher = this.userSearcher.Create(entry, SearchScope.Base);
 					searcher.Filter = filterBuilder.CreateUserFilter();
 					SearchResult result = searcher.FindOne();
 					if((result != null) && result.Properties.Contains(configuration.Users.MembershipAttribute)) {
@@ -127,7 +127,7 @@ namespace nJupiter.DataAccess.Ldap {
 						builder.Add(name);
 					}
 				} else {
-					DirectorySearcher searcher = this.userSeracher.Create(userEntry, SearchScope.Base);
+					DirectorySearcher searcher = this.userSearcher.Create(userEntry, SearchScope.Base);
 					searcher.Filter = filterBuilder.CreateUserFilter();
 					SearchResult result = searcher.FindOne();
 					if(result.Properties.Contains(configuration.Users.MembershipAttribute)) {
@@ -183,7 +183,7 @@ namespace nJupiter.DataAccess.Ldap {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					throw new ProviderException(string.Format("Could not locate role {0}", roleName));
 				}
-				DirectorySearcher searcher = groupSeracher.CreateSearcher(entry, SearchScope.Base);
+				DirectorySearcher searcher = this.groupSearcher.CreateSearcher(entry, SearchScope.Base);
 				searcher.Filter = filterBuilder.CreateGroupFilter();
 
 				if(configuration.Server.RangeRetrievalSupport) {
@@ -240,7 +240,7 @@ namespace nJupiter.DataAccess.Ldap {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					throw new ProviderException("Could not load role list.");
 				}
-				DirectorySearcher searcher = groupSeracher.Create(entry);
+				DirectorySearcher searcher = this.groupSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateGroupFilter();
 				SearchResultCollection results = searcher.FindAll();
 				List<string> builder = new List<string>();
