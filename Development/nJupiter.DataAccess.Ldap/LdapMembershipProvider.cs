@@ -41,8 +41,8 @@ namespace nJupiter.DataAccess.Ldap {
 		private string appName;
 		private string ldapServer;
 		private Configuration configuration;
-		private Searcher userSeracher;
-		private Searcher groupSeracher;
+		private Searcher userSearcher;
+		private Searcher groupSearcher;
 		private FilterBuilder filterBuilder;
 		private DirectoryEntryAdapter directoryEntryAdapter;
 		private LdapMembershipUserFactory ldapMembershipUserFactory;
@@ -75,11 +75,11 @@ namespace nJupiter.DataAccess.Ldap {
 			this.ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
 			this.configuration = Configuration.GetConfig(this.ldapServer);
-			this.userSeracher = SearcherFactory.GetSearcher("user", configuration);
-			this.groupSeracher = SearcherFactory.GetSearcher("group", configuration);
+			this.userSearcher = SearcherFactory.GetSearcher("user", configuration);
+			this.groupSearcher = SearcherFactory.GetSearcher("group", configuration);
 			this.filterBuilder = FilterBuilder.GetInstance(this.configuration);
 			this.ldapMembershipUserFactory = LdapMembershipUserFactory.GetInstance(this.configuration);
-			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSeracher, this.groupSeracher, this.filterBuilder);
+			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSearcher, this.groupSearcher, this.filterBuilder);
 
 			base.Initialize(this.providerName, config);
 		}
@@ -128,7 +128,7 @@ namespace nJupiter.DataAccess.Ldap {
 						if(!DirectoryEntryAdapter.IsBound(authenticatedUser)) {
 							return false;
 						}
-						DirectorySearcher searcher = userSeracher.Create(authenticatedUser, SearchScope.Base);
+						DirectorySearcher searcher = this.userSearcher.Create(authenticatedUser, SearchScope.Base);
 						searcher.Filter = filterBuilder.CreateUserFilter();
 						SearchResult result = searcher.FindOne();
 						if(result != null && result.Properties.Contains(configuration.Users.RdnAttribute)) {
@@ -159,7 +159,7 @@ namespace nJupiter.DataAccess.Ldap {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return null;
 				}
-				DirectorySearcher searcher = userSeracher.Create(entry, SearchScope.Base);
+				DirectorySearcher searcher = this.userSearcher.Create(entry, SearchScope.Base);
 				searcher.Filter = filterBuilder.CreateUserFilter();
 				return this.ldapMembershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
 			}
@@ -170,7 +170,7 @@ namespace nJupiter.DataAccess.Ldap {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return null;
 				}
-				DirectorySearcher searcher = this.userSeracher.Create(entry);
+				DirectorySearcher searcher = this.userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserEmailFilter(email);
 				MembershipUser user = this.ldapMembershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
 				return user != null ? user.UserName : null;
@@ -194,7 +194,7 @@ namespace nJupiter.DataAccess.Ldap {
 					totalRecords = users.Count;
 					return users;
 				}
-				DirectorySearcher searcher = userSeracher.Create(entry);
+				DirectorySearcher searcher = this.userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserFilter();
 				searcher.PageSize = pageSize;
 				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
@@ -224,7 +224,7 @@ namespace nJupiter.DataAccess.Ldap {
 					totalRecords = users.Count;
 					return users;
 				}
-				DirectorySearcher searcher = this.userSeracher.Create(entry);
+				DirectorySearcher searcher = this.userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserNameFilter(usernameToMatch);
 				searcher.PageSize = pageSize;
 				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
@@ -251,7 +251,7 @@ namespace nJupiter.DataAccess.Ldap {
 					totalRecords = users.Count;
 					return users;
 				}
-				DirectorySearcher searcher = this.userSeracher.Create(entry);
+				DirectorySearcher searcher = this.userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserEmailFilter(emailToMatch);
 				searcher.PageSize = pageSize;
 				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
