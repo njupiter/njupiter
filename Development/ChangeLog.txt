@@ -18,6 +18,10 @@ NEW: A simple text parser added to nJupiter. Can for now only parse text by
      impelmenting the IFormatter interface.
      Some example config how to parse for example BBCode to Xhtml added in
      nJupiter.Text.SimpleTextParser.config
+**** nJupiter.DataAccess.Ldap	 
+CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
+	 if user did not exist. The role provider shall not need to know anything
+	 about the user. If user does not exist it would debug log it instead.
 **** nJupiter.Web.UI
 ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
      thereby makes it possible to change the url or the text of the link and

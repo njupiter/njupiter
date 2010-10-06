@@ -29,9 +29,13 @@ using System.Configuration.Provider;
 using System.DirectoryServices;
 using System.Web.Security;
 
+using log4net;
+
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapRoleProvider : RoleProvider {
+		
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private string providerName;
 		private string appName;
@@ -85,7 +89,8 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 			using(DirectoryEntry entry = directoryEntryAdapter.GetUserEntry(username)) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
-					throw new ProviderException(string.Format("Could not locate user {0}", username));
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Could not locate user {0}", username)); }
+					return false;
 				}
 				if(entry.Properties.Contains(configuration.Users.MembershipAttribute)) {
 					foreach(object groupObject in entry.Properties[configuration.Users.MembershipAttribute]) {
@@ -117,7 +122,8 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 			using(DirectoryEntry userEntry = directoryEntryAdapter.GetUserEntry(username)) {
 				if(!DirectoryEntryAdapter.IsBound(userEntry)) {
-					throw new ProviderException(string.Format("Could not locate user {0}", username));
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Could not locate user {0}", username)); }
+					return new string[0];
 				}
 				List<string> builder = new List<string>();
 				if(userEntry.Properties.Contains(configuration.Users.MembershipAttribute)) {
@@ -181,7 +187,8 @@ namespace nJupiter.DataAccess.Ldap {
 			List<string> builder = new List<string>();
 			using(DirectoryEntry entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
-					throw new ProviderException(string.Format("Could not locate role {0}", roleName));
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Could not locate role {0}", roleName)); }
+					return new string[0];
 				}
 				DirectorySearcher searcher = this.groupSearcher.CreateSearcher(entry, SearchScope.Base);
 				searcher.Filter = filterBuilder.CreateGroupFilter();
