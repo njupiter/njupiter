@@ -48,6 +48,10 @@ BUG: WebCheckListControl did not clear the controlToRepeat.Attributes
      collection on each rendering of a list item.
 BUG: WebAnchor did not render Controls added to it runtime by the method 
      WebAnchor.Controls.Add.
+Bug: WebButton's OnClickEvent was fired both in RaisePostBackDataChangedEvent
+     and RaisePostBackEvent when using IE6 , thus the event handler was called
+     twice. When using IE6, OnClickEvent is now only fired in 
+     RaisePostBackDataChangedEvent.
 
 ===============================================================================
 Changes for V3.15.1.0  - 2010-06-15

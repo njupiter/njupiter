@@ -274,7 +274,9 @@ namespace nJupiter.Web.UI.Controls {
 				this.Page.Validate(this.ValidationGroup);
 			}
 			this.OnServerClick(EventArgs.Empty);
-			this.OnClickEvent(EventArgs.Empty);
+			if(!ControlHandler.IsPreIE7) {
+				this.OnClickEvent(EventArgs.Empty);
+			}
 			this.OnCommandEvent(new CommandEventArgs(this.CommandName, this.CommandArgument));
 		}
 		#endregion
