@@ -25,6 +25,7 @@
 namespace nJupiter.Web.UI {
 	public class HtmlAttributeValue {
 		//TODO: Add all
+		public const string Autofocus		= "autofocus";
 		public const string Button			= "button";
 		public const string Checkbox		= "checkbox";
 		public const string Checked			= "checked";
@@ -44,7 +45,7 @@ namespace nJupiter.Web.UI {
 		public const string Radio			= "radio";
 		public const string Range			= "range";
 		public const string Readonly		= "readonly";
-        public const string Required		= "required";
+		public const string Required		= "required";
 		public const string Reset			= "reset";
 		public const string Search			= "search";
 		public const string	Selected		= "selected";

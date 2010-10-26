@@ -28,6 +28,7 @@ namespace nJupiter.Web.UI {
 		public const string Action		= "action";
 		public const string Align		= "align";
 		public const string Alt			= "alt";
+		public const string Autofocus	= "autofocus";
 		public const string Background	= "background";
 		public const string Bgcolor		= "bgcolor";
 		public const string Border		= "border";
