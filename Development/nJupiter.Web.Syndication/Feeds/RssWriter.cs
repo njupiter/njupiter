@@ -42,10 +42,10 @@ namespace nJupiter.Web.Syndication {
 			this.XmlWriter.WriteStartElement("channel");
 
 			this.XmlWriter.WriteElementString("title", feed.Title);
-			this.XmlWriter.WriteElementString("link", feed.Uri.ToString());
+			this.XmlWriter.WriteElementString("link", feed.Uri.OriginalString);
 
 			this.XmlWriter.WriteStartElement("atom", "link", null);
-			this.XmlWriter.WriteAttributeString("href", feed.FeedUri.ToString());
+			this.XmlWriter.WriteAttributeString("href", feed.FeedUri.OriginalString);
 			this.XmlWriter.WriteAttributeString("rel", "self");
 			this.XmlWriter.WriteAttributeString("type", "application/rss+xml");
 			this.XmlWriter.WriteEndElement();
@@ -59,9 +59,9 @@ namespace nJupiter.Web.Syndication {
 			}
 			if(feed.Image != null) {
 				this.XmlWriter.WriteStartElement("image");
-				this.XmlWriter.WriteElementString("url", feed.Image.Uri.ToString());
+				this.XmlWriter.WriteElementString("url", feed.Image.Uri.OriginalString);
 				this.XmlWriter.WriteElementString("title", feed.Title);
-				this.XmlWriter.WriteElementString("link", feed.Uri.ToString());
+				this.XmlWriter.WriteElementString("link", feed.Uri.OriginalString);
 				if(!string.IsNullOrEmpty(feed.Image.Description)) {
 					this.XmlWriter.WriteElementString("description", feed.Image.Description);
 				}
@@ -86,10 +86,10 @@ namespace nJupiter.Web.Syndication {
 				this.XmlWriter.WriteElementString("title", item.Title);
 			}
 			if(item.Uri != null) {
-				this.XmlWriter.WriteElementString("link", item.Uri.ToString());
+				this.XmlWriter.WriteElementString("link", item.Uri.OriginalString);
 				this.XmlWriter.WriteStartElement("guid");
 				this.XmlWriter.WriteAttributeString("isPermaLink", "true");
-				this.XmlWriter.WriteString(item.Uri.ToString());
+				this.XmlWriter.WriteString(item.Uri.OriginalString);
 				this.XmlWriter.WriteEndElement();
 			}
 			if(!string.IsNullOrEmpty(item.Description)) {

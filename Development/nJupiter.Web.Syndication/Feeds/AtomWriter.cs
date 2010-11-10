@@ -43,11 +43,11 @@ namespace nJupiter.Web.Syndication {
 			this.XmlWriter.WriteElementString("title", feed.Title);
 
 			this.XmlWriter.WriteStartElement("link");
-			this.XmlWriter.WriteAttributeString("href", feed.Uri.ToString());
+			this.XmlWriter.WriteAttributeString("href", feed.Uri.OriginalString);
 			this.XmlWriter.WriteEndElement();
 
 			this.XmlWriter.WriteStartElement("link");
-			this.XmlWriter.WriteAttributeString("href", feed.FeedUri.ToString());
+			this.XmlWriter.WriteAttributeString("href", feed.FeedUri.OriginalString);
 			this.XmlWriter.WriteAttributeString("rel", "self");
 			this.XmlWriter.WriteEndElement();
 
@@ -80,7 +80,7 @@ namespace nJupiter.Web.Syndication {
 			}
 			if(item.Uri != null) {
 				this.XmlWriter.WriteStartElement("link");
-				this.XmlWriter.WriteAttributeString("href", item.Uri.ToString());
+				this.XmlWriter.WriteAttributeString("href", item.Uri.OriginalString);
 				this.XmlWriter.WriteEndElement();
 			}
 			if(item.Author != null) {
