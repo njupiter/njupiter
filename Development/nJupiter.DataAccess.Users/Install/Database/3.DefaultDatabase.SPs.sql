@@ -384,7 +384,7 @@ AS
 	IF EXISTS (
 		SELECT * 
 		FROM dbo.USER_User 
-		WHERE Domain = @chvDomain AND Username = @chvnUserName AND UserID <> @guidUserId)
+		WHERE Domain = @chvDomain AND Username = @chvnUsername AND UserID <> @guidUserId)
 		-- Username taken.
 		SELECT 1 STATUS, NULL UserId	
 	ELSE IF EXISTS (
@@ -403,7 +403,7 @@ AS
 	BEGIN	
 		-- Inserting new user.
 		INSERT dbo.USER_User(UserID, Username, Domain)
-		VALUES(@guidUserId, @chvnUserName, @chvDomain)
+		VALUES(@guidUserId, @chvnUsername, @chvDomain)
 
 		SELECT 0 STATUS, @guidUserId UserId
 	END
