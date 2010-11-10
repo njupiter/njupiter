@@ -235,7 +235,7 @@ namespace nJupiter.Web {
 			return AddQueryParams(path, UrlHandler.GetQueryString(url, key));
 		}
 
-		// Fix so even non epi 4.6 components works correctly with friendly url
+		[Obsolete("Originaly used to get around an Friendly Url Rewriter in an old CMS. Use System.Web.HttpContext.Current.Request.Path instead")]
 		public static string CurrentPath {
 			get {
 				if(HttpContext.Current.Items["FriendlyUrlModule.CurrentFriendlyUrl"] != null)
@@ -244,7 +244,7 @@ namespace nJupiter.Web {
 			}
 		}
 
-		// Fix so even non epi 4.6 components works correctly with friendly url
+		[Obsolete("Originaly used to get around an Friendly Url Rewriter in an old CMS. System.Web.HttpContext.Current.Request.QueryString instead")]
 		public static NameValueCollection CurrentQueryString {
 			get {
 				if(HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentQueryString"] == null) {
@@ -258,7 +258,7 @@ namespace nJupiter.Web {
 			}
 		}
 
-		// Fix so even non epi 4.6 components works correctly with friendly url
+		[Obsolete("Originaly used to get around an Friendly Url Rewriter in an old CMS. System.Web.HttpContext.Current.Request.Url.PathAndQuery instead")]
 		public static string CurrentPathAndQuery {
 			get {
 				NameValueCollection queryString = CurrentQueryString;
@@ -268,14 +268,14 @@ namespace nJupiter.Web {
 			}
 		}
 
-		// Fix so even non epi 4.6 components works correctly with friendly url
+		[Obsolete("Originaly used to get around an Friendly Url Rewriter in an old CMS. System.Web.HttpContext.Current.Request.Url.Form instead")]
 		public static NameValueCollection CurrentForm {
 			get {
 				if(HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentForm"] == null) {
 					if(HttpContext.Current.Items["FriendlyUrlModule.CurrentFriendlyUrl"] != null) {
 						HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentForm"] = UrlHandler.RemoveQueryParams(HttpContext.Current.Request.Form, "id", "epslanguage");
 					} else {
-						return HttpContext.Current.Request.QueryString;
+						return HttpContext.Current.Request.Form;
 					}
 				}
 				return HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentForm"] as NameValueCollection;
