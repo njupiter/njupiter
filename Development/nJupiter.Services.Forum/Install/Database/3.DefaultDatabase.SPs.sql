@@ -64,24 +64,24 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_DeleteCategories
+Name:			dbo.FORUM_DeleteCategories
 Description:	Deletes categories
-Input:		@guidID
-		@chvnDomain
-		@chvnName
+Input:			@guidID
+				@chvnDomain
+				@chvnName
 Revision history:
 	2005-04-13	Kai de Leeuw 	Created
 */
 CREATE PROC dbo.FORUM_DeleteCategories
-	@guidID	UNIQUEIDENTIFIER	= NULL,
-	@chvnDomain 	NVARCHAR(100) 	= NULL,
-	@chvnName 	NVARCHAR(100) 	= NULL
+	@guidID			UNIQUEIDENTIFIER	= NULL,
+	@chvnDomain 	NVARCHAR(100) 		= NULL,
+	@chvnName		NVARCHAR(100) 		= NULL
 AS
 	SET NOCOUNT ON
 
 	EXEC dbo.FORUM_DeletePosts
-		@guidCategoryID	= @guidID,
-		@chvnDomain		= @chvnDomain,
+		@guidCategoryID		= @guidID,
+		@chvnDomain			= @chvnDomain,
 		@chvnCategoryName	= @chvnName
 
 	DELETE dbo.FORUM_Category
@@ -100,10 +100,10 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_DeleteCategoryAttribute
+Name:			dbo.FORUM_DeleteCategoryAttribute
 Description:	Deletes a category attribute
-Input:		@chvAttributeName
-		@guidCategoryID
+Input:			@chvAttributeName
+				@guidCategoryID
 Revision history:
 	2005-04-13	Kai de Leeuw 	Created
 	2006-02-21	Kai de Leeuw	Changed the parameter to be an attribute name instead of an id
@@ -130,10 +130,10 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_DeletePostAttribute
+Name:			dbo.FORUM_DeletePostAttribute
 Description:	Deletes a post attribute
-Input:		@chvAttributeName
-		@guidPostID
+Input:			@chvAttributeName
+				@guidPostID
 Revision history:
 	2005-04-13	Kai de Leeuw 	Created
 	2006-02-21	Kai de Leeuw	Changed the parameter to be an attribute name instead of an id
@@ -160,30 +160,30 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_DeletePosts
+Name:			dbo.FORUM_DeletePosts
 Description:	Deletes posts
-Input:		@guidID
-		@bitDeleteOnlyChildren
-		@guidCategoryID
-		@chvnDomain
-		@chvnCategoryName
-		@dteUntil
+Input:			@guidID
+				@bitDeleteOnlyChildren
+				@guidCategoryID
+				@chvnDomain
+				@chvnCategoryName
+				@dteUntil
 Revision history:
 	2005-04-13	Kai de Leeuw 	Created
 */
 CREATE PROC dbo.FORUM_DeletePosts
-	@guidID		UNIQUEIDENTIFIER	= NULL,
-	@bitDeleteOnlyChildren	BIT			= NULL,
-	@guidCategoryID 	UNIQUEIDENTIFIER 	= NULL,
-	@chvnDomain 		NVARCHAR(100) 	= NULL,
-	@chvnCategoryName 	NVARCHAR(100) 	= NULL,
-	@dteUntil		DATETIME		= NULL
+	@guidID					UNIQUEIDENTIFIER	= NULL,
+	@bitDeleteOnlyChildren	BIT					= NULL,
+	@guidCategoryID 		UNIQUEIDENTIFIER 	= NULL,
+	@chvnDomain 			NVARCHAR(100) 		= NULL,
+	@chvnCategoryName 		NVARCHAR(100) 		= NULL,
+	@dteUntil				DATETIME			= NULL
 AS
 	SET NOCOUNT ON
 
 	DECLARE	@intNumberOfRows		INT,
 			@intTotalNumberOfRows	INT
-	DECLARE 	@tblAncestorPost	TABLE (
+	DECLARE @tblAncestorPost		TABLE (
 		ID 	UNIQUEIDENTIFIER PRIMARY KEY)
 
 	IF @guidID IS NULL
@@ -242,62 +242,62 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_FilterCategories
+Name:			dbo.FORUM_FilterCategories
 Description:	Filters categories
-Input:		@chvnDomain
-		@guidID
-		@guidPostID
-		@chvnName
-		@bitIncludeHidden
-		@bitGetAttributes
-		@bitPostIncludeHidden
-		@dtePostDateFilterFrom
-		@dtePostDateFilterTo
-		@intPostDateFilterColumn
-		@intPostLevels
-		@intPostLimitSize
-		@intPostLimitSortColumn
-		@chvPostLimitSortAttributeName
-		@chvPostLimitSortAttributeDefaultValue
-		@bitPostLimitSortDirectionAsc
-		@intPostLimitPage
-		@bitPostGetAttributes
+Input:			@chvnDomain
+				@guidID
+				@guidPostID
+				@chvnName
+				@bitIncludeHidden
+				@bitGetAttributes
+				@bitPostIncludeHidden
+				@dtePostDateFilterFrom
+				@dtePostDateFilterTo
+				@intPostDateFilterColumn
+				@intPostLevels
+				@intPostLimitSize
+				@intPostLimitSortColumn
+				@chvPostLimitSortAttributeName
+				@chvPostLimitSortAttributeDefaultValue
+				@bitPostLimitSortDirectionAsc
+				@intPostLimitPage
+				@bitPostGetAttributes
 Revision history:
 	2005-04-11	Kai de Leeuw 	Created
 */
 CREATE PROC dbo.FORUM_FilterCategories
-	@chvnDomain 				VARCHAR(100) 		= NULL,
-	@guidID 				UNIQUEIDENTIFIER 	= NULL,
-	@guidPostID				UNIQUEIDENTIFIER	= NULL,
-	@chvnName 				NVARCHAR(100) 	= NULL,
-	@bitIncludeHidden 			BIT 			= NULL,
-	@bitGetAttributes 			BIT 			= NULL,
-	@bitPostIncludeHidden			BIT			= NULL,
-	@dtePostDateFilterFrom			DATETIME		= NULL,
-	@dtePostDateFilterTo			DATETIME		= NULL,
-	@intPostDateFilterColumn		INT			= NULL,
-	@intPostLevels 				INT 			= NULL,
-	@intPostLimitSize 			INT 			= NULL,
-	@intPostLimitSortColumn 		INT 			= NULL,
-	@chvPostLimitSortAttributeName		VARCHAR(50)		= NULL,
-	@chvnPostLimitSortAttributeDefaultValue	NVARCHAR(4000)	= NULL,
-	@bitPostLimitSortDirectionAsc 		BIT 			= NULL,
-	@intPostLimitPage 			INT 			= NULL,
-	@bitPostGetAttributes 			BIT 			= NULL
+	@chvnDomain 							VARCHAR(100)		= NULL,
+	@guidID 								UNIQUEIDENTIFIER	= NULL,
+	@guidPostID								UNIQUEIDENTIFIER	= NULL,
+	@chvnName 								NVARCHAR(100) 		= NULL,
+	@bitIncludeHidden 						BIT 				= NULL,
+	@bitGetAttributes 						BIT 				= NULL,
+	@bitPostIncludeHidden					BIT					= NULL,
+	@dtePostDateFilterFrom					DATETIME			= NULL,
+	@dtePostDateFilterTo					DATETIME			= NULL,
+	@intPostDateFilterColumn				INT					= NULL,
+	@intPostLevels 							INT 				= NULL,
+	@intPostLimitSize 						INT 				= NULL,
+	@intPostLimitSortColumn 				INT 				= NULL,
+	@chvPostLimitSortAttributeName			VARCHAR(50)			= NULL,
+	@chvnPostLimitSortAttributeDefaultValue	NVARCHAR(4000)		= NULL,
+	@bitPostLimitSortDirectionAsc 			BIT 				= NULL,
+	@intPostLimitPage 						INT 				= NULL,
+	@bitPostGetAttributes 					BIT 				= NULL
 AS
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	DECLARE 	@tblResultCategory	TABLE (
-		ID 		UNIQUEIDENTIFIER UNIQUE NULL,
-		Name 		NVARCHAR(100) NULL,
-		Domain		NVARCHAR(100) NULL,
+	DECLARE		@tblResultCategory	TABLE (
+		ID 				UNIQUEIDENTIFIER UNIQUE NULL,
+		Name 			NVARCHAR(100) NULL,
+		Domain			NVARCHAR(100) NULL,
 		Visible 		BIT NULL,
 		RootPostCount 	INT NULL,
-		Timestamp	BINARY(8) NULL,
-		Row		INT IDENTITY PRIMARY KEY)
+		Timestamp		BINARY(8) NULL,
+		Row				INT IDENTITY PRIMARY KEY)
 
-	DECLARE 	@intLoopIndex	INT
+	DECLARE 	@intLoopIndex		INT
 
 	IF @guidPostID IS NOT NULL
 		INSERT @tblResultCategory(ID, Name, Domain, Visible, RootPostCount, Timestamp)
@@ -335,16 +335,16 @@ AS
 	IF @intPostLevels IS NULL OR @intPostLevels > 0
 	BEGIN
 		CREATE TABLE dbo.#CategoryResultPost (
-			ID 		UNIQUEIDENTIFIER PRIMARY KEY,
+			ID 					UNIQUEIDENTIFIER PRIMARY KEY,
 			EffectivelyVisible	BIT NULL)
 		DECLARE 	@tblPagingTotalCount	TABLE (
-			ID 				UNIQUEIDENTIFIER NULL,
+			ID 							UNIQUEIDENTIFIER NULL,
 			PagingTotalNumberOfPosts 	INT NULL)
 
 		WHILE @intLoopIndex > 0
 		BEGIN
 			DECLARE 	@intPagingTotalNumberOfPosts 	INT,
-					@guidLoopID			UNIQUEIDENTIFIER
+						@guidLoopID						UNIQUEIDENTIFIER
 
 			SELECT 	@guidLoopID 	= ID,
 					@intLoopIndex 	= @intLoopIndex - 1
@@ -353,19 +353,19 @@ AS
 
 			INSERT dbo.#CategoryResultPost(ID, EffectivelyVisible)
 			EXEC @intPagingTotalNumberOfPosts = dbo.FORUM_FilterPosts
-				@guidCategoryID 			= @guidLoopID,
-				@intLevels 				= @intPostLevels,
-				@bitIncludeHidden 			= @bitPostIncludeHidden,
-				@dteDateFilterFrom			= @dtePostDateFilterFrom,
-				@dteDateFilterTo			= @dtePostDateFilterTo,
-				@intDateFilterColumn			= @intPostDateFilterColumn,
-				@intLimitSize 				= @intPostLimitSize,
-				@intLimitSortColumn 			= @intPostLimitSortColumn,
-				@chvLimitSortAttributeName		= @chvPostLimitSortAttributeName,
+				@guidCategoryID 					= @guidLoopID,
+				@intLevels 							= @intPostLevels,
+				@bitIncludeHidden 					= @bitPostIncludeHidden,
+				@dteDateFilterFrom					= @dtePostDateFilterFrom,
+				@dteDateFilterTo					= @dtePostDateFilterTo,
+				@intDateFilterColumn				= @intPostDateFilterColumn,
+				@intLimitSize 						= @intPostLimitSize,
+				@intLimitSortColumn 				= @intPostLimitSortColumn,
+				@chvLimitSortAttributeName			= @chvPostLimitSortAttributeName,
 				@chvnLimitSortAttributeDefaultValue	= @chvnPostLimitSortAttributeDefaultValue,
-				@bitLimitSortDirectionAsc		= @bitPostLimitSortDirectionAsc,
-				@intLimitPage 				= @intPostLimitPage,
-				@bitGetOnlyMetaData 			= '1'
+				@bitLimitSortDirectionAsc			= @bitPostLimitSortDirectionAsc,
+				@intLimitPage 						= @intPostLimitPage,
+				@bitGetOnlyMetaData 				= '1'
 
 			INSERT @tblPagingTotalCount(ID, PagingTotalNumberOfPosts)
 			VALUES(@guidLoopID, @intPagingTotalNumberOfPosts)
@@ -414,30 +414,31 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_FilterPosts
+Name:			dbo.FORUM_FilterPosts
 Description:	Filters posts
-Input:		@guidID
-		@guidImmediateDescendantID
-		@guidRootDescendantID
-		@bitGetOnlyChildren
-		@guidCategoryID
-		@chvnCategoryName
-		@chvnDomain
-		@bitIncludeHidden
-		@dteDateFilterFrom
-		@dteDateFilterTo
-		@intDateFilterColumn
-		@intLevels
-		@chvnSearchText
-		@intLimitSize
-		@intLimitSortColumn
-		@chvLimitSortAttributeName
-		@chvnLimitSortAttributeDefaultValue
-		@bitLimitSortDirectionAsc
-		@intLimitPage
-		@bitGetOnlyMetaData
-		@bitGetAttributes
-		@txtnPostsSearchQuery
+Input:			@guidID
+				@guidImmediateDescendantID
+				@guidRootDescendantID
+				@bitGetOnlyChildren
+				@bitGetNonThreaded
+				@guidCategoryID
+				@chvnCategoryName
+				@chvnDomain
+				@bitIncludeHidden
+				@dteDateFilterFrom
+				@dteDateFilterTo
+				@intDateFilterColumn
+				@intLevels
+				@chvnSearchText
+				@intLimitSize
+				@intLimitSortColumn
+				@chvLimitSortAttributeName
+				@chvnLimitSortAttributeDefaultValue
+				@bitLimitSortDirectionAsc
+				@intLimitPage
+				@bitGetOnlyMetaData
+				@bitGetAttributes
+				@txtnPostsSearchQuery
 Revision history:
 	2005-04-11	Kai de Leeuw 	Created
 */
@@ -446,52 +447,53 @@ Revision history:
 --search on levels
 --eliminate emptying the @tblUnFinishedBranch table
 CREATE PROC dbo.FORUM_FilterPosts
-	@guidID 				UNIQUEIDENTIFIER 	= NULL,
-	@guidImmediateDescendantID 		UNIQUEIDENTIFIER 	= NULL,
-	@guidRootDescendantID 		UNIQUEIDENTIFIER 	= NULL,
-	@bitGetOnlyChildren 			BIT 			= NULL,
-	@guidCategoryID 			UNIQUEIDENTIFIER 	= NULL,
-	@chvnCategoryName 			NVARCHAR(100) 	= NULL,
-	@chvnDomain 				NVARCHAR(100) 	= NULL,
-	@bitIncludeHidden 			BIT 			= NULL,
-	@dteDateFilterFrom			DATETIME		= NULL,
-	@dteDateFilterTo			DATETIME		= NULL,
-	@intDateFilterColumn			INT			= NULL,
-	@intLevels 				INT 			= NULL,
-	@chvnSearchText 			NVARCHAR(4000) 	= NULL,
-	@chvUserIdentity			VARCHAR(255)		= NULL,
-	@intLimitSize 				INT 			= NULL,
-	@intLimitSortColumn 			INT 			= NULL,
-	@chvLimitSortAttributeName		VARCHAR(50)		= NULL,
-	@chvnLimitSortAttributeDefaultValue	NVARCHAR(4000)	= NULL,
-	@bitLimitSortDirectionAsc 		BIT 			= NULL,
-	@intLimitPage 				INT 			= NULL,
-	@bitGetOnlyMetaData 			BIT 			= NULL,
-	@bitGetAttributes			BIT			= NULL,
-	@txtnPostsSearchQuery			NTEXT			= NULL
+	@guidID 							UNIQUEIDENTIFIER 	= NULL,
+	@guidImmediateDescendantID 			UNIQUEIDENTIFIER 	= NULL,
+	@guidRootDescendantID 				UNIQUEIDENTIFIER 	= NULL,
+	@bitGetOnlyChildren 				BIT 				= NULL,
+	@bitGetNonThreaded					BIT					= NULL,
+	@guidCategoryID 					UNIQUEIDENTIFIER 	= NULL,
+	@chvnCategoryName 					NVARCHAR(100) 		= NULL,
+	@chvnDomain 						NVARCHAR(100) 		= NULL,
+	@bitIncludeHidden 					BIT 				= NULL,
+	@dteDateFilterFrom					DATETIME			= NULL,
+	@dteDateFilterTo					DATETIME			= NULL,
+	@intDateFilterColumn				INT					= NULL,
+	@intLevels 							INT 				= NULL,
+	@chvnSearchText 					NVARCHAR(4000) 		= NULL,
+	@chvUserIdentity					VARCHAR(255)		= NULL,
+	@intLimitSize 						INT 				= NULL,
+	@intLimitSortColumn 				INT 				= NULL,
+	@chvLimitSortAttributeName			VARCHAR(50)			= NULL,
+	@chvnLimitSortAttributeDefaultValue	NVARCHAR(4000)		= NULL,
+	@bitLimitSortDirectionAsc 			BIT 				= NULL,
+	@intLimitPage 						INT 				= NULL,
+	@bitGetOnlyMetaData 				BIT 				= NULL,
+	@bitGetAttributes					BIT					= NULL,
+	@txtnPostsSearchQuery				NTEXT				= NULL
 AS
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	DECLARE	@tblUnFinishedBranch	TABLE (
-		ID 		UNIQUEIDENTIFIER PRIMARY KEY,
+	DECLARE		@tblUnFinishedBranch	TABLE (
+		ID 					UNIQUEIDENTIFIER PRIMARY KEY,
 		EffectivelyVisible	BIT NULL,
-		Rank 		SMALLINT NULL)
+		Rank 				SMALLINT NULL)
 
-	DECLARE 	@tblResultPost		TABLE (
-		ID 		UNIQUEIDENTIFIER UNIQUE NULL,
-		Rank 		SMALLINT NULL,
+	DECLARE 	@tblResultPost			TABLE (
+		ID 					UNIQUEIDENTIFIER UNIQUE NULL,
+		Rank 				SMALLINT NULL,
 		EffectivelyVisible	BIT NULL,
-		Row 		INT IDENTITY PRIMARY KEY)
+		Row 				INT IDENTITY PRIMARY KEY)
 
-	DECLARE 	@intStartRow 			INT,
-			@intWhereToStart 		INT,
-			@intHowMany 			INT,
-			@intPagingTotalNumberOfPosts 	INT,
-			@intOldLevels 			INT,
-			@bitFetchBranches 		BIT,
-			@guidSingleID 			UNIQUEIDENTIFIER,
-			@bitInsertSingleID		BIT
+	DECLARE 	@intStartRow 					INT,
+				@intWhereToStart 				INT,
+				@intHowMany 					INT,
+				@intPagingTotalNumberOfPosts 	INT,
+				@intOldLevels 					INT,
+				@bitFetchBranches 				BIT,
+				@guidSingleID 					UNIQUEIDENTIFIER,
+				@bitInsertSingleID				BIT
 
 	IF NOT(@txtnPostsSearchQuery IS NULL AND @chvnSearchText IS NULL AND @chvUserIdentity IS NULL)
 		CREATE TABLE dbo.#SearchedPost (
@@ -872,6 +874,118 @@ AS
 				(@bitIncludeHidden <> '0' OR
 					(@guidCategoryID IS NULL AND @chvnCategoryName IS NULL AND c.Visible = '1' AND root.Visible = '1' AND relation.DescendantVisible = '1') OR
 					((@guidCategoryID IS NOT NULL OR @chvnCategoryName IS NOT NULL) AND root.Visible = '1' AND relation.DescendantVisible = '1'))
+	ELSE IF @bitGetNonThreaded = '1'
+		IF @guidSingleID IS NOT NULL
+			INSERT @tblUnFinishedBranch(ID, EffectivelyVisible)
+			SELECT @guidSingleID, '1'
+			FROM dbo.FORUM_Post p
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON p.ID = pdi.ID
+			WHERE p.ID = @guidSingleID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE p.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE p.TimePosted END <= @dteDateFilterTo)
+			UNION ALL
+			SELECT relation.DescendantPostID, relation.DescendantVisible
+			FROM dbo.FORUM_PostRelation relation
+				JOIN dbo.FORUM_Post rootdescendant ON relation.DescendantPostID = rootdescendant.ID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON rootdescendant.ID = pdi.ID
+			WHERE relation.AncestorPostID = @guidSingleID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootdescendant.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootdescendant.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR relation.DescendantVisible = '1')
+		ELSE IF @guidID IS NOT NULL
+			INSERT @tblUnFinishedBranch(ID, EffectivelyVisible)
+			SELECT p.ID, p.Visible
+			FROM dbo.FORUM_Post p
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON p.ID = pdi.ID
+			WHERE p.ParentID = @guidID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE p.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE p.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR p.Visible = '1')
+			UNION ALL
+			SELECT relation.DescendantPostID, relation.DescendantVisible
+			FROM dbo.FORUM_PostRelation relation
+				JOIN dbo.FORUM_Post child ON relation.AncestorPostID = child.ID
+				JOIN dbo.FORUM_Post childdescendant ON relation.DescendantPostID = childdescendant.ID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON childdescendant.ID = pdi.ID
+			WHERE child.ParentID = @guidID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE childdescendant.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE childdescendant.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR relation.DescendantVisible = '1')
+		ELSE IF @guidImmediateDescendantID IS NOT NULL
+			INSERT @tblUnFinishedBranch(ID, EffectivelyVisible)
+			SELECT parentchild.ID, parentchild.Visible
+			FROM dbo.FORUM_Post child
+				JOIN dbo.FORUM_Post parentchild ON child.ParentID = parentchild.ParentID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON parentchild.ID = pdi.ID
+			WHERE child.ID = @guidImmediateDescendantID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE parentchild.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE parentchild.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR parentchild.Visible = '1')
+			UNION ALL
+			SELECT relation.DescendantPostID, relation.DescendantVisible
+			FROM dbo.FORUM_Post child
+				JOIN dbo.FORUM_Post parentchild ON child.ParentID = parentchild.ParentID
+				JOIN dbo.FORUM_PostRelation relation ON parentchild.ID = relation.AncestorPostID
+				JOIN dbo.FORUM_Post parentchilddescendant ON relation.DescendantPostID = parentchilddescendant.ID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON parentchilddescendant.ID = pdi.ID
+			WHERE child.ID = @guidImmediateDescendantID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE parentchilddescendant.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE parentchilddescendant.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR relation.DescendantVisible = '1')
+		ELSE IF @guidRootDescendantID IS NOT NULL
+			INSERT @tblUnFinishedBranch(ID, EffectivelyVisible)
+			SELECT rootchild.ID, rootchild.Visible
+			FROM dbo.FORUM_PostRelation pr
+				JOIN dbo.FORUM_Post rootchild ON pr.AncestorPostID = rootchild.ParentID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON rootchild.ID = pdi.ID
+			WHERE pr.DescendantPostID = @guidRootDescendantID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootchild.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootchild.TimePosted END <= @dteDateFilterTo) AND
+				NOT EXISTS (
+					SELECT *
+					FROM dbo.FORUM_PostRelation 
+					WHERE DescendantPostID = pr.AncestorPostID) AND
+				(@bitIncludeHidden <> '0' OR rootchild.Visible = '1')
+			UNION ALL
+			SELECT relation.DescendantPostID, relation.DescendantVisible
+			FROM dbo.FORUM_PostRelation pr
+				JOIN dbo.FORUM_Post rootchild ON pr.AncestorPostID = rootchild.ParentID
+				JOIN dbo.FORUM_PostRelation relation ON rootchild.ID = relation.AncestorPostID
+				JOIN dbo.FORUM_Post rootchilddescendant ON relation.DescendantPostID = rootchilddescendant.ID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON rootchilddescendant.ID = pdi.ID
+			WHERE pr.DescendantPostID = @guidRootDescendantID AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootchilddescendant.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootchilddescendant.TimePosted END <= @dteDateFilterTo) AND
+				NOT EXISTS (
+					SELECT *
+					FROM dbo.FORUM_PostRelation
+					WHERE DescendantPostID = pr.AncestorPostID) AND
+				(@bitIncludeHidden <> '0' OR relation.DescendantVisible = '1')
+		ELSE
+			INSERT @tblUnFinishedBranch(ID, EffectivelyVisible)
+			SELECT root.ID, CASE WHEN @guidCategoryID IS NULL AND @chvnCategoryName IS NULL THEN c.Visible & root.Visible ELSE root.Visible END
+			FROM dbo.FORUM_Post root
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON root.ID = pdi.ID
+				JOIN dbo.FORUM_Category c ON root.CategoryID = c.ID
+			WHERE c.Domain = ISNULL(@chvnDomain, c.Domain) AND root.CategoryID = ISNULL(@guidCategoryID, root.CategoryID) AND c.Name = ISNULL(@chvnCategoryName, c.Name) AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE root.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE root.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR
+					(@guidCategoryID IS NULL AND @chvnCategoryName IS NULL AND c.Visible = '1' AND root.Visible = '1') OR
+					((@guidCategoryID IS NOT NULL OR @chvnCategoryName IS NOT NULL) AND root.Visible = '1'))
+			UNION ALL
+			SELECT relation.DescendantPostID, CASE WHEN @guidCategoryID IS NULL AND @chvnCategoryName IS NULL THEN c.Visible & root.Visible & relation.DescendantVisible ELSE root.Visible & relation.DescendantVisible END
+			FROM dbo.FORUM_Post root
+				JOIN dbo.FORUM_Category c ON root.CategoryID = c.ID
+				JOIN dbo.FORUM_PostRelation relation ON root.ID = relation.AncestorPostID
+				JOIN dbo.FORUM_Post rootdescendant ON relation.DescendantPostID = rootdescendant.ID
+				JOIN dbo.FORUM_PostDerivedInformation pdi ON rootdescendant.ID = pdi.ID
+			WHERE c.Domain = ISNULL(@chvnDomain, c.Domain) AND root.CategoryID = ISNULL(@guidCategoryID, root.CategoryID) AND c.Name = ISNULL(@chvnCategoryName, c.Name) AND
+				(@dteDateFilterFrom IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootdescendant.TimePosted END >= @dteDateFilterFrom) AND
+				(@dteDateFilterTo IS NULL OR CASE WHEN @intDateFilterColumn = 1 THEN CASE WHEN @bitIncludeHidden <> '0' THEN pdi.TimeLastPostAll ELSE pdi.TimeLastPostVisible END ELSE rootdescendant.TimePosted END <= @dteDateFilterTo) AND
+				(@bitIncludeHidden <> '0' OR
+					(@guidCategoryID IS NULL AND @chvnCategoryName IS NULL AND c.Visible = '1' AND root.Visible = '1' AND relation.DescendantVisible = '1') OR
+					((@guidCategoryID IS NOT NULL OR @chvnCategoryName IS NOT NULL) AND root.Visible = '1' AND relation.DescendantVisible = '1'))
 	ELSE IF @guidSingleID IS NOT NULL
 	BEGIN
 		SELECT @bitInsertSingleID	= '1'
@@ -942,14 +1056,14 @@ AS
 	IF NOT(@txtnPostsSearchQuery IS NULL AND @chvnSearchText IS NULL AND @chvUserIdentity IS NULL)
 		DROP TABLE dbo.#SearchedPost
 
-	IF @intLimitSize IS NOT NULL AND @intLevels <> 1 AND @txtnPostsSearchQuery IS NULL AND @chvnSearchText IS NULL AND @chvUserIdentity IS NULL
+	IF @intLimitSize IS NOT NULL AND @bitGetNonThreaded <> '1' AND @intLevels <> 1 AND @txtnPostsSearchQuery IS NULL AND @chvnSearchText IS NULL AND @chvUserIdentity IS NULL
 		SELECT	@intOldLevels 		= @intLevels,
-				@intLevels 		= 1,
+				@intLevels 			= 1,
 				@bitFetchBranches 	= '1'
 
 	WHILE 1 = 1
 	BEGIN
-		IF @intLevels <> 1 AND @txtnPostsSearchQuery IS NULL AND @chvnSearchText IS NULL AND @chvUserIdentity IS NULL
+		IF @intLevels <> 1 AND @bitGetNonThreaded <> '1' AND @txtnPostsSearchQuery IS NULL AND @chvnSearchText IS NULL AND @chvUserIdentity IS NULL
 			INSERT @tblUnFinishedBranch(ID, EffectivelyVisible)
 			SELECT descendantpdi.ID, ancestor.EffectivelyVisible & relation.DescendantVisible
 			FROM @tblUnFinishedBranch ancestor
@@ -1360,7 +1474,7 @@ AS
 			FROM @tblResultPost
 			WHERE Row >= @intWhereToStart
 
-			SELECT	@intLevels 		= @intOldLevels,
+			SELECT	@intLevels 			= @intOldLevels,
 					@intLimitSize 		= NULL,
 					@bitFetchBranches	= '0'
 		END
@@ -1422,7 +1536,7 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_GetCategoryAttributes
+Name:			dbo.FORUM_GetCategoryAttributes
 Description:	Retrieves the category attributes
 Input:
 Revision history:
@@ -1447,7 +1561,7 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_GetDomains
+Name:			dbo.FORUM_GetDomains
 Description:	Retrieves all used domains
 Input:
 Revision history:
@@ -1471,26 +1585,26 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_GetNumberOfPosts
+Name:			dbo.FORUM_GetNumberOfPosts
 Description:	Gets number of posts
-Input:		@guidPostID
-		@guidCategoryID
-		@chvnCategoryName
-		@chvnDomain
-		@bitIncludeHidden
-		@dteDateFilterFrom
-		@dteDateFilterTo
+Input:			@guidPostID
+				@guidCategoryID
+				@chvnCategoryName
+				@chvnDomain
+				@bitIncludeHidden
+				@dteDateFilterFrom
+				@dteDateFilterTo
 Revision history:
 	2007-09-03	Kai de Leeuw 	Created
 */
 CREATE PROC dbo.FORUM_GetNumberOfPosts
 	@guidPostID 		UNIQUEIDENTIFIER 	= NULL,
 	@guidCategoryID 	UNIQUEIDENTIFIER 	= NULL,
-	@chvnCategoryName 	NVARCHAR(100) 	= NULL,
-	@chvnDomain 		NVARCHAR(100) 	= NULL,
-	@bitIncludeHidden 	BIT 			= NULL,
-	@dteDateFilterFrom	DATETIME		= NULL,
-	@dteDateFilterTo	DATETIME		= NULL
+	@chvnCategoryName 	NVARCHAR(100) 		= NULL,
+	@chvnDomain 		NVARCHAR(100) 		= NULL,
+	@bitIncludeHidden 	BIT 				= NULL,
+	@dteDateFilterFrom	DATETIME			= NULL,
+	@dteDateFilterTo	DATETIME			= NULL
 AS
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
@@ -1551,7 +1665,7 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_GetPostAttributes
+Name:			dbo.FORUM_GetPostAttributes
 Description:	Retrieves the post attributes
 Input:
 Revision history:
@@ -1576,26 +1690,26 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_MovePosts
+Name:			dbo.FORUM_MovePosts
 Description:	Moves posts
-Input:		@guidFromCategoryID
-		@chvnFromDomain
-		@chvnFromCategoryName
-		@guidToCategoryID
-		@chvnToDomain
-		@chvnToCategoryName
-		@dteUntil
+Input:			@guidFromCategoryID
+				@chvnFromDomain
+				@chvnFromCategoryName
+				@guidToCategoryID
+				@chvnToDomain
+				@chvnToCategoryName
+				@dteUntil
 Revision history:
 	2006-12-14	Kai de Leeuw 	Created
 */
 CREATE PROC dbo.FORUM_MovePosts
-	@guidFromCategoryID 		UNIQUEIDENTIFIER 	= NULL,
-	@chvnFromDomain 		NVARCHAR(100) 	= NULL,
-	@chvnFromCategoryName 	NVARCHAR(100) 	= NULL,
+	@guidFromCategoryID 	UNIQUEIDENTIFIER 	= NULL,
+	@chvnFromDomain 		NVARCHAR(100) 		= NULL,
+	@chvnFromCategoryName 	NVARCHAR(100) 		= NULL,
 	@guidToCategoryID 		UNIQUEIDENTIFIER 	= NULL,
-	@chvnToDomain 		NVARCHAR(100) 	= NULL,
-	@chvnToCategoryName 	NVARCHAR(100) 	= NULL,
-	@dteUntil			DATETIME		= NULL
+	@chvnToDomain 			NVARCHAR(100) 		= NULL,
+	@chvnToCategoryName 	NVARCHAR(100) 		= NULL,
+	@dteUntil				DATETIME			= NULL
 AS
 	SET NOCOUNT ON
 
@@ -1622,27 +1736,27 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_SaveCategory
+Name:			dbo.FORUM_SaveCategory
 Description:	Saves a category
-Input:		@guidID
-		@chvnName
-		@bitVisible
-		@chvnDomain
-		@tsTimestamp
+Input:			@guidID
+				@chvnName
+				@bitVisible
+				@chvnDomain
+				@tsTimestamp
 Return value:	1 - If the category name is not unique within the domain
-		2 - If the category was to be inserted and a domain has not been specified
-		3 - If the category was to be updated but has been deleted
-		4 - If the category has been concurrently updated
+				2 - If the category was to be inserted and a domain has not been specified
+				3 - If the category was to be updated but has been deleted
+				4 - If the category has been concurrently updated
 Revision history:
 	2005-04-11	Kai de Leeuw 	Created
 	2006-08-02	Kai de Leeuw	Added return codes
 */
 CREATE PROC dbo.FORUM_SaveCategory
-	@guidID 	UNIQUEIDENTIFIER,
-	@chvnName 	NVARCHAR(100),
+	@guidID 		UNIQUEIDENTIFIER,
+	@chvnName 		NVARCHAR(100),
 	@bitVisible 	BIT,
-	@chvnDomain 	NVARCHAR(100)	= NULL,
-	@tsTimestamp	TIMESTAMP		= NULL
+	@chvnDomain 	NVARCHAR(100)		= NULL,
+	@tsTimestamp	TIMESTAMP			= NULL
 AS
 	SET NOCOUNT ON
 
@@ -1671,8 +1785,8 @@ AS
 		ELSE
 			UPDATE dbo.FORUM_Category
 			SET 	Name 	= @chvnName,
-				Visible 	= @bitVisible,
-				Domain	= ISNULL(@chvnDomain, Domain)
+					Visible = @bitVisible,
+					Domain	= ISNULL(@chvnDomain, Domain)
 			WHERE ID = @guidID
 	END
 	ELSE
@@ -1693,12 +1807,12 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_SaveCategoryAttribute
+Name:			dbo.FORUM_SaveCategoryAttribute
 Description:	Saves a category attribute
-Input:		@chvAttributeName
-		@guidCategoryID
-		@chvnValue
-		@txtnExtendedValue
+Input:			@chvAttributeName
+				@guidCategoryID
+				@chvnValue
+				@txtnExtendedValue
 Revision history:
 	2005-04-11	Kai de Leeuw 	Created
 	2006-02-21	Kai de Leeuw	Changed the parameter to be an attribute name instead of an id
@@ -1706,14 +1820,14 @@ Revision history:
 CREATE PROC dbo.FORUM_SaveCategoryAttribute
 	@chvAttributeName 	VARCHAR(100),
 	@guidCategoryID 	UNIQUEIDENTIFIER,
-	@chvnValue 		NVARCHAR(3500),
+	@chvnValue 			NVARCHAR(3500),
 	@txtnExtendedValue 	NTEXT
 AS
 	SET NOCOUNT ON
 
 	UPDATE ca
-	SET 	Value 		= @chvnValue,
-		ExtendedValue 	= @txtnExtendedValue
+	SET 	Value 			= @chvnValue,
+			ExtendedValue 	= @txtnExtendedValue
 	FROM dbo.FORUM_CategoryAttribute ca
 		JOIN dbo.FORUM_CategoryAttributeType cat ON ca.CategoryAttributeTypeID = cat.ID
 	WHERE cat.Name = @chvAttributeName AND ca.CategoryID = @guidCategoryID
@@ -1735,26 +1849,26 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_SavePost
+Name:			dbo.FORUM_SavePost
 Description:	Saves a post
-Input:		@guidID
-		@chvUserIdentity
-		@chvnAuthor
-		@chvnTitle
-		@txtnBody
-		@bitVisible
-		@guidParentID
-		@guidCategoryID
-		@chvnDomain
-		@chvnCategoryName
-		@tsTimestamp
+Input:			@guidID
+				@chvUserIdentity
+				@chvnAuthor
+				@chvnTitle
+				@txtnBody
+				@bitVisible
+				@guidParentID
+				@guidCategoryID
+				@chvnDomain
+				@chvnCategoryName
+				@tsTimestamp
 Return value:	1 - If the specified category does not exist
-		2 - If the specified parent does not exist
-		3 - If the post to be updated is a child and a category has been specified (cannot promote a child to become a root)
-		4 - If the post was to be updated and a parent is specified (cannot move to another post)
-		5 - If the post was to be inserted and neither a category nor a parent has been specified
-		6 - If the post was to be updated but has been deleted
-		7 - If the post has been concurrently updated
+				2 - If the specified parent does not exist
+				3 - If the post to be updated is a child and a category has been specified (cannot promote a child to become a root)
+				4 - If the post was to be updated and a parent is specified (cannot move to another post)
+				5 - If the post was to be inserted and neither a category nor a parent has been specified
+				6 - If the post was to be updated but has been deleted
+				7 - If the post has been concurrently updated
 Revision history:
 	2005-04-11	Kai de Leeuw 	Created
 	2005-04-13	Kai de Leeuw 	Made it possible to move root posts between categories
@@ -1762,33 +1876,33 @@ Revision history:
 	2006-08-02	Kai de Leeuw	Added return codes
 */
 CREATE PROC dbo.FORUM_SavePost
-	@guidID 		UNIQUEIDENTIFIER,
+	@guidID 			UNIQUEIDENTIFIER,
 	@chvUserIdentity 	VARCHAR(255),
 	@chvnAuthor 		NVARCHAR(255),
-	@chvnTitle 		NVARCHAR(255),
-	@txtnBody 		NTEXT,
+	@chvnTitle 			NVARCHAR(255),
+	@txtnBody 			NTEXT,
 	@bitVisible 		BIT,
 	@guidParentID 		UNIQUEIDENTIFIER 	= NULL,
 	@guidCategoryID 	UNIQUEIDENTIFIER 	= NULL,
-	@chvnDomain 		NVARCHAR(100) 	= NULL,
-	@chvnCategoryName 	NVARCHAR(100) 	= NULL,
-	@tsTimestamp		TIMESTAMP		= NULL
+	@chvnDomain 		NVARCHAR(100) 		= NULL,
+	@chvnCategoryName 	NVARCHAR(100) 		= NULL,
+	@tsTimestamp		TIMESTAMP			= NULL
 AS
 	SET NOCOUNT ON
 
 	DECLARE	@guidActualCategoryID	UNIQUEIDENTIFIER,
-			@guidActualParentID	UNIQUEIDENTIFIER
+			@guidActualParentID		UNIQUEIDENTIFIER
 
 	SELECT 	@guidActualCategoryID	= CASE WHEN @guidCategoryID IS NOT NULL OR (@chvnDomain IS NOT NULL AND @chvnCategoryName IS NOT NULL) THEN
-							(SELECT ID
-							FROM dbo.FORUM_Category
-							WHERE ID = @guidCategoryID OR (Domain = @chvnDomain AND Name = @chvnCategoryName)) 
-						END,
+										(SELECT ID
+										FROM dbo.FORUM_Category
+										WHERE ID = @guidCategoryID OR (Domain = @chvnDomain AND Name = @chvnCategoryName)) 
+									END,
 			@guidActualParentID 	= CASE WHEN @guidParentID IS NOT NULL THEN
-							(SELECT ID
-							FROM dbo.FORUM_Post
-							WHERE ID = @guidParentID)
-						END
+										(SELECT ID
+										FROM dbo.FORUM_Post
+										WHERE ID = @guidParentID)
+									END
 
 	IF (@guidCategoryID IS NOT NULL OR (@chvnDomain IS NOT NULL AND @chvnCategoryName IS NOT NULL)) AND @guidActualCategoryID IS NULL
 		RETURN 1
@@ -1797,10 +1911,10 @@ AS
 	ELSE IF @tsTimestamp IS NOT NULL
 	BEGIN
 		DECLARE	@guidCurrentParentID	UNIQUEIDENTIFIER,
-				@tsCurrentTimestamp	TIMESTAMP
+				@tsCurrentTimestamp		TIMESTAMP
 
 		SELECT	@guidCurrentParentID	= ParentID,
-				@tsCurrentTimestamp	= Timestamp
+				@tsCurrentTimestamp		= Timestamp
 		FROM dbo.FORUM_Post
 		WHERE ID = @guidID
 
@@ -1815,11 +1929,11 @@ AS
 		ELSE
 			UPDATE dbo.FORUM_Post
 			SET 	UserIdentity 	= @chvUserIdentity,
-				Author 		= @chvnAuthor,
-				Title 		= @chvnTitle,
-				Body 		= @txtnBody,
-				Visible 		= @bitVisible,
-				CategoryID 	= ISNULL(@guidActualCategoryID, CategoryID)
+					Author 			= @chvnAuthor,
+					Title 			= @chvnTitle,
+					Body 			= @txtnBody,
+					Visible 		= @bitVisible,
+					CategoryID 		= ISNULL(@guidActualCategoryID, CategoryID)
 			WHERE ID = @guidID
 	END
 	ELSE IF @guidActualCategoryID IS NULL AND @guidActualParentID IS NULL
@@ -1839,12 +1953,12 @@ SET ANSI_NULLS OFF
 GO
 
 /*
-Name:		dbo.FORUM_SavePostAttribute
+Name:			dbo.FORUM_SavePostAttribute
 Description:	Saves a post attribute
-Input:		@chvAttributeName
-		@guidPostID
-		@chvnValue
-		@txtnExtendedValue
+Input:			@chvAttributeName
+				@guidPostID
+				@chvnValue
+				@txtnExtendedValue
 Revision history:
 	2005-04-11	Kai de Leeuw 	Created
 	2006-02-21	Kai de Leeuw	Changed the parameter to be an attribute name instead of an id
@@ -1852,14 +1966,14 @@ Revision history:
 CREATE PROC dbo.FORUM_SavePostAttribute
 	@chvAttributeName 	VARCHAR(100),
 	@guidPostID 		UNIQUEIDENTIFIER,
-	@chvnValue 		NVARCHAR(3500),
+	@chvnValue 			NVARCHAR(3500),
 	@txtnExtendedValue 	NTEXT
 AS
 	SET NOCOUNT ON
 
 	UPDATE pa
-	SET 	Value 		= @chvnValue,
-		ExtendedValue 	= @txtnExtendedValue
+	SET 	Value 			= @chvnValue,
+			ExtendedValue 	= @txtnExtendedValue
 	FROM dbo.FORUM_PostAttribute pa
 		JOIN dbo.FORUM_PostAttributeType pat ON pa.PostAttributeTypeID = pat.ID
 	WHERE pat.Name = @chvAttributeName AND pa.PostID = @guidPostID

@@ -215,6 +215,55 @@ namespace nJupiter.Services.Forum {
 		}
 		public abstract PagedPostsResult GetPosts(PostId id, PostType postType, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
 
+		public PostCollection GetNonThreadedPosts() {
+			return GetNonThreadedPosts((PostsResultConfiguration)null);
+		}
+		public PostCollection GetNonThreadedPosts(PostsResultConfiguration resultConfiguration) {
+			return this.GetNonThreadedPosts(resultConfiguration, null).Posts;
+		}
+		public abstract PagedPostsResult GetNonThreadedPosts(PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
+
+		public PostCollection GetNonThreadedPosts(string domain) {
+			return GetNonThreadedPosts(domain, (PostsResultConfiguration)null);
+		}
+		public PostCollection GetNonThreadedPosts(string domain, PostsResultConfiguration resultConfiguration) {
+			return GetNonThreadedPosts(domain, resultConfiguration, null).Posts;
+		}
+		public abstract PagedPostsResult GetNonThreadedPosts(string domain, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
+
+		public PostCollection GetNonThreadedPosts(CategoryId id) {
+			return GetNonThreadedPosts(id, null);
+		}
+		public PostCollection GetNonThreadedPosts(CategoryId id, PostsResultConfiguration resultConfiguration) {
+			return GetNonThreadedPosts(id, resultConfiguration, null).Posts;
+		}
+		public abstract PagedPostsResult GetNonThreadedPosts(CategoryId id, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
+
+		public PostCollection GetNonThreadedPosts(string domain, string categoryName) {
+			return GetNonThreadedPosts(domain, categoryName, null);
+		}
+		public PostCollection GetNonThreadedPosts(string domain, string categoryName, PostsResultConfiguration resultConfiguration) {
+			return GetNonThreadedPosts(domain, categoryName, resultConfiguration, null).Posts;
+		}
+		public abstract PagedPostsResult GetNonThreadedPosts(string domain, string categoryName, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
+
+		public PostCollection GetNonThreadedPosts(PostId id) {
+			return GetNonThreadedPosts(id, null);
+		}
+		public PostCollection GetNonThreadedPosts(PostId id, PostType postType) {
+			return GetNonThreadedPosts(id, postType, null);
+		}
+		public PostCollection GetNonThreadedPosts(PostId id, PostsResultConfiguration resultConfiguration) {
+			return GetNonThreadedPosts(id, resultConfiguration, null).Posts;
+		}
+		public PostCollection GetNonThreadedPosts(PostId id, PostType postType, PostsResultConfiguration resultConfiguration) {
+			return GetNonThreadedPosts(id, postType, resultConfiguration, null).Posts;
+		}
+		public PagedPostsResult GetNonThreadedPosts(PostId id, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
+			return GetNonThreadedPosts(id, DefaultPostType, resultConfiguration, pagingConfiguration);
+		}
+		public abstract PagedPostsResult GetNonThreadedPosts(PostId id, PostType postType, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration);
+
 		public int GetNumberOfPosts() {
 			return GetNumberOfPosts((NumberOfPostsResultConfiguration)null);
 		}

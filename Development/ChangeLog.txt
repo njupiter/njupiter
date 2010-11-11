@@ -11,6 +11,9 @@ NEW - New feature
 ===============================================================================
 Changes for upcoming version
 ===============================================================================
+**** Creuna.Services.Forum
+ENH: New method GetNonThreadedPosts on ForumDao, that gets posts in a flat 
+     fashion, not hierarchical or threaded that is.
 **** nJupiter.Text.SimpleTextParser
 NEW: A simple text parser added to nJupiter. Can for now only parse text by
      using regular expressions that can be configured in a config file that can

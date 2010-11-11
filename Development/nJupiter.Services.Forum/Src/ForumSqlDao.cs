@@ -95,6 +95,7 @@ namespace nJupiter.Services.Forum {
 		private const string SpParamNameVisible = "@bitVisible";
 		private const string SpParamNameDomain = "@chvnDomain";
 		private const string SpParamNameGetonlychildren = "@bitGetOnlyChildren";
+		private const string SpParamNameGetnonthreaded = "@bitGetNonThreaded";
 		private const string SpParamNameDeleteonlychildren = "@bitDeleteOnlyChildren";
 		private const string SpParamNameUntil = "@dteUntil";
 		private const string SpParamNameIncludehidden = "@bitIncludeHidden";
@@ -314,24 +315,24 @@ namespace nJupiter.Services.Forum {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			PagedPostsResult pagedPostsResult = GetPosts(id, GetIdParameterType(postType), false, null, null, resultConfiguration, pagingConfiguration, null);
+			PagedPostsResult pagedPostsResult = GetPosts(id, GetIdParameterType(postType), false, false, null, null, resultConfiguration, pagingConfiguration, null);
 			return pagedPostsResult.Posts.Count.Equals(0) ? null : ForumDao.CreatePostWithPagedPostsResultsInstance(pagedPostsResult.Posts[0], pagedPostsResult.TotalCount);
 		}
 
 		public override PagedPostsResult GetPosts(ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
-			return GetPosts(null, IdParameterType.None, false, null, null, resultConfiguration, pagingConfiguration, null);
+			return GetPosts(null, IdParameterType.None, false, false, null, null, resultConfiguration, pagingConfiguration, null);
 		}
 		public override PagedPostsResult GetPosts(string domain, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(domain == null) {
 				throw new ArgumentNullException(ParamNameDomain);
 			}
-			return GetPosts(null, IdParameterType.None, false, domain, null, resultConfiguration, pagingConfiguration, null);
+			return GetPosts(null, IdParameterType.None, false, false, domain, null, resultConfiguration, pagingConfiguration, null);
 		}
 		public override PagedPostsResult GetPosts(CategoryId id, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			return GetPosts(id, IdParameterType.Category, false, null, null, resultConfiguration, pagingConfiguration, null);
+			return GetPosts(id, IdParameterType.Category, false, false, null, null, resultConfiguration, pagingConfiguration, null);
 		}
 		public override PagedPostsResult GetPosts(string domain, string categoryName, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(domain == null) {
@@ -340,13 +341,44 @@ namespace nJupiter.Services.Forum {
 			if(categoryName == null) {
 				throw new ArgumentNullException(ParamNameCategoryname);
 			}
-			return GetPosts(null, IdParameterType.None, false, domain, categoryName, resultConfiguration, pagingConfiguration, null);
+			return GetPosts(null, IdParameterType.None, false, false, domain, categoryName, resultConfiguration, pagingConfiguration, null);
 		}
 		public override PagedPostsResult GetPosts(PostId id, PostType postType, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			return GetPosts(id, GetIdParameterType(postType), true, null, null, resultConfiguration, pagingConfiguration, null);
+			return GetPosts(id, GetIdParameterType(postType), true, false, null, null, resultConfiguration, pagingConfiguration, null);
+		}
+
+		public override PagedPostsResult GetNonThreadedPosts(PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
+			return GetPosts(null, IdParameterType.None, false, true, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, null);
+		}
+		public override PagedPostsResult GetNonThreadedPosts(string domain, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
+			if(domain == null) {
+				throw new ArgumentNullException(ParamNameDomain);
+			}
+			return GetPosts(null, IdParameterType.None, false, true, domain, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, null);
+		}
+		public override PagedPostsResult GetNonThreadedPosts(CategoryId id, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
+			if(id == null) {
+				throw new ArgumentNullException(ParamNameId);
+			}
+			return GetPosts(id, IdParameterType.Category, false, true, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, null);
+		}
+		public override PagedPostsResult GetNonThreadedPosts(string domain, string categoryName, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
+			if(domain == null) {
+				throw new ArgumentNullException(ParamNameDomain);
+			}
+			if(categoryName == null) {
+				throw new ArgumentNullException(ParamNameCategoryname);
+			}
+			return GetPosts(null, IdParameterType.None, false, true, domain, categoryName, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, null);
+		}
+		public override PagedPostsResult GetNonThreadedPosts(PostId id, PostType postType, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
+			if(id == null) {
+				throw new ArgumentNullException(ParamNameId);
+			}
+			return GetPosts(id, GetIdParameterType(postType), true, true, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, null);
 		}
 
 		public override int GetNumberOfPosts(NumberOfPostsResultConfiguration resultConfiguration) {
@@ -384,7 +416,7 @@ namespace nJupiter.Services.Forum {
 			if(searchCriteria == null) {
 				throw new ArgumentNullException(ParamNameSearchcriteria);
 			}
-			return GetPosts(null, IdParameterType.None, false, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
+			return GetPosts(null, IdParameterType.None, false, true, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
 		}
 		public override PagedPostsResult SearchPosts(string domain, SearchCriteria searchCriteria, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(domain == null) {
@@ -393,7 +425,7 @@ namespace nJupiter.Services.Forum {
 			if(searchCriteria == null) {
 				throw new ArgumentNullException(ParamNameSearchcriteria);
 			}
-			return GetPosts(null, IdParameterType.None, false, domain, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
+			return GetPosts(null, IdParameterType.None, false, true, domain, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
 		}
 		public override PagedPostsResult SearchPosts(CategoryId id, SearchCriteria searchCriteria, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(id == null) {
@@ -402,7 +434,7 @@ namespace nJupiter.Services.Forum {
 			if(searchCriteria == null) {
 				throw new ArgumentNullException(ParamNameSearchcriteria);
 			}
-			return GetPosts(id, IdParameterType.Category, false, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
+			return GetPosts(id, IdParameterType.Category, false, true, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
 		}
 		public override PagedPostsResult SearchPosts(string domain, string categoryName, SearchCriteria searchCriteria, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(domain == null) {
@@ -414,7 +446,7 @@ namespace nJupiter.Services.Forum {
 			if(searchCriteria == null) {
 				throw new ArgumentNullException(ParamNameSearchcriteria);
 			}
-			return GetPosts(null, IdParameterType.None, false, domain, categoryName, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
+			return GetPosts(null, IdParameterType.None, false, true, domain, categoryName, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
 		}
 		public override PagedPostsResult SearchPosts(PostId id, PostType postType, SearchCriteria searchCriteria, PostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration) {
 			if(id == null) {
@@ -423,7 +455,7 @@ namespace nJupiter.Services.Forum {
 			if(searchCriteria == null) {
 				throw new ArgumentNullException(ParamNameSearchcriteria);
 			}
-			return GetPosts(id, GetIdParameterType(postType), false, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
+			return GetPosts(id, GetIdParameterType(postType), false, true, null, null, resultConfiguration == null ? null : GetThreadedPostsResultConfiguration(resultConfiguration), pagingConfiguration, searchCriteria);
 		}
 
 		public override void SavePost(Post post) {
@@ -435,7 +467,6 @@ namespace nJupiter.Services.Forum {
 				transaction.Commit();
 			}
 		}
-
 
 		public override int MovePosts(string fromDomain, string fromCategoryName, string toDomain, string toCategoryName, DateTime until) {
 			if(fromDomain == null) {
@@ -566,7 +597,7 @@ namespace nJupiter.Services.Forum {
 		#endregion
 
 		#region Helper Methods
-		private PagedPostsResult GetPosts(GuidId id, IdParameterType idParameterType, bool getOnlyChildren, string domain, string categoryName, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration, SearchCriteria searchCriteria) {
+		private PagedPostsResult GetPosts(GuidId id, IdParameterType idParameterType, bool getOnlyChildren, bool getNonThreaded, string domain, string categoryName, ThreadedPostsResultConfiguration resultConfiguration, PagingConfiguration pagingConfiguration, SearchCriteria searchCriteria) {
 			if(resultConfiguration == null) {
 				resultConfiguration = new ThreadedPostsResultConfiguration();
 				//sort by search relevance if we have not provided a 
@@ -608,6 +639,9 @@ namespace nJupiter.Services.Forum {
 				if(categoryName != null) {
 					filterParams.Add(this.CurrentDataSource.CreateStringInputParameter(SpParamNameCategoryname, DbType.String, categoryName));
 				}
+			}
+			if(getNonThreaded) {
+				filterParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameGetnonthreaded, DbType.Boolean, getNonThreaded));
 			}
 			filterParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameIncludehidden, DbType.Boolean, resultConfiguration.IncludeHidden));
 			//always load attributes when we sort by an attribute
@@ -668,12 +702,12 @@ namespace nJupiter.Services.Forum {
 					case 7619: //the execution of a full-text operation failed, the clause of the query contained only ignored words (SQL Server 2000)
 					case 7643: //the execution of a full-text operation failed, the search generated too many results
 					case 7645: //the execution of a full-text operation failed, full-text predicate was null or empty (SQL Server 2005)
-					return ForumDao.CreatePagedPostsResultInstance(posts, 0);
+						return ForumDao.CreatePagedPostsResultInstance(posts, 0);
 					default:
-					throw;
+						throw;
 				}
 			}
-			AddPostsToCollectionFromDataTables(posts, dsPosts.Tables[0], resultConfiguration.SortAttributeName != null || resultConfiguration.LoadAttributes ? dsPosts.Tables[1] : null, resultConfiguration.Levels, resultConfiguration.SortProperty, resultConfiguration.SortAttributeName, resultConfiguration.SortAscending, searchCriteria != null || resultConfiguration.Levels.Equals(1));
+			AddPostsToCollectionFromDataTables(posts, dsPosts.Tables[0], resultConfiguration.SortAttributeName != null || resultConfiguration.LoadAttributes ? dsPosts.Tables[1] : null, resultConfiguration.Levels, resultConfiguration.SortProperty, resultConfiguration.SortAttributeName, resultConfiguration.SortAscending, getNonThreaded || searchCriteria != null || resultConfiguration.Levels.Equals(1));
 			return ForumDao.CreatePagedPostsResultInstance(posts, (int)returnParam.Value);
 		}
 		private int GetNumberOfPosts(GuidId id, string domain, string categoryName, NumberOfPostsResultConfiguration resultConfiguration) {
