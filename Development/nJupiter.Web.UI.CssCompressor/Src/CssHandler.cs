@@ -63,7 +63,7 @@ namespace nJupiter.Web.UI.CssCompressor {
 				if(ifModifiedSince != null && File.Exists(path)) {
 					DateTime ifModifiedSinceDate;
 					if(DateTime.TryParse(ifModifiedSince, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out ifModifiedSinceDate)) {
-						if(!ifModifiedSinceDate.Equals(DateTime.MinValue) && ifModifiedSinceDate < File.GetLastWriteTime(path)) {
+						if(!ifModifiedSinceDate.Equals(DateTime.MinValue) && ifModifiedSinceDate <= File.GetLastWriteTime(path)) {
 							this.httpContext.Response.StatusCode = 304;
 							this.httpContext.Response.End();
 						}
