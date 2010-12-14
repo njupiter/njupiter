@@ -11,9 +11,6 @@ NEW - New feature
 ===============================================================================
 Changes for upcoming version
 ===============================================================================
-**** Creuna.Services.Forum
-ENH: New method GetNonThreadedPosts on ForumDao, that gets posts in a flat 
-     fashion, not hierarchical or threaded that is.
 **** nJupiter.Text.SimpleTextParser
 NEW: A simple text parser added to nJupiter. Can for now only parse text by
      using regular expressions that can be configured in a config file that can
@@ -21,10 +18,12 @@ NEW: A simple text parser added to nJupiter. Can for now only parse text by
      impelmenting the IFormatter interface.
      Some example config how to parse for example BBCode to Xhtml added in
      nJupiter.Text.SimpleTextParser.config
+
 **** nJupiter.DataAccess.Ldap	 
 CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
 	 if user did not exist. The role provider shall not need to know anything
 	 about the user. If user does not exist it would debug log it instead.
+
 **** nJupiter.Web.UI
 BUG: Fixed a bug in StreamImage.aspx where the path parameter was double url
      decoded, and therefore paths with + in them didn't work as they got decoded
@@ -58,12 +57,17 @@ BUG: WebButton's OnClickEvent was fired both in RaisePostBackDataChangedEvent
      and RaisePostBackEvent when using IE6 , thus the event handler was called
      twice. When using IE6, OnClickEvent is now only fired in 
      RaisePostBackDataChangedEvent.
+
 **** nJupiter.DataAccess.Users
 BUG: Fixed a bug that made the stored procedure USER_Update not being able to
      be created or to be executed on database servers with a server collation 
      with case sensitivity. This patch does not need to be applied on servers 
      with case insensitivity.
-
+	 
+**** nJupiter.Services.Forum
+ENH: New method GetNonThreadedPosts on ForumDao, that gets posts in a flat 
+     fashion, not hierarchical or threaded that is.
+	 
 ===============================================================================
 Changes for V3.15.1.0  - 2010-06-15
 ===============================================================================
