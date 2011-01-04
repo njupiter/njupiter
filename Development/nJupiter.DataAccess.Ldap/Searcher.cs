@@ -58,8 +58,10 @@ namespace nJupiter.DataAccess.Ldap {
 
 		private DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute) {
 			DirectorySearcher searcher = CreateSearcher(entry, searchScope);
-			searcher.Sort.PropertyName = rdnAttribute;
-			searcher.Sort.Direction = SortDirection.Ascending;
+			if(this.Config.Server.PropertySortingSupport) {
+				searcher.Sort.PropertyName = rdnAttribute;
+				searcher.Sort.Direction = SortDirection.Ascending;
+			}
 			return searcher;
 		}
 

@@ -250,6 +250,12 @@ namespace nJupiter.DataAccess.Ldap {
 						server.RangeRetrievalSupport = true;
 					}
 
+					if(configSection.ContainsKey("propertySortingSupport")) {
+						server.PropertySortingSupport = configSection.GetBoolValue("propertySortingSupport");
+					} else {
+						server.PropertySortingSupport = true;
+					}
+
 					Uri userUri;
 					if(string.IsNullOrEmpty(users.Base)) {
 						userUri = server.Url;
@@ -300,6 +306,7 @@ namespace nJupiter.DataAccess.Ldap {
 			public TimeSpan TimeLimit { get; internal set; }
 			public int PageSize { get; internal set; }
 			public bool AllowWildcardSearch;
+			public bool PropertySortingSupport { get; internal set; }
 			public bool RangeRetrievalSupport { get; internal set; }
 
 			internal ServerConfig() {

@@ -20,9 +20,14 @@ NEW: A simple text parser added to nJupiter. Can for now only parse text by
      nJupiter.Text.SimpleTextParser.config
 
 **** nJupiter.DataAccess.Ldap	 
+ENH: Added support for disabling Property Sorting (DirectorySearcher.Sort) in
+     the configuration because some servers seems to not supporing this action.
+     If you get an InvalidOperationException from the DirectorySearcher please
+     try to set value for propertySortingSupport to false in
+     nJupiter.DataAccess.Ldap.config
 CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
-	 if user did not exist. The role provider shall not need to know anything
-	 about the user. If user does not exist it would debug log it instead.
+     if user did not exist. The role provider shall not need to know anything
+     about the user. If user does not exist it would debug log it instead.
 
 **** nJupiter.Web.UI
 BUG: Fixed a bug in StreamImage.aspx where the path parameter was double url
