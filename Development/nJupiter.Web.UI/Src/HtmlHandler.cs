@@ -41,7 +41,7 @@ namespace nJupiter.Web.UI {
 		private const string	NoFollowAttribute						= HtmlAttribute.Rel + "=\"external nofollow\" ";
 		private const string	FormatAttribute							= " {0}=\"{1}\" ";
 		private const string	RegexpatternInformalurlPrefix			= @"\w+:";
-		private const string	RegexpatternInformalurlEmail			= @"((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*""\x20*)*(?<angle><))?((?!\.)(?>\.?[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*"")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)";
+		private const string	RegexpatternInformalurlEmail			= @"((?>[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+\x20*|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*""\x20*)*(?<angle><))?((?!\.)(?>\.*[a-zA-Z\d!#$%&'*+\-/=?^_`{|}~]+)+|""((?=[\x01-\x7f])[^""\\]|\\[\x01-\x7f])*"")@(((?!-)[a-zA-Z\d\-]+(?<!-)\.)+[a-zA-Z]{2,}|\[(((?(?<!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)>)";
 		private const string	RegexpatternInformalurl					= RegexpatternInformalurlEmail + "|((" + RegexpatternInformalurlPrefix + @"//|[nN][eE][wW][sS]:|[mM][aA][iI][lL][tT][oO]:|[wW][wW][wW]\.|[fF][tT][pP]\.)[^\\{}|[\]^<>""'\s]*[^\\{}|[\]^<>""'\s.,;?:!)])";
 		private const string 	RegexpatternFullATagOrTag				= @"(</?[aA]+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>.*?</[aA]>)|(</?\w+((\s+\w+(\s*=\s*(?:"".*?""|'.*?'|[^'"">\s]+))?)+\s*|\s*)/?>)";
 		private const string	RegexpatternFullATagOrTagOrInformalUrl	= "(" + RegexpatternFullATagOrTag + ")|(" + RegexpatternInformalurl + ")";

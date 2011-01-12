@@ -30,6 +30,9 @@ CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
      about the user. If user does not exist it would debug log it instead.
 
 **** nJupiter.Web.UI
+BUG: Fixed a bug in HtmlHandler and its AutoHyperlinkText and AutoHyperlinkHtml
+     methods, where an email address containing two consecutive dots (..) was not
+     recognized as an email address.
 BUG: Fixed a bug in StreamImage.aspx where the path parameter was double url
      decoded, and therefore paths with + in them didn't work as they got decoded
      to a space on the second url decode.
