@@ -25,6 +25,8 @@ ENH: Added support for disabling Property Sorting (DirectorySearcher.Sort) in
      If you get an InvalidOperationException from the DirectorySearcher please
      try to set value for propertySortingSupport to false in
      nJupiter.DataAccess.Ldap.config
+ENH: Added support to turn off paging by setting pageSize to 0 or remove it
+     entirely from the config.
 CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
      if user did not exist. The role provider shall not need to know anything
      about the user. If user does not exist it would debug log it instead.

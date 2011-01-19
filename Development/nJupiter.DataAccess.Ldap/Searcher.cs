@@ -70,7 +70,9 @@ namespace nJupiter.DataAccess.Ldap {
 			searcher.SearchRoot = entry;
 			searcher.SearchScope = searchScope;
 			searcher.ServerTimeLimit = this.Config.Server.TimeLimit;
-			searcher.PageSize = this.Config.Server.PageSize;
+			if(this.Config.Server.PageSize > 0) {
+				searcher.PageSize = this.Config.Server.PageSize;
+			}
 			searcher.PropertiesToLoad.Clear();
 			return searcher;
 		}

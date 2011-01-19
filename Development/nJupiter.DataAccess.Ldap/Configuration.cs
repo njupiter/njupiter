@@ -113,7 +113,7 @@ namespace nJupiter.DataAccess.Ldap {
 						int pageSize = configSection.GetIntValue("pageSize");
 						server.PageSize = pageSize;
 					} else {
-						server.PageSize = 1000;
+						server.PageSize = 0;
 					}
 
 					if(configSection.ContainsKey("authenticationTypes")) {
