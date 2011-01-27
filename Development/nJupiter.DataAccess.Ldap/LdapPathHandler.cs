@@ -28,24 +28,24 @@ using System.Web;
 namespace nJupiter.DataAccess.Ldap {
 	internal class LdapPathHandler {
 
-		private const string LdapSheme = "LDAP://";
-		private const string LdapShemeLoweCase = "ldap://";
+		private const string LdapScheme = "LDAP://";
+		private const string LdapSchemeLoweCase = "ldap://";
 
 		public static string UriToPath(Uri uri) {
 			return ConvertSchemeInPathToUpperCase(uri.ToString());
 		}
 
 		private static string ConvertSchemeInPathToUpperCase(string path) {
-			if(path.StartsWith(LdapShemeLoweCase)) {
+			if(path.StartsWith(LdapSchemeLoweCase)) {
 				// DirectoryEntry object needs ldap scheme in upper case bacause the path is case sensitive
 				// http://msdn.microsoft.com/en-us/library/system.directoryservices.directoryentry.path%28VS.71%29.aspx
-				return path.Replace(LdapShemeLoweCase, LdapSheme);
+				return path.Replace(LdapSchemeLoweCase, LdapScheme);
 			}
 			return path;
 		}
 
 		public static string GetDistinguishedNameFromPath(string path) {
-			if(path.StartsWith(LdapSheme, StringComparison.InvariantCultureIgnoreCase)) {
+			if(path.StartsWith(LdapScheme, StringComparison.InvariantCultureIgnoreCase)) {
 				Uri uri = new Uri(path);
 				path = HttpUtility.UrlDecode(uri.PathAndQuery);
 				if(path.StartsWith("/")) {
