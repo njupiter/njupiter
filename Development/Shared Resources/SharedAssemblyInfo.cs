@@ -8,8 +8,8 @@ using System.Security.Permissions;
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyCompany("nJupiter")]
 [assembly: AssemblyProduct("nJupiter")]
-[assembly: AssemblyCopyright("\x00a9 2005-2010 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
-[assembly: AssemblyTrademark("\x00a9 2005-2010 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
+[assembly: AssemblyCopyright("\x00a9 2005-2011 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
+[assembly: AssemblyTrademark("\x00a9 2005-2011 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyCulture("")]
 
 [assembly: SecurityTransparent]
