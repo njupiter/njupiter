@@ -9,7 +9,7 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for upcoming version
+Changes for V3.16.0.0  - 2011-01-27
 ===============================================================================
 **** nJupiter.Text.SimpleTextParser
 NEW: A simple text parser added to nJupiter. Can for now only parse text by
