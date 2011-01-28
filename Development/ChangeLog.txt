@@ -19,7 +19,7 @@ NEW: A simple text parser added to nJupiter. Can for now only parse text by
      Some example config how to parse for example BBCode to Xhtml added in
      nJupiter.Text.SimpleTextParser.config
 
-**** nJupiter.DataAccess.Ldap	 
+**** nJupiter.DataAccess.Ldap     
 ENH: Added support for disabling Property Sorting (DirectorySearcher.Sort) in
      the configuration because some servers seems to not supporing this action.
      If you get an InvalidOperationException from the DirectorySearcher please
@@ -34,10 +34,10 @@ CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
 **** nJupiter.Web.UI
 BUG: Fixed a bug in HtmlHandler and its AutoHyperlinkText and AutoHyperlinkHtml
      methods, where an email address containing two consecutive dots (..) was
-	 not recognized as an email address.
+     not recognized as an email address.
 BUG: Fixed a bug in StreamImage.aspx where the path parameter was double url
      decoded, and therefore paths with + in them didn't work as they got
-	 decoded to a space on the second url decode.
+     decoded to a space on the second url decode.
 ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
      thereby makes it possible to change the url or the text of the link and
      add custom attributes
@@ -73,11 +73,11 @@ BUG: Fixed a bug that made the stored procedure USER_Update not being able to
      be created or to be executed on database servers with a server collation 
      with case sensitivity. This patch does not need to be applied on servers 
      with case insensitivity.
-	 
+     
 **** nJupiter.Services.Forum
 ENH: New method GetNonThreadedPosts on ForumDao, that gets posts in a flat 
      fashion, not hierarchical or threaded that is.
-	 
+     
 ===============================================================================
 Changes for V3.15.1.0  - 2010-06-15
 ===============================================================================
@@ -232,7 +232,7 @@ Changes for V3.10.0.0  - 2009-03-18
 **** nJupiter.Drawing
 ENH: ImageScale does now support configurable values for the image quality
      parameters SmoothingMode, InterpolationMode and PixelOffsetMode
-	 
+     
 **** nJupiter.Net.Mail 
 BUG: Bug fixed in nJupiter.Net.Mail.Attachment, attachment never used the
      content type if it was explicitly set
@@ -257,7 +257,7 @@ NEW: New componenet that handle syndications. Mainly RSS-feeds in the first
 **** nJupiter.Web
 BUG: Fixed a bug in UrlHandler, namely that no UrlHandler method took care of 
      the case where a URL contained fragment information, #.
-	 
+     
 **** nJupiter.Net.Mail  
 NEW: Added the Headers property to the class Mail, to be able to send custom
      headers in emails
@@ -429,7 +429,7 @@ ENH: Sorting is now using a secondary sort, TimePosted, when the sort key is
      not unique. Makes sorting on for instance Visible more predictable
 NEW: New method, GetNumberOfPosts, retrieves number of posts. Optionally one
      can specify a time interval and include or not include hidden posts in
-	 the count.
+     the count.
 
 **** nJupiter.Services.Forum.UI:
 ENH: Now possible to put an "All" item in the NumberOfItemsSelector
@@ -579,7 +579,7 @@ NEW: New utility class for translating a user entered search text to a string
 ENH: Unused exception classes has been excluded from the assembly
 BCH: Change of casing on Username to UserName to be consistent with the casing 
      of "user name" in the rest of the namespace
-	
+    
 **** nJupiter.DataAccess.Users
 ENH: Cascading deletes when deleting rows from USER_User (USER_Property rows 
      are deleted automatically). Applies for USER_Context also.
