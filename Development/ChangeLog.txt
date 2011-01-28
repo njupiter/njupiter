@@ -33,20 +33,20 @@ CHG: Changed some non forgiving exceptions in LdapRoleProvider that was thrown
 
 **** nJupiter.Web.UI
 BUG: Fixed a bug in HtmlHandler and its AutoHyperlinkText and AutoHyperlinkHtml
-     methods, where an email address containing two consecutive dots (..) was not
-     recognized as an email address.
+     methods, where an email address containing two consecutive dots (..) was
+	 not recognized as an email address.
 BUG: Fixed a bug in StreamImage.aspx where the path parameter was double url
-     decoded, and therefore paths with + in them didn't work as they got decoded
-     to a space on the second url decode.
+     decoded, and therefore paths with + in them didn't work as they got
+	 decoded to a space on the second url decode.
 ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
      thereby makes it possible to change the url or the text of the link and
      add custom attributes
 ENH: Added the AutoHyperlinkHtml method, that does the same thing as 
-	 AutoHyperlinkText but ignores URLs within tags (<a href="[url]">) and URLs
-	 between the start and end tags for the anchor tag (<a>[url]</a>).
+     AutoHyperlinkText but ignores URLs within tags (<a href="[url]">) and URLs
+     between the start and end tags for the anchor tag (<a>[url]</a>).
 BUG: HtmlHandler.AutoHyperlinkText made an end parenthesis trailing the url 
      part of the url. This should not be included in the url unless the 
-     character after the parenthesis is a character part of a normal url. If it 
+     character after the parenthesis is a character part of a normal url. If it
      is a space for instance we should end the url before the parenthesis.
 ENH: In Paging, added the CurrentPageForceInnerSpan property to be able to 
      force an inner span on the control for the current page (anchor, 
@@ -87,11 +87,11 @@ ENH: Added config and implementation so attributes that is loaded together
      nJupiter.DataAccess.Ldap.config for examples.
 
 **** nJupiter.Web.UI
-BUG: Fixed a bug in WebNavigation that caused IncludeChildrenOfRemovedNodesMode 
+BUG: Fixed a bug in WebNavigation that caused IncludeChildrenOfRemovedNodesMode
      to not be honoured when StartLevelFromRoot > 0.
 
 **** nJupiter.Drawing
-BUG: Fixed a bug in ImageScale that caused scaling of PNG images to crash with 
+BUG: Fixed a bug in ImageScale that caused scaling of PNG images to crash with
      the exception message "A generic error occurred in GDI+."
 
 ===============================================================================
@@ -107,7 +107,7 @@ NEW: New component containing a generic MembershipProvider and RoleProvider for
 **** nJupiter.DataAccess
 BUG: When parsing search strings FullTextHandler incorrectly interpreted a 
      minus sign without a preceding space as a search operator. A minus sign
-     is now interpreted as a search operator only if it is in the beginning of 
+     is now interpreted as a search operator only if it is in the beginning of
      the search string or preceded by a space and not inside quotes.
 
 **** nJupiter.DataAccess
