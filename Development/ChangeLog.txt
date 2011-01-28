@@ -245,7 +245,8 @@ CHG: Removed implementation for page validation from WebButton. It didn't work
      custom controls by closing down their own interface and make it private :(
 
 **** nJupiter.DataAccess
-ENH: DataSource can now get its connection strings from the ConfigurationManager
+ENH: DataSource can now get its connection strings from the
+     ConfigurationManager
   
 Changes for V3.9.0.0  - 2009-01-23
 ===============================================================================
@@ -294,8 +295,8 @@ Changes for V3.5.0.0  - 2008-07-01
 ===============================================================================
 
 **** nJupiter.Web.UI
-BUG: Fixed bug i Paging where url got cut in browser due to incorrect encoding of
-     the query string
+BUG: Fixed bug i Paging where url got cut in browser due to incorrect encoding
+     of the query string
 
 Changes for V3.4.0.0  - 2008-06-10
 ===============================================================================
@@ -305,10 +306,10 @@ NEW: Added a HttpHandler that merges all css imported with @import to one file,
      and caches it
   
 **** nJupiter.Web.UI
-NEW: New class WebScriptHolder makes it possible to place scripts outside head. If
-     such an object exists on the page ControlHandler.RegisterClientScriptBlock
-     places the script there, otherwise the WebHead, and lastly it resorts to 
-     ASP.NET default behaviour.
+NEW: New class WebScriptHolder makes it possible to place scripts outside head.
+     If such an object exists on the page
+     ControlHandler.RegisterClientScriptBlock places the script there,
+	 otherwise the WebHead, and lastly it resorts to ASP.NET default behaviour.
 
 Changes for V3.3.0.0  - 2008-05-02
 ===============================================================================
@@ -317,10 +318,10 @@ Changes for V3.3.0.0  - 2008-05-02
 BUG: Major memory bug fixed in filewathcing functionality.
 
 **** nJupiter.Web.UI
-NEW: New class HtmlHandler that can let you automatically hyperlink informal urls,
-     strip all HTML tags from a string or convert line breaks to <br/>.
-NEW: WebButton now has a property IsClicked, than can be checked before the actual
-     Click event occurs.
+NEW: New class HtmlHandler that can let you automatically hyperlink informal
+     urls, strip all HTML tags from a string or convert line breaks to <br/>.
+NEW: WebButton now has a property IsClicked, than can be checked before the
+     actual Click event occurs.
 
 **** nJupiter.Web.UI.Controls.WebFlash
 ENH: Now uses SwfObject2Emebeded as default. SwfObject2 is now updated to
@@ -339,8 +340,8 @@ ENH: Fixed so web pathes now are relative, not absolute, so it will be easier
      to customize web pathes.
 
 **** nJupiter.Configuration
-BUG: Bugfixes in the filewatcher functionality. The configuration handler shall
-     no longer hang or crach if a non valid xml is saved.
+BUG: Bugfixes in the filewatcher functionality. The configuration handler
+     shall no longer hang or crach if a non valid xml is saved.
 
 **** nJupiter.DataAccess
 BUG: Bugfixes for datareaders.
@@ -353,9 +354,10 @@ ENH: nJupiter.Globalization.CultureHandler does now have shortcuts for
      CurrentCulture and CurrentUICulture
 
 **** nJupiter.Web.UI
-BUG: Fixed bug in WebLinkButton where NoLink=true resulted in an unencoded string
-ENH: Paging is now a templated control, so you can make HTML of your own choice now,
-     or just use the builting defaults.
+BUG: Fixed bug in WebLinkButton where NoLink=true resulted in an unencoded
+     string
+ENH: Paging is now a templated control, so you can make HTML of your own choice
+     now, or just use the builting defaults.
 NEW: Paging now has an additional paging mode: Anchors.
 ENH: StrictHtmlTextWriter now fixes IDN encoded URLs.
 ENH: StreamImage now works with Virtual Path Providers
@@ -381,34 +383,37 @@ ENH: SWFObject in WebFlash is now updated to version 1.5 and does now support
      custom express install movies.
 ENH: WebFlash has now support for SWFObject2 http://www.swffix.org/
      Both normal and embeded method are supported.
-     Normal method will probably be default render mode when out of alpha stage.
+     Normal method will probably be default render mode when out of alpha
+     stage.
 
 **** nJupiter.Services.Forum
-NEW: New properties on Post: RootPostId, RootPostTitle. These properties reflect 
-     what root post a post has either through inheritance (not being a root post) 
-     or being a root post.
+NEW: New properties on Post: RootPostId, RootPostTitle. These properties
+     reflect what root post a post has either through inheritance (not being a
+	 root post) or being a root post.
 ENH: Now possible to sort on the attribute values of posts and categories. This
-     is done by setting the SortAttributeName property on the result configuration 
-     types. If set, it always overrides the SortProperty property. Also, if set,
-     attributes are always loaded and the LoadAttributes property is always ignored.
+     is done by setting the SortAttributeName property on the result
+	 configuration types. If set, it always overrides the SortProperty
+	 property. Also, if set, attributes are always loaded and the
+	 LoadAttributes property is always ignored.
   
 **** nJupiter.Services.Forum.UI
 CHG: nJupiter.Services.Forum.UI.config not mandatory anymore
-ENH: FlatTabularPostList now has a RootPostTitle column which can be hyperlinked
-     through the UrlWithoutTrailingRootPostId property. If UrlWithoutTrailingPostId
-     is not set, the Title column will be linked with the UrlWithoutTrailingRootPostId
-     value.
+ENH: FlatTabularPostList now has a RootPostTitle column which can be
+     hyperlinked through the UrlWithoutTrailingRootPostId property. If
+	 UrlWithoutTrailingPostId is not set, the Title column will be linked with
+	 the UrlWithoutTrailingRootPostId value.
 ENH: FlatTabularPostList now exposes a PostsSorting event which can be used to
      intercept what is to be sorted and change it.
 ENH: FlatTabularPostList can now be sorted by any property belonging to a post
      and not just the columns that are implemented in it. This was accomplished
-     by removing the SortColumn property and exchanging it with the SortProperty
-     property.
+     by removing the SortColumn property and exchanging it with the
+	 SortProperty property.
 ENH: FlatTabularPostList can now be sorted by any attribute belonging to a post
      by setting the SortAttributeName property. If this property is set, it 
      always overrides any value set on the SortProperty property.
-ENH: UpdatePost can now be set to ignore updates made concurrently. This is done
-     by setting the IgnoreConcurrentUpdate property to true. The default is false.
+ENH: UpdatePost can now be set to ignore updates made concurrently. This is
+     done by setting the IgnoreConcurrentUpdate property to true. The default
+	 is false.
 
 Changes for V3.0.0.0  - 2007-09-13
 ===============================================================================
@@ -416,10 +421,10 @@ Changes for V3.0.0.0  - 2007-09-13
 **** nJupiter.DataAccess.Users
 ENH: Now it is also possible to do range searches with GreatherThan, 
      GreatherThanOrEqual, LessThan and LessThanOrEqual also for BoolProperty, 
-     IntProperty and DateTimeProperty as the serialized form of those preserves order, 
-     which was needed for this to work.
-NEW: New property on AbstractProperty: SerializationPreservesOrder. Set to false 
-     if an implementation does not preserve order in its serialized form.
+     IntProperty and DateTimeProperty as the serialized form of those preserves
+	 order, which was needed for this to work.
+NEW: New property on AbstractProperty: SerializationPreservesOrder. Set to
+     false if an implementation does not preserve order in its serialized form.
 BUG: Fixed a bug where we never searched in specific contexts
 BCH: Took away the Context property on SearchCriteria, as it exists on 
      SearchCriteria.Property already.
@@ -444,36 +449,38 @@ Changes for V2.1.0.0  - 2007-05-18
 **** nJupiter.Services.Forum
 NEW: New properties on Post: EffectiveCategoryId, EffectiveCategoryName. These
      properties reflect what category a post has either through inheritance 
-     (not being a thread) or being a thread which belongs to a category directly.
-NEW: New Property on Post: ParentId. Indicates the parent post of the post in the 
-     same way CategoryId indicates what category a root post belongs to.
-ENH: SavePost and SaveCategory now throws exception if (1) the updated item has 
-     been deleted and (2) if the item has been updated by someone else since the 
-     item was retrieved
+     (not being a thread) or being a thread which belongs to a category
+ 	 directly.
+NEW: New Property on Post: ParentId. Indicates the parent post of the post in
+     the same way CategoryId indicates what category a root post belongs to.
+ENH: SavePost and SaveCategory now throws exception if (1) the updated item
+     has been deleted and (2) if the item has been updated by someone else
+	 since the item was retrieved
 NEW: New method on ForumDao: GetDomains
-BUG: Bug fix of one overload of GetPost: it would crash if we didn't find a post
+BUG: Bug fix of one overload of GetPost: it would crash if we didn't find a
+     post
 
 *** nJupiter.Services.Forum.UI:
 ENH: HierarchicalPostList can now be configured to specify a custom target for
      where a post should be added. The choices are the current post, the root 
      or a specified post. This is done via the AddPostTargetLocation and
      AddPostTargetPostId properties. The choice is reflected in what is sent 
-     in the event arguments of the AddPost event. AddPostEventArgs is typically 
+     in the event arguments of the AddPost event. AddPostEventArgs is typically
      used when one configures an instance of AddPost.
 ENH: HierarchicalPostList can now be configured to specify a custom source for
-     the reply text. The choices are the current post, the root or a specified 
+     the reply text. The choices are the current post, the root or a specified
      post. This is done via the via the AddPostReplySourceLocation and
-     AddPostReplySourcePostId properties. The choice is reflected in what is sent 
-     in the event arguments of the AddPost event, more specifically in the 
+     AddPostReplySourcePostId properties. The choice is reflected in what is
+	 sent in the event arguments of the AddPost event, more specifically in the
      ReplySourcePostId property. AddPostEventArgs is typically used when one 
      configures an instance of AddPost.
-BCH: AddPost now has a ReplySourcePostId property. The UseTitleFromParentPost has
-     been renamed to UseTitleFromReplySource.
+BCH: AddPost now has a ReplySourcePostId property. The UseTitleFromParentPost
+     has been renamed to UseTitleFromReplySource.
 ENH: Now possible to implement a custom TextFormatter, which makes it possible
-     to write own routines for how the forum output is rendered, for instance to
-     allow HTML or to convert textual smileys to graphical smileys. The standard
-     implementation encodes input as HTML, converts newlines to <br/> and 
-     automatically hyperlinks what looks like urls.
+     to write own routines for how the forum output is rendered, for instance
+	 to allow HTML or to convert textual smileys to graphical smileys. The
+	 standard implementation encodes input as HTML, converts newlines to <br/>
+	 and automatically hyperlinks what looks like urls.
 ENH: AddPost and UpdatePost now both have a mandatory fields "legend"
 ENH: AddPost and UpdatePost now can present Author textbox after the Title and 
      Body textboxes
@@ -481,19 +488,19 @@ ENH: FlatTabularPostList now has a CategoryName column which can be hyperlinked
      through the UrlWithoutTrailingCategoryId property.
 NEW: New control: CategorySelector. Is an implementation that facilitates the
      choosing of categories in different scenarios.
-ENH: Now possible to get only children of a post, instead of retrieving the post 
-     _with_ the children in HierarchicalPostList
+ENH: Now possible to get only children of a post, instead of retrieving the
+     post _with_ the children in HierarchicalPostList
 ENH: Now possible to hide the column headers in FlatTabularPostList
 ENH: UpdatePost now handles concurrent updates and deletes
-ENH: New AuthorResolver property on HierarchicalPostList and FlatTabularPostList
-     makes it possible for the Author text to come from another source, for 
-     instance UsersDAO.
+ENH: New AuthorResolver property on HierarchicalPostList and
+     FlatTabularPostList makes it possible for the Author text to come from
+	 another source, for instance UsersDAO.
 BUG: Bug fix of HierarchicalPostList: send an empty object array if GetPost
      returns null (fixes so that the list becomes empty after deletion of the 
      root post)
 ENH: Now possible to filter on dates in HierarchicalPostList
 ENH: Now possible to include the body from the reply source in AddPost via the 
-     UseBodyFromReplySource property. Implementing the PostQuoter interface and 
+     UseBodyFromReplySource property. Implementing the PostQuoter interface and
      setting the PostQuoter property on AddPost makes it possible to handle 
     quoting of posts in a customized way.
   
@@ -501,8 +508,8 @@ ENH: Now possible to include the body from the reply source in AddPost via the
 BUG: Bug fix in WebRadioButtonList concerning the name attribute. In .NET 2.0
      Microsoft does not add the UniqueId to the radiobutton name attribute.
      This is needed for WebRadioButtonList to work
-ENH: Added WMode property on WebFlash. The Transparent property is now obsolete.
-     It will still work as before, but please update your code.
+ENH: Added WMode property on WebFlash. The Transparent property is now
+     obsolete. It will still work as before, but please update your code.
 ENH: TrailingBreak and TrailingLinefeed is now implemented in all relevant
      controls.
   
@@ -516,38 +523,41 @@ Changes for V2.0.0.0  - 2007-02-21
 ===============================================================================
 
 **** nJupiter.Services.Forum
-NEW: New methods for archiving posts, that is moving threads from one category to
-     another. Optionally one can specify until what date threads should be moved.
+NEW: New methods for archiving posts, that is moving threads from one category
+     to another. Optionally one can specify until what date threads should be
+	 moved.
 ENH: DeletePost, DeletePosts and MovePosts now return number of affected posts
 ENH: DeleteCategory now return a bool signalling if a category was affected
 ENH: DeleteCategories now return number of affected categories
-BCH: GetCategory now takes a CategoryResultConfiguration, as it didn't make sense 
-     to give it a CategoriesResultConfiguration
+BCH: GetCategory now takes a CategoryResultConfiguration, as it didn't make
+     sense to give it a CategoriesResultConfiguration
 CHG: Fulltext is now Neutral by default, not US English.
-ENH: Comparison now has inequality operators, before it was only equal and notequal
-ENH: ForumSqlDao implementation: In .NET 1.1 every date sent in to API methods is 
-     assumed to be a UTC date. In 2.0 a date with the kind Unspecified is assumed 
-     to be a UTC date. A date with the kind Local is converted to a UTC date before 
-     being sent to the database. For DateTimeAttributes the logic is up to the 
-     consumer.
+ENH: Comparison now has inequality operators, before it was only equal and
+     notequal
+ENH: ForumSqlDao implementation: In .NET 1.1 every date sent in to API methods
+     is assumed to be a UTC date. In 2.0 a date with the kind Unspecified is
+	 assumed to be a UTC date. A date with the kind Local is converted to a UTC
+	 date before being sent to the database. For DateTimeAttributes the logic
+	 is up to the consumer.
 NEW: New property on Category: Domain
-NEW: New property on Post: EffectivelyVisible. Tells if the post is visible from the
-     perspective of what filter you have used when you retrieved posts. 
-ENH: Setting the date filter properties in ThreadedPostsResultConfiguration now 
-     actually does something in the GetPost method, namely filters the first level
-     of descendant posts
+NEW: New property on Post: EffectivelyVisible. Tells if the post is visible
+     from the perspective of what filter you have used when you retrieved
+	 posts.
+ENH: Setting the date filter properties in ThreadedPostsResultConfiguration now
+     actually does something in the GetPost method, namely filters the first
+	 level of descendant posts
 ENH: Now possible to page on the first level of child posts through the GetPost 
      overload that takes a PagingResultConfiguration
-BUG: A bug with how the update and delete triggers handled updates of several rows
-     has been fixed. The bug cause the PostCountVisible and PostCountAll in the table
-     FORUM_PostDerivedInformation to contain wrong values.
+BUG: A bug with how the update and delete triggers handled updates of several
+     rows has been fixed. The bug cause the PostCountVisible and PostCountAll
+	 in the table FORUM_PostDerivedInformation to contain wrong values.
 
 **** nJupiter.Services.Forum.UI:
-ENH: AddPost now supports reply indicators when using the UseTitleFromParentPost
-     property
+ENH: AddPost now supports reply indicators when using the
+     UseTitleFromParentPost property
 ENH: Now possible to show/hide title in HierarchicalPostList
-ENH: Now possible to show body in FlatTabularPostList and limit the length of what
-     is displayed
+ENH: Now possible to show body in FlatTabularPostList and limit the length of
+     what is displayed
 ENH: Now possible to show Visible and EffectivelyVisible in FlatTabularPostList
 ENH: Now possible to filter on attributes via AttributeCriteria property in 
      FlatTabularPostList
@@ -556,22 +566,25 @@ ENH: Now possible to filter on user identity via UserIdentity property in
 ENH: UpdatePost now includes all fields that AddPost contains
 ENH: AddPost, UpdatePost: now possible to hide Title field (makes Body 
      unconditionally mandatory)
-ENH: HierarchicalPostList now takes virtually no viewstate at all when no buttons
-     are visible on the control
-ENH: FlatTabularPostList now automatically adjusts when the paging gets out of bound.
-     This happens when a combination of setting NumberOfItems and pressing a paging 
-     button makes us come outside the TotalNumberOfItems of the list. This is done 
-     by looping until we have items or we are at page one. Rests on the logic in
-     PagedListing that adjusts CurrentPageNumber on out of bound situations.
+ENH: HierarchicalPostList now takes virtually no viewstate at all when no
+     buttons are visible on the control
+ENH: FlatTabularPostList now automatically adjusts when the paging gets out of
+     bound. This happens when a combination of setting NumberOfItems and
+	 pressing a paging button makes us come outside the TotalNumberOfItems of
+	 the list. This is done by looping until we have items or we are at page
+	 one. Rests on the logic in PagedListing that adjusts CurrentPageNumber on
+	 out of bound situations.
 ENH: HierarchicalPostList can now be sorted in descending chronological order
 ENH: FlatTabularPostList and HierarchicalPostList now provides possibility to
-     hyperlink the authors' names via the UrlWithoutTrailingUserIdentity property.
-ENH: Now possible to filter out levels in HierarchicalPostList, via Levels property.
+     hyperlink the authors' names via the UrlWithoutTrailingUserIdentity
+	 property.
+ENH: Now possible to filter out levels in HierarchicalPostList, via Levels
+     property.
      For instance blog pages might want to display the first level of posts.
 ENH: Now possible to set maximum length on Author and Title in AddPost and 
      UpdatePost
-CHG: All -ing events can now be cancelled, by setting the Cancel property on the 
-     eventargs to true.
+CHG: All -ing events can now be cancelled, by setting the Cancel property on
+     the eventargs to true.
 
 **** nJupiter.DataAccess
 NEW: New utility class for translating a user entered search text to a string
@@ -603,38 +616,41 @@ ENH: nJupiter.Net.Mail.Mail is rewritten and uses base64-encoding for all
      UTF-8 content.
   
 **** nJupiter.Web.UI
-BCH: Changed name on property SuppressAutoDatabinding to SuppressAutoDataBinding
+BCH: Changed name on property SuppressAutoDatabinding to
+     SuppressAutoDataBinding
   
 **** nJupiter.Web.UI
-BUG: Bug fix for Paging component where "..." links were shown even though buttons
-     were active
+BUG: Bug fix for Paging component where "..." links were shown even though
+     buttons were active
 BUG: Bug fix in WebFlash.cs. It now inherits from WebGenericControl instead of
      HtmlGenericControl. This makes sure it renders a div tag.
-BCH: GeneralListing and PagedListing are now pure webcontrols, please remove the
-     reference to the ascx's in your project and refer to the namespace instead.
-     The lists are no longer put to viewstate by default. If you need to have the
-     datasource viewstated, then set ViewStateList to true. This is almost only
-     needed when you have form controls inside your list.
+BCH: GeneralListing and PagedListing are now pure webcontrols, please remove
+     the reference to the ascx's in your project and refer to the namespace
+	 instead. The lists are no longer put to viewstate by default. If you need
+	 to have the datasource viewstated, then set ViewStateList to true. This is
+	 almost only needed when you have form controls inside your list.
 ENH: Paging is now a pure webcontrol, please remove the reference to the ascx
      in your project and refer to the namespace instead.
-ENH: PagedListing now automatically adjusts CurrentPageNumber to the highest possible
-     page number given the total count if we get out of bound (by setting ItemsPerPage
-     and pressing next and getting out of bound). This happens regardless of how 
-     DisablePaging is set.
+ENH: PagedListing now automatically adjusts CurrentPageNumber to the highest
+     possible page number given the total count if we get out of bound (by
+	 setting ItemsPerPage and pressing next and getting out of bound). This
+	 happens regardless of how DisablePaging is set.
 ENH: WebFlash has now support for UFO which is default instead of SWF object.
 BCH: ControlUtils are renamed to ControlHandler
 BCH: IsWorthlessBrowser in ControlHandler is renamed to IsIE
 NEW: A new property is added to detect PreIE7-browsers
-NEW: A new class called WebHead has been added. Use this instead of the head element
-     to be able to add scripts and styles to the head with the new function
-     ControlHandler.RegisterClientScriptBlock
-ENH: Paging has now full support for accessable linked paging (Use Links insted of
-     Buttons)
+NEW: A new class called WebHead has been added. Use this instead of the head
+     element to be able to add scripts and styles to the head with the new
+	 function ControlHandler.RegisterClientScriptBlock
+ENH: Paging has now full support for accessable linked paging (Use Links insted
+     of Buttons)
 NEW: A new more accessible WebLinkButton has been added
-ENH: WebButton does no longer make use of scripts in IE7 or above (?. we hope it will
-     never be any above)
-CHG: WebDropDownList does now inherit directly from DropDownList in .NET2.0 and above
-ENH: WebForm does now add application/xhtml+xml compliant comments to all script tags
+ENH: WebButton does no longer make use of scripts in IE7 or above (?. we hope
+     it will never be any above)
+CHG: WebDropDownList does now inherit directly from DropDownList in .NET2.0 and
+     above
+ENH: WebForm does now add application/xhtml+xml compliant comments to all
+     script tags
 
 Changes for V1.3.0.0  - 2006-10-13
 ===============================================================================
@@ -648,4 +664,5 @@ Changes for V1.2.0.0  - 2006-05-18
 
 **** nJupiter.Net.Mail
 NEW: Own SmtpClient added
-CHG: MailSender now using our own SmtpClient instead of the one included in .NET
+CHG: MailSender now using our own SmtpClient instead of the one included in
+     .NET
