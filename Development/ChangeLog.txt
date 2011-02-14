@@ -9,6 +9,12 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for upcoming version
+===============================================================================
+**** nJupiter.Web.UI
+BUG: Backed out the patch for StreamImage.aspx in 3.16.0.0 because it was wrong.
+
+===============================================================================
 Changes for V3.16.0.0  - 2011-01-27
 ===============================================================================
 **** nJupiter.Text.SimpleTextParser

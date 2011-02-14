@@ -37,6 +37,7 @@ using nJupiter.Drawing.Imaging;
 namespace nJupiter.Web.UI {
 
 	public class StreamImage : Page {
+
 		#region IFileToStream Interface
 		public interface IFileToStream {
 			#region Properties
@@ -78,6 +79,7 @@ namespace nJupiter.Web.UI {
 
 			#region Constructors
 			public FileToStreamImpl(string path) {
+				path = HttpUtility.UrlDecode(path);
 				string filePath = HttpContext.Current.Server.MapPath(path);
 				if(File.Exists(filePath)) {
 					this.fileInfo = new FileInfo(filePath);
