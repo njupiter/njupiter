@@ -171,7 +171,6 @@ namespace nJupiter.Configuration {
 		public bool GetBoolValue(string key) {
 			return GetBoolValue(".", key);
 		}
-
 		/// <summary>
 		/// Gets the value attribute for the element given in the key parameter as a bool. If no value attribute exists on the element the content of the element is returned.
 		/// </summary>
@@ -190,7 +189,6 @@ namespace nJupiter.Configuration {
 		public int GetIntValue(string key) {
 			return GetIntValue(".", key);
 		}
-
 		/// <summary>
 		/// Gets the value attribute for the element given in the key parameter as an int. If no value attribute exists on the element the content of the element is returned.
 		/// </summary>
@@ -198,11 +196,33 @@ namespace nJupiter.Configuration {
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
 		/// <returns>The int value for the key.</returns>
 		public int GetIntValue(string section, string key) {
-			try {
-				return int.Parse(GetValue(section, key), NumberFormatInfo.InvariantInfo);
-			} catch(FormatException) {
+			int value;
+			if(!int.TryParse(GetValue(section, key), NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out value)) {
 				throw new InvalidConfigValueException(string.Format("Value [{0}/{1}] is not of type integer.", section, key));
 			}
+			return value;
+		}
+
+		/// <summary>
+		/// Gets the value attribute for the element given in the key parameter as a char. If no value attribute exists on the element the content of the element is returned.
+		/// </summary>
+		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
+		/// <returns>The char value for the key.</returns>
+		public char GetCharValue(string key) {
+			return GetCharValue(".", key);
+		}
+		/// <summary>
+		/// Gets the value attribute for the element given in the key parameter as a char. If no value attribute exists on the element the content of the element is returned.
+		/// </summary>
+		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
+		/// <returns>The char value for the key.</returns>
+		public char GetCharValue(string section, string key) {
+			char value;
+			if(!char.TryParse(GetValue(section, key), out value)) {
+				throw new InvalidConfigValueException(string.Format("Value [{0}/{1}] is not of type char.", section, key));
+			}
+			return value;
 		}
 
 		/// <summary>
@@ -213,7 +233,6 @@ namespace nJupiter.Configuration {
 		public string GetValue(string key) {
 			return GetValue(".", key);
 		}
-
 		/// <summary>
 		/// Gets the value attribute for the element given in the key parameter. If no value attribute exists on the element the content of the element is returned.
 		/// </summary>
@@ -229,31 +248,6 @@ namespace nJupiter.Configuration {
 		}
 
 		/// <summary>
-		/// Gets a given attribute for the element given in the key parameter as an int.
-		/// </summary>
-		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
-		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
-		/// <returns>The int value of the attribute.</returns>
-		public int GetIntAttribute(string key, string attribute) {
-			return GetIntAttribute(".", key, attribute);
-		}
-
-		/// <summary>
-		/// Gets a given attribute for the element given in the key parameter as an int.
-		/// </summary>
-		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
-		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
-		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
-		/// <returns>The int value of the attribute.</returns>
-		public int GetIntAttribute(string section, string key, string attribute) {
-			try {
-				return int.Parse(GetAttribute(section, key, attribute), NumberFormatInfo.InvariantInfo);
-			} catch(FormatException) {
-				throw new InvalidConfigValueException(string.Format("Attribute [{0}/{1}/@{2}] is not of type integer.", section, key, attribute));
-			}
-		}
-
-		/// <summary>
 		/// Gets a given attribute for the element given in the key parameter as a bool.
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
@@ -262,7 +256,6 @@ namespace nJupiter.Configuration {
 		public bool GetBoolAttribute(string key, string attribute) {
 			return GetBoolAttribute(".", key, attribute);
 		}
-
 		/// <summary>
 		/// Gets a given attribute for the element given in the key parameter as a bool.
 		/// </summary>
@@ -275,6 +268,54 @@ namespace nJupiter.Configuration {
 		}
 
 		/// <summary>
+		/// Gets a given attribute for the element given in the key parameter as an int.
+		/// </summary>
+		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
+		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
+		/// <returns>The int value of the attribute.</returns>
+		public int GetIntAttribute(string key, string attribute) {
+			return GetIntAttribute(".", key, attribute);
+		}
+		/// <summary>
+		/// Gets a given attribute for the element given in the key parameter as an int.
+		/// </summary>
+		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
+		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
+		/// <returns>The int value of the attribute.</returns>
+		public int GetIntAttribute(string section, string key, string attribute) {
+			int value;
+			if(!int.TryParse(GetAttribute(section, key, attribute), NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out value)) {
+				throw new InvalidConfigValueException(string.Format("Attribute [{0}/{1}/@{2}] is not of type integer.", section, key, attribute));
+			}
+			return value;
+		}
+
+		/// <summary>
+		/// Gets a given attribute for the element given in the key parameter as a char.
+		/// </summary>
+		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
+		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
+		/// <returns>The char value of the attribute.</returns>
+		public char GetCharAttribute(string key, string attribute) {
+			return GetCharAttribute(".", key, attribute);
+		}
+		/// <summary>
+		/// Gets a given attribute for the element given in the key parameter as a char.
+		/// </summary>
+		/// <param name="section">The path to the element. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
+		/// <param name="attribute">The name of the attribute. The parameter can contain XPath syntax.</param>
+		/// <returns>The char value of the attribute.</returns>
+		public char GetCharAttribute(string section, string key, string attribute) {
+			char value;
+			if(!char.TryParse(GetAttribute(section, key, attribute), out value)) {
+				throw new InvalidConfigValueException(string.Format("Attribute [{0}/{1}/@{2}] is not of type char.", section, key, attribute));
+			}
+			return value;
+		}
+
+		/// <summary>
 		/// Gets a given attribute for the element given in the key parameter as a string.
 		/// </summary>
 		/// <param name="key">The name of the element. The parameter can contain XPath syntax.</param>
@@ -283,7 +324,6 @@ namespace nJupiter.Configuration {
 		public string GetAttribute(string key, string attribute) {
 			return GetAttribute(".", key, attribute);
 		}
-
 		/// <summary>
 		/// Gets a given attribute for the element given in the key parameter as a string.
 		/// </summary>
@@ -311,7 +351,6 @@ namespace nJupiter.Configuration {
 		public XmlNode GetKey(string key) {
 			return GetKey(".", key);
 		}
-
 		/// <summary>
 		/// Gets the <see cref="XmlNode"/> for the given key.
 		/// </summary>
@@ -320,6 +359,72 @@ namespace nJupiter.Configuration {
 		/// <returns>An <see cref="XmlNode"/> for the given key.</returns>
 		public XmlNode GetKey(string section, string key) {
 			return this.ConfigXML.SelectSingleNode(section + "/" + key);
+		}
+
+		/// <summary>
+		/// Gets a char array of value attribues from elements with the same name. If no value attribute exists on the element the content of the element is returned.
+		/// </summary>
+		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
+		/// <returns>A char array.</returns>
+		public char[] GetCharValueArray(string section, string key) {
+			return GetCharAttributeArray(section, key, null);
+		}
+
+		/// <summary>
+		/// Gets a char array of attribues from elements with the same name.
+		/// </summary>
+		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
+		/// <param name="attribute">The name of the attributes. The parameter can contain XPath syntax.</param>
+		/// <returns>A char array.</returns>
+		public char[] GetCharAttributeArray(string section, string key, string attribute) {
+			XmlNodeList nodeList = this.ConfigXML.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
+			if(nodeList != null) {
+				char[] result = new char[nodeList.Count];
+				for(int i = 0; i < nodeList.Count; i++) {
+					char value;
+					if(!char.TryParse(GetXmlNodeValue(nodeList[i], attribute), out value)) {
+						throw new InvalidConfigValueException(string.Format("Value [{0}/{1}[{2}]] is not of type char.", section, key, i));
+					}
+					result[i] = value;
+			}
+				return result;
+			}
+			return new char[0];
+		}
+
+		/// <summary>
+		/// Gets an int array of value attribues from elements with the same name. If no value attribute exists on the element the content of the element is returned.
+		/// </summary>
+		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
+		/// <returns>An int array.</returns>
+		public int[] GetIntValueArray(string section, string key) {
+			return GetIntAttributeArray(section, key, null);
+		}
+
+		/// <summary>
+		/// Gets an int array of attribues from elements with the same name.
+		/// </summary>
+		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
+		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
+		/// <param name="attribute">The name of the attributes. The parameter can contain XPath syntax.</param>
+		/// <returns>An int array.</returns>
+		public int[] GetIntAttributeArray(string section, string key, string attribute) {
+			XmlNodeList nodeList = this.ConfigXML.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
+			if(nodeList != null) {
+				int[] result = new int[nodeList.Count];
+				for(int i = 0; i < nodeList.Count; i++) {
+					int value;
+					if(!int.TryParse(GetXmlNodeValue(nodeList[i], attribute), NumberStyles.Integer, CultureInfo.InvariantCulture, out value)) {
+						throw new InvalidConfigValueException(string.Format("Value [{0}/{1}[{2}]] is not of type integer.", section, key, i));
+					}
+					result[i] = value;
+				}
+				return result;
+			}
+			return new int[0];
 		}
 
 		/// <summary>
@@ -349,39 +454,6 @@ namespace nJupiter.Configuration {
 				return result;
 			}
 			return new string[0];
-		}
-
-		/// <summary>
-		/// Gets an int array of value attribues from elements with the same name. If no value attribute exists on the element the content of the element is returned.
-		/// </summary>
-		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
-		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
-		/// <returns>A int array.</returns>
-		public int[] GetIntValueArray(string section, string key) {
-			return GetIntAttributeArray(section, key, null);
-		}
-
-		/// <summary>
-		/// Gets an int array of attribues from elements with the same name.
-		/// </summary>
-		/// <param name="section">The path to the elements. The parameter can contain XPath syntax.</param>
-		/// <param name="key">The name of the elements. The parameter can contain XPath syntax.</param>
-		/// <param name="attribute">The name of the attributes. The parameter can contain XPath syntax.</param>
-		/// <returns>A int array.</returns>
-		public int[] GetIntAttributeArray(string section, string key, string attribute) {
-			XmlNodeList nodeList = this.ConfigXML.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
-			if(nodeList != null) {
-				int[] result = new int[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++) {
-					try {
-						result[i] = int.Parse(GetXmlNodeValue(nodeList[i], attribute), CultureInfo.InvariantCulture);
-					} catch(FormatException) {
-						throw new InvalidConfigValueException(string.Format("Value [{0}/{1}[{2}]] is not of type integer.", section, key, i));
-					}
-				}
-				return result;
-			}
-			return new int[0];
 		}
 
 		/// <summary>

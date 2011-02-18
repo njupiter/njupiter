@@ -11,6 +11,10 @@ NEW - New feature
 ===============================================================================
 Changes for upcoming version
 ===============================================================================
+**** nJupiter.Configuration
+ENH: Added support for Char methods in Config. Also eliminated some try catch
+     statements and replaced them with uses of TryParse methods.
+
 **** nJupiter.Web.UI
 BUG: Backed out the patch for StreamImage.aspx in 3.16.0.0 because it was wrong.
 

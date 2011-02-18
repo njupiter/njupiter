@@ -97,7 +97,6 @@
     </Compile>
     <Compile Include="Web\ForumTest.aspx.cs">
       <DependentUpon>ForumTest.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\HierarchicalPostList.ascx.cs">
       <DependentUpon>HierarchicalPostList.ascx</DependentUpon>
