@@ -56,6 +56,7 @@ namespace nJupiter.Web.UI {
 		public const string Embed			= "embed";
 		public const string Fieldset		= "fieldset";
 		public const string Font			= "font";
+		public const string Footer			= "footer";
 		public const string Form			= "form";
 		public const string Frame			= "frame";
 		public const string Frameset		= "frameset";
@@ -136,6 +137,7 @@ namespace nJupiter.Web.UI {
 				tagName.Equals(HtmlTag.Dl) ||
 				tagName.Equals(HtmlTag.Fieldset) ||
 				tagName.Equals(HtmlTag.Form) ||
+				tagName.Equals(HtmlTag.Footer) ||
 				tagName.Equals(HtmlTag.H1) ||
 				tagName.Equals(HtmlTag.H2) ||
 				tagName.Equals(HtmlTag.H3) ||
