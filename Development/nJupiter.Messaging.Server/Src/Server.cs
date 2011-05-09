@@ -92,7 +92,7 @@ namespace nJupiter.Messaging.Server {
 				provider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
 
 				IDictionary props = new Hashtable();
-				props["port"] = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetIntValue("port");
+				props["port"] = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue<int>("port");
 
 				TcpChannel chan = new TcpChannel(props, null, provider);
 				ChannelServices.RegisterChannel(chan, false);

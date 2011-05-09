@@ -22,8 +22,25 @@
 */
 #endregion
 
+using System.ComponentModel;
+
 namespace nJupiter.Configuration {
-	public interface IConfigSource {
-		T GetConfigSource<T>();
+
+	internal class StringParser {
+
+		private static readonly StringParser Instance = new StringParser();
+
+		public static StringParser GetInstance() {
+			return Instance;
+		}
+
+		public T Parse<T>(string value) {
+			var converter = TypeDescriptor.GetConverter(typeof(T));
+			if(converter != null) {
+				return (T)converter.ConvertFromString(value);
+			}
+			return default(T);
+		}
+
 	}
 }

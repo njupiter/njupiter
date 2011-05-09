@@ -20,7 +20,7 @@ namespace nJupiter.Text.SimpleTextParser {
 				bool caseSensitive = false;
 
 				if(config.ContainsAttribute(".", string.Format("rule[@pattern='{0}']", pattern), "caseSensitive")) {
-					caseSensitive = config.GetBoolAttribute(".", string.Format("rule[@pattern='{0}']", pattern), "caseSensitive");
+					caseSensitive = config.GetAttribute<bool>(".", string.Format("rule[@pattern='{0}']", pattern), "caseSensitive");
 				}
 
 				Rule rule = new Rule(pattern, replacement, caseSensitive);

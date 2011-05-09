@@ -45,6 +45,7 @@
     <None Include="Config\nJupiter.Web.UI.CssCompressor.config" />
     <None Include="Config\log4net.config" />
     <None Include="Config\System.config" />
+    <None Include="Config\web.config" />
     <None Include="Snippets\Visual C#\AutoCode\rco.snippet" />
     <None Include="Snippets\Visual C#\AutoCode\re.snippet" />
     <None Include="Snippets\Visual C#\AutoCode\reh.snippet" />

@@ -58,7 +58,7 @@ namespace nJupiter.DataAccess.Users {
 			get {
 				if(this.minutesInCache < 0) {
 					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "minutesInCache")) {
-						this.minutesInCache = usersDao.Config.GetIntValue("cache", "minutesInCache");
+						this.minutesInCache = usersDao.Config.GetValue<int>("cache", "minutesInCache");
 					} else {
 						this.minutesInCache = 0;
 					}
@@ -71,7 +71,7 @@ namespace nJupiter.DataAccess.Users {
 			get {
 				if(slidingExpiration == null) {
 					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "slidingExpiration")) {
-						this.slidingExpiration = usersDao.Config.GetBoolValue("cache", "slidingExpiration");
+						this.slidingExpiration = usersDao.Config.GetValue<bool>("cache", "slidingExpiration");
 					} else {
 						this.slidingExpiration = false;
 					}

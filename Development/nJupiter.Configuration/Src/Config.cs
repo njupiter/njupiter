@@ -24,209 +24,116 @@
 
 using System;
 using System.Xml;
-using System.Globalization;
 using System.Collections.Generic;
 
 namespace nJupiter.Configuration {
 
-	internal class Config : IConfig {
+	public class Config : IConfig {
 
-		#region Members
 		private readonly ConfigCollection innerConfigurations = new ConfigCollection();
 		private readonly Dictionary<string, object> configHandlers = new Dictionary<string, object>();
 		private readonly object padlock = new object();
 		private readonly IConfigSource source;
 		private readonly string configKey;
 		private bool disposed;
-		private XmlElement configXml;
-		#endregion
+		private readonly XmlElement configXml;
 
-		#region Constants
 		private const string DefaultAttribute = "value";
-		#endregion
 
-		#region Properties
 		public string ConfigKey { get { return this.configKey; } }
-		public XmlElement ConfigXml { get { return this.configXml; } internal set { configXml = value; } }
+		public XmlElement ConfigXml { get { return this.configXml; } }
 		public IConfigSource ConfigSource { get{ return source; } }
-		#endregion
 
-		#region Events
 		public event EventHandler Disposed;
-		#endregion
 
-		#region Constructors
-		internal Config(string configKey, XmlElement element)
+		public Config(string configKey, XmlElement element)
 			: this(configKey, element, null) {
 		}
 
-		internal Config(string configKey, XmlElement element, IConfigSource source) {
+		public Config(string configKey, XmlElement element, IConfigSource source) {
+			if(configKey == null) {
+				throw new ArgumentNullException("configKey");
+			}
+			if(element == null) {
+				throw new ArgumentNullException("element");
+			}
 			this.configKey = configKey;
 			this.configXml = element;
 			this.source = source ?? new ConfigSource();
 		}
-		#endregion
-
-		#region Methods
-		public bool GetBoolValue(string key) {
-			return GetBoolValue(".", key);
-		}
-
-		public bool GetBoolValue(string section, string key) {
-			return string.Compare(GetValue(section, key), "true", true, CultureInfo.InvariantCulture) == 0;
-		}
-
-		public int GetIntValue(string key) {
-			return GetIntValue(".", key);
-		}
-
-		public int GetIntValue(string section, string key) {
-			int value;
-			if(!int.TryParse(GetValue(section, key), NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out value)) {
-				throw new InvalidConfigValueException(string.Format("Value [{0}/{1}] is not of type integer.", section, key));
-			}
-			return value;
-		}
-
-		public char GetCharValue(string key) {
-			return GetCharValue(".", key);
-		}
-
-		public char GetCharValue(string section, string key) {
-			char value;
-			if(!char.TryParse(GetValue(section, key), out value)) {
-				throw new InvalidConfigValueException(string.Format("Value [{0}/{1}] is not of type char.", section, key));
-			}
-			return value;
-		}
 
 		public string GetValue(string key) {
-			return GetValue(".", key);
+			return GetValue<string>(key);
+		}
+
+		public T GetValue<T>(string key) {
+			return GetValue<T>(null, key);
+		}
+
+		public T GetValue<T>(string section, string key) {
+			return GetAttribute<T>(section, key, null);
+		}
+
+		public T GetAttribute<T>(string key, string attribute) {
+			return this.GetAttribute<T>(null, key, attribute);
+		}
+
+		public T GetAttribute<T>(string section, string key, string attribute) {
+			XmlNode node = this.GetKey(section, key);
+			if(node != null && (attribute == null || AttributeExistsInNode(attribute, node))) {
+				return this.GetValueFromXmlNode<T>(section, key, attribute, node);
+			}
+			throw new ConfigValueNotFoundException(string.Format("Value [{0}] was not found in the config with key [{1}].", GetXPath(section, key), this.ConfigKey));
+		}
+
+		public T[] GetValueArray<T>(string section, string key) {
+			return this.GetAttributeArray<T>(section, key, null);
+		}
+
+		public T[] GetAttributeArray<T>(string section, string key, string attribute) {
+			string xpath = GetXPath(section, key, attribute);
+			XmlNodeList nodeList = this.ConfigXml.SelectNodes(xpath);
+			if(nodeList != null) {
+				var result = new T[nodeList.Count];
+				for(int i = 0; i < nodeList.Count; i++) {
+					result[i] = this.GetValueFromXmlNode<T>(section, key, attribute, nodeList[i]);
+				}
+				return result;
+			}
+			return new T[0];
 		}
 
 		public string GetValue(string section, string key) {
-			XmlNode node = this.GetKey(section, key);
-			if(node != null) {
-				return GetXmlNodeValue(node, null);
-			}
-			throw new ConfigValueNotFoundException(string.Format("Value [{0}/{1}] was not found in the config with key [{2}].", section, key, this.ConfigKey));
-		}
-
-		public bool GetBoolAttribute(string key, string attribute) {
-			return GetBoolAttribute(".", key, attribute);
-		}
-
-		public bool GetBoolAttribute(string section, string key, string attribute) {
-			return string.Compare(GetAttribute(section, key, attribute), "true", true, CultureInfo.InvariantCulture) == 0;
-		}
-
-		public int GetIntAttribute(string key, string attribute) {
-			return GetIntAttribute(".", key, attribute);
-		}
-
-		public int GetIntAttribute(string section, string key, string attribute) {
-			int value;
-			if(!int.TryParse(GetAttribute(section, key, attribute), NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out value)) {
-				throw new InvalidConfigValueException(string.Format("Attribute [{0}/{1}/@{2}] is not of type integer.", section, key, attribute));
-			}
-			return value;
-		}
-
-		public char GetCharAttribute(string key, string attribute) {
-			return GetCharAttribute(".", key, attribute);
-		}
-
-		public char GetCharAttribute(string section, string key, string attribute) {
-			char value;
-			if(!char.TryParse(GetAttribute(section, key, attribute), out value)) {
-				throw new InvalidConfigValueException(string.Format("Attribute [{0}/{1}/@{2}] is not of type char.", section, key, attribute));
-			}
-			return value;
+			return GetValue<string>(section, key);
 		}
 
 		public string GetAttribute(string key, string attribute) {
-			return GetAttribute(".", key, attribute);
+			return GetAttribute<string>(key, attribute);
 		}
 
 		public string GetAttribute(string section, string key, string attribute) {
-			XmlNode node = this.GetKey(section, key);
-			if(node != null) {
-				XmlAttribute xmlattr = node.Attributes[attribute];
-				if(xmlattr != null) {
-					return xmlattr.Value;
-				}
-				throw new ConfigValueNotFoundException(string.Format("Attribute [{0}/{1}/@{2}] was not found in the config with key [{3}].", section, key, attribute, this.ConfigKey));
-			}
-			throw new ConfigValueNotFoundException(string.Format("Value [{0}/{1}] was not found in the config with key [{2}].", section, key, this.ConfigKey));
-		}
-
-
-		public XmlNode GetKey(string key) {
-			return GetKey(".", key);
-		}
-
-		public XmlNode GetKey(string section, string key) {
-			return this.ConfigXml.SelectSingleNode(section + "/" + key);
-		}
-
-		public char[] GetCharValueArray(string section, string key) {
-			return GetCharAttributeArray(section, key, null);
-		}
-
-		public char[] GetCharAttributeArray(string section, string key, string attribute) {
-			XmlNodeList nodeList = this.ConfigXml.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
-			if(nodeList != null) {
-				char[] result = new char[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++) {
-					char value;
-					if(!char.TryParse(GetXmlNodeValue(nodeList[i], attribute), out value)) {
-						throw new InvalidConfigValueException(string.Format("Value [{0}/{1}[{2}]] is not of type char.", section, key, i));
-					}
-					result[i] = value;
-			}
-				return result;
-			}
-			return new char[0];
-		}
-
-		public int[] GetIntValueArray(string section, string key) {
-			return GetIntAttributeArray(section, key, null);
-		}
-
-		public int[] GetIntAttributeArray(string section, string key, string attribute) {
-			XmlNodeList nodeList = this.ConfigXml.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
-			if(nodeList != null) {
-				int[] result = new int[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++) {
-					int value;
-					if(!int.TryParse(GetXmlNodeValue(nodeList[i], attribute), NumberStyles.Integer, CultureInfo.InvariantCulture, out value)) {
-						throw new InvalidConfigValueException(string.Format("Value [{0}/{1}[{2}]] is not of type integer.", section, key, i));
-					}
-					result[i] = value;
-				}
-				return result;
-			}
-			return new int[0];
+			return GetAttribute<string>(section, key, attribute);
 		}
 
 		public string[] GetValueArray(string section, string key) {
-			return GetAttributeArray(section, key, null);
+			return GetValueArray<string>(section, key);
 		}
 
 		public string[] GetAttributeArray(string section, string key, string attribute) {
-			XmlNodeList nodeList = this.ConfigXml.SelectNodes(section + "/" + key + (!string.IsNullOrEmpty(attribute) ? "[@" + attribute + "]" : string.Empty));
-			if(nodeList != null) {
-				string[] result = new string[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++) {
-					result[i] = GetXmlNodeValue(nodeList[i], attribute);
-				}
-				return result;
-			}
-			return new string[0];
+			return this.GetAttributeArray<string>(section, key, attribute);
+		}
+
+		public XmlNode GetKey(string key) {
+			return GetKey(null, key);
+		}
+
+		public XmlNode GetKey(string section, string key) {
+			string xpath = GetXPath(section, key);
+			return this.ConfigXml.SelectSingleNode(xpath);
 		}
 
 		public IConfig GetConfigSection(string section) {
-			string key = this.ConfigKey + ":" + section;
+			string key = string.Format("{0}:{1}", this.ConfigKey, section);
 			if(this.innerConfigurations.Contains(key))
 				return this.innerConfigurations[key];
 			lock(padlock) {
@@ -244,92 +151,110 @@ namespace nJupiter.Configuration {
 		}
 
 		public bool ContainsKey(string section, string key) {
-			XmlNode node = this.GetKey(section, key);
-			if(node != null) {
-				return true;
-			}
-			return false;
+			return this.GetKey(section, key) != null;
 		}
 
 		public bool ContainsKey(string key) {
-			return ContainsKey(".", key);
+			return ContainsKey(null, key);
 		}
 
 		public bool ContainsAttribute(string section, string key, string attribute) {
 			XmlNode node = this.GetKey(section, key);
-			if(node != null) {
-				XmlAttribute xmlattr = node.Attributes[attribute];
-				if(xmlattr != null) {
-					return true;
-				}
+			if(node == null) {
+				return false;
 			}
-			return false;
+			return AttributeExistsInNode(attribute, node);
 		}
 
 		public bool ContainsAttribute(string key, string attribute) {
-			return ContainsAttribute(".", key, attribute);
+			return ContainsAttribute(null, key, attribute);
 		}
 
-		public object GetConfigurationSectionHandler(string sectionName, Type configurationSectionHandlerType) {
-
-			if(!configHandlers.ContainsKey(sectionName)) {
+		public object GetConfigurationSectionHandler(string section, Type configurationSectionHandlerType) {
+			if(!configHandlers.ContainsKey(section)) {
 				lock(padlock) {
-					if(!configHandlers.ContainsKey(sectionName)) {
-						object result = System.Configuration.ConfigurationManager.GetSection(sectionName);
-						if(result == null) {
-							XmlNode xmlNode = this.configXml.SelectSingleNode(sectionName);
-							if(xmlNode != null) {
-								System.Configuration.IConfigurationSectionHandler configurationSectionHandler = Activator.CreateInstance(configurationSectionHandlerType) as System.Configuration.IConfigurationSectionHandler;
-								if(configurationSectionHandler != null) {
-									result = configurationSectionHandler.Create(null, null, xmlNode);
-								}
-							}
-						}
-						configHandlers.Add(sectionName, result);
+					if(!configHandlers.ContainsKey(section)) {
+						object result = this.GetConfigurationSectionHandlerInternal(section, configurationSectionHandlerType);
+						configHandlers.Add(section, result);
 					}
 				}
 			}
-			return configHandlers[sectionName];
+			return configHandlers[section];
 		}
-		#endregion
 
-		#region Private Methods
-		private static string GetXmlNodeValue(XmlNode xmlNode, string attribute) {
-			attribute = !string.IsNullOrEmpty(attribute) ? attribute : DefaultAttribute;
-			if(xmlNode.Attributes != null && xmlNode.Attributes[attribute] != null)
-				return xmlNode.Attributes[attribute].Value;
-			return DefaultAttribute.Equals(attribute) ? xmlNode.InnerText : null;
+		private object GetConfigurationSectionHandlerInternal(string section, Type configurationSectionHandlerType) {
+			object result = System.Configuration.ConfigurationManager.GetSection(section);
+			if(result == null) {
+				XmlNode node = this.configXml.SelectSingleNode(section);
+				if(node != null) {
+					result = CreateConfigurationSectionHandler(node, configurationSectionHandlerType);
+				}
+			}
+			return result;
 		}
-		#endregion
 
-		#region IDisposable Members
-		private void Dispose(bool disposing) {
+		private static object CreateConfigurationSectionHandler(XmlNode node, Type configurationSectionHandlerType) {
+			System.Configuration.IConfigurationSectionHandler configurationSectionHandler = Activator.CreateInstance(configurationSectionHandlerType) as System.Configuration.IConfigurationSectionHandler;
+			if(configurationSectionHandler != null) {
+				return configurationSectionHandler.Create(null, null, node);
+			}
+			return null;
+		}
+
+		private T ParseValue<T>(string section, string key, string attribute, string value) {
+			try {
+				return StringParser.GetInstance().Parse<T>(value);
+			}catch(Exception ex) {
+				attribute = !string.IsNullOrEmpty(attribute) ? string.Format("[@{0}]", attribute) : string.Empty;
+				throw new InvalidConfigValueException(string.Format("The value [{0}] with key [{1}] in config with key [{2}] is not of type [{3}].", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name), ex);
+			}
+		}
+
+		private static bool AttributeExistsInNode(string attribute, XmlNode node) {
+			return GetAttributeValueFromXmlNode(attribute, node) != null;
+		}
+
+		private T GetValueFromXmlNode<T>(string section, string key, string attribute, XmlNode node) {
+			attribute = GetAttributeName(attribute);
+			string value = GetAttributeValueFromXmlNode(attribute, node);
+			if(value == null && DefaultAttribute.Equals(attribute)){
+				value = node.InnerText;
+			}
+			return this.ParseValue<T>(section, key, attribute, value);
+		}
+
+		private static string GetAttributeValueFromXmlNode(string attribute, XmlNode node) {
+			if(node.Attributes != null && node.Attributes[attribute] != null) {
+				return node.Attributes[attribute].Value;
+			}
+			return null;
+		}
+
+		private static string GetAttributeName(string attribute) {
+			return !string.IsNullOrEmpty(attribute) ? attribute : DefaultAttribute;
+		}
+
+		private static string GetXPath(string section, string key) {
+			return GetXPath(section, key, null);
+		}
+
+		private static string GetXPath(string section, string key, string attribute) {
+			section = section ?? ".";
+			attribute = !string.IsNullOrEmpty(attribute) ? string.Format("[@{0}]", attribute) : string.Empty;
+			return string.Format("{0}/{1}{2}", section, key, attribute);
+		}
+
+		public void Dispose() {
 			if(!this.disposed) {
 				this.disposed = true;
-				// Suppress finalization of this disposed instance.
-				if(disposing) {
-					GC.SuppressFinalize(this);
-					if(this.Disposed != null) {
-						this.Disposed(this, EventArgs.Empty);
-					}
+				if(this.Disposed != null) {
+					this.Disposed(this, EventArgs.Empty);
 				}
 			}
 		}
 
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		public void Dispose() {
-			Dispose(true);
-		}
-
-		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="Config"/> is reclaimed by garbage collection.
-		/// </summary>
 		~Config() {
-			Dispose(false);
+			Dispose();
 		}
-		#endregion
 	}
 }

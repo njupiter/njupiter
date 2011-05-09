@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace nJupiter.Messaging
 {
-
+	[Ignore] //Old tests depending on ws
 	[TestFixture]
 	public class MessagingTestCase {
 

@@ -4,7 +4,8 @@ using System;
 using NUnit.Framework;
 
 namespace nJupiter.DataAccess.Users.DSDAO {
-
+	
+	[Ignore] //Old tests depending on ad
 	[TestFixture]
 	public class UserTestDS 	{
 

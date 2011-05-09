@@ -207,35 +207,35 @@ namespace nJupiter.Globalization {
 				IConfig numberFormatConfig = config.GetConfigSection(numberFormatConfigKey);
 
 				if(numberFormatConfig.ContainsKey("currencyDecimalDigits")) {
-					cultureInfo.NumberFormat.CurrencyDecimalDigits = numberFormatConfig.GetIntValue("currencyDecimalDigits");
+					cultureInfo.NumberFormat.CurrencyDecimalDigits = numberFormatConfig.GetValue<int>("currencyDecimalDigits");
 				}
 
 				if(numberFormatConfig.ContainsKey("currencyNegativePattern")) {
-					cultureInfo.NumberFormat.CurrencyNegativePattern = numberFormatConfig.GetIntValue("currencyNegativePattern");
+					cultureInfo.NumberFormat.CurrencyNegativePattern = numberFormatConfig.GetValue<int>("currencyNegativePattern");
 				}
 
 				if(numberFormatConfig.ContainsKey("currencyPositivePattern")) {
-					cultureInfo.NumberFormat.CurrencyPositivePattern = numberFormatConfig.GetIntValue("currencyPositivePattern");
+					cultureInfo.NumberFormat.CurrencyPositivePattern = numberFormatConfig.GetValue<int>("currencyPositivePattern");
 				}
 
 				if(numberFormatConfig.ContainsKey("numberDecimalDigits")) {
-					cultureInfo.NumberFormat.NumberDecimalDigits = numberFormatConfig.GetIntValue("numberDecimalDigits");
+					cultureInfo.NumberFormat.NumberDecimalDigits = numberFormatConfig.GetValue<int>("numberDecimalDigits");
 				}
 
 				if(numberFormatConfig.ContainsKey("numberNegativePattern")) {
-					cultureInfo.NumberFormat.NumberNegativePattern = numberFormatConfig.GetIntValue("numberNegativePattern");
+					cultureInfo.NumberFormat.NumberNegativePattern = numberFormatConfig.GetValue<int>("numberNegativePattern");
 				}
 
 				if(numberFormatConfig.ContainsKey("percentDecimalDigits")) {
-					cultureInfo.NumberFormat.PercentDecimalDigits = numberFormatConfig.GetIntValue("percentDecimalDigits");
+					cultureInfo.NumberFormat.PercentDecimalDigits = numberFormatConfig.GetValue<int>("percentDecimalDigits");
 				}
 
 				if(numberFormatConfig.ContainsKey("percentNegativePattern")) {
-					cultureInfo.NumberFormat.PercentNegativePattern = numberFormatConfig.GetIntValue("percentNegativePattern");
+					cultureInfo.NumberFormat.PercentNegativePattern = numberFormatConfig.GetValue<int>("percentNegativePattern");
 				}
 
 				if(numberFormatConfig.ContainsKey("percentPositivePattern")) {
-					cultureInfo.NumberFormat.PercentPositivePattern = numberFormatConfig.GetIntValue("percentPositivePattern");
+					cultureInfo.NumberFormat.PercentPositivePattern = numberFormatConfig.GetValue<int>("percentPositivePattern");
 				}
 
 				if(numberFormatConfig.ContainsKey("currencyDecimalSeparator")) {
@@ -294,7 +294,7 @@ namespace nJupiter.Globalization {
 					cultureInfo.NumberFormat.PositiveSign = numberFormatConfig.GetValue("positiveSign");
 				}
 
-				int[] percentGroupSizes = numberFormatConfig.GetIntValueArray("percentGroupSizes", "percentGroupSize");
+				int[] percentGroupSizes = numberFormatConfig.GetValueArray<int>("percentGroupSizes", "percentGroupSize");
 				if(percentGroupSizes.Length > 0) {
 					try {
 						cultureInfo.NumberFormat.PercentGroupSizes = percentGroupSizes;
@@ -303,7 +303,7 @@ namespace nJupiter.Globalization {
 					}
 				}
 
-				int[] numberGroupSizes = numberFormatConfig.GetIntValueArray("numberGroupSizes", "numberGroupSize");
+				int[] numberGroupSizes = numberFormatConfig.GetValueArray<int>("numberGroupSizes", "numberGroupSize");
 				if(numberGroupSizes.Length > 0) {
 					try {
 						cultureInfo.NumberFormat.NumberGroupSizes = numberGroupSizes;
@@ -312,7 +312,7 @@ namespace nJupiter.Globalization {
 					}
 				}
 
-				int[] currencyGroupSizes = numberFormatConfig.GetIntValueArray("currencyGroupSizes", "currencyGroupSize");
+				int[] currencyGroupSizes = numberFormatConfig.GetValueArray<int>("currencyGroupSizes", "currencyGroupSize");
 				if(currencyGroupSizes.Length > 0) {
 					try {
 						cultureInfo.NumberFormat.CurrencyGroupSizes = currencyGroupSizes;

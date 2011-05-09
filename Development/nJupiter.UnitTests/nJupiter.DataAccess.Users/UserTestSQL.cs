@@ -18,6 +18,7 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 		}
 	}
 
+	[Ignore] //Old tests depending on db
 	[TestFixture]
 	public class UserTest {
 		private const string UserName = "UnitTestUser";

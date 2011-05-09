@@ -54,7 +54,7 @@ namespace nJupiter.Web.UI.CssCompressor {
 			IConfig config = ConfigHandler.GetConfig();
 			int minutesToCache = 0;
 			if(config.ContainsKey("cssCompressor/minutesToCache")) {
-				minutesToCache = config.GetIntValue("cssCompressor/minutesToCache");
+				minutesToCache = config.GetValue<int>("cssCompressor/minutesToCache");
 			}
 
 			if(minutesToCache > 0) {

@@ -240,7 +240,7 @@ namespace nJupiter.Configuration {
 		internal static void SetConfig(IConfig config) {
 			AddWatcherToFileConfig(config);
 
-			lock(ConfigHandler.Instance.configurations.SyncRoot) {
+			lock(PadLock) {
 				if(ConfigHandler.Instance.configurations.Contains(config.ConfigKey)) {
 					ConfigHandler.Instance.configurations[config.ConfigKey] = config;
 				} else {

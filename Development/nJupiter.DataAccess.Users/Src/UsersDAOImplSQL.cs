@@ -536,7 +536,7 @@ namespace nJupiter.DataAccess.Users {
 			if(user.Properties[this.PropertyNames.PasswordSalt] == null)
 				throw new UsersException("Database does not contain a field for password salt.");
 
-			if(this.Config.GetBoolValue("hashPassword")) {
+			if(this.Config.GetValue<bool>("hashPassword")) {
 				user.Properties[this.PropertyNames.PasswordSalt].Value = GenerateSalt(); // Generate new salt every time password is changed
 				user.Properties[this.PropertyNames.Password].Value = MD5Hash(user.Properties["passwordSalt"].Value + password);
 			} else {
@@ -553,7 +553,7 @@ namespace nJupiter.DataAccess.Users {
 			if(user.Properties["passwordSalt"] == null)
 				throw new UsersException("Database does not contain a field for password salt.");
 
-			if(this.Config.GetBoolValue("hashPassword")) {
+			if(this.Config.GetValue<bool>("hashPassword")) {
 				return user.Properties["password"].Value.Equals(MD5Hash(user.Properties["passwordSalt"].Value + password));
 			}
 			return user.Properties["password"].Value.Equals(password);

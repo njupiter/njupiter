@@ -99,18 +99,18 @@ namespace nJupiter.DataAccess.Ldap {
 					}
 
 					if(configSection.ContainsKey("allowWildcardSearch")) {
-						server.AllowWildcardSearch = configSection.GetBoolValue("allowWildcardSearch");
+						server.AllowWildcardSearch = configSection.GetValue<bool>("allowWildcardSearch");
 					}
 
 					if(configSection.ContainsKey("timeLimit")) {
-						int timeLimit = configSection.GetIntValue("timeLimit");
+						int timeLimit = configSection.GetValue<int>("timeLimit");
 						server.TimeLimit = TimeSpan.FromSeconds(timeLimit);
 					} else {
 						server.TimeLimit = TimeSpan.FromSeconds(30);
 					}
 
 					if(configSection.ContainsKey("pageSize")) {
-						int pageSize = configSection.GetIntValue("pageSize");
+						int pageSize = configSection.GetValue<int>("pageSize");
 						server.PageSize = pageSize;
 					} else {
 						server.PageSize = 0;
@@ -149,7 +149,7 @@ namespace nJupiter.DataAccess.Ldap {
 							bool excludeFromNameSearch = false;
 							string attributeKey = string.Format("users/attributes/attribute[@value='{0}']", attribute);
 							if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
-								excludeFromNameSearch = configSection.GetBoolAttribute(attributeKey, "excludeFromNameSearch");
+								excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
 							}
 							AttributeDefinition attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
 							userAttributeDefinitionList.Add(attributeDefinition);
@@ -220,7 +220,7 @@ namespace nJupiter.DataAccess.Ldap {
 							bool excludeFromNameSearch = false;
 							string attributeKey = string.Format("groups/attributes/attribute[@value='{0}']", attribute);
 							if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
-								excludeFromNameSearch = configSection.GetBoolAttribute(attributeKey, "excludeFromNameSearch");
+								excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
 							}
 							AttributeDefinition attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
 							groupAttributeDefinitionList.Add(attributeDefinition);
@@ -245,13 +245,13 @@ namespace nJupiter.DataAccess.Ldap {
 					}
 
 					if(configSection.ContainsKey("rangeRetrievalSupport")) {
-						server.RangeRetrievalSupport = configSection.GetBoolValue("rangeRetrievalSupport");
+						server.RangeRetrievalSupport = configSection.GetValue<bool>("rangeRetrievalSupport");
 					} else {
 						server.RangeRetrievalSupport = true;
 					}
 
 					if(configSection.ContainsKey("propertySortingSupport")) {
-						server.PropertySortingSupport = configSection.GetBoolValue("propertySortingSupport");
+						server.PropertySortingSupport = configSection.GetValue<bool>("propertySortingSupport");
 					} else {
 						server.PropertySortingSupport = true;
 					}

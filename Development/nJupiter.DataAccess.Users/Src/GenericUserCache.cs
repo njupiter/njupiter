@@ -64,7 +64,7 @@ namespace nJupiter.DataAccess.Users {
 			get {
 				if(this.minutesInCache < 0) {
 					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "minutesToCacheUser"))
-						this.minutesInCache = usersDao.Config.GetIntValue("cache", "minutesToCacheUser");
+						this.minutesInCache = usersDao.Config.GetValue<int>("cache", "minutesToCacheUser");
 					else
 						this.minutesInCache = 0;
 				}
@@ -76,7 +76,7 @@ namespace nJupiter.DataAccess.Users {
 			get {
 				if(this.maxUsersInCache < 0) {
 					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "maxUsersInCache")) {
-						this.maxUsersInCache = usersDao.Config.GetIntValue("cache", "maxUsersInCache");
+						this.maxUsersInCache = usersDao.Config.GetValue<int>("cache", "maxUsersInCache");
 						if(this.maxUsersInCache < MinimumCacheSize && this.maxUsersInCache != 0)
 							this.maxUsersInCache = MinimumCacheSize;
 					} else {

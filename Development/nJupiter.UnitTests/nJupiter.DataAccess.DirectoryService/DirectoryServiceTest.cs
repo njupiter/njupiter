@@ -2,6 +2,7 @@ using NUnit.Framework;
 
 namespace nJupiter.DataAccess.DirectoryService {
 
+	[Ignore] //Old tests depending on ad
 	[TestFixture]
 	public class DirectoryServiceTest {
 		private DirectoryService directoryService;
