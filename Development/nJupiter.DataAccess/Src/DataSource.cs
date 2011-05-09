@@ -53,7 +53,7 @@ namespace nJupiter.DataAccess {
 
 		#region Members
 		private string connectionString;
-		private Config config;
+		private IConfig config;
 		#endregion
 
 		#region Properties
@@ -61,7 +61,7 @@ namespace nJupiter.DataAccess {
 		/// Gets the config object associated with the data source.
 		/// </summary>
 		/// <value>The config.</value>
-		protected Config Config { get { return this.config; } }
+		protected IConfig Config { get { return this.config; } }
 		/// <summary>
 		/// Gets the connection string associated with the data source.
 		/// </summary>
@@ -118,7 +118,7 @@ namespace nJupiter.DataAccess {
 			lock(DataSourceAdapters.SyncRoot) {
 				DataSource dataSource;
 				if(!DataSourceAdapters.ContainsKey(name)) {
-					Config config = ConfigHandler.GetConfig();
+					IConfig config = ConfigHandler.GetConfig();
 					string assemblyPath = config.GetValue(section, assemblypath);
 					string assemblyName = config.GetValue(section, assembly);
 					string assemblyType = config.GetValue(section, type);

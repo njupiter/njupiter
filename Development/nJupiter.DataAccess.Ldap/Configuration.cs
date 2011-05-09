@@ -84,8 +84,8 @@ namespace nJupiter.DataAccess.Ldap {
 				UsersConfig users = new UsersConfig();
 				GroupsConfig groups = new GroupsConfig();
 
-				Config config = ConfigHandler.GetConfig();
-				Config configSection = this.GetConfigSection(config);
+				IConfig config = ConfigHandler.GetConfig();
+				IConfig configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 
 					server.Url = new Uri(configSection.GetValue("url"));
@@ -282,8 +282,8 @@ namespace nJupiter.DataAccess.Ldap {
 
 		}
 
-		private Config GetConfigSection(Config config) {
-			Config configSection;
+		private IConfig GetConfigSection(IConfig config) {
+			IConfig configSection;
 			if(string.IsNullOrEmpty(this.ldapServer)) {
 				configSection = config.GetConfigSection("ldapServers/ldapServer[@default='true']");
 				if(configSection == null) {

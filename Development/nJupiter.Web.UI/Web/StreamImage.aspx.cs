@@ -118,7 +118,7 @@ namespace nJupiter.Web.UI {
 			const string assembly = "assembly";
 			const string type = "type";
 
-			Config config = ConfigHandler.GetConfig(true);
+			IConfig config = ConfigHandler.GetConfig(true);
 			if(config != null && config.ContainsKey(section)) {
 				return (IFileToStream)GetInstance(
 					config.GetValue(section, assemblypath),
@@ -190,7 +190,7 @@ namespace nJupiter.Web.UI {
 				bool allowEnlarging = reqAllowEnlarging != null && string.Compare(reqAllowEnlarging, "true", true, CultureInfo.InvariantCulture) == 0;
 				bool allowStretching = reqAllowStretching != null && string.Compare(reqAllowStretching, "true", true, CultureInfo.InvariantCulture) == 0;
 
-				Config config = ConfigHandler.GetSystemConfig();
+				IConfig config = ConfigHandler.GetSystemConfig();
 				SmoothingMode smoothingMode = SmoothingMode.Default;
 				if(config.ContainsKey("imageScaleConfig", "smoothingMode")) {
 					smoothingMode = (SmoothingMode)Enum.Parse(typeof(SmoothingMode), config.GetValue("imageScaleConfig", "smoothingMode"), true);

@@ -146,7 +146,7 @@ namespace nJupiter.Services.Forum.UI.Web {
 				if(this.hierarchicalPostList == null &&
 					this.CurrentPost.Posts != null &&
 					!this.CurrentPost.Posts.Count.Equals(0)) {
-					Config config = ConfigHandler.GetConfig(true);
+					IConfig config = ConfigHandler.GetConfig(true);
 					this.hierarchicalPostList = (HierarchicalPostList)this.LoadControl(config != null && config.ContainsKey(SettingPostlisttemplate) ? config.GetValue(SettingPostlisttemplate) : Path.Combine(this.TemplateSourceDirectory, DefaultPostlisttemplate));
 				}
 				return this.hierarchicalPostList;

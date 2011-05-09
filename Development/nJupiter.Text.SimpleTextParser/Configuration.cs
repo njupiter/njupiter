@@ -40,8 +40,8 @@ namespace nJupiter.Text.SimpleTextParser {
 
 		private void Configure(object sender, EventArgs e) {
 			lock(Padlock) {
-				Config config = ConfigHandler.GetConfig();
-				Config configSection = this.GetConfigSection(config);
+				IConfig config = ConfigHandler.GetConfig();
+				IConfig configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 					this.formatter = FormatterFactory.GetFormatter(configSection);
 				}
@@ -51,8 +51,8 @@ namespace nJupiter.Text.SimpleTextParser {
 
 		}
 
-		private Config GetConfigSection(Config config) {
-			Config configSection;
+		private IConfig GetConfigSection(IConfig config) {
+			IConfig configSection;
 			if(string.IsNullOrEmpty(this.ruleSet)) {
 				configSection = config.GetConfigSection("rules[@default='true']");
 				if(configSection == null) {

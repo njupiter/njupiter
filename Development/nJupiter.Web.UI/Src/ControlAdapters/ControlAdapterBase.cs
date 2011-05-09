@@ -43,11 +43,11 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		private static void Configure(object sender, EventArgs e) {
 			lock(PadLock) {
 				Dictionary<string, List<string>> array = new Dictionary<string, List<string>>();
-				Config config = ConfigHandler.GetSystemConfig();
+				IConfig config = ConfigHandler.GetSystemConfig();
 				if(config != null) {
-					Config controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
+					IConfig controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
 					if(controlAdapterConfig != null) {
-						XmlNodeList adapters = controlAdapterConfig.ConfigXML.SelectNodes("controlAdapter");
+						XmlNodeList adapters = controlAdapterConfig.ConfigXml.SelectNodes("controlAdapter");
 						if(adapters != null) {
 							foreach(XmlNode adapter in adapters) {
 								XmlAttribute nameAttribute = adapter.Attributes["name"];

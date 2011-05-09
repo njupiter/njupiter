@@ -69,11 +69,11 @@ namespace nJupiter.Globalization {
 
 			cultureInfo = new CultureInfo(name);
 
-			Config config = ConfigHandler.GetSystemConfig();
+			IConfig config = ConfigHandler.GetSystemConfig();
 
 			string dateTimeFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/dateTimeFormat", name);
 			if(config.ContainsKey(dateTimeFormatConfigKey)) {
-				Config dateTimeFormatConfig = config.GetConfigSection(dateTimeFormatConfigKey);
+				IConfig dateTimeFormatConfig = config.GetConfigSection(dateTimeFormatConfigKey);
 
 				string[] abbreviatedMonthGenitiveNames = dateTimeFormatConfig.GetValueArray("abbreviatedMonthGenitiveNames", "abbreviatedMonthGenitiveName");
 				if(abbreviatedMonthGenitiveNames.Length > 0) {
@@ -204,7 +204,7 @@ namespace nJupiter.Globalization {
 			string numberFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/numberFormat", name);
 
 			if(config.ContainsKey(numberFormatConfigKey)) {
-				Config numberFormatConfig = config.GetConfigSection(numberFormatConfigKey);
+				IConfig numberFormatConfig = config.GetConfigSection(numberFormatConfigKey);
 
 				if(numberFormatConfig.ContainsKey("currencyDecimalDigits")) {
 					cultureInfo.NumberFormat.CurrencyDecimalDigits = numberFormatConfig.GetIntValue("currencyDecimalDigits");

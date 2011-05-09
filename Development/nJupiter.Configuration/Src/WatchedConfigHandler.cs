@@ -118,6 +118,11 @@ namespace nJupiter.Configuration {
 				}
 			}
 		}
+
+		public void Disposing(object sender, EventArgs e) {
+			this.Dispose();
+		}
+
 		public void Dispose() {
 			Dispose(true);
 		}

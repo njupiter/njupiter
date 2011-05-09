@@ -48,7 +48,7 @@ namespace nJupiter.DataAccess.Users {
 		private static readonly Hashtable UsersDAOs = Hashtable.Synchronized(new Hashtable());
 
 		private string name;
-		private Config config;
+		private IConfig config;
 		private CommonPropertyNames commonPropertyNames;
 		private IUserCache userCache;
 		#endregion
@@ -63,7 +63,7 @@ namespace nJupiter.DataAccess.Users {
 		/// Gets the config section that is associated with the current UsersDAO instance.
 		/// </summary>
 		/// <value>The config section that is associated with the current UsersDAO instance.</value>
-		public Config Config { get { return this.config; } }
+		public IConfig Config { get { return this.config; } }
 		/// <summary>
 		/// Gets the common property names that is associated with the current UsersDAO instance.
 		/// </summary>
@@ -103,7 +103,7 @@ namespace nJupiter.DataAccess.Users {
 			lock(UsersDAOs.SyncRoot) {
 				if(!UsersDAOs.ContainsKey(name)) {
 
-					Config config = ConfigHandler.GetConfig();
+					IConfig config = ConfigHandler.GetConfig();
 					string assemblyPath = config.GetValue(section, AssemblyPath);
 					string assemblyName = config.GetValue(section, Assembly);
 					string assemblyType = config.GetValue(section, Type);
@@ -158,7 +158,7 @@ namespace nJupiter.DataAccess.Users {
 				null, constructorArgs, null, null);
 		}
 
-		private static CommonPropertyNames PopulateCommonPropertyNames(Config config) {
+		private static CommonPropertyNames PopulateCommonPropertyNames(IConfig config) {
 
 			CommonPropertyNames cpn = new CommonPropertyNames(
 																GetCommonPropertyKey("userName", config),
@@ -228,14 +228,14 @@ namespace nJupiter.DataAccess.Users {
 			return cpn;
 		}
 
-		private static string GetCommonPropertyKey(string property, Config config) {
+		private static string GetCommonPropertyKey(string property, IConfig config) {
 			string result = null;
 			if(config.ContainsKey("commonProperties", property))
 				result = config.GetValue("commonProperties", property);
 			return result;
 		}
 
-		private static string GetCommonContextAttribute(string property, Config config) {
+		private static string GetCommonContextAttribute(string property, IConfig config) {
 			string result = null;
 			if(config.ContainsAttribute("commonProperties", property, "context"))
 				result = config.GetAttribute("commonProperties", property, "context");

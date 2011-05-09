@@ -29,35 +29,35 @@ using System.Collections.Generic;
 namespace nJupiter.Configuration {
 
 	/// <summary>
-	/// A collection that can contain <see cref="Config" /> objects.
+	/// A collection that can contain <see cref="IConfig" /> objects.
 	/// </summary>
 	[Serializable]
 	public sealed class ConfigCollection : IEnumerable {
 		#region Members
-		private readonly Dictionary<String, Config> innerHash;
+		private readonly Dictionary<String, IConfig> innerHash;
 		private readonly object padLock = new object();
 		#endregion
 
 		#region Constructors
 		internal ConfigCollection() {
-			this.innerHash = new Dictionary<String, Config>(StringComparer.InvariantCultureIgnoreCase);
+			this.innerHash = new Dictionary<String, IConfig>(StringComparer.InvariantCultureIgnoreCase);
 		}
 		#endregion
 
 		#region Indexers
 		/// <summary>
-		/// Gets the <see cref="Config"/> with the specified config key.
+		/// Gets the <see cref="IConfig"/> with the specified config key.
 		/// </summary>
 		/// <value></value>
-		public Config this[string configKey] {
+		public IConfig this[string configKey] {
 			get {
 				return this.InnerHash[configKey];
 			}
 			internal set {
-				Config config = this.InnerHash[configKey];
+				IConfig config = this.InnerHash[configKey];
 				if(config != null) {
 					InnerHash[configKey] = value;
-					config.OnRemovedFromCache(EventArgs.Empty);
+					config.Dispose();
 				} else {
 					throw new ArgumentOutOfRangeException("configKey");
 				}
@@ -66,19 +66,20 @@ namespace nJupiter.Configuration {
 		#endregion
 
 		#region Properties
-		internal Dictionary<String, Config> InnerHash { get { return this.innerHash; } }
+		internal Dictionary<String, IConfig> InnerHash { get { return this.innerHash; } }
 		#endregion
 
 		#region Internal Methods
-		internal void Add(Config config) {
+		internal void Add(IConfig config) {
 			InnerHash.Add(config.ConfigKey, config);
 		}
 
 		internal void Remove(string configKey) {
-			Config config = this.InnerHash[configKey];
+			IConfig config = this.InnerHash[configKey];
 			InnerHash.Remove(configKey);
-			if(config != null)
-				config.OnRemovedFromCache(EventArgs.Empty);
+			if(config != null){
+				config.Dispose();
+			}
 		}
 		#endregion
 
@@ -86,18 +87,18 @@ namespace nJupiter.Configuration {
 		/// <summary>
 		/// Determines whether the collection contains the specified config object.
 		/// </summary>
-		/// <param name="config">The <see cref="Config" /> to locate in the collection.</param>
+		/// <param name="config">The <see cref="IConfig" /> to locate in the collection.</param>
 		/// <returns>
 		/// 	<c>true</c> if the collection contains the specified config; otherwise, <c>false</c>.
 		/// </returns>
-		public bool Contains(Config config) {
+		public bool Contains(IConfig config) {
 			return (InnerHash.ContainsValue(config));
 		}
 
 		/// <summary>
 		/// Determines whether the collection contains the specified config object with the specifed config key.
 		/// </summary>
-		/// <param name="configKey">The config key for the <see cref="Config" /> object to locate in the colleciton.</param>
+		/// <param name="configKey">The config key for the <see cref="IConfig" /> object to locate in the colleciton.</param>
 		/// <returns>
 		/// 	<c>true</c> if the collection contains the specified config; otherwise, <c>false</c>.
 		/// </returns>
@@ -110,7 +111,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="array">The one-dimensional <see cref="Array" /> that is the destination of the elements copied from collection. The Array must have zero-based indexing. </param>
 		/// <param name="index">The zero-based index in array at which copying begins.</param>
-		public void CopyTo(Config[] array, int index) {
+		public void CopyTo(IConfig[] array, int index) {
 			InnerHash.Values.CopyTo(array, index);
 		}
 		#endregion
@@ -180,7 +181,7 @@ namespace nJupiter.Configuration {
 		/// <exception cref="T:System.InvalidOperationException">
 		/// The enumerator is positioned before the first element of the collection or after the last element.
 		/// </exception>
-		public object Current { get { return ((KeyValuePair<string, Config>)innerEnumerator.Current).Value; } }
+		public object Current { get { return ((KeyValuePair<string, IConfig>)innerEnumerator.Current).Value; } }
 		#endregion
 	}
 	#endregion

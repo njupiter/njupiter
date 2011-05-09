@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
@@ -14,11 +15,10 @@ using System.Security.Permissions;
 
 [assembly: SecurityTransparent]
 
-[assembly: AssemblyDelaySign(false)]
 #if DEBUG
-[assembly: AssemblyKeyFile("")]
 [assembly: AssemblyVersion("3.16.1.*")]
 [assembly: AssemblyConfiguration("Debug")]
+[assembly: InternalsVisibleTo("nJupiter.UnitTests")]
 #else
 // Increment AssemblyVersion only on major and minor releases
 [assembly: AssemblyVersion("3.16.1.0")]
@@ -26,12 +26,13 @@ using System.Security.Permissions;
 [assembly: AssemblyFileVersion("3.16.1.0")]
 [assembly: AssemblyConfiguration("Release")]
 #if SIGN
+[assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile(@"C:\Projects\nJupiter\Development\nJupiter.snk")]
-#else
-[assembly: AssemblyKeyFile("")]
-#endif
-#endif
 [assembly: AssemblyKeyName("")]
+#else
+[assembly: InternalsVisibleTo("nJupiter.UnitTests")]
+#endif
+#endif
 [assembly: PermissionSet(SecurityAction.RequestMinimum, Name="Nothing")]
 
 [assembly: AssemblyTitle(""

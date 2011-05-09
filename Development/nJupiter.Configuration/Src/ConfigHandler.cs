@@ -102,7 +102,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <returns>The system config object</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetSystemConfig() {
+		public static IConfig GetSystemConfig() {
 			return GetConfig(SystemConfigKey);
 		}
 
@@ -111,7 +111,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <returns>The config object for the current assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig() {
+		public static IConfig GetConfig() {
 			return GetConfig(Assembly.GetCallingAssembly(), false);
 		}
 
@@ -121,7 +121,7 @@ namespace nJupiter.Configuration {
 		/// <param name="suppressMissingConfigException">if set to <c>true</c> suppress exception if config for the calling assembly is missing.</param>
 		/// <returns>The config object for the current assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(bool suppressMissingConfigException) {
+		public static IConfig GetConfig(bool suppressMissingConfigException) {
 			return GetConfig(Assembly.GetCallingAssembly(), suppressMissingConfigException);
 		}
 
@@ -131,7 +131,7 @@ namespace nJupiter.Configuration {
 		/// <param name="assembly">The assembly.</param>
 		/// <returns>A config object for the given assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(Assembly assembly) {
+		public static IConfig GetConfig(Assembly assembly) {
 			return GetConfig(assembly, false);
 		}
 
@@ -142,10 +142,10 @@ namespace nJupiter.Configuration {
 		/// <param name="suppressMissingConfigException">if set to <c>true</c> suppress exception if config for the given assembly is missing.</param>
 		/// <returns>A config object for the given assembly.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(Assembly assembly, bool suppressMissingConfigException) {
+		public static IConfig GetConfig(Assembly assembly, bool suppressMissingConfigException) {
 			if(assembly == null)
 				throw new ArgumentNullException("assembly");
-			Config config = GetConfig(assembly.GetName().Name, suppressMissingConfigException);
+			IConfig config = GetConfig(assembly.GetName().Name, suppressMissingConfigException);
 			if(!suppressMissingConfigException && config == null)
 				throw new ConfigurationException(string.Format("The config file for the assembly [{0}] was not found.", assembly.GetName().Name));
 			return config;
@@ -157,7 +157,7 @@ namespace nJupiter.Configuration {
 		/// <param name="configKey">The config key.</param>
 		/// <returns>A config object with the given config key.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(string configKey) {
+		public static IConfig GetConfig(string configKey) {
 			return GetConfig(configKey, false);
 		}
 
@@ -168,7 +168,7 @@ namespace nJupiter.Configuration {
 		/// <param name="suppressMissingConfigException">if set to <c>true</c> suppress exception if config for the given assembly is missing.</param>
 		/// <returns>A config object with the given config key.</returns>
 		/// <exception cref="ConfigurationException">The config does not exist.</exception>
-		public static Config GetConfig(string configKey, bool suppressMissingConfigException) {
+		public static IConfig GetConfig(string configKey, bool suppressMissingConfigException) {
 			if(ConfigHandler.Instance.configurations.Contains(configKey))
 				return ConfigHandler.Instance.configurations[configKey];
 
@@ -202,7 +202,7 @@ namespace nJupiter.Configuration {
 			}
 		}
 
-		private Config LoadConfig(string configKey) {
+		private IConfig LoadConfig(string configKey) {
 			if(this.configurations.Contains(configKey))
 				return this.configurations[configKey];
 
@@ -237,16 +237,8 @@ namespace nJupiter.Configuration {
 			}
 		}
 
-		internal static void SetConfig(Config config) {
-			if(config.ConfigFile != null) {
-				try {
-					// Create a watch handler that will reload the configuration whenever the config file is modified.
-					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Start watching file {0} for config [{1}]", config.ConfigFile.FullName, config.ConfigKey)); }
-					config.Watcher = WatchedConfigHandler.StartWatching(config.ConfigKey, config.ConfigFile);
-				} catch(Exception ex) {
-					throw new ConfiguratorException(string.Format("Failed to initialize configuration file watcher for file [{0}].", config.ConfigFile.FullName), ex);
-				}
-			}
+		internal static void SetConfig(IConfig config) {
+			AddWatcherToFileConfig(config);
 
 			lock(ConfigHandler.Instance.configurations.SyncRoot) {
 				if(ConfigHandler.Instance.configurations.Contains(config.ConfigKey)) {
@@ -257,6 +249,20 @@ namespace nJupiter.Configuration {
 			}
 		}
 
+		private static void AddWatcherToFileConfig(IConfig config) {
+			FileInfo configFile = config.ConfigSource.GetConfigSource<FileInfo>();
+			if(configFile != null) {
+				try {
+					// Create a watch handler that will reload the configuration whenever the config file is modified.
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Start watching file {0} for config [{1}]", configFile.FullName, config.ConfigKey)); }
+					WatchedConfigHandler wather = WatchedConfigHandler.StartWatching(config.ConfigKey, configFile);
+					config.Disposed += wather.Disposing;
+					
+				} catch(Exception ex) {
+					throw new ConfiguratorException(string.Format("Failed to initialize configuration file watcher for file [{0}].",configFile.FullName), ex);
+				}
+			}
+		}
 		#endregion
 
 		#region Handler Configuration
@@ -273,7 +279,7 @@ namespace nJupiter.Configuration {
 				// Configure using the xml loaded from the config file
 				Configurator.Configure(this.GetType().Assembly, configElement);
 				// Configure using the 'elementName' element
-				XmlNodeList configNodeList = ConfigHandler.GetConfig().ConfigXML.GetElementsByTagName(ConfigElement);
+				XmlNodeList configNodeList = ((Config)ConfigHandler.GetConfig()).ConfigXml.GetElementsByTagName(ConfigElement);
 				if(configNodeList.Count > 1) {
 					throw new ConfiguratorException(string.Format("XML configuration contains [{0}] <{1}> elements. Only one is allowed. Configuration Aborted.", configNodeList.Count, ConfigElement));
 				}

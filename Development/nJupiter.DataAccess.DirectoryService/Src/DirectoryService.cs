@@ -43,7 +43,7 @@ namespace nJupiter.DataAccess.DirectoryService {
 		#endregion
 
 		#region Members
-		private Config settings;
+		private IConfig settings;
 		#endregion
 
 		#region Methods
@@ -72,7 +72,7 @@ namespace nJupiter.DataAccess.DirectoryService {
 			const string assemblyKey = "assembly";
 			const string typKey = "type";
 
-			Config config = ConfigHandler.GetConfig();
+			IConfig config = ConfigHandler.GetConfig();
 			string name = config.GetValue(section);
 			if(DirectoryServices.ContainsKey(name))
 				return (DirectoryService)DirectoryServices[name];
@@ -117,7 +117,7 @@ namespace nJupiter.DataAccess.DirectoryService {
 		#endregion
 
 		#region Protected Properties
-		protected Config Settings { get { return this.settings; } }
+		protected IConfig Settings { get { return this.settings; } }
 		#endregion
 	}
 }

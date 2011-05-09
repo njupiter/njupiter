@@ -34,7 +34,7 @@ namespace nJupiter.Configuration {
 	/// The configurator class to initialize config objects
 	/// </summary>
 	public static class Configurator {
-
+		
 		#region Static Methods
 
 		/// <summary>
@@ -130,8 +130,10 @@ namespace nJupiter.Configuration {
 				if(fs != null) {
 					try {
 						// Load the configuration from the stream
-						Config config = new Config(configKey, configFile);
-						Configure(config, fs);
+						IConfigSource source = ConfigSourceFactory.GetInstance().CreateConfigSource(configFile);
+						XmlElement xmlElement = GetConfigXmlElement(configKey, fs);
+						Config config = new Config(configKey, xmlElement, source);
+						ConfigHandler.SetConfig(config);
 					} finally {
 						// Force the file closed whatever happens
 						fs.Close();
@@ -191,8 +193,11 @@ namespace nJupiter.Configuration {
 						try {
 							// Open stream on config URI
 							using(Stream configStream = response.GetResponseStream()) {
-								Config config = new Config(configKey, configUri);
-								Configure(config, configStream);
+								XmlElement xmlElement = GetConfigXmlElement(configKey, configStream);
+								IConfigSource source = ConfigSourceFactory.GetInstance().CreateConfigSource(configUri);
+								Config config = new Config(configKey, xmlElement, source);
+								ConfigHandler.SetConfig(config);
+								
 							}
 						} finally {
 							response.Close();
@@ -221,19 +226,20 @@ namespace nJupiter.Configuration {
 		/// <param name="configKey">The config key.</param>
 		/// <param name="configStream">The stream containing the Xml that holds the configuration.</param>
 		public static void Configure(string configKey, Stream configStream) {
-			Config config = new Config(configKey);
-			Configure(config, configStream);
+			XmlElement xmlElement = GetConfigXmlElement(configKey, configStream);
+			Config config = new Config(configKey, xmlElement);
+			ConfigHandler.SetConfig(config);
 		}
 
 		/// <summary>
 		/// Adds a <see cref="Config" /> object to the <see cref="ConfigHandler" />'s cache and also add a file watch to watch for changes if the config object is associated with a local file.
 		/// </summary>
 		/// <param name="config">The config object to configure.</param>
-		public static void Configure(Config config) {
+		public static void Configure(IConfig config) {
 			ConfigHandler.SetConfig(config);
 		}
 
-		private static void Configure(Config config, Stream configStream) {
+		private static XmlElement GetConfigXmlElement(string conifgKey, Stream configStream) {
 			if(configStream == null) {
 				throw new ArgumentNullException("configStream");
 			}
@@ -250,32 +256,28 @@ namespace nJupiter.Configuration {
 				// load the data into the document
 				doc.Load(xmlReader);
 			} catch(Exception ex) {
-				if(config != null && config.ConfigKey != null)
-					throw new ConfiguratorException(string.Format("Error while loading XML configuration for the config with key [{0}].", config.ConfigKey), ex);
+				if(!string.IsNullOrEmpty(conifgKey))
+					throw new ConfiguratorException(string.Format("Error while loading XML configuration for the config with key [{0}].", conifgKey), ex);
 				throw new ConfiguratorException("Error while loading XML configuration.", ex);
 			}
-			ConfigureFromXml(config, doc.DocumentElement);
+			return GetXmlElementFromXmlNode(doc.DocumentElement);
 		}
 
 		private static void ConfigureFromXml(string configKey, XmlElement element) {
-			Config config = new Config(configKey, element);
-			ConfigureFromXml(config, element);
+			XmlElement xmlElement = GetXmlElementFromXmlNode(element);	
+			Config config = new Config(configKey, xmlElement);
+			ConfigHandler.SetConfig(config);
 		}
 
-		private static void ConfigureFromXml(Config config, XmlNode element) {
+		private static XmlElement GetXmlElementFromXmlNode(XmlNode element) {
 			if(element == null)
 				throw new ArgumentNullException("element");
-			if(config == null)
-				throw new ArgumentNullException("config");
 			// Copy the xml data into the root of a new document
 			// this isolates the xml config data from the rest of  the document
 			XmlDocument newDoc = new XmlDocument();
 			XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
 
-			// Pass the configurator the config element
-			config.ConfigXML = newElement;
-
-			ConfigHandler.SetConfig(config);
+			return newElement;
 		}
 		#endregion
 	}

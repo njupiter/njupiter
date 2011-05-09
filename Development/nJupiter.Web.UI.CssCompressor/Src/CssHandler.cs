@@ -51,7 +51,7 @@ namespace nJupiter.Web.UI.CssCompressor {
 
 			string path = this.httpContext.Server.MapPath(this.httpContext.Request.Url.AbsolutePath);
 
-			Config config = ConfigHandler.GetConfig();
+			IConfig config = ConfigHandler.GetConfig();
 			int minutesToCache = 0;
 			if(config.ContainsKey("cssCompressor/minutesToCache")) {
 				minutesToCache = config.GetIntValue("cssCompressor/minutesToCache");

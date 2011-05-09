@@ -52,6 +52,11 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\ConfigSource.cs" />
+    <Compile Include="Src\ConfigSourceFactory.cs" />
+    <Compile Include="Src\FileConfigSource.cs" />
+    <Compile Include="Src\IConfigSource.cs" />
+    <Compile Include="Src\UriConfigSource.cs" />
     <Compile Include="Src\Config.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -64,6 +69,7 @@
     <Compile Include="Src\Configurator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\IConfig.cs" />
     <Compile Include="Src\nJupiterConfigurationSectionHandler.cs">
       <SubType>Code</SubType>
     </Compile>

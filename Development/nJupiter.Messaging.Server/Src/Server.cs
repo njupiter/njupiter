@@ -80,9 +80,9 @@ namespace nJupiter.Messaging.Server {
 				//{
 				//    System.Threading.Thread.Sleep(2000);
 				//}
-				Config config = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(log4net.Config.XmlConfigurator)));
-				if(config.ConfigXML != null && config.ConfigXML.SelectSingleNode("log4net") != null)
-					XmlConfigurator.Configure((XmlElement)config.ConfigXML.SelectSingleNode("log4net"));
+				IConfig config = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(log4net.Config.XmlConfigurator)));
+				if(config.ConfigXml != null && config.ConfigXml.SelectSingleNode("log4net") != null)
+					XmlConfigurator.Configure((XmlElement)config.ConfigXml.SelectSingleNode("log4net"));
 				else
 					XmlConfigurator.Configure(); // this loads the Log4Net config information from the app.config file 
 

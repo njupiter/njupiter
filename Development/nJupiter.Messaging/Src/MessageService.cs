@@ -45,11 +45,11 @@ namespace nJupiter.Messaging {
 		#endregion
 
 		#region Members
-		private Config settings;
+		private IConfig settings;
 		#endregion
 
 		#region Protected Properties
-		protected Config Settings { get { return this.settings; } }
+		protected IConfig Settings { get { return this.settings; } }
 		#endregion
 
 		public abstract void Register(MessageConsumer messageConsumer);
@@ -107,7 +107,7 @@ namespace nJupiter.Messaging {
 			const string assemblyKey = "assembly";
 			const string typeKey = "type";
 
-			Config config = ConfigHandler.GetConfig();
+			IConfig config = ConfigHandler.GetConfig();
 			string name = config.GetValue(section);
 
 			if(Services.ContainsKey(name))
