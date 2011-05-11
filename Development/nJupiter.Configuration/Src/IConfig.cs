@@ -1,4 +1,28 @@
-﻿using System;
+﻿#region Copyright & License
+/*
+	Copyright (c) 2005-2011 nJupiter
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+*/
+#endregion
+
+using System;
 using System.Xml;
 
 namespace nJupiter.Configuration {
@@ -24,8 +48,10 @@ namespace nJupiter.Configuration {
 		/// <summary>
 		/// Occurs when the configuration object is disposed. This happens when it is droped from the cache.
 		/// </summary>
-		event EventHandler Disposed;
-		void Dispose();
+		event EventHandler Discarded;
+		bool IsDiscarded { get; }
+		void Discard(object source, EventArgs e);
+		void Discard();
 
 		/// <summary>
 		/// Gets the value attribute for the element given in the key parameter. If no value attribute exists on the element the content of the element is returned.

@@ -43,7 +43,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		private static void Configure(object sender, EventArgs e) {
 			lock(PadLock) {
 				Dictionary<string, List<string>> array = new Dictionary<string, List<string>>();
-				IConfig config = ConfigHandlerOld.GetSystemConfig();
+				IConfig config = ConfigHandler.Instance.GetSystemConfig();
 				if(config != null) {
 					IConfig controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
 					if(controlAdapterConfig != null) {
@@ -67,7 +67,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 							}
 						}
 					}
-					config.Disposed += ControlAdapterBase.Configure;
+					config.Discarded += ControlAdapterBase.Configure;
 				}
 				excludedPathArray = array;
 			}

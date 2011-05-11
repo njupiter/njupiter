@@ -40,13 +40,13 @@ namespace nJupiter.Text.SimpleTextParser {
 
 		private void Configure(object sender, EventArgs e) {
 			lock(Padlock) {
-				IConfig config = ConfigHandlerOld.GetConfig();
+				IConfig config = ConfigHandler.Instance.GetConfig();
 				IConfig configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 					this.formatter = FormatterFactory.GetFormatter(configSection);
 				}
 				// Auto reconfigure all values when this config object is disposed (droped from the cache)
-				config.Disposed += this.Configure;
+				config.Discarded += this.Configure;
 			}
 
 		}

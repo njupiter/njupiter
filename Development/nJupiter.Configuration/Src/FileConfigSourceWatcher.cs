@@ -25,82 +25,53 @@
 using System;
 using System.IO;
 
-using log4net;
-
 namespace nJupiter.Configuration {
+	internal sealed class FileConfigSourceWatcher : IConfigSourceWatcher, IDisposable {
 
-	internal sealed class WatchedConfigHandler : IDisposable {
-
-		#region Members
-		private readonly FileInfo configFile;
-		private readonly string configKey;
 		private readonly FileSystemWatcher watcher;
 		private readonly object padLock = new object();
 		private bool eventTriggered;
 		private bool disposed;
-		#endregion
 
-		#region Static Members
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		#endregion
+		public event EventHandler ConfigSourceUpdated;
 
-		#region Constructors
-		private WatchedConfigHandler(string configKey, FileInfo configFile) {
-			this.configKey = configKey;
-			this.configFile = configFile;
+		public FileConfigSourceWatcher(FileInfo configFile) {
 
-			// Create a new FileSystemWatcher and set its properties.
 			this.watcher = new FileSystemWatcher();
 
-			this.watcher.Path = this.configFile.DirectoryName;
-			this.watcher.Filter = this.configFile.Name;
+			this.watcher.Path = configFile.DirectoryName;
+			this.watcher.Filter = configFile.Name;
 
-			// Set the notification filters
 			this.watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
 
-			// Add event handlers. OnChanged will do for all event handlers that fire a FileSystemEventArgs
 			this.watcher.Changed += this.WatchedConfigHandlerOnChanged;
 			this.watcher.Created += this.WatchedConfigHandlerOnChanged;
 			this.watcher.Deleted += this.WatchedConfigHandlerOnChanged;
 			this.watcher.Renamed += this.WatchedConfigHandlerOnRenamed;
 
-			// Begin watching.
 			this.watcher.EnableRaisingEvents = true;
 		}
-		#endregion
 
-		#region Event Handlers
 		private void WatchedConfigHandlerOnChanged(object source, FileSystemEventArgs e) {
 			this.OnWatchedFileChange();
 		}
 		private void WatchedConfigHandlerOnRenamed(object source, RenamedEventArgs e) {
 			this.OnWatchedFileChange();
 		}
-		#endregion
 
-		#region Methods
-		public static WatchedConfigHandler StartWatching(string configKey, FileInfo configFile) {
-			return new WatchedConfigHandler(configKey, configFile);
-		}
-		#endregion
-
-		#region Event Activators
 		private void OnWatchedFileChange() {
 			if(this.eventTriggered)
 				return;
 			lock(this.padLock) {
-				if(this.eventTriggered)
-					return;
-				try {
-					//Configurator.Configure(this.configKey, this.configFile);
+				if(!this.eventTriggered) {
 					this.eventTriggered = true;
-				} catch(ConfigurationException ex) {
-					// Catch error and log to avoid crashing the application
-					if(Log.IsFatalEnabled) { Log.Fatal(string.Format("Error while configure configfile with key {0}", this.configKey), ex); }
+					if(this.ConfigSourceUpdated != null) {
+						this.ConfigSourceUpdated(this, EventArgs.Empty);
+					}
+					this.watcher.EnableRaisingEvents = false;
 				}
 			}
 		}
-		#endregion
 
 		#region IDisposable Members
 		private void Dispose(bool disposing) {
@@ -119,16 +90,12 @@ namespace nJupiter.Configuration {
 			}
 		}
 
-		public void Disposing(object sender, EventArgs e) {
-			this.Dispose();
-		}
-
 		public void Dispose() {
 			Dispose(true);
 		}
 
 		// Disposable types implement a finalizer.
-		~WatchedConfigHandler() {
+		~FileConfigSourceWatcher() {
 			Dispose(false);
 		}
 		#endregion

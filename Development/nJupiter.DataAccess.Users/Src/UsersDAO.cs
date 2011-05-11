@@ -95,7 +95,7 @@ namespace nJupiter.DataAccess.Users {
 		#region Helper Methods
 		private static UsersDAO GetUserDAOFromSection(string section) {
 
-			string name = ConfigHandlerOld.GetConfig().GetValue(section);
+			string name = ConfigHandler.Instance.GetConfig().GetValue(section);
 
 			if(UsersDAOs.ContainsKey(name))
 				return (UsersDAO)UsersDAOs[name];
@@ -103,7 +103,7 @@ namespace nJupiter.DataAccess.Users {
 			lock(UsersDAOs.SyncRoot) {
 				if(!UsersDAOs.ContainsKey(name)) {
 
-					IConfig config = ConfigHandlerOld.GetConfig();
+					IConfig config = ConfigHandler.Instance.GetConfig();
 					string assemblyPath = config.GetValue(section, AssemblyPath);
 					string assemblyName = config.GetValue(section, Assembly);
 					string assemblyType = config.GetValue(section, Type);
@@ -114,7 +114,7 @@ namespace nJupiter.DataAccess.Users {
 						throw new ConfigurationException(string.Format("Could not load DataSource from {0} {1} {2}.", assemblyName, assemblyType, assemblyPath));
 
 					userDAO.name = name;
-					userDAO.config = ConfigHandlerOld.GetConfig().GetConfigSection(section + "/settings");
+					userDAO.config = ConfigHandler.Instance.GetConfig().GetConfigSection(section + "/settings");
 					if(userDAO.config != null && userDAO.config.ContainsKey(Cache)) {
 						if(userDAO.config.ContainsKey(Cache, Assembly)) {
 							string cacheAssemblyName = userDAO.config.GetValue(Cache, Assembly);

@@ -31,10 +31,6 @@
     <NoWarn>1699</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Shared Resources\Libraries\Log4Net\Compile Version\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -54,6 +50,7 @@
     </Compile>
     <Compile Include="Src\ConfigFactory.cs" />
     <Compile Include="Src\ConfigHandler.cs" />
+    <Compile Include="Src\ConfigLoaderFactory.cs" />
     <Compile Include="Src\FileConfigLoader.cs" />
     <Compile Include="Src\ConfigSource.cs" />
     <Compile Include="Src\ConfigSourceFactory.cs" />
@@ -61,18 +58,13 @@
     <Compile Include="Src\IConfigHandler.cs" />
     <Compile Include="Src\IConfigLoader.cs" />
     <Compile Include="Src\IConfigSource.cs" />
+    <Compile Include="Src\IConfigSourceWatcher.cs" />
     <Compile Include="Src\StringParser.cs" />
     <Compile Include="Src\UriConfigSource.cs" />
     <Compile Include="Src\Config.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\ConfigCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Src\ConfigHandlerOld.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Src\Configurator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\IConfig.cs" />
@@ -82,7 +74,7 @@
     <Compile Include="Src\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\WatchedConfigHandler.cs" />
+    <Compile Include="Src\FileConfigSourceWatcher.cs" />
     <Content Include="Install\ReadMe.txt" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />

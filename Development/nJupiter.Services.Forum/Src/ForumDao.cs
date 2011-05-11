@@ -472,7 +472,7 @@ namespace nJupiter.Services.Forum {
 
 		#region Variables
 		private static readonly ListDictionary ForumDaos = new ListDictionary();
-		private static readonly IConfig Config = ConfigHandlerOld.GetConfig();
+		private static readonly IConfig Config = ConfigHandler.Instance.GetConfig();
 		private static ForumDao defaultInstance;
 		private static readonly object LockObject = new object();
 		#endregion

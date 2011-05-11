@@ -84,7 +84,7 @@ namespace nJupiter.DataAccess.Ldap {
 				UsersConfig users = new UsersConfig();
 				GroupsConfig groups = new GroupsConfig();
 
-				IConfig config = ConfigHandlerOld.GetConfig();
+				IConfig config = ConfigHandler.Instance.GetConfig();
 				IConfig configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 
@@ -277,7 +277,7 @@ namespace nJupiter.DataAccess.Ldap {
 					this.groupsConfig = groups;
 				}
 				// Auto reconfigure all values when this config object is disposed (droped from the cache)
-				config.Disposed += this.Configure;
+				config.Discarded += this.Configure;
 			}
 
 		}

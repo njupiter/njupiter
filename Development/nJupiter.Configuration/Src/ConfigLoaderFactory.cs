@@ -23,9 +23,12 @@
 #endregion
 
 namespace nJupiter.Configuration {
-	public interface IConfigSource {
-		T GetConfigSource<T>();
-		IConfigSourceWatcher Watcher { get; }
-	
+
+	internal class ConfigLoaderFactory {
+
+		public static IConfigLoader Create() {
+			IConfig config = nJupiterConfigurationSectionHandler.GetConfig();
+			return new FileConfigLoader(config, ConfigSourceFactory.Instance);
+		}
 	}
 }

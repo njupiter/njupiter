@@ -28,16 +28,31 @@ using System.IO;
 namespace nJupiter.Configuration {
 	internal class ConfigSourceFactory {
 
-		private static readonly ConfigSourceFactory Instance = new ConfigSourceFactory();
+		/// <summary>
+		/// Returns the default instance of IConfigHandler
+		/// </summary>
+		public static ConfigSourceFactory Instance { get { return NestedSingleton.instance; } }
 
-		public static ConfigSourceFactory GetInstance() {
-			return Instance;
+		// thread safe Singleton implementation with fully lazy instantiation and with full performance
+		private sealed class NestedSingleton {
+			// ReSharper disable EmptyConstructor
+			static NestedSingleton() {}
+			// ReSharper restore EmptyConstructor
+			internal static readonly ConfigSourceFactory instance = new ConfigSourceFactory();
 		}
 
 		public IConfigSource CreateConfigSource(object source) {
+			return CreateConfigSource(source, false);
+		}
+
+		public IConfigSource CreateConfigSource(object source, bool addWatcher) {
 			FileInfo fileInfo = source as FileInfo;
 			if(fileInfo != null) {
-				return new FileConfigSource(fileInfo);
+				FileConfigSourceWatcher watcher = null;
+				if(addWatcher){
+					watcher = new FileConfigSourceWatcher(fileInfo);
+				}
+				return new FileConfigSource(fileInfo, watcher);
 			}
 			Uri uri = source as Uri;
 			if(uri != null) {

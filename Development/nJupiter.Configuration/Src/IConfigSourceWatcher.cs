@@ -22,10 +22,10 @@
 */
 #endregion
 
+using System;
+
 namespace nJupiter.Configuration {
-	public interface IConfigSource {
-		T GetConfigSource<T>();
-		IConfigSourceWatcher Watcher { get; }
-	
+	public interface IConfigSourceWatcher {
+		event EventHandler ConfigSourceUpdated;
 	}
 }

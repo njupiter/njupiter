@@ -102,7 +102,7 @@ namespace nJupiter.Net.Mail {
 			string userName = string.Empty;
 			string password = string.Empty;
 			try {
-				IConfig systemConfig = ConfigHandlerOld.GetSystemConfig();
+				IConfig systemConfig = ConfigHandler.Instance.GetSystemConfig();
 				if(systemConfig.ContainsKey("mailConfig", "smtpServer")) {
 					smtpServer = systemConfig.GetValue("mailConfig", "smtpServer");
 				}

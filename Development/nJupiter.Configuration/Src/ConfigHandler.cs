@@ -36,7 +36,12 @@ namespace nJupiter.Configuration {
 		public string AppConfigKey { get { return appConfig; } }
 		public string SystemConfigKey { get { return systemConfigKey; } }
 
-		internal ConfigHandler(IConfigLoader configLoader, string systemConfigKey, string appConfig) {
+		/// <summary>
+		/// Returns the default instance of IConfigHandler
+		/// </summary>
+		public static IConfigHandler Instance { get { return NestedSingleton.instance; } }
+
+		public ConfigHandler(IConfigLoader configLoader, string systemConfigKey, string appConfig) {
 			this.configLoader = configLoader;
 			this.configurations = configLoader.LoadAll();
 			this.systemConfigKey = systemConfigKey;
@@ -94,6 +99,13 @@ namespace nJupiter.Configuration {
 			}
 		}
 
+		// thread safe Singleton implementation with fully lazy instantiation and with full performance
+		private sealed class NestedSingleton {
+			// ReSharper disable EmptyConstructor
+			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+			// ReSharper restore EmptyConstructor
+			internal static readonly IConfigHandler instance = new ConfigHandler(ConfigLoaderFactory.Create(), "System", "App");
+		}
 	}
 }
 

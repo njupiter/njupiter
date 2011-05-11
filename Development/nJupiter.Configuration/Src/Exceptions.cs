@@ -95,6 +95,40 @@ namespace nJupiter.Configuration {
 	}
 
 	/// <summary>
+	/// Excetpion thrown when errors occur in <see href="ConfigCollection" /> when trying to add a discarded config
+	/// </summary>
+	[Serializable]
+	public class ConfigDiscardedException : ConfigurationException {
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
+		/// </summary>
+		public ConfigDiscardedException() { }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
+		/// </summary>
+		/// <param name="message">The excetption message.</param>
+		public ConfigDiscardedException(string message) : base(message) { }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
+		/// </summary>
+		/// <param name="message">The excetption message.</param>
+		/// <param name="inner">The inner excetption.</param>
+		public ConfigDiscardedException(string message, Exception inner) : base(message, inner) { }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ConfiguratorException"/> class.
+		/// </summary>
+		/// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+		/// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+		/// <exception cref="T:System.ArgumentNullException">
+		/// The <paramref name="info"/> parameter is null.
+		/// </exception>
+		/// <exception cref="T:System.Runtime.Serialization.SerializationException">
+		/// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
+		/// </exception>
+		protected ConfigDiscardedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+	/// <summary>
 	/// Excetpion thrown when a configurated value is invalid
 	/// </summary>
 	[Serializable]

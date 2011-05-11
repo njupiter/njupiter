@@ -36,7 +36,7 @@ namespace nJupiter.Configuration {
 		private readonly object padlock = new object();
 		private readonly IConfigSource source;
 		private readonly string configKey;
-		private bool disposed;
+		private bool isDiscarded;
 		private readonly XmlElement configXml;
 
 		private const string DefaultAttribute = "value";
@@ -45,7 +45,8 @@ namespace nJupiter.Configuration {
 		public XmlElement ConfigXml { get { return this.configXml; } }
 		public IConfigSource ConfigSource { get{ return source; } }
 
-		public event EventHandler Disposed;
+		public event EventHandler Discarded;
+		public bool IsDiscarded { get{ return this.isDiscarded; } }
 
 		internal Config(string configKey, XmlElement element)
 			: this(configKey, element, null) {
@@ -61,6 +62,9 @@ namespace nJupiter.Configuration {
 			this.configKey = configKey;
 			this.configXml = element;
 			this.source = source ?? new ConfigSource();
+			if(this.source.Watcher != null){
+				this.source.Watcher.ConfigSourceUpdated += this.Discard;
+			}
 		}
 
 		public string GetValue(string key) {
@@ -204,7 +208,7 @@ namespace nJupiter.Configuration {
 
 		private T ParseValue<T>(string section, string key, string attribute, string value, CultureInfo culture) {
 			try {
-				return StringParser.GetInstance().Parse<T>(value, culture);
+				return StringParser.Instance.Parse<T>(value, culture);
 			}catch(Exception ex) {
 				throw new InvalidConfigValueException(string.Format("Error wile parsing value [{0}] with key [{1}] in config with key [{2}] of expected type [{3}] with culture [{4}].", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name, culture.Name), ex);
 			}
@@ -256,17 +260,28 @@ namespace nJupiter.Configuration {
 			return string.Format("{0}/{1}{2}", section, key, attribute);
 		}
 
-		public void Dispose() {
-			if(!this.disposed) {
-				this.disposed = true;
-				if(this.Disposed != null) {
-					this.Disposed(this, EventArgs.Empty);
+		public void Discard(object source, EventArgs e) {
+			this.Discard();
+		}
+
+		public void Discard() {
+			if(!this.isDiscarded) {
+				lock(padlock){
+					if(!this.isDiscarded) {
+						this.isDiscarded = true;
+						if(this.source != null && this.source.Watcher != null) {
+							this.source.Watcher.ConfigSourceUpdated -= this.Discard;
+						}
+						if(this.Discarded != null) {
+							this.Discarded(this, EventArgs.Empty);
+						}
+					}
 				}
 			}
 		}
 
 		~Config() {
-			Dispose();
+			this.Discard();
 		}
 	}
 }

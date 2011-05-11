@@ -39,15 +39,15 @@ namespace nJupiter.Configuration {
 		public static IConfig GetConfig() {
 			try {
 				return GetConfigInternal();
-			} catch(System.Configuration.ConfigurationException confEx) {
+			} catch(System.Configuration.ConfigurationException ex) {
 				string configFile = AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString();
-				if(confEx.BareMessage.IndexOf("Unrecognized element") >= 0) {
+				if(ex.BareMessage.IndexOf("Unrecognized element") >= 0) {
 					// Looks like the XML file is not valid
-					throw new ConfiguratorException(string.Format("Failed to parse config file [{0}]. Check your .config file is well formed XML.", configFile), confEx);
+					throw new ConfiguratorException(string.Format("Failed to parse config file [{0}]. Check your .config file is well formed XML.", configFile), ex);
 				}
 				// This exception is typically due to the assembly name not being correctly specified in the section type.
 				string configSectionStr = string.Format("<section name=\"{0}\" type=\"nJupiter.Configuration.nJupiterConfigurationSectionHandler,{1}\" />", ConfigElement, Assembly.GetExecutingAssembly().FullName);
-				throw new ConfiguratorException(string.Format("Failed to parse config file [{0}]. Is the <configSections> specified as: {1}", configFile, configSectionStr), confEx);
+				throw new ConfiguratorException(string.Format("Failed to parse config file [{0}]. Is the <configSections> specified as: {1}", configFile, configSectionStr), ex);
 			}
 		}
 

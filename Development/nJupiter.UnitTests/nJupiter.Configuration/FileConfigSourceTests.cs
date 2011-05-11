@@ -13,7 +13,7 @@ namespace nJupiter.UnitTests.Configuration {
 		[Test]
 		public void FileConfigSource_CreateSourceWithFile_ReturnsConfigConfigFileAndUri() {
 			var file = new FileInfo(filepath);
-			var configSource = new FileConfigSource(file);
+			var configSource = (FileConfigSource)ConfigSourceFactory.Instance.CreateConfigSource(file);
 			
 			Assert.AreEqual(file, configSource.ConfigFile);
 			Assert.AreEqual(filepath, configSource.ConfigUrl.OriginalString);

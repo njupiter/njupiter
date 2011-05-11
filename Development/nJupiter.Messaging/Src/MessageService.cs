@@ -107,7 +107,7 @@ namespace nJupiter.Messaging {
 			const string assemblyKey = "assembly";
 			const string typeKey = "type";
 
-			IConfig config = ConfigHandlerOld.GetConfig();
+			IConfig config = ConfigHandler.Instance.GetConfig();
 			string name = config.GetValue(section);
 
 			if(Services.ContainsKey(name))

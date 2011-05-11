@@ -29,6 +29,8 @@ namespace nJupiter.Configuration {
 	public class ConfigSource : IConfigSource {
 		protected readonly List<object> configSources;
 
+		public virtual IConfigSourceWatcher Watcher { get { return null; } }
+
 		public ConfigSource() {
 			configSources = new List<object>();
 		}
@@ -50,5 +52,6 @@ namespace nJupiter.Configuration {
 		public T GetConfigSource<T>() {
 			return (T)configSources.Find(s => s.GetType() == typeof(T));
 		}
+
 	}
 }

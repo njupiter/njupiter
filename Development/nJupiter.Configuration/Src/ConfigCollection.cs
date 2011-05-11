@@ -41,54 +41,45 @@ namespace nJupiter.Configuration {
 			this.innerDictionary = new Dictionary<String, IConfig>(StringComparer.InvariantCultureIgnoreCase);
 		}
 
-		public int Count { get { return this.InnerDictionary.Count; } }
-
 		/// <summary>
 		/// Gets the <see cref="IConfig"/> with the specified config key.
 		/// </summary>
 		/// <value></value>
 		public IConfig this[string configKey] {
 			get {
-				lock(this.padLock) {
-					return this.InnerDictionary[configKey];
-				}
-			}
-			private set {
-				lock(this.padLock) {
-					IConfig config = this.InnerDictionary[configKey];
-					if(config != null) {
-						this.InnerDictionary[configKey] = value;
-						config.Dispose();
-					} else {
-						throw new ArgumentOutOfRangeException("configKey");
-					}
-				}
+				return this.InnerDictionary[configKey];
 			}
 		}
 
 		internal Dictionary<String, IConfig> InnerDictionary { get { return this.innerDictionary; } }
 
-		internal void Insert(IConfig config) {
+		public void Insert(IConfig config) {
 			lock(this.padLock) {
-				if(this.Contains(config.ConfigKey)) {
-					this[config.ConfigKey] = config;
-				} else {
-					this.Add(config);
+				if(config.IsDiscarded) {
+					throw new ConfigDiscardedException("The config object is discarded and can not be added to the collection.");
 				}
+				if(this.Contains(config.ConfigKey)) {
+					this.Remove(config.ConfigKey);
+				}
+				this.Add(config);
 			}			
 		}
 
 		private void Add(IConfig config) {
+			config.Discarded += ConfigDiscard;
 			this.InnerDictionary.Add(config.ConfigKey, config);
 		}
 
-		internal void Remove(string configKey) {
-			lock(this.padLock) {
-				IConfig config = this.InnerDictionary[configKey];
-				this.InnerDictionary.Remove(configKey);
-				if(config != null) {
-					config.Dispose();
-				}
+		private void Remove(string configKey) {
+			IConfig config = this[configKey];
+			config.Discarded -= this.ConfigDiscard;
+			this.InnerDictionary.Remove(configKey);
+		}
+
+		private void ConfigDiscard(object sender, EventArgs e) {
+			var config = sender as IConfig;
+			if(config != null){
+				this.Remove(config.ConfigKey);
 			}
 		}
 
@@ -100,9 +91,7 @@ namespace nJupiter.Configuration {
 		/// 	<c>true</c> if the collection contains the specified config; otherwise, <c>false</c>.
 		/// </returns>
 		public bool Contains(IConfig config) {
-			lock(this.padLock) {
-				return this.InnerDictionary.ContainsValue(config);
-			}
+			return this.InnerDictionary.ContainsValue(config);
 		}
 
 		/// <summary>
@@ -113,9 +102,7 @@ namespace nJupiter.Configuration {
 		/// 	<c>true</c> if the collection contains the specified config; otherwise, <c>false</c>.
 		/// </returns>
 		public bool Contains(string configKey) {
-			lock(this.padLock) {
-				return this.InnerDictionary.ContainsKey(configKey);
-			}
+			return this.InnerDictionary.ContainsKey(configKey);
 		}
 
 		public IEnumerator<IConfig> GetEnumerator() {

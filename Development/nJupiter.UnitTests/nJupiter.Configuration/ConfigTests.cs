@@ -1,4 +1,8 @@
+using System;
+using System.IO;
 using System.Xml;
+
+using FakeItEasy;
 
 using nJupiter.Configuration;
 
@@ -498,40 +502,80 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
-		public void Disposed_CreateConfigWithoutDisposingIt_ReturnsNoCalls() {
+		public void Discarded_CreateConfigWithoutDisposingIt_ReturnsNoCalls() {
 			var config = GetTestConfig(@"<testconfig />");
-			var disposer = new DisposeListener();
-			config.Disposed += disposer.config_Disposed;
+			var disposer = new DiscardListener();
+			config.Discarded += disposer.ConfigDiscarded;
 			Assert.AreEqual(0, disposer.NumberOfCalled);
 		}
 
 		[Test]
-		public void Disposed_CreateConfigDisposingIt_ReturnsOneCalls() {
+		public void Discarded_CreateConfigDisposingIt_ReturnsOneCalls() {
 			var config = GetTestConfig(@"<testconfig />");
-			var disposer = new DisposeListener();
-			config.Disposed += disposer.config_Disposed;
-			config.Dispose();
+			var disposer = new DiscardListener();
+			config.Discarded += disposer.ConfigDiscarded;
+			config.Discard();
 			Assert.AreEqual(1, disposer.NumberOfCalled);
 		}
 
 
 		[Test]
-		public void Disposed_CreateConfigDisposingItSeveralTimes_ReturnsOneCalls() {
+		public void Discarded_CreateConfigDisposingItSeveralTimes_ReturnsOneCalls() {
 			var config = GetTestConfig(@"<testconfig />");
-			var disposeListener = new DisposeListener();
-			config.Disposed += disposeListener.config_Disposed;
-			config.Dispose();
-			config.Dispose();
-			config.Dispose();
-			config.Dispose();
-			config.Dispose();
-			config.Dispose();
+			var disposeListener = new DiscardListener();
+			config.Discarded += disposeListener.ConfigDiscarded;
+			config.Discard();
+			config.Discard();
+			config.Discard();
+			config.Discard();
+			config.Discard();
+			config.Discard();
 			Assert.AreEqual(1, disposeListener.NumberOfCalled);
 		}
 
-		class DisposeListener {
+		[Test]
+		public void Discarded_WathcerAttachedWhenCreated_ReturnsConfigWithWatcher() {
+			XmlElement configXmlElement = GetConfigXmlDocument(@"<testconfig />");
+			var configSource = A.Fake<IConfigSource>();
+			var watcher = new FakeWatcher();
+			A.CallTo(() => configSource.Watcher).Returns(watcher);
+
+			var config = ConfigFactory.Create("testConfig", configXmlElement, configSource);
+
+			Assert.NotNull(config.ConfigSource.Watcher != null);
+		}
+
+		[Test]
+		public void Discarded_WathcerAttachedWhenCreated_DiscaredIsCalledWhenWathcerChanged() {
+			XmlElement configXmlElement = GetConfigXmlDocument(@"<testconfig />");
+			var configSource = A.Fake<IConfigSource>();
+			var watcher = new FakeWatcher();
+			A.CallTo(() => configSource.Watcher).Returns(watcher);
+
+			var config = ConfigFactory.Create("testConfig", configXmlElement, configSource);
+
+			var listener = new DiscardListener();
+			config.Discarded += listener.ConfigDiscarded;
+
+			watcher.OnWatchedFileChange();
+
+			Assert.NotNull(config.ConfigSource.Watcher != null);
+			Assert.AreEqual(1, listener.NumberOfCalled);
+		}
+
+		class FakeWatcher : IConfigSourceWatcher {
+			public void OnWatchedFileChange() {
+				if(this.ConfigSourceUpdated != null) {
+					this.ConfigSourceUpdated(this, EventArgs.Empty);
+				}
+			}
+
+			public event EventHandler ConfigSourceUpdated;
+		}
+
+		class DiscardListener {
 			private int called;
-			public void config_Disposed(object sender, System.EventArgs e) {
+			public void ConfigDiscarded(object sender, System.EventArgs e) {
 				called++;
 			}
 			public int NumberOfCalled { get{ return called; } }
