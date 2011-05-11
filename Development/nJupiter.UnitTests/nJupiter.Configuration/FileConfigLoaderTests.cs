@@ -12,7 +12,7 @@ namespace nJupiter.UnitTests.Configuration {
 		const string nJupiterDevPath = @"C:\Projects\nJupiter\Development\";
 		static readonly string nJupiterConfigPath = string.Format(@"{0}Shared Resources\Config\", nJupiterDevPath);
 		static readonly string configForDevPath  = string.Format(@"<nJupiterConfiguration><configDirectories configSuffix="".targets""><configDirectory value=""{0}""/></configDirectories></nJupiterConfiguration>", nJupiterDevPath);
-		static readonly string configForConfigFolder  = string.Format(@"<nJupiterConfiguration><configDirectories><configDirectory value=""{0}""/></configDirectories></nJupiterConfiguration>", nJupiterConfigPath);
+		static readonly string configForConfigFolder  = string.Format(@"<nJupiterConfiguration><configDirectories loadAllConfigFilesOnInit=""true""><configDirectory value=""{0}""/></configDirectories></nJupiterConfiguration>", nJupiterConfigPath);
 
 		[Test]
 		public void LoadAll_LoadnjupiterConfigFolder_ReturnCorrectNumberOfConfigs() {
@@ -20,7 +20,7 @@ namespace nJupiter.UnitTests.Configuration {
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
 			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
-			var configs = fileConfigLoader.LoadAll();
+			var configs = fileConfigLoader.LoadOnInit();
 			int count = 0;
 			foreach(IConfig config in configs) {
 				count++;
@@ -36,7 +36,7 @@ namespace nJupiter.UnitTests.Configuration {
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
 			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
-			var configs = fileConfigLoader.LoadAll();
+			var configs = fileConfigLoader.LoadOnInit();
 			
 			Assert.Throws<KeyNotFoundException>(() => configs["NotExistingConfigFile"].ToString());
 		}

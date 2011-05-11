@@ -24,7 +24,7 @@
 
 namespace nJupiter.Configuration {
 	public interface IConfigLoader {
-		ConfigCollection LoadAll();
+		ConfigCollection LoadOnInit();
 		IConfig Load(string configKey);
 	}
 }

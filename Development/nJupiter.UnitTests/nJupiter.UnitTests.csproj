@@ -102,6 +102,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="nJupiter.Configuration\ConfigCollectionTests.cs" />
+    <Compile Include="nJupiter.Configuration\ConfigHandlerTests.cs" />
     <Compile Include="nJupiter.Configuration\ConfigSourceFactoryTests.cs" />
     <Compile Include="nJupiter.Configuration\ConfigSourceTests.cs" />
     <Compile Include="nJupiter.Configuration\ConfigTests.cs">

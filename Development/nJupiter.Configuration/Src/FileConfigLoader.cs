@@ -33,6 +33,7 @@ namespace nJupiter.Configuration {
 		private static readonly char[] IllegalPathCharacters = new[] { '\\', '/', '"', '?', '<', '>' };
 		private readonly string configSuffix;
 		private readonly bool addFileWatchers;
+		private readonly bool loadAllConfigFilesOnInit;
 		private readonly IEnumerable<string> configPaths;
 		private readonly ConfigSourceFactory configSourceFactory;
 
@@ -40,11 +41,15 @@ namespace nJupiter.Configuration {
 			this.configSourceFactory = configSourceFactory;
 			this.configPaths = GetConfigPaths(config);
 			this.configSuffix = GetConfigSuffix(config);
-			this.addFileWatchers = GetConfigAddFileWatchers(config);
+			this.addFileWatchers = ShallAddFileWatchers(config);
+			this.loadAllConfigFilesOnInit = ShallLoadAllFilesOnInit(config);
 		}
 
-		public ConfigCollection LoadAll() {
-			return LoadConfigs("*");
+		public ConfigCollection LoadOnInit() {
+			if(loadAllConfigFilesOnInit) {
+				return LoadConfigs("*");
+			}
+			return new ConfigCollection();
 		}
 
 		public IConfig Load(string configKey) {
@@ -81,11 +86,20 @@ namespace nJupiter.Configuration {
 			foreach(string path in this.configPaths) {
 				DirectoryInfo dir = GetDirectory(path);
 				if(dir.Exists) {
-					FileInfo[] fileArray = dir.GetFiles(string.Format("{0}{1}", pattern, this.configSuffix));
+					var fileArray = this.GetFiles(pattern, dir);
 					files.AddRange(fileArray);
 				}
 			}
 			return files;
+		}
+
+		private IEnumerable<FileInfo> GetFiles(string pattern, DirectoryInfo dir) {
+			try {
+				return dir.GetFiles(string.Format("{0}{1}", pattern, this.configSuffix));
+			} catch(IOException) {
+				// Ignore IOException in case of incorrect syntax
+			}
+			return new FileInfo[0];
 		}
 
 		private IConfig CreateConfigFromFile(string configKey, FileInfo configFile) {
@@ -124,12 +138,20 @@ namespace nJupiter.Configuration {
 			return new DirectoryInfo(path);
 		}
 
-		private static bool GetConfigAddFileWatchers(IConfig config) {
+		private static bool ShallAddFileWatchers(IConfig config) {
 			if(config != null && config.ContainsAttribute("configDirectories", "fileWatchingDisabled")) {
 				return !config.GetAttribute<bool>("configDirectories", "fileWatchingDisabled");
 			}
 			return true;
 		}
+
+		private static bool ShallLoadAllFilesOnInit(IConfig config) {
+			if(config != null && config.ContainsAttribute("configDirectories", "loadAllConfigFilesOnInit")) {
+				return config.GetAttribute<bool>("configDirectories", "loadAllConfigFilesOnInit");
+			}
+			return false;
+		}
+
 
 		private static string GetConfigSuffix(IConfig config) {
 			if(config != null && config.ContainsAttribute("configDirectories", "configSuffix")) {

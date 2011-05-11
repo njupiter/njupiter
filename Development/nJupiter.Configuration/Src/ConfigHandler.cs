@@ -41,9 +41,11 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		public static IConfigHandler Instance { get { return NestedSingleton.instance; } }
 
+		public ConfigHandler(IConfigLoader configLoader) : this(configLoader, "System", "App") {}
+
 		public ConfigHandler(IConfigLoader configLoader, string systemConfigKey, string appConfig) {
 			this.configLoader = configLoader;
-			this.configurations = configLoader.LoadAll();
+			this.configurations = configLoader.LoadOnInit();
 			this.systemConfigKey = systemConfigKey;
 			this.appConfig = appConfig;
 		}
@@ -104,7 +106,7 @@ namespace nJupiter.Configuration {
 			// ReSharper disable EmptyConstructor
 			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			// ReSharper restore EmptyConstructor
-			internal static readonly IConfigHandler instance = new ConfigHandler(ConfigLoaderFactory.Create(), "System", "App");
+			internal static readonly IConfigHandler instance = new ConfigHandler(ConfigLoaderFactory.Create());
 		}
 	}
 }
