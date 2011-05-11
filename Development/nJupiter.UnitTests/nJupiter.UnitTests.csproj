@@ -98,6 +98,7 @@
     <Compile Include="nJupiter.Configuration\ConfigTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="nJupiter.Configuration\FileConfigLoaderTests.cs" />
     <Compile Include="nJupiter.Configuration\FileConfigSourceTests.cs" />
     <Compile Include="nJupiter.Configuration\StringParserTests.cs" />
     <Compile Include="nJupiter.Configuration\UriConfigSourceTests.cs" />

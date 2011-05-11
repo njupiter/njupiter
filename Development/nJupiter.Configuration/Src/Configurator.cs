@@ -21,6 +21,7 @@
 	THE SOFTWARE.
 */
 #endregion
+	/*
 
 using System;
 using System.Xml;
@@ -28,13 +29,17 @@ using System.IO;
 using System.Reflection;
 using System.Net;
 
-namespace nJupiter.Configuration {
+using log4net;
 
+namespace nJupiter.Configuration {
 	/// <summary>
 	/// The configurator class to initialize config objects
 	/// </summary>
 	public static class Configurator {
 		
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
 		#region Static Methods
 
 		/// <summary>
@@ -101,52 +106,6 @@ namespace nJupiter.Configuration {
 		}
 
 		/// <summary>
-		/// Initialize a <see cref="Config" /> object with the given config key using the provided <see cref="FileInfo" /> as it's configuration.
-		/// </summary>
-		/// <param name="configKey">The config key.</param>
-		/// <param name="configFile">The file containing the Xml that holds the configuration.</param>
-		public static void Configure(string configKey, FileInfo configFile) {
-			if(configFile == null) {
-				throw new ArgumentNullException("configFile");
-			}
-			if(configFile.Name.StartsWith(configKey) && File.Exists(configFile.FullName)) {
-				// Open the file for reading
-				FileStream fs = null;
-
-				// Try hard to open the file
-				for(int retry = 5; --retry >= 0; ) {
-					try {
-						fs = configFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
-						break;
-					} catch(IOException ex) {
-						if(retry == 0) {
-							// The stream cannot be valid
-							throw new ConfiguratorException(string.Format("Failed to open XML config file [{0}].", configFile.Name), ex);
-						}
-						System.Threading.Thread.Sleep(250);
-					}
-				}
-
-				if(fs != null) {
-					try {
-						// Load the configuration from the stream
-						IConfigSource source = ConfigSourceFactory.GetInstance().CreateConfigSource(configFile);
-						XmlElement xmlElement = GetConfigXmlElement(configKey, fs);
-						Config config = new Config(configKey, xmlElement, source);
-						ConfigHandler.SetConfig(config);
-					} finally {
-						// Force the file closed whatever happens
-						fs.Close();
-					}
-				}
-			} else {
-				// Remove old config
-				if(ConfigHandler.Configurations.Contains(configKey))
-					ConfigHandler.Configurations.Remove(configKey);
-			}
-		}
-
-		/// <summary>
 		/// Initialize a <see cref="Config" /> object for  sprecified assembly that is using the provided <see cref="Uri" /> as it's configuration.
 		/// </summary>
 		/// <param name="assembly">The assembly.</param>
@@ -196,7 +155,7 @@ namespace nJupiter.Configuration {
 								XmlElement xmlElement = GetConfigXmlElement(configKey, configStream);
 								IConfigSource source = ConfigSourceFactory.GetInstance().CreateConfigSource(configUri);
 								Config config = new Config(configKey, xmlElement, source);
-								ConfigHandler.SetConfig(config);
+								SetConfig(config);
 								
 							}
 						} finally {
@@ -228,7 +187,7 @@ namespace nJupiter.Configuration {
 		public static void Configure(string configKey, Stream configStream) {
 			XmlElement xmlElement = GetConfigXmlElement(configKey, configStream);
 			Config config = new Config(configKey, xmlElement);
-			ConfigHandler.SetConfig(config);
+			SetConfig(config);
 		}
 
 		/// <summary>
@@ -236,7 +195,7 @@ namespace nJupiter.Configuration {
 		/// </summary>
 		/// <param name="config">The config object to configure.</param>
 		public static void Configure(IConfig config) {
-			ConfigHandler.SetConfig(config);
+			SetConfig(config);
 		}
 
 		private static XmlElement GetConfigXmlElement(string conifgKey, Stream configStream) {
@@ -266,7 +225,7 @@ namespace nJupiter.Configuration {
 		private static void ConfigureFromXml(string configKey, XmlElement element) {
 			XmlElement xmlElement = GetXmlElementFromXmlNode(element);	
 			Config config = new Config(configKey, xmlElement);
-			ConfigHandler.SetConfig(config);
+			SetConfig(config);
 		}
 
 		private static XmlElement GetXmlElementFromXmlNode(XmlNode element) {
@@ -279,7 +238,28 @@ namespace nJupiter.Configuration {
 
 			return newElement;
 		}
+
+		internal static void SetConfig(IConfig config) {
+			AddWatcherToFileConfig(config);
+			ConfigHandler.Configurations.Insert(config);
+		}
+
+		private static void AddWatcherToFileConfig(IConfig config) {
+			FileInfo configFile = config.ConfigSource.GetConfigSource<FileInfo>();
+			if(configFile != null) {
+				try {
+					// Create a watch handler that will reload the configuration whenever the config file is modified.
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Start watching file {0} for config [{1}]", configFile.FullName, config.ConfigKey)); }
+					WatchedConfigHandler wather = WatchedConfigHandler.StartWatching(config.ConfigKey, configFile);
+					config.Disposed += wather.Disposing;
+					
+				} catch(Exception ex) {
+					throw new ConfiguratorException(string.Format("Failed to initialize configuration file watcher for file [{0}].",configFile.FullName), ex);
+				}
+			}
+		}
 		#endregion
 	}
 }
 
+	*/

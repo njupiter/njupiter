@@ -49,7 +49,7 @@ namespace nJupiter.Messaging.Server {
 		#endregion
 
 		#region Private static members
-		private static readonly string ConsumersFilename = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue("consumerFilename");
+		private static readonly string ConsumersFilename = ConfigHandlerOld.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue("consumerFilename");
 		#endregion
 
 		#region Private instance members

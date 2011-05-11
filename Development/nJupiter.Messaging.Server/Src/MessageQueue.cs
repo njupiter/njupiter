@@ -55,7 +55,7 @@ namespace nJupiter.Messaging.Server {
 		#region Static instance members
 		private static RemoteMessageService messageService;
 		private static readonly ILog Logger = LogManager.GetLogger(Assembly.GetExecutingAssembly().GetType());
-		private static readonly string MessageDir = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue("messageDirectory");
+		private static readonly string MessageDir = ConfigHandlerOld.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue("messageDirectory");
 		private static readonly object Padlock = new object();
 		#endregion
 

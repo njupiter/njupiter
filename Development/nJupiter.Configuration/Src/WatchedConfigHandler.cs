@@ -92,7 +92,7 @@ namespace nJupiter.Configuration {
 				if(this.eventTriggered)
 					return;
 				try {
-					Configurator.Configure(this.configKey, this.configFile);
+					//Configurator.Configure(this.configKey, this.configFile);
 					this.eventTriggered = true;
 				} catch(ConfigurationException ex) {
 					// Catch error and log to avoid crashing the application

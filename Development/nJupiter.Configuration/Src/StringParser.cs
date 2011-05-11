@@ -23,6 +23,7 @@
 #endregion
 
 using System.ComponentModel;
+using System.Globalization;
 
 namespace nJupiter.Configuration {
 
@@ -34,12 +35,12 @@ namespace nJupiter.Configuration {
 			return Instance;
 		}
 
-		public T Parse<T>(string value) {
+		public T Parse<T>(string value, CultureInfo culture) {
 			var converter = TypeDescriptor.GetConverter(typeof(T));
-			if(converter != null) {
-				return (T)converter.ConvertFromString(value);
+			if(converter != null && converter.CanConvertFrom(typeof(string))) {
+				return (T)converter.ConvertFromString(null, culture, value);
 			}
-			return default(T);
+			throw new InvalidConfigTypeException(string.Format("Can not find converter for type [{0}]", typeof(T).FullName));
 		}
 
 	}

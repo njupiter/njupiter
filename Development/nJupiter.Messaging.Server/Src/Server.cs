@@ -80,7 +80,7 @@ namespace nJupiter.Messaging.Server {
 				//{
 				//    System.Threading.Thread.Sleep(2000);
 				//}
-				IConfig config = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(log4net.Config.XmlConfigurator)));
+				IConfig config = ConfigHandlerOld.GetConfig(Assembly.GetAssembly(typeof(log4net.Config.XmlConfigurator)));
 				if(config.ConfigXml != null && config.ConfigXml.SelectSingleNode("log4net") != null)
 					XmlConfigurator.Configure((XmlElement)config.ConfigXml.SelectSingleNode("log4net"));
 				else
@@ -92,7 +92,7 @@ namespace nJupiter.Messaging.Server {
 				provider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
 
 				IDictionary props = new Hashtable();
-				props["port"] = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue<int>("port");
+				props["port"] = ConfigHandlerOld.GetConfig(Assembly.GetAssembly(typeof(Message))).GetConfigSection(string.Format(CultureInfo.InvariantCulture, SettingsSectionFormat, "server")).GetValue<int>("port");
 
 				TcpChannel chan = new TcpChannel(props, null, provider);
 				ChannelServices.RegisterChannel(chan, false);

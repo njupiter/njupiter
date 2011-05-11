@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Xml;
 using System.Collections.Generic;
 
@@ -46,11 +47,11 @@ namespace nJupiter.Configuration {
 
 		public event EventHandler Disposed;
 
-		public Config(string configKey, XmlElement element)
+		internal Config(string configKey, XmlElement element)
 			: this(configKey, element, null) {
 		}
 
-		public Config(string configKey, XmlElement element, IConfigSource source) {
+		internal Config(string configKey, XmlElement element, IConfigSource source) {
 			if(configKey == null) {
 				throw new ArgumentNullException("configKey");
 			}
@@ -144,7 +145,7 @@ namespace nJupiter.Configuration {
 					if(configElement == null)
 						return null;
 
-					this.innerConfigurations.Add(new Config(key, configElement));
+					this.innerConfigurations.Insert(new Config(key, configElement));
 				}
 			}
 			return this.innerConfigurations[key];
@@ -201,12 +202,11 @@ namespace nJupiter.Configuration {
 			return null;
 		}
 
-		private T ParseValue<T>(string section, string key, string attribute, string value) {
+		private T ParseValue<T>(string section, string key, string attribute, string value, CultureInfo culture) {
 			try {
-				return StringParser.GetInstance().Parse<T>(value);
+				return StringParser.GetInstance().Parse<T>(value, culture);
 			}catch(Exception ex) {
-				attribute = !string.IsNullOrEmpty(attribute) ? string.Format("[@{0}]", attribute) : string.Empty;
-				throw new InvalidConfigValueException(string.Format("The value [{0}] with key [{1}] in config with key [{2}] is not of type [{3}].", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name), ex);
+				throw new InvalidConfigValueException(string.Format("Error wile parsing value [{0}] with key [{1}] in config with key [{2}] of expected type [{3}] with culture [{4}].", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name, culture.Name), ex);
 			}
 		}
 
@@ -220,7 +220,19 @@ namespace nJupiter.Configuration {
 			if(value == null && DefaultAttribute.Equals(attribute)){
 				value = node.InnerText;
 			}
-			return this.ParseValue<T>(section, key, attribute, value);
+			CultureInfo nodeCulture = GetCultureFromNode(node);
+
+			return this.ParseValue<T>(section, key, attribute, value, nodeCulture);
+		}
+
+		private static CultureInfo GetCultureFromNode(XmlNode node) {
+			XmlNodeReader nodeReader = new XmlNodeReader(node);
+			nodeReader.Read();
+			string lang = nodeReader.XmlLang;
+			if(!string.IsNullOrEmpty(lang)) {
+				return CultureInfo.CreateSpecificCulture(lang);
+			}
+			return CultureInfo.InvariantCulture;
 		}
 
 		private static string GetAttributeValueFromXmlNode(string attribute, XmlNode node) {

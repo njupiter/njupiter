@@ -38,6 +38,30 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
+		public void GetValueDecimal_ElementIsInSwedishAndHasSwedishDecimalSeparator_ReturnsTrue() {
+			var config = GetTestConfig(@"<element xml:lang=""sv"" value=""1,1"" />");
+			Assert.AreEqual(1.1, config.GetValue<decimal>("element"));
+		}
+
+		[Test]
+		public void GetValueDecimal_ElementIsInSwedishAndHasNotSwedishDecimalSeparator_ThrowsInvalidConfigValueException() {
+			var config = GetTestConfig(@"<element xml:lang=""sv"" value=""1.1"" />");
+			Assert.Throws<InvalidConfigValueException>(() => config.GetValue<decimal>("element"));
+		}
+
+		[Test]
+		public void GetValueDecimal_InvariantElementAndHasEnglishDecimalSeparator_ReturnsTrue() {
+			var config = GetTestConfig(@"<element value=""1.1"" />");
+			Assert.AreEqual(1.1, config.GetValue<decimal>("element"));
+		}
+
+		[Test]
+		public void GetValueDecimal_InvariantElementAndHasNotEnglishDecimalSeparator_ThrowsInvalidConfigValueException() {
+			var config = GetTestConfig(@"<element value=""1,1"" />");
+			Assert.Throws<InvalidConfigValueException>(() => config.GetValue<decimal>("element"));
+		}
+
+		[Test]
 		public void GetValueBool_ElementValueAttributeIsTrue_ReturnsTrue() {
 			var config = GetTestConfig(@"<element value=""true"" />");
 			Assert.IsTrue(config.GetValue<bool>("element"));
@@ -514,14 +538,14 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 		
 
-		private static Config GetTestConfig(string innerXml) {
+		private static IConfig GetTestConfig(string innerXml) {
 			XmlElement configXmlElement = GetConfigXmlDocument(innerXml);
-			return new Config("testConfig", configXmlElement);
+			return ConfigFactory.Create("testConfig", configXmlElement);
 		}
 
 		private static XmlElement GetConfigXmlDocument(string innerXml) {
 			XmlDocument xmlDocument = new XmlDocument();
-			xmlDocument.InnerXml = string.Format(@"<configuration>{0}</configuration>", innerXml);
+			xmlDocument.LoadXml(string.Format(@"<configuration>{0}</configuration>", innerXml));
 			return xmlDocument.DocumentElement;
 		}
 	}

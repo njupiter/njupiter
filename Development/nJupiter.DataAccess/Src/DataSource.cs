@@ -111,14 +111,14 @@ namespace nJupiter.DataAccess {
 			const string assembly = "assembly";
 			const string type = "type";
 
-			string name = ConfigHandler.GetConfig().GetValue(section);
+			string name = ConfigHandlerOld.GetConfig().GetValue(section);
 			if(DataSourceAdapters.ContainsKey(name))
 				return (DataSource)DataSourceAdapters[name];
 
 			lock(DataSourceAdapters.SyncRoot) {
 				DataSource dataSource;
 				if(!DataSourceAdapters.ContainsKey(name)) {
-					IConfig config = ConfigHandler.GetConfig();
+					IConfig config = ConfigHandlerOld.GetConfig();
 					string assemblyPath = config.GetValue(section, assemblypath);
 					string assemblyName = config.GetValue(section, assembly);
 					string assemblyType = config.GetValue(section, type);

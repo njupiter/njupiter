@@ -49,8 +49,8 @@ namespace nJupiter.Messaging.Web {
 
 		[WebMethod]
 		public void Notify(Message message) {
-			string assemblyName = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "assembly");
-			string className = ConfigHandler.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "className");
+			string assemblyName = ConfigHandlerOld.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "assembly");
+			string className = ConfigHandlerOld.GetConfig(Assembly.GetAssembly(typeof(Message))).GetValue(ConsumerSection, "className");
 			Assembly assembly = System.Reflection.Assembly.Load(assemblyName);
 			if(assembly != null && assembly.Location != null) {
 				Assembly managerAssembly = Assembly.LoadFrom(assembly.Location);

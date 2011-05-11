@@ -72,7 +72,7 @@ namespace nJupiter.DataAccess.DirectoryService {
 			const string assemblyKey = "assembly";
 			const string typKey = "type";
 
-			IConfig config = ConfigHandler.GetConfig();
+			IConfig config = ConfigHandlerOld.GetConfig();
 			string name = config.GetValue(section);
 			if(DirectoryServices.ContainsKey(name))
 				return (DirectoryService)DirectoryServices[name];
