@@ -73,6 +73,9 @@
     <Content Include="Debug Tools\SystemInformation.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Debug Tools\UserInformation.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
     <Content Include="Libraries\Log4Net\Compile Version\readme.txt" />
     <Content Include="Libraries\Log4Net\V1.2.10.0\.NET 1.1\log4net.dll" />
