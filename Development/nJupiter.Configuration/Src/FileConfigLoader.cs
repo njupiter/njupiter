@@ -111,7 +111,7 @@ namespace nJupiter.Configuration {
 					return configFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
 				} catch(IOException ex) {
 					exception = ex;
-					System.Threading.Thread.Sleep(250);
+					System.Threading.Thread.Sleep(200);
 				}
 			}
 			throw new ConfiguratorException(string.Format("Failed to open XML config file [{0}].", configFile.Name), exception);

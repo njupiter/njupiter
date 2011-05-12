@@ -107,6 +107,7 @@
     <Compile Include="nJupiter.Configuration\FileConfigFactoryTest.cs" />
     <Compile Include="nJupiter.Configuration\FileConfigLoaderTests.cs" />
     <Compile Include="nJupiter.Configuration\FileConfigSourceTests.cs" />
+    <Compile Include="nJupiter.Configuration\FileConfigSourceWatcherTests.cs" />
     <Compile Include="nJupiter.Configuration\StringParserTests.cs" />
     <Compile Include="nJupiter.Configuration\UriConfigSourceTests.cs" />
     <Compile Include="nJupiter.DataAccess.DirectoryService\DirectoryServiceTest.cs">

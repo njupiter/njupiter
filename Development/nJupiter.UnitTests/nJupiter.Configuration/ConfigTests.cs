@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Xml;
 
 using FakeItEasy;
@@ -469,6 +468,11 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
+		public void Create_ConfigWithInvalidXml_ThrowsXmlException() {
+			Assert.Throws<XmlException>(() => GetTestConfig(@"<invalidxml>"));
+		}
+
+		[Test]
 		public void GetConfigurationSectionHandler_CreatenJupiterConfiguration_ReturnsnJupiterConfiguration() {
 			var config = GetTestConfig(@"<nJupiterConfiguration><configDirectories><configDirectory value=""~/Config""/></configDirectories></nJupiterConfiguration>");
 			var configHandler = config.GetConfigurationSectionHandler("nJupiterConfiguration", typeof(nJupiterConfigurationSectionHandler));
@@ -575,7 +579,7 @@ namespace nJupiter.UnitTests.Configuration {
 
 		class DiscardListener {
 			private int called;
-			public void ConfigDiscarded(object sender, System.EventArgs e) {
+			public void ConfigDiscarded(object sender, EventArgs e) {
 				called++;
 			}
 			public int NumberOfCalled { get{ return called; } }
