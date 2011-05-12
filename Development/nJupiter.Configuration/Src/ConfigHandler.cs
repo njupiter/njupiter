@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace nJupiter.Configuration {
@@ -31,23 +32,25 @@ namespace nJupiter.Configuration {
 		private readonly ConfigCollection configurations;
 		private readonly IConfigLoader configLoader;
 		private readonly string systemConfigKey;
-		private readonly string appConfig;
+		private readonly string appConfigKey;
 
-		public string AppConfigKey { get { return appConfig; } }
 		public string SystemConfigKey { get { return systemConfigKey; } }
+		public string AppConfigKey { get { return this.appConfigKey; } }
 
 		/// <summary>
 		/// Returns the default instance of IConfigHandler
 		/// </summary>
 		public static IConfigHandler Instance { get { return NestedSingleton.instance; } }
 
-		public ConfigHandler(IConfigLoader configLoader) : this(configLoader, "System", "App") {}
+		public ConfigHandler(IConfigLoader configLoader) : this(configLoader, "System", null) {
+			this.appConfigKey = GetAppConfigKey();
+		}
 
-		public ConfigHandler(IConfigLoader configLoader, string systemConfigKey, string appConfig) {
+		public ConfigHandler(IConfigLoader configLoader, string systemConfigKey, string appConfigKey) {
 			this.configLoader = configLoader;
 			this.configurations = configLoader.LoadOnInit();
 			this.systemConfigKey = systemConfigKey;
-			this.appConfig = appConfig;
+			this.appConfigKey = appConfigKey;
 		}
 
 		public ConfigCollection Configurations {
@@ -92,13 +95,21 @@ namespace nJupiter.Configuration {
 			}
 			try {
 				IConfig config = this.configLoader.Load(configKey);
+				if(config == null) {
+					throw new ConfigurationException(string.Format("The config with the config key [{0}] was not found.", configKey));
+				}
 				this.configurations.Insert(config);
 				return config;
 			} catch(Exception ex) {
 				if(suppressMissingConfigException)
 					return null;
-				throw new ConfigurationException(string.Format("The config with the config key [{0}] was not found.", configKey), ex);
+					throw new ConfigurationException(string.Format("Error loading config file with the config key [{0}].", configKey), ex);				
 			}
+		}
+
+		private static string GetAppConfigKey() {
+			var file = new FileInfo(AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString());
+			return file.Name.Substring(0, file.Name.Length - file.Extension.Length);
 		}
 
 		// thread safe Singleton implementation with fully lazy instantiation and with full performance

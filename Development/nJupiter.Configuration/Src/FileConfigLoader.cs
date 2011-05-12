@@ -46,30 +46,35 @@ namespace nJupiter.Configuration {
 		}
 
 		public ConfigCollection LoadOnInit() {
+			var configs = new ConfigCollection();
+			InitializeCollection(configs);
+			return configs;
+		}
+
+		public void InitializeCollection(ConfigCollection configs) {
 			if(loadAllConfigFilesOnInit) {
-				return LoadConfigs("*");
+				this.LoadConfigsIntoCollection("*", configs);
 			}
-			return new ConfigCollection();
 		}
 
 		public IConfig Load(string configKey) {
-			ConfigCollection configs = LoadConfigs(configKey);
+			var configs = new ConfigCollection();
+			this.LoadConfigsIntoCollection(configKey, configs);
 			if(configs.Contains(configKey)) {
 				return configs[configKey];
 			}
 			return null;
 		}
 
-		private ConfigCollection LoadConfigs(string pattern) {
+		private void LoadConfigsIntoCollection(string pattern, ConfigCollection configs) {
 			try {
-				return this.LoadConfigsFromFiles(pattern);
+				this.LoadConfigsIntoCollectionFromFiles(pattern, configs);
 			}catch(Exception ex){
 				throw new ConfiguratorException(string.Format("Error while loading XML configuration for the config with pattern [{0}].", pattern), ex);
 			}
 		}
 
-		private ConfigCollection LoadConfigsFromFiles(string pattern) {
-			ConfigCollection configs = new ConfigCollection();
+		private void LoadConfigsIntoCollectionFromFiles(string pattern, ConfigCollection configs) {
 			if(pattern.IndexOfAny(IllegalPathCharacters) < 0) {
 				IEnumerable<FileInfo> files = GetFiles(pattern);
 				foreach(FileInfo file in files) {
@@ -78,7 +83,6 @@ namespace nJupiter.Configuration {
 					configs.Insert(config);
 				}
 			}
-			return configs;
 		}
 
 		private IEnumerable<FileInfo> GetFiles(string pattern) {

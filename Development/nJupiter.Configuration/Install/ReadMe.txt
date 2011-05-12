@@ -1,8 +1,7 @@
 
 You can configure in which directories nJupiter.Configuration shall look for
 config files, you do so by adding the following keys to your
-app.config/web.config. It is recommended to do so if you care about
-performance.
+app.config/web.config.
 
 If you do not do this confguration nJupiter.Configuration will automatically
 try to recursively load all files with the extension .config in the currenct

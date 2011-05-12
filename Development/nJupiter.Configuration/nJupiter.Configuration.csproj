@@ -48,6 +48,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\CompositeConfigLoader.cs" />
     <Compile Include="Src\ConfigFactory.cs" />
     <Compile Include="Src\ConfigHandler.cs" />
     <Compile Include="Src\ConfigLoaderFactory.cs" />

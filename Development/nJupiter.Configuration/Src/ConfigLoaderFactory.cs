@@ -27,8 +27,11 @@ namespace nJupiter.Configuration {
 	internal class ConfigLoaderFactory {
 
 		public static IConfigLoader Create() {
+			var compositeLoader = new CompositeConfigLoader();
 			IConfig config = nJupiterConfigurationSectionHandler.GetConfig();
-			return new FileConfigLoader(config, ConfigSourceFactory.Instance);
+			var fileLoader = new FileConfigLoader(config, ConfigSourceFactory.Instance);
+			compositeLoader.Add(fileLoader);
+			return compositeLoader;
 		}
 	}
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
-
-using FakeItEasy;
 
 using nJupiter.Configuration;
 
@@ -14,15 +13,132 @@ namespace nJupiter.UnitTests.Configuration {
 	public class ConfigHandlerTests {
 
 		[Test]
-		public void Test() {
+		public void GetAppConfig_CreateConfigHandlerWithDefaultValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
 			var configLoader = new FakeLoader();
 			var configHandler = new ConfigHandler(configLoader);
-			configHandler.GetAppConfig();
-			Assert.AreEqual("App", configLoader.ConfigKeysLoaded[0]);
+			IConfig config = configHandler.GetAppConfig();
+			Assert.AreEqual("nJupiter.UnitTests.dll", config.ConfigKey);
+		}
+
+		[Test]
+		public void GetSystemConfig_CreateConfigHandlerWithDefaultValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetSystemConfig();
+			Assert.AreEqual("System", config.ConfigKey);
+		}
+
+		[Test]
+		public void GetAppConfig_CreateConfigHandlerWithCustomValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader, "CustomSystemKey", "CustomAppKey");
+			IConfig config = configHandler.GetAppConfig();
+			Assert.AreEqual("CustomAppKey", config.ConfigKey);
+		}
+
+		[Test]
+		public void GetSystemConfig_CreateConfigHandlerWithCustomValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader, "CustomSystemKey", "CustomAppKey");
+			IConfig config = configHandler.GetSystemConfig();
+			Assert.AreEqual("CustomSystemKey", config.ConfigKey);
+		}
+
+		[Test]
+		public void GetConfig_LoadCurrentConfig_ReturnsConfigWithCorrectSystemConfigKey() {
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetConfig();
+			Assert.AreEqual("nJupiter.UnitTests", config.ConfigKey);
+		}
+
+		[Test]
+		public void GetConfig_LoadCurrentConfigThatDoesNotExist_ThrowsConfigurationException() {
+			var configLoader = new FakeLoader(true);
+			var configHandler = new ConfigHandler(configLoader);
+			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig());
+			Assert.AreEqual("nJupiter.UnitTests", configLoader.ConfigKeysLoaded[0]);
+		}
+
+
+		[Test]
+		public void GetConfig_LoadCurrentConfigThatDoesNotExistAndSupressExceptions_ReturnsNull() {
+			var configLoader = new FakeLoader(true);
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetConfig(true);
+			Assert.IsNull(config);
+			Assert.AreEqual("nJupiter.UnitTests", configLoader.ConfigKeysLoaded[0]);
+		}
+
+		[Test]
+		public void GetConfig_LoadConfigForCustomAssembly_ReturnsConfigWithCorrectSystemConfigKey() {
+			Assembly assembly = typeof(FakeItEasy.A).Assembly;
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetConfig(assembly);
+			Assert.AreEqual(assembly.GetName().Name, config.ConfigKey);
+		}
+
+		[Test]
+		public void GetConfig_LoadConfigForCustomAssemblyDoesNotExist_ThrowsConfigurationException() {
+			Assembly assembly = typeof(FakeItEasy.A).Assembly;
+			var configLoader = new FakeLoader(true);
+			var configHandler = new ConfigHandler(configLoader);
+			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig(assembly));
+			Assert.AreEqual(assembly.GetName().Name, configLoader.ConfigKeysLoaded[0]);
+		}
+
+
+		[Test]
+		public void GetConfig_LoadConfigForCustomAssemblyDoesNotExistAndSupressExceptions_ReturnsNull() {
+			Assembly assembly = typeof(FakeItEasy.A).Assembly;
+			var configLoader = new FakeLoader(true);
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetConfig(assembly, true);
+			Assert.IsNull(config);
+			Assert.AreEqual(assembly.GetName().Name, configLoader.ConfigKeysLoaded[0]);
+		}
+
+//
+		[Test]
+		public void GetConfig_LoadConfigForCustomConfig_ReturnsConfigWithCorrectSystemConfigKey() {
+			const string configKey = "MyCustomConfig";
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetConfig(configKey);
+			Assert.AreEqual(configKey, config.ConfigKey);
+		}
+
+		[Test]
+		public void GetConfig_LoadConfigForCustomConfigDoesNotExist_ThrowsConfigurationException() {
+			const string configKey = "MyCustomConfig";
+			var configLoader = new FakeLoader(true);
+			var configHandler = new ConfigHandler(configLoader);
+			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig(configKey));
+			Assert.AreEqual(configKey, configLoader.ConfigKeysLoaded[0]);
+		}
+
+
+		[Test]
+		public void GetConfig_LoadConfigForCustomConfigDoesNotExistAndSupressExceptions_ReturnsNull() {
+			const string configKey = "MyCustomConfig";
+			var configLoader = new FakeLoader(true);
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config = configHandler.GetConfig(configKey, true);
+			Assert.IsNull(config);
+			Assert.AreEqual(configKey, configLoader.ConfigKeysLoaded[0]);
 		}
 
 		class FakeLoader : IConfigLoader {
-			private List<string> configKeys = new List<string>();
+			private readonly bool configDoesNotExist;
+
+			public FakeLoader() {}
+
+			public FakeLoader(bool configDoesNotExist) {
+				this.configDoesNotExist = configDoesNotExist;
+			}
+
+			private readonly List<string> configKeys = new List<string>();
 
 			public List<string> ConfigKeysLoaded {
 				get { return configKeys; }
@@ -32,8 +148,14 @@ namespace nJupiter.UnitTests.Configuration {
 				return new ConfigCollection();
 			}
 
+			public void InitializeCollection(ConfigCollection configs) {
+			}
+
 			public IConfig Load(string configKey) {
 				this.configKeys.Add(configKey);
+				if(configDoesNotExist) {
+					return null;
+				}
 				return new Config(configKey, GetConfigXmlDocument("<test />"));
 			}
 		}
