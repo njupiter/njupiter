@@ -16,14 +16,14 @@ using System.Security.Permissions;
 [assembly: SecurityTransparent]
 
 #if DEBUG
-[assembly: AssemblyVersion("3.16.1.*")]
+[assembly: AssemblyVersion("4.0.0.*")]
 [assembly: AssemblyConfiguration("Debug")]
 [assembly: InternalsVisibleTo("nJupiter.UnitTests")]
 #else
 // Increment AssemblyVersion only on major and minor releases
-[assembly: AssemblyVersion("3.16.1.0")]
+[assembly: AssemblyVersion("4.0.0.0")]
 // Increment AssemblyFileVersion on every release
-[assembly: AssemblyFileVersion("3.16.1.0")]
+[assembly: AssemblyFileVersion("4.0.0.0")]
 [assembly: AssemblyConfiguration("Release")]
 #if SIGN
 [assembly: AssemblyDelaySign(false)]

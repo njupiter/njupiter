@@ -9,6 +9,22 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for upcomming V4.0.0.0
+===============================================================================
+**** nJupiter.Configuration
+BCH: This componenet has been totally refactored. Has now support for generics.
+     The default handler is now accesed thru the .Instance attribute.
+     All significant classes now has interfaces and the handler return the
+     interface rather than the concrete type.
+     You can now implement your own loaders and attache them in runtime thru
+     the CompositeConfigLoader, that is the default loader for the default
+     instance of ConfigHandler.
+     The Insert-method has also been changed to be public and you can now
+     add your own Config objects to the ConfigCollection in runtime, they will
+     automatically be removed from all ConfigCollections they are added to
+     when the .Depricate() method is executed on the Config-object.
+
+===============================================================================
 Changes for V3.16.1.0  - 2011-02-24
 ===============================================================================
 BUG: Because of nJupiter.Text.SimpleTextParser was not configured for singning
