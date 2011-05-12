@@ -98,7 +98,7 @@ namespace nJupiter.Configuration {
 				if(config == null) {
 					throw new ConfigurationException(string.Format("The config with the config key [{0}] was not found.", configKey));
 				}
-				this.configurations.Insert(config);
+				this.configurations.Add(config);
 				return config;
 			} catch(Exception ex) {
 				if(suppressMissingConfigException)

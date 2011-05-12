@@ -52,6 +52,7 @@
     <Compile Include="Src\ConfigFactory.cs" />
     <Compile Include="Src\ConfigHandler.cs" />
     <Compile Include="Src\ConfigLoaderFactory.cs" />
+    <Compile Include="Src\FileConfigFactory.cs" />
     <Compile Include="Src\FileConfigLoader.cs" />
     <Compile Include="Src\ConfigSource.cs" />
     <Compile Include="Src\ConfigSourceFactory.cs" />

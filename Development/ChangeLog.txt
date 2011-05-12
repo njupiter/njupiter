@@ -24,6 +24,13 @@ BCH: This componenet has been totally refactored. Has now support for generics.
      automatically be removed from all ConfigCollections they are added to
      when the .Depricate() method is executed on the Config-object.
 
+**** nJupiter.Messaging
+**** nJupiter.Web.UI.GoogleAnalytics
+BCH: nJupiter.Messaging and nJupiter.Web.UI.GoogleAnalytics removed from
+     project. These projects has not been updated and supported for years
+     and therefor deprecated. If you still use them, reefer to code and release'
+     prior to 4.0
+
 ===============================================================================
 Changes for V3.16.1.0  - 2011-02-24
 ===============================================================================

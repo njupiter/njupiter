@@ -4,7 +4,7 @@ using nJupiter.Configuration;
 
 using NUnit.Framework;
 
-namespace nJupiter.UnitTests.nJupiter.Configuration {
+namespace nJupiter.UnitTests.Configuration {
 
 	[TestFixture]
 	public class CompositeConfigLoaderTests {

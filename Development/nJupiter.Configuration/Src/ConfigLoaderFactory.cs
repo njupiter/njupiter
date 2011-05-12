@@ -29,7 +29,7 @@ namespace nJupiter.Configuration {
 		public static IConfigLoader Create() {
 			var compositeLoader = new CompositeConfigLoader();
 			IConfig config = nJupiterConfigurationSectionHandler.GetConfig();
-			var fileLoader = new FileConfigLoader(config, ConfigSourceFactory.Instance);
+			var fileLoader = new FileConfigLoader(config);
 			compositeLoader.Add(fileLoader);
 			return compositeLoader;
 		}

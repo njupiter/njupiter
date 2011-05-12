@@ -53,27 +53,24 @@ namespace nJupiter.Configuration {
 
 		internal Dictionary<String, IConfig> InnerDictionary { get { return this.innerDictionary; } }
 
-		public void Insert(IConfig config) {
+		public void Add(IConfig config) {
 			lock(this.padLock) {
 				if(config.IsDiscarded) {
 					throw new ConfigDiscardedException("The config object is discarded and can not be added to the collection.");
 				}
-				if(this.Contains(config.ConfigKey)) {
-					this.Remove(config.ConfigKey);
+				config.Discarded += ConfigDiscard;
+				this.InnerDictionary.Add(config.ConfigKey, config);
+			}
+		}
+
+		public void Remove(string configKey) {
+			lock(padLock){
+				if(this.Contains(configKey)){
+					IConfig config = this[configKey];
+					config.Discarded -= this.ConfigDiscard;
 				}
-				this.Add(config);
-			}			
-		}
-
-		private void Add(IConfig config) {
-			config.Discarded += ConfigDiscard;
-			this.InnerDictionary.Add(config.ConfigKey, config);
-		}
-
-		private void Remove(string configKey) {
-			IConfig config = this[configKey];
-			config.Discarded -= this.ConfigDiscard;
-			this.InnerDictionary.Remove(configKey);
+				this.InnerDictionary.Remove(configKey);
+			}
 		}
 
 		private void ConfigDiscard(object sender, EventArgs e) {

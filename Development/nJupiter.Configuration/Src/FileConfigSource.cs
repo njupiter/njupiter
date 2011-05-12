@@ -28,8 +28,13 @@ using System.IO;
 namespace nJupiter.Configuration {
 	public class FileConfigSource : UriConfigSource {
 		internal FileConfigSource(FileInfo file, FileConfigSourceWatcher watcher) : base(new Uri(file.FullName)) {
-			this.configSources.Add(file);
-			this.configSources.Add(watcher);
+			if(file == null) {
+				throw new ArgumentNullException("file");
+			}
+			base.Add(file);
+			if(watcher != null){
+				base.Add(watcher);
+			}
 		}
 		public FileInfo ConfigFile { get { return this.GetConfigSource<FileInfo>(); } }
 		public override IConfigSourceWatcher Watcher { get { return this.GetConfigSource<FileConfigSourceWatcher>(); } }

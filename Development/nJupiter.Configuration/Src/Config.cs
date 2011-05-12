@@ -149,7 +149,7 @@ namespace nJupiter.Configuration {
 					if(configElement == null)
 						return null;
 
-					this.innerConfigurations.Insert(new Config(key, configElement));
+					this.innerConfigurations.Add(new Config(key, configElement));
 				}
 			}
 			return this.innerConfigurations[key];

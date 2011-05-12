@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 using nJupiter.Configuration;
 
@@ -10,28 +11,38 @@ namespace nJupiter.UnitTests.Configuration {
 	public class ConfigCollectionTests {
 
 		[Test]
-		public void Insert_InsertConfig_CollectionContainsConfig() {
+		public void Add_InsertConfig_CollectionContainsConfig() {
 			var configs = new ConfigCollection();
 			var config = new Config("testConfig", GetConfigXmlDocument(@"<test />"));
-			configs.Insert(config);
+			configs.Add(config);
 			Assert.IsTrue(configs.Contains(config));
 		}
 
 		[Test]
-		public void Insert_InsertConfigAndDiscardConfig_CollectionDoesNotContainConfig() {
+		public void Add_InsertConfigAndDiscardConfig_CollectionDoesNotContainConfig() {
 			var configs = new ConfigCollection();
 			var config = new Config("testConfig", GetConfigXmlDocument(@"<test />"));
-			configs.Insert(config);
+			configs.Add(config);
+			Assert.IsFalse(config.IsDiscarded);
 			config.Discard();
+			Assert.IsTrue(config.IsDiscarded);
 			Assert.IsFalse(configs.Contains(config));
 		}
 
 		[Test]
-		public void Insert_InsertConfigThatIsDiscarded_ThrowsConfigDiscardedException() {
+		public void Add_InsertCofigWithSameKeyTwice_ThrowsArgumentException() {
+			var configs = new ConfigCollection();
+			var config = new Config("testConfig", GetConfigXmlDocument(@"<test />"));
+			configs.Add(config);
+			Assert.Throws<ArgumentException>(() => configs.Add(config));
+		}
+
+		[Test]
+		public void Add_InsertConfigThatIsDiscarded_ThrowsConfigDiscardedException() {
 			var configs = new ConfigCollection();
 			var config = new Config("testConfig", GetConfigXmlDocument(@"<test />"));
 			config.Discard();
-			Assert.Throws<ConfigDiscardedException>(() => configs.Insert(config));
+			Assert.Throws<ConfigDiscardedException>(() => configs.Add(config));
 		}
 
 		private static XmlElement GetConfigXmlDocument(string innerXml) {

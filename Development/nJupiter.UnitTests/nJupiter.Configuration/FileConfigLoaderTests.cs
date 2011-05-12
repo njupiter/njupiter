@@ -19,7 +19,7 @@ namespace nJupiter.UnitTests.Configuration {
 			Assume.That(Directory.Exists(nJupiterConfigPath));
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
-			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
+			var fileConfigLoader  = new FileConfigLoader(c);
 			var configs = fileConfigLoader.LoadOnInit();
 			int count = 0;
 			foreach(IConfig config in configs) {
@@ -35,7 +35,7 @@ namespace nJupiter.UnitTests.Configuration {
 			Assume.That(!File.Exists(nJupiterConfigPath + "NotExistingConfigFile.config"));
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
-			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
+			var fileConfigLoader  = new FileConfigLoader(c);
 			var configs = fileConfigLoader.LoadOnInit();
 			
 			Assert.Throws<KeyNotFoundException>(() => configs["NotExistingConfigFile"].ToString());
@@ -46,7 +46,7 @@ namespace nJupiter.UnitTests.Configuration {
 			Assume.That(File.Exists(nJupiterConfigPath + "System.config"));
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
-			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
+			var fileConfigLoader  = new FileConfigLoader(c);
 			var config = fileConfigLoader.Load("System");
 
 			Assert.NotNull(config);
@@ -57,7 +57,7 @@ namespace nJupiter.UnitTests.Configuration {
 			Assume.That(File.Exists(nJupiterDevPath + "nJupiter.Deployment.targets"));
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForDevPath));
-			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
+			var fileConfigLoader  = new FileConfigLoader(c);
 			var config = fileConfigLoader.Load("nJupiter.Deployment");
 
 			Assert.NotNull(config);
@@ -68,7 +68,7 @@ namespace nJupiter.UnitTests.Configuration {
 			Assume.That(Directory.Exists(nJupiterConfigPath));
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
-			var fileConfigLoader  = new FileConfigLoader(c, ConfigSourceFactory.Instance);
+			var fileConfigLoader  = new FileConfigLoader(c);
 			var config = fileConfigLoader.Load("??");
 
 			Assert.IsNull(config);

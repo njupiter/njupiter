@@ -35,10 +35,8 @@ namespace nJupiter.Configuration {
 		private readonly bool addFileWatchers;
 		private readonly bool loadAllConfigFilesOnInit;
 		private readonly IEnumerable<string> configPaths;
-		private readonly ConfigSourceFactory configSourceFactory;
 
-		public FileConfigLoader(IConfig config, ConfigSourceFactory configSourceFactory) {
-			this.configSourceFactory = configSourceFactory;
+		public FileConfigLoader(IConfig config) {
 			this.configPaths = GetConfigPaths(config);
 			this.configSuffix = GetConfigSuffix(config);
 			this.addFileWatchers = ShallAddFileWatchers(config);
@@ -78,9 +76,8 @@ namespace nJupiter.Configuration {
 			if(pattern.IndexOfAny(IllegalPathCharacters) < 0) {
 				IEnumerable<FileInfo> files = GetFiles(pattern);
 				foreach(FileInfo file in files) {
-					string configKey = file.Name.Substring(0, file.Name.Length - configSuffix.Length);
-					IConfig config = CreateConfigFromFile(configKey, file);
-					configs.Insert(config);
+					IConfig config = FileConfigFactory.Create(file, addFileWatchers);
+					configs.Add(config);
 				}
 			}
 		}
@@ -106,21 +103,6 @@ namespace nJupiter.Configuration {
 			return new FileInfo[0];
 		}
 
-		private IConfig CreateConfigFromFile(string configKey, FileInfo configFile) {
-			if(configFile.Name.StartsWith(configKey) && File.Exists(configFile.FullName)) {
-				using(Stream stream = OpenFile(configFile)) {
-					return CreateConfigFromStream(configFile, configKey, stream);
-				}
-			}
-			return null;
-		}
-
-		private IConfig CreateConfigFromStream(FileInfo configFile, string configKey, Stream stream) {
-			IConfigSource source = this.configSourceFactory.CreateConfigSource(configFile, this.addFileWatchers);
-			var config = ConfigFactory.Create(configKey, stream, source);
-			return config;
-		}
-
 		// Internal for test purposes
 		internal static Stream OpenFile(FileInfo configFile) {
 			Exception exception = null;
@@ -143,8 +125,8 @@ namespace nJupiter.Configuration {
 		}
 
 		private static bool ShallAddFileWatchers(IConfig config) {
-			if(config != null && config.ContainsAttribute("configDirectories", "fileWatchingDisabled")) {
-				return !config.GetAttribute<bool>("configDirectories", "fileWatchingDisabled");
+			if(config != null && config.ContainsAttribute("configDirectories", "enableFileWatching")) {
+				return config.GetAttribute<bool>("configDirectories", "enableFileWatching");
 			}
 			return true;
 		}

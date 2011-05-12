@@ -24,7 +24,7 @@
 
 using System.Collections;
 
-namespace nJupiter.DataAccess.Users.Comparers.Users {
+namespace nJupiter.DataAccess.Users.Comparers {
 
 	public class NameComparer : IComparer {
 

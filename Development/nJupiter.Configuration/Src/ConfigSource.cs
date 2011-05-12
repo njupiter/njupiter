@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 namespace nJupiter.Configuration {
 	public class ConfigSource : IConfigSource {
-		protected readonly List<object> configSources;
+		private readonly List<object> configSources;
 
 		public virtual IConfigSourceWatcher Watcher { get { return null; } }
 
@@ -43,6 +43,10 @@ namespace nJupiter.Configuration {
 		}
 
 		public ConfigSource(object configSource) : this() {
+			this.Add(configSource);
+		}
+
+		protected void Add(object configSource) {
 			if(configSource == null) {
 				throw new ArgumentNullException("configSource");
 			}

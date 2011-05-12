@@ -16,12 +16,12 @@ web context).
 	</configSections>
 	<nJupiterConfiguration>
 		<!-- You can disable file watching if you do not want the configurations to be automatically discarded when a -->
-		<!-- config file is updated by seeing the fileWatchingDisabled attribute to true, if you leve this out the default is false -->
+		<!-- config file is updated by seeing the enableFileWatching attribute to false, if you leve this out the default is true -->
 		<!-- You can set a different config suffix by changing the configSuffix, if you leve this out the default is .config -->
 		<!-- If you want nJupiter.Configuration to load all config files in the directories on initialization (usualy when -->
 		<!-- you call the Config Handler for the first time) you have to set the loadAllConfigFilesOnInit attribute to true, -->
 		<!-- if you leave this attribute out the default is false -->
-		<configDirectories fileWatchingDisabled="false" configSuffix=".config" loadAllConfigFilesOnInit="true">
+		<configDirectories enableFileWatching="false" configSuffix=".config" loadAllConfigFilesOnInit="true">
 			<!-- The configDirectory tells in wich folders nJupiter.Configuration shall look for config files -->
 			<!-- You can add one or more directories. A directory higher up in the list has higher priority -->
 			<!-- If a config with the same name exists in different dirs nJupiter.Configuration choose the first one -->
