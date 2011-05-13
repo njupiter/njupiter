@@ -25,5 +25,15 @@ namespace nJupiter.UnitTests.nJupiter.DataAccess {
 			Assert.AreEqual(transaction, command.DbCommand.Transaction);
 			Assert.AreEqual(CommandType.TableDirect, command.DbCommand.CommandType);
 		}
+
+		[Test]
+		public void CreateParameter_CreateParameter_ChechThatCorrectParameterIsCreated() {
+			var dbProviderFactory = A.Fake<IProvider>();
+			var dataSource = new DataSource(dbProviderFactory);
+
+			var parameter = dataSource.CreateParameter("myparameter", DbType.Guid);
+			Assert.AreEqual("myparameter", parameter.ParameterName);
+			Assert.AreEqual(DbType.Guid, parameter.DbType);
+		}
 	}
 }

@@ -12,6 +12,12 @@ namespace nJupiter.DataAccess {
 			this.dbProviderFactory = dbProviderFactory; 
 		}
 
+		public DbProviderFactory DbProvider {
+			get {
+				return dbProviderFactory;
+			}
+		}
+
 		public bool CanCreateDataSourceEnumerator {
 			get {
 				return dbProviderFactory.CanCreateDataSourceEnumerator;
