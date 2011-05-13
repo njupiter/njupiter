@@ -37,10 +37,8 @@
     <None Include="Config\nJupiter.Services.Forum.UI.config" />
     <None Include="Config\nJupiter.Text.SimpleTextParser.config" />
     <None Include="Config\nJupiter.Web.UI.config" />
-    <None Include="Config\nJupiter.DataAccess.config" />
     <None Include="Config\nJupiter.DataAccess.DirectoryService.config" />
     <None Include="Config\nJupiter.DataAccess.Users.config" />
-    <None Include="Config\nJupiter.Messaging.config" />
     <None Include="Config\nJupiter.Services.Forum.config" />
     <None Include="Config\nJupiter.Web.UI.CssCompressor.config" />
     <None Include="Config\log4net.config" />

@@ -27,125 +27,90 @@ using System.Data;
 
 namespace nJupiter.DataAccess {
 
-	/// <summary>
-	/// Abstract class that represent a command that can be executed by a <see cref="DataSource" />.
-	/// </summary>
-	public abstract class Command : IDisposable {
-		#region Members
-		private Transaction transaction;
-		private bool disposed;
-		#endregion
+	internal class Command : IDisposable, ICommand {
 
-		#region Properties
-		/// <summary>
-		/// Gets or sets the transaction associated with the command.
-		/// </summary>
-		/// <value>The transaction.</value>
-		public Transaction Transaction {
+		private readonly IDbCommand dbCommand;
+		private IDbTransaction transaction;
+		private bool disposed;
+
+		internal Command(IDbCommand dbCommand, IDbTransaction transaction, params IDataParameter[] parameters) {
+			if(dbCommand == null) {
+				throw new ArgumentNullException("dbCommand");
+			}
+			this.dbCommand = dbCommand;
+			if(parameters != null){
+				foreach(IDataParameter parameter in parameters){
+					this.dbCommand.Parameters.Add(parameter);
+				}
+			}
+			this.Transaction = transaction;
+
+		}
+
+		public IDbTransaction Transaction {
 			get { return this.transaction; }
 			set {
 				this.transaction = value;
-				this.DbCommand.Connection = this.transaction.Connection;
-				this.DbCommand.Transaction = this.transaction.DbTransaction;
+				this.DbCommand.Connection = this.transaction != null ? this.transaction.Connection : null;
+				this.DbCommand.Transaction = this.transaction;
 			}
 		}
-		/// <summary>
-		/// Gets or sets the command text associated with the command.
-		/// </summary>
-		/// <value>The command text.</value>
+		
 		public string CommandText { get { return this.DbCommand.CommandText; } set { this.DbCommand.CommandText = value; } }
-		/// <summary>
-		/// Gets the <see cref="IDbCommand" /> associated with the command.
-		/// </summary>
-		/// <value>The <see cref="IDbCommand" /> associated with the command.</value>
-		public abstract IDbCommand DbCommand { get; }
-		/// <summary>
-		/// Gets or sets the timeout for the command.
-		/// </summary>
-		/// <value>The command timeout.</value>
-		public abstract int CommandTimeout { get; set; }
-		#endregion
-
-		#region Methods
-		/// <summary>
-		/// Adds a parameter to the command.
-		/// </summary>
-		/// <param name="name">The name of the parameter.</param>
-		/// <param name="type">The type of the parameter.</param>
-		/// <param name="size">The size of the parameter.</param>
-		/// <param name="direction">The direction of the parameter.</param>
-		/// <param name="nullable">if set to <c>true</c> the value can be null.</param>
-		/// <param name="precision">The precision of the parameter.</param>
-		/// <param name="scale">The scale of the parameter.</param>
-		/// <param name="column">The column of the parameter.</param>
-		/// <param name="rowVersion">The row version.</param>
-		/// <param name="value">The value of the parameter.</param>
-		public abstract void AddParameter(string name, DbType type, int size, ParameterDirection direction, bool nullable, byte precision, byte scale, string column, DataRowVersion rowVersion, object value);
-		/// <summary>
-		/// Adds a parameter to the command.
-		/// </summary>
-		/// <param name="name">The name of the parameter.</param>
-		/// <param name="type">The type of the parameter.</param>
-		/// <param name="size">The size of the parameter.</param>
-		public void AddOutParameter(string name, DbType type, int size) {
-			this.AddParameter(name, type, size, ParameterDirection.Output, true, 0, 0, string.Empty, DataRowVersion.Default, DBNull.Value);
+		
+		public IDbCommand DbCommand { get { return dbCommand; } }
+		
+		public int CommandTimeout {
+			get { return dbCommand.CommandTimeout; }
+			set { dbCommand.CommandTimeout = value; }
 		}
-		/// <summary>
-		/// Adds a parameter to the command.
-		/// </summary>
-		/// <param name="name">The name of the parameter.</param>
-		/// <param name="type">The type of the parameter.</param>
+
+		public void AddParameter(string name, DbType type, int size, ParameterDirection direction, byte precision, byte scale, string column, DataRowVersion rowVersion, object value) {
+			var param = this.DbCommand.CreateParameter();
+
+			param.ParameterName = name;
+			param.DbType = type;
+			param.Size = size;
+			param.Scale = scale;
+			param.Precision = precision;
+			param.Direction = direction;
+			param.SourceColumn = column;
+			param.SourceVersion = rowVersion;
+			param.Value = value;
+
+			this.DbCommand.Parameters.Add(param);
+		}
+
+		public void AddOutParameter(string name, DbType type, int size) {
+			this.AddParameter(name, type, size, ParameterDirection.Output, 0, 0, string.Empty, DataRowVersion.Default, DBNull.Value);
+		}
+
 		public void AddInParameter(string name, DbType type) {
 			this.AddParameter(name, type, ParameterDirection.Input, string.Empty, DataRowVersion.Default, null);
 		}
-		/// <summary>
-		/// Adds a parameter to the command.
-		/// </summary>
-		/// <param name="name">The name of the parameter.</param>
-		/// <param name="type">The type of the parameter.</param>
-		/// <param name="value">The value of the parameter.</param>
+
 		public void AddInParameter(string name, DbType type, object value) {
 			this.AddParameter(name, type, ParameterDirection.Input, string.Empty, DataRowVersion.Default, value);
 		}
-		/// <summary>
-		/// Adds a parameter to the command.
-		/// </summary>
-		/// <param name="name">The name of the parameter.</param>
-		/// <param name="type">The type of the parameter.</param>
-		/// <param name="column">The column of the parameter.</param>
-		/// <param name="rowVersion">The row version.</param>
+
 		public void AddInParameter(string name, DbType type, string column, DataRowVersion rowVersion) {
-			this.AddParameter(name, type, 0, ParameterDirection.Input, true, 0, 0, column, rowVersion, null);
-		}
-		/// <summary>
-		/// Adds a parameter to the command.
-		/// </summary>
-		/// <param name="name">The name of the parameter.</param>
-		/// <param name="type">The type of the parameter.</param>
-		/// <param name="direction">The direction of the parameter.</param>
-		/// <param name="column">The column of the parameter.</param>
-		/// <param name="rowVersion">The row version.</param>
-		/// <param name="value">The value of the parameter.</param>
-		public void AddParameter(string name, DbType type, ParameterDirection direction, string column, DataRowVersion rowVersion, object value) {
-			this.AddParameter(name, type, 0, direction, false, 0, 0, column, rowVersion, value);
+			this.AddParameter(name, type, 0, ParameterDirection.Input, 0, 0, column, rowVersion, null);
 		}
 
-		/// <summary>
-		/// Releases unmanaged and - optionally - managed resources
-		/// </summary>
-		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-		protected virtual void Dispose(bool disposing) {
+		public void AddParameter(string name, DbType type, ParameterDirection direction, string column, DataRowVersion rowVersion, object value) {
+			this.AddParameter(name, type, 0, direction, 0, 0, column, rowVersion, value);
+		}
+
+		private void Dispose(bool disposing) {
 			if(!this.disposed) {
 				this.disposed = true;
-
+				dbCommand.Dispose();
 				// Suppress finalization of this disposed instance.
 				if(disposing)
 					GC.SuppressFinalize(this);
 			}
 		}
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
+
 		public void Dispose() {
 			Dispose(true);
 		}
@@ -157,6 +122,5 @@ namespace nJupiter.DataAccess {
 		~Command() {
 			Dispose(false);
 		}
-		#endregion
 	}
 }

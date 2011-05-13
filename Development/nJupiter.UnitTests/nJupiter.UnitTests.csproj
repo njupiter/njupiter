@@ -119,6 +119,9 @@
     <Compile Include="nJupiter.DataAccess.Users\UserTestSQL.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="nJupiter.DataAccess\CommandTests.cs" />
+    <Compile Include="nJupiter.DataAccess\DataSourceTests.cs" />
+    <Compile Include="nJupiter.DataAccess\TransactionTests.cs" />
     <Compile Include="nJupiter.Services.Forum\ForumTest.cs">
       <SubType>Code</SubType>
     </Compile>

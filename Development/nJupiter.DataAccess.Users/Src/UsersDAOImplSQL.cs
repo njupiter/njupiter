@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Data.Common;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
@@ -44,14 +45,14 @@ namespace nJupiter.DataAccess.Users {
 		private readonly object padlock = new object();
 		private readonly Hashtable propertySchemaTables = new Hashtable();
 		private ContextCollection contexts;
-		private DataSource dataAccess;
+		private IDataSource dataAccess;
 		#endregion
 
 		#region Properties
-		private DataSource CurrentDB {
+		private IDataSource CurrentDB {
 			get {
 				if(this.dataAccess == null) {
-					this.dataAccess = Config.ContainsKey("dataSource") ? DataSource.GetInstance(Config.GetValue("dataSource")) : DataSource.GetInstance();
+					return DataSourceFactory.Create(Config.GetValue("dataSource"));
 				}
 				return this.dataAccess;
 			}
@@ -144,7 +145,7 @@ namespace nJupiter.DataAccess.Users {
 
 			const string sqlParameter = "@param";
 
-			Command command = CurrentDB.CreateTextCommand();
+			ICommand command = CurrentDB.CreateTextCommand();
 			StringBuilder queryBuilder = new StringBuilder(sqlBasicQuery);
 			ArrayList requiredCriterias = new ArrayList();
 			ArrayList notRequiredCriterias = new ArrayList();
@@ -389,7 +390,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override void SaveUser(User user) {
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 				this.SaveUser(user, transaction);
 				transaction.Commit();
 			}
@@ -399,7 +400,7 @@ namespace nJupiter.DataAccess.Users {
 			if(users == null)
 				throw new ArgumentNullException("users");
 
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 				foreach(User user in users) {
 					this.SaveUser(user, transaction);
 				}
@@ -436,7 +437,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override void SaveProperties(User user, PropertyCollection propertyCollection) {
-			using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 				SaveProperties(user, propertyCollection, transaction);
 				transaction.Commit();
 			}
@@ -494,7 +495,7 @@ namespace nJupiter.DataAccess.Users {
 				if(this.GetContexts().Contains(contextName)) {
 					throw new ContextAlreadyExistsException("A context with the name [" + contextName + "] already exists.");
 				}
-				using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+				using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 					CurrentDB.ExecuteNonQuery("dbo.USER_CreateContext", transaction,
 						CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName));
 					foreach(PropertySchema schema in schemaTable) {
@@ -515,7 +516,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("context");
 			}
 			lock(this.contexts.SyncRoot) {
-				using(Transaction transaction = Transaction.BeginTransaction(CurrentDB)) {
+				using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 					CurrentDB.ExecuteNonQuery("dbo.USER_DeleteContext", transaction,
 						CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context.Name, true));
 					transaction.Commit();
@@ -625,7 +626,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 			return users;
 		}
-		protected virtual void SaveUser(User user, Transaction transaction) {
+		protected virtual void SaveUser(User user, IDbTransaction transaction) {
 			SaveUserInstance(user, transaction);
 			SaveProperties(user, this.GetProperties(user), transaction);
 			if(GetAttachedContextsToUser(user).Length > 0) {
@@ -634,7 +635,7 @@ namespace nJupiter.DataAccess.Users {
 				}
 			}
 		}
-		protected virtual void SaveUserInstance(User user, Transaction transaction) {
+		protected virtual void SaveUserInstance(User user, IDbTransaction transaction) {
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_Update", transaction,
 				CurrentDB.CreateInputParameter("@guidUserId", DbType.Guid, new Guid(user.Id)),
 				CurrentDB.CreateStringInputParameter("@chvnUsername", DbType.String, user.UserName, false),
@@ -661,7 +662,8 @@ namespace nJupiter.DataAccess.Users {
 			}
 			return upc;
 		}
-		private PropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, Transaction transaction) {
+
+		private PropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, DbTransaction transaction) {
 			PropertySchemaTable pdt = (context == null ? this.GetPropertySchemas() : this.GetPropertySchemas(context.Name, transaction));
 			PropertyCollection upc = CreatePropertyCollectionInstance(pdt);
 
@@ -685,7 +687,7 @@ namespace nJupiter.DataAccess.Users {
 
 			return upc;
 		}
-		protected virtual void SaveProperty(User user, AbstractProperty property, Transaction transaction) {
+		protected virtual void SaveProperty(User user, AbstractProperty property, IDbTransaction transaction) {
 			string propertyValue = string.Empty;
 
 			if(!property.IsEmpty())
@@ -707,7 +709,7 @@ namespace nJupiter.DataAccess.Users {
 
 			property.IsDirty = false;
 		}
-		protected virtual void SaveProperties(User user, PropertyCollection propertyCollection, Transaction transaction) {
+		protected virtual void SaveProperties(User user, PropertyCollection propertyCollection, IDbTransaction transaction) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 
@@ -720,7 +722,7 @@ namespace nJupiter.DataAccess.Users {
 				SaveProperty(user, property, transaction);
 			}
 		}
-		protected virtual PropertySchemaTable GetPropertySchemas(string contextName, Transaction transaction) {
+		protected virtual PropertySchemaTable GetPropertySchemas(string contextName, IDbTransaction transaction) {
 			if(this.propertySchemaTables.Contains(contextName))
 				return (PropertySchemaTable)this.propertySchemaTables[contextName];
 
@@ -766,7 +768,7 @@ namespace nJupiter.DataAccess.Users {
 				return pdt;
 			}
 		}
-		protected virtual void AddSchemaToContext(PropertySchema schema, string contextName, Transaction transaction) {
+		protected virtual void AddSchemaToContext(PropertySchema schema, string contextName, IDbTransaction transaction) {
 			CurrentDB.ExecuteNonQuery("dbo.USER_AddContextualPropertySchema", transaction,
 				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName, true),
 				CurrentDB.CreateStringInputParameter("@chvPropertyName", DbType.AnsiString, schema.PropertyName, true));
