@@ -6,7 +6,7 @@ using nJupiter.DataAccess;
 
 using NUnit.Framework;
 
-namespace nJupiter.UnitTests.nJupiter.DataAccess {
+namespace nJupiter.UnitTests.DataAccess {
 
 	[TestFixture]
 	public class CommandTests {
