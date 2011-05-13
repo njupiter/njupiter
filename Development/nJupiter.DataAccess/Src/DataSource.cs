@@ -31,41 +31,41 @@ namespace nJupiter.DataAccess {
 
 	internal class DataSource : IDataSource {
 
-		private readonly IProviderFactory dbProviderFactoryAdapter;
+		private readonly IProviderFactory providerFactoryAdapter;
 
 		internal DataSource(IProviderFactory providerFactory) {
-			this.dbProviderFactoryAdapter = providerFactory;
+			this.providerFactoryAdapter = providerFactory;
 		}
 
-		public IProviderFactory DbProviderFactory { get { return this.dbProviderFactoryAdapter;  } }
+		public IProviderFactory ProviderFactory { get { return this.providerFactoryAdapter;  } }
 
 		private IDbDataAdapter GetDataAdapter() {
-			return this.DbProviderFactory.CreateDataAdapter();
+			return this.ProviderFactory.CreateDataAdapter();
 		}
 
 		public ICommand CreateCommand(string command, IDbTransaction transaction, CommandType commandType, params IDataParameter[] parameters) {
-			var dbCommand = this.DbProviderFactory.CreateCommand();
+			var dbCommand = this.ProviderFactory.CreateCommand();
 			dbCommand.CommandText = command;
 			dbCommand.CommandType = commandType;
 			return new Command(dbCommand, transaction, parameters);
 		}
 
 		public IDataParameter CreateParameter(string name, DbType type) {
-			var param = this.DbProviderFactory.CreateParameter();
+			var param = this.ProviderFactory.CreateParameter();
 			param.ParameterName = name;
 			param.DbType = type;
 			return param;
 		}
 
 		public IDataParameter CreateParameter(string name, object value) {
-			var param = this.DbProviderFactory.CreateParameter();
+			var param = this.ProviderFactory.CreateParameter();
 			param.ParameterName = name;
 			param.Value = value;
 			return param;			
 		}
 
 		public IDbConnection OpenConnection() {
-			var connection = this.DbProviderFactory.CreateConnection();
+			var connection = this.ProviderFactory.CreateConnection();
 			connection.Open();
 			return connection;
 		}

@@ -4,7 +4,7 @@ using System.Data;
 namespace nJupiter.DataAccess {
 	public interface IDataSource {
 		
-		IProviderFactory DbProviderFactory { get; }
+		IProviderFactory ProviderFactory { get; }
 
 		/// <summary>
 		/// Open the <see cref="IDbConnection" /> connection associated with the current data source.
