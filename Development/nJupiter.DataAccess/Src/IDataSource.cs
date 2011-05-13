@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Data.Common;
 
 namespace nJupiter.DataAccess {
 	public interface IDataSource {
 		
-		DbProviderFactory DbProviderFactory { get; }
+		IProviderFactory DbProviderFactory { get; }
 
 		/// <summary>
 		/// Open the <see cref="IDbConnection" /> connection associated with the current data source.

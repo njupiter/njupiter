@@ -31,41 +31,41 @@ namespace nJupiter.DataAccess {
 
 	internal class DataSource : IDataSource {
 
-		private readonly DbProviderFactory dbProviderFactory;
+		private readonly IProviderFactory dbProviderFactoryAdapter;
 
-		internal DataSource(DbProviderFactory dbProviderFactory) {
-			this.dbProviderFactory = dbProviderFactory;
+		internal DataSource(IProviderFactory providerFactory) {
+			this.dbProviderFactoryAdapter = providerFactory;
 		}
 
-		public DbProviderFactory DbProviderFactory { get { return dbProviderFactory;  } }
+		public IProviderFactory DbProviderFactory { get { return this.dbProviderFactoryAdapter;  } }
 
-		private DbDataAdapter GetDataAdapter() {
+		private IDbDataAdapter GetDataAdapter() {
 			return this.DbProviderFactory.CreateDataAdapter();
 		}
 
 		public ICommand CreateCommand(string command, IDbTransaction transaction, CommandType commandType, params IDataParameter[] parameters) {
-			IDbCommand dbCommand = this.DbProviderFactory.CreateCommand();
+			var dbCommand = this.DbProviderFactory.CreateCommand();
 			dbCommand.CommandText = command;
 			dbCommand.CommandType = commandType;
 			return new Command(dbCommand, transaction, parameters);
 		}
 
 		public IDataParameter CreateParameter(string name, DbType type) {
-			IDataParameter param = this.DbProviderFactory.CreateParameter();
+			var param = this.DbProviderFactory.CreateParameter();
 			param.ParameterName = name;
 			param.DbType = type;
 			return param;
 		}
 
 		public IDataParameter CreateParameter(string name, object value) {
-			IDataParameter param = this.DbProviderFactory.CreateParameter();
+			var param = this.DbProviderFactory.CreateParameter();
 			param.ParameterName = name;
 			param.Value = value;
 			return param;			
 		}
 
 		public IDbConnection OpenConnection() {
-			IDbConnection connection = this.DbProviderFactory.CreateConnection();
+			var connection = this.DbProviderFactory.CreateConnection();
 			connection.Open();
 			return connection;
 		}
@@ -135,7 +135,7 @@ namespace nJupiter.DataAccess {
 		private DataSet GetDataSetInternal(ICommand command, DataSet dataSet, string[] tables) {
 			const string tableName = "Table";
 
-			using(DbDataAdapter adapter = this.GetDataAdapter()) {
+			using(DbDataAdapter adapter = (DbDataAdapter)this.GetDataAdapter()) {
      
 				((IDbDataAdapter)adapter).SelectCommand = command.DbCommand;
 
@@ -164,7 +164,7 @@ namespace nJupiter.DataAccess {
 			if(dataSet == null)
 				throw new ArgumentNullException("dataSet");
 
-			using(DbDataAdapter adapter = this.GetDataAdapter()) {
+			using(DbDataAdapter adapter = (DbDataAdapter)this.GetDataAdapter()) {
 
 				IDbDataAdapter dbAdapter = adapter;
 
@@ -381,27 +381,27 @@ namespace nJupiter.DataAccess {
 			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteReader(command, transaction, behavior, parameters);
 			}
-			ICommand commandObj = this.CreateTextCommand(command, transaction, parameters);
+			var commandObj = this.CreateTextCommand(command, transaction, parameters);
 			return this.ExecuteReader(commandObj, behavior);
 		}
 
 		public IDataReader ExecuteReader(string spName, CommandBehavior behavior, params IDataParameter[] parameters) {
-			ICommand command = CreateSPCommand(spName, parameters);
+			var command = CreateSPCommand(spName, parameters);
 			return this.ExecuteReader(command, behavior);
 		}
 
 		public IDataReader ExecuteReader(string spName, IDbTransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters) {
-			ICommand command = CreateSPCommand(spName, transaction, parameters);
+			var command = CreateSPCommand(spName, transaction, parameters);
 			return this.ExecuteReader(command, behavior);
 		}
 
 		public IDataReader ExecuteReader(string spName, CommandBehavior behavior) {
-			ICommand command = CreateSPCommand(spName);
+			var command = CreateSPCommand(spName);
 			return this.ExecuteReader(command, behavior);
 		}
 
 		public IDataReader ExecuteReader(string spName, IDbTransaction transaction, CommandBehavior behavior) {
-			ICommand command = CreateSPCommand(spName, transaction);
+			var command = CreateSPCommand(spName, transaction);
 			return this.ExecuteReader(command, behavior);
 		}
 
@@ -456,24 +456,24 @@ namespace nJupiter.DataAccess {
 		}
 
 		public IDataParameter CreateDateInputParameter(string name, DateTime value) {
-			object pramVal = value == DateTime.MinValue ? DBNull.Value : (object)value;
+			var pramVal = value == DateTime.MinValue ? DBNull.Value : (object)value;
 			return CreateParameter(name, pramVal);
 		}
 
 		public IDataParameter CreateOutputParameter(string name, DbType type) {
-			IDataParameter parameter = CreateParameter(name, type);
+			var parameter = CreateParameter(name, type);
 			parameter.Direction = ParameterDirection.Output;
 			return parameter;
 		}
 
 		public IDataParameter CreateInputOutputParameter(string name, DbType type) {
-			IDataParameter parameter = CreateParameter(name, type);
+			var parameter = CreateParameter(name, type);
 			parameter.Direction = ParameterDirection.InputOutput;
 			return parameter;
 		}
 
 		public IDataParameter CreateReturnParameter(string name, DbType type) {
-			IDataParameter parameter = CreateParameter(name, type);
+			var parameter = CreateParameter(name, type);
 			parameter.Direction = ParameterDirection.ReturnValue;
 			return parameter;
 		}

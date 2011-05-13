@@ -59,8 +59,10 @@
     <Compile Include="Src\DataSource.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\DbProviderFactoryAdapter.cs" />
     <Compile Include="Src\ICommand.cs" />
     <Compile Include="Src\IDataSource.cs" />
+    <Compile Include="Src\IProviderFactory.cs" />
     <Compile Include="Src\Sql\Util\FullTextHandler.cs" />
     <Compile Include="Src\Transaction.cs">
       <SubType>Code</SubType>
