@@ -16,7 +16,7 @@ namespace nJupiter.DataAccess {
 		}
 		
 		public static IDataSource Create(DbProviderFactory dbProviderFactory) {
-			var wrapper = new DbProviderFactoryAdapter(dbProviderFactory);
+			var wrapper = new DbProviderAdapter(dbProviderFactory);
 			return new DataSource(wrapper);
 		}
 

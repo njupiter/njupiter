@@ -14,7 +14,7 @@ namespace nJupiter.UnitTests.nJupiter.DataAccess {
 
 		[Test]
 		public void CreateCommand_CreateCommand_ChechThatCorrectCommandIsCreated() {
-			var dbProviderFactory = A.Fake<IProviderFactory>();
+			var dbProviderFactory = A.Fake<IProvider>();
 			var dataSource = new DataSource(dbProviderFactory);
 			var transaction = A.Fake<IDbTransaction>();
 			var parameter = A.Fake<IDataParameter>();

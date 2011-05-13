@@ -4,7 +4,7 @@ using System.Security;
 using System.Security.Permissions;
 
 namespace nJupiter.DataAccess {
-	public interface IProviderFactory {
+	public interface IProvider {
 		bool CanCreateDataSourceEnumerator { get; }
 		IDbCommand CreateCommand();
 		IDbConnection CreateConnection();

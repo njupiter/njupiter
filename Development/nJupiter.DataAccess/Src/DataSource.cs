@@ -31,41 +31,41 @@ namespace nJupiter.DataAccess {
 
 	internal class DataSource : IDataSource {
 
-		private readonly IProviderFactory providerFactoryAdapter;
+		private readonly IProvider provider;
 
-		internal DataSource(IProviderFactory providerFactory) {
-			this.providerFactoryAdapter = providerFactory;
+		internal DataSource(IProvider provider) {
+			this.provider = provider;
 		}
 
-		public IProviderFactory ProviderFactory { get { return this.providerFactoryAdapter;  } }
+		public IProvider Provider { get { return this.provider;  } }
 
 		private IDbDataAdapter GetDataAdapter() {
-			return this.ProviderFactory.CreateDataAdapter();
+			return this.Provider.CreateDataAdapter();
 		}
 
 		public ICommand CreateCommand(string command, IDbTransaction transaction, CommandType commandType, params IDataParameter[] parameters) {
-			var dbCommand = this.ProviderFactory.CreateCommand();
+			var dbCommand = this.Provider.CreateCommand();
 			dbCommand.CommandText = command;
 			dbCommand.CommandType = commandType;
 			return new Command(dbCommand, transaction, parameters);
 		}
 
 		public IDataParameter CreateParameter(string name, DbType type) {
-			var param = this.ProviderFactory.CreateParameter();
+			var param = this.Provider.CreateParameter();
 			param.ParameterName = name;
 			param.DbType = type;
 			return param;
 		}
 
 		public IDataParameter CreateParameter(string name, object value) {
-			var param = this.ProviderFactory.CreateParameter();
+			var param = this.Provider.CreateParameter();
 			param.ParameterName = name;
 			param.Value = value;
 			return param;			
 		}
 
 		public IDbConnection OpenConnection() {
-			var connection = this.ProviderFactory.CreateConnection();
+			var connection = this.Provider.CreateConnection();
 			connection.Open();
 			return connection;
 		}

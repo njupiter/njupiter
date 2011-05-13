@@ -4,11 +4,11 @@ using System.Security;
 using System.Security.Permissions;
 
 namespace nJupiter.DataAccess {
-	public class DbProviderFactoryAdapter : IProviderFactory {
+	public class DbProviderAdapter : IProvider {
 		
 		private readonly DbProviderFactory dbProviderFactory;
 
-		public DbProviderFactoryAdapter(DbProviderFactory dbProviderFactory) {
+		public DbProviderAdapter(DbProviderFactory dbProviderFactory) {
 			this.dbProviderFactory = dbProviderFactory; 
 		}
 
