@@ -296,6 +296,13 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
+		public void GetValueArray_GetNonExistingElement_ReturnsEmptyArray() {
+			var config = GetTestConfig(@"<elements/>");
+			string[] array = config.GetValueArray<string>("elements", "element");
+			Assert.AreEqual(0, array.Length);
+		}		
+		
+		[Test]
 		public void GetAttributeArray_GetArrayWithTwoElements_ReturnsStringArrayWithLenghtTwo() {
 			var config = GetTestConfig(@"<elements><element attribute=""value1"" /><element attribute=""value2"" /></elements>");
 			string[] array = config.GetAttributeArray("elements", "element", "attribute");
@@ -477,9 +484,17 @@ namespace nJupiter.UnitTests.Configuration {
 			var config = GetTestConfig(@"<nJupiterConfiguration><configDirectories><configDirectory value=""~/Config""/></configDirectories></nJupiterConfiguration>");
 			var configHandler = config.GetConfigurationSectionHandler("nJupiterConfiguration", typeof(nJupiterConfigurationSectionHandler));
 			XmlNode node = configHandler as XmlNode;
-			Assert.IsTrue(node != null);
+			Assert.IsNotNull(node);
 			Assert.AreEqual("~/Config", node.SelectSingleNode("./configDirectories/configDirectory").Attributes["value"].Value);
 		}
+		
+
+		[Test]
+		public void GetConfigurationSectionHandler_GetNonExistingSectionHandler_ReturnsNull() {
+			var config = GetTestConfig(@"<myConfigHandler><config /></myConfigHandler>");
+			var configHandler = config.GetConfigurationSectionHandler("myConfigHandler", this.GetType());
+			Assert.IsNull(configHandler);
+		}		
 
 
 		[Test]
@@ -566,6 +581,17 @@ namespace nJupiter.UnitTests.Configuration {
 			Assert.NotNull(config.ConfigSource.Watcher != null);
 			Assert.AreEqual(1, listener.NumberOfCalled);
 		}
+		
+		[Test]
+		public void Constructor_CallWithNullConifgKey_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => new Config(null,  GetConfigXmlDocument("<test />")));
+		}
+		
+		[Test]
+		public void Constructor_CallWithNullConifgElement_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => new Config("configKey",  null));
+		}
+				
 
 		class FakeWatcher : IConfigSourceWatcher {
 			public void OnWatchedFileChange() {

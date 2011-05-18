@@ -98,14 +98,11 @@ namespace nJupiter.Configuration {
 		public T[] GetAttributeArray<T>(string section, string key, string attribute) {
 			string xpath = GetXPath(section, key, attribute);
 			XmlNodeList nodeList = this.ConfigXml.SelectNodes(xpath);
-			if(nodeList != null) {
-				var result = new T[nodeList.Count];
-				for(int i = 0; i < nodeList.Count; i++) {
-					result[i] = this.GetValueFromXmlNode<T>(section, key, attribute, nodeList[i]);
-				}
-				return result;
+			var result = new T[nodeList.Count];
+			for(int i = 0; i < nodeList.Count; i++) {
+				result[i] = this.GetValueFromXmlNode<T>(section, key, attribute, nodeList[i]);
 			}
-			return new T[0];
+			return result;
 		}
 
 		public string GetValue(string section, string key) {
