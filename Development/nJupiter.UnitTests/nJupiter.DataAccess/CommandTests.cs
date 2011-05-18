@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 using FakeItEasy;
 
@@ -83,6 +84,30 @@ namespace nJupiter.UnitTests.DataAccess {
 
 		}
 
+
+		[Test]
+		public void AddInParameter_PassDataRowVersion_CorrectParameterAdded() {
+			var dbCommand = A.Fake<IDbCommand>();
+			var parameterCollection = A.Fake<IDataParameterCollection>();
+			A.CallTo(() => dbCommand.Parameters).Returns(parameterCollection);
+			
+			IDataParameter parameter = null;
+
+			A.CallTo(() => parameterCollection.Add(A<object>.Ignored)).WithAnyArguments().Invokes(x => parameter = x.GetArgument<IDataParameter>(0)).Returns(1);
+
+			var command = new Command(dbCommand, null, null);
+
+			command.AddInParameter("MyParameter", DbType.DateTime2, "column", DataRowVersion.Proposed);
+
+			Assert.IsNotNull(parameter);
+			Assert.AreEqual("MyParameter", parameter.ParameterName);
+			Assert.AreEqual(DbType.DateTime2, parameter.DbType);
+			Assert.AreEqual("column", parameter.SourceColumn);
+			Assert.AreEqual(DataRowVersion.Proposed, parameter.SourceVersion);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+
+		}
+
 		[Test]
 		public void AddOutParameter_CreateParameterWithNameAndParameter_CorrectParameterAdded() {
 			var dbCommand = A.Fake<IDbCommand>();
@@ -133,6 +158,41 @@ namespace nJupiter.UnitTests.DataAccess {
 			Assert.AreEqual("myColumn", dbParamter.SourceColumn);
 			Assert.AreEqual(dummyObject, dbParamter.Value);
 		}
+
+		[Test]
+		public void Command_PassingNullCommand_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => new Command(null, null, null));
+		}
+
+		[Test]
+		public void CommandText_PassingCommandWithCommandText_ReturnsCorrectText() {
+			var dbCommand = A.Fake<IDbCommand>();
+			dbCommand.CommandText = "Command text";
+			var command = new Command(dbCommand, null, null);
+			Assert.AreEqual("Command text", command.CommandText);
+			command.CommandText = "New Command Text";
+			Assert.AreEqual("New Command Text", command.DbCommand.CommandText);
+		}
+
+
+		[Test]
+		public void CommandText_PassingCommandWithCommandTimeout_ReturnsCorrectTimeout() {
+			var dbCommand = A.Fake<IDbCommand>();
+			dbCommand.CommandTimeout = 120;
+			var command = new Command(dbCommand, null, null);
+			Assert.AreEqual(120, command.CommandTimeout);
+			command.CommandTimeout = 60;
+			Assert.AreEqual(60, command.DbCommand.CommandTimeout);
+		}
+
+		[Test]
+		public void Dispose_PassingDbCommand_UnderlyingCommandMustHaveBeenDisposed() {
+			var dbCommand = A.Fake<IDbCommand>();
+			var command = new Command(dbCommand, null, null);
+			command.Dispose();
+			A.CallTo(() => dbCommand.Dispose()).MustHaveHappened();
+		}
+
 
 		class MyDummyClass{}
 

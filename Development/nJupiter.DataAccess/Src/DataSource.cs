@@ -135,23 +135,24 @@ namespace nJupiter.DataAccess {
 		private DataSet GetDataSetInternal(ICommand command, DataSet dataSet, string[] tables) {
 			const string tableName = "Table";
 
-			using(DbDataAdapter adapter = (DbDataAdapter)this.GetDataAdapter()) {
-     
-				((IDbDataAdapter)adapter).SelectCommand = command.DbCommand;
-
-				if(tables == null || tables.Length == 0) {
-					adapter.Fill(dataSet, tableName);
-				} else {
-					for(int i = 0; i < tables.Length; i++) {
-						string name = i == 0 ? tableName : tableName + i;
-						adapter.TableMappings.Add(name, tables[i]);
-					}
-					adapter.Fill(dataSet);
+			IDbDataAdapter adapter = this.GetDataAdapter();
+ 
+			adapter.SelectCommand = command.DbCommand;
+			if(tables != null){
+				for(int i = 0; i < tables.Length; i++) {
+					string name = i == 0 ? tableName : tableName + i;
+					adapter.TableMappings.Add(name, tables[i]);
 				}
 			}
+			adapter.Fill(dataSet);
 			return dataSet;
 		}
 
+		public int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand) {
+			return UpdateDataSet(dataSet, insertCommand, updateCommand, deleteCommand, null);
+		}
+		
+		
 		public int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand, string tableName) {
 			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return UpdateDataSet(dataSet, insertCommand, updateCommand, deleteCommand, tableName, transaction);
@@ -164,30 +165,27 @@ namespace nJupiter.DataAccess {
 			if(dataSet == null)
 				throw new ArgumentNullException("dataSet");
 
-			using(DbDataAdapter adapter = (DbDataAdapter)this.GetDataAdapter()) {
+			IDbDataAdapter dbAdapter = this.GetDataAdapter();
 
-				IDbDataAdapter dbAdapter = adapter;
-
-				if(insertCommand != null) {
-					insertCommand.Transaction = transaction;
-					dbAdapter.InsertCommand = insertCommand.DbCommand;
-				}
-				if(updateCommand != null){
-					updateCommand.Transaction = transaction;
-					dbAdapter.UpdateCommand = updateCommand.DbCommand;
-				}
-
-				if(deleteCommand != null) {
-					deleteCommand.Transaction = transaction;
-					dbAdapter.DeleteCommand = deleteCommand.DbCommand;
-				}
-
-				if(tableName == null){
-					return adapter.Update(dataSet);
-				}
-				
-				return adapter.Update(dataSet.Tables[tableName]);
+			if(insertCommand != null) {
+				insertCommand.Transaction = transaction;
+				dbAdapter.InsertCommand = insertCommand.DbCommand;
 			}
+			if(updateCommand != null){
+				updateCommand.Transaction = transaction;
+				dbAdapter.UpdateCommand = updateCommand.DbCommand;
+			}
+
+			if(deleteCommand != null) {
+				deleteCommand.Transaction = transaction;
+				dbAdapter.DeleteCommand = deleteCommand.DbCommand;
+			}
+
+			if(tableName != null){
+				dbAdapter.TableMappings.Add("Table", tableName);
+			}
+
+			return dbAdapter.Update(dataSet);
 		}
 
 		public DataSet ExecuteDataSet(string command, CommandType commandType) {

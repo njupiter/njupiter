@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 
 namespace nJupiter.DataAccess {
 	public static class DataSourceFactory {
@@ -9,9 +8,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="name">The name of the data source.</param>
 		/// <returns>A <see cref="DataSource" /> instance.</returns>
 		public static IDataSource Create(string name) {
-			if(name == null)
-				throw new ArgumentNullException("name");
-				DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(name);
+			DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(name);
 			return Create(dbProviderFactory);
 		}
 		

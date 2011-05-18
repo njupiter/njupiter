@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 using FakeItEasy;
 
@@ -38,6 +39,60 @@ namespace nJupiter.UnitTests.DataAccess {
 			}
 		}
 
+		[Test]
+		public void Rollback_RunTranactionAndRoleback_RollbackOnTheUnderlyingObjectIsCalled() {
+			var underlyingTrans = A.Fake<IDbTransaction>();
+			var connection = new FakeConnection(underlyingTrans);
+			var dataSource = A.Fake<IDataSource>();
+			A.CallTo(() => dataSource.OpenConnection()).Returns(connection);
+			using(var trans = TransactionFactory.BeginTransaction(dataSource, IsolationLevel.Chaos)) {
+				var myCommand = dataSource.CreateSPCommand("exec storedprocedure", trans);
+				dataSource.ExecuteDataSet(myCommand);
+				dataSource.ExecuteNonQuery("select * from table", CommandType.Text, trans);
+				trans.Rollback();
+				A.CallTo(() => underlyingTrans.Rollback()).MustHaveHappened(Repeated.Exactly.Once);
+				Assert.AreEqual(IsolationLevel.Chaos, trans.IsolationLevel);
+			}
+		}
 
+	}
+
+	public class FakeConnection : IDbConnection {
+		private readonly IDbTransaction transaction;
+
+		public IDbTransaction Transaction { get { return transaction; } }
+
+		public FakeConnection( IDbTransaction transaction) {
+			this.transaction = transaction;
+		}
+
+		public void Dispose() {
+		}
+
+		public IDbTransaction BeginTransaction() {
+			return transaction;
+		}
+
+		public IDbTransaction BeginTransaction(IsolationLevel il) {
+			return transaction;
+		}
+
+		public void Close() {
+		}
+
+		public void ChangeDatabase(string databaseName) {
+		}
+
+		public IDbCommand CreateCommand() {
+			return A.Fake<IDbCommand>();
+		}
+
+		public void Open() {
+		}
+
+		public string ConnectionString { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+		public int ConnectionTimeout { get { throw new NotImplementedException(); } }
+		public string Database { get { throw new NotImplementedException(); } }
+		public ConnectionState State { get { return ConnectionState.Open; } }
 	}
 }

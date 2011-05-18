@@ -28,12 +28,11 @@ using System.Data;
 namespace nJupiter.DataAccess {
 
 	internal sealed class Transaction : IDbTransaction {
-		#region Members
+
 		private readonly IsolationLevel isolationLevel;
 		private readonly IDbConnection connection;
 		private IDbTransaction dbTransaction;
 		private bool disposed;
-		#endregion
 
 		internal Transaction(IDbConnection connection, IsolationLevel isolationLevel) {
 			this.connection = connection;
@@ -54,10 +53,6 @@ namespace nJupiter.DataAccess {
 
 		public void Rollback() {
 			this.dbTransaction.Rollback();
-		}
-
-		public void End() {
-			this.Dispose();
 		}
 
 		public void Dispose() {

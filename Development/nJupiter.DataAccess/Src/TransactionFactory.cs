@@ -1,7 +1,7 @@
 ﻿using System.Data;
 
 namespace nJupiter.DataAccess {
-	public class TransactionFactory {
+	public static class TransactionFactory {
 		/// <summary>
 		/// Starts a database transaction.
 		/// </summary>

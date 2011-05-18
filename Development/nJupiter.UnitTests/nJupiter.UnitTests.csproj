@@ -60,12 +60,6 @@
       <HintPath>..\Shared Resources\Libraries\FakeItEasy\V1.7.4123.2-NET3.5\FakeItEasy.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework" />
-    <Reference Include="nunit.framework" />
-    <Reference Include="nunit.framework" />
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Shared Resources\Libraries\NUnit\V2.5.10\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -144,7 +138,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="nJupiter.DataAccess\CommandTests.cs" />
+    <Compile Include="nJupiter.DataAccess\DataSourceFactoryTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceTests.cs" />
+    <Compile Include="nJupiter.DataAccess\DbProviderAdapterTests.cs" />
     <Compile Include="nJupiter.DataAccess\TransactionTests.cs" />
     <Compile Include="nJupiter.Services.Forum\ForumTest.cs">
       <SubType>Code</SubType>

@@ -1,10 +1,8 @@
 ﻿using System.Data;
 using System.Data.Common;
-using System.Security;
-using System.Security.Permissions;
 
 namespace nJupiter.DataAccess {
-	public class DbProviderAdapter : IProvider {
+	internal class DbProviderAdapter : IProvider {
 		
 		private readonly DbProviderFactory dbProviderFactory;
 
@@ -38,22 +36,6 @@ namespace nJupiter.DataAccess {
 
 		public IDataParameter CreateParameter() {
 			return dbProviderFactory.CreateParameter();
-		}
-
-		public DbCommandBuilder CreateCommandBuilder() {
-			return dbProviderFactory.CreateCommandBuilder();
-		}
-
-		public DbConnectionStringBuilder CreateConnectionStringBuilder() {
-			return dbProviderFactory.CreateConnectionStringBuilder();
-		}
-
-		public DbDataSourceEnumerator CreateDataSourceEnumerator() {
-			return dbProviderFactory.CreateDataSourceEnumerator();
-		}
-
-		public CodeAccessPermission CreatePermission(PermissionState state) {
-			return dbProviderFactory.CreatePermission(state);
 		}
 
 	}
