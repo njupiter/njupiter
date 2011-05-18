@@ -1,7 +1,6 @@
-﻿using System.IO;
-
+﻿using System;
+using System.IO;
 using nJupiter.Configuration;
-
 using NUnit.Framework;
 
 namespace nJupiter.UnitTests.Configuration {
@@ -18,6 +17,12 @@ namespace nJupiter.UnitTests.Configuration {
 			Assert.AreEqual(file, configSource.ConfigFile);
 			Assert.AreEqual(filepath, configSource.ConfigUrl.OriginalString);
 		}
+		
+
+		[Test]
+		public void FileConfigSource_PassingNull_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => new FileConfigSource(null, null));
+		}		
 
 	}
 }

@@ -1,7 +1,7 @@
-﻿using System.IO;
-
+﻿using System;
+using System.IO;
+using FakeItEasy;
 using nJupiter.Configuration;
-
 using NUnit.Framework;
 
 namespace nJupiter.UnitTests.Configuration {
@@ -60,7 +60,7 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
-		public void Create_CreateFromPath_ReturnConfigWithWatcher() {
+		public void Create_CreateFromPath_ReturnConfigWithoutWatcher() {
 			Assume.That(File.Exists(systemConfigPath));
 			var config = FileConfigFactory.Create(systemConfigPath);
 			Assert.IsNotNull(config);
@@ -70,7 +70,7 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
-		public void Create_CreateFromPathWithCustomKey_ReturnConfigWithWatcher() {
+		public void Create_CreateFromPathWithCustomKey_ReturnConfigWithoutWatcher() {
 			Assume.That(File.Exists(systemConfigPath));
 			string key = "myKey";
 			var config = FileConfigFactory.Create(key, systemConfigPath);
@@ -81,7 +81,7 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
-		public void Create_CreateFromFileInfo_ReturnConfigWithWatcher() {
+		public void Create_CreateFromFileInfo_ReturnConfigWithoutWatcher() {
 			Assume.That(File.Exists(systemConfigPath));
 			var config = FileConfigFactory.Create(new FileInfo(systemConfigPath));
 			Assert.IsNotNull(config);
@@ -91,7 +91,7 @@ namespace nJupiter.UnitTests.Configuration {
 		}
 
 		[Test]
-		public void Create_CreateFromFileInfoWithCustomKey_ReturnConfigWithWatcher() {
+		public void Create_CreateFromFileInfoWithCustomKey_ReturnConfigWithoutWatcher() {
 			Assume.That(File.Exists(systemConfigPath));
 			const string key = "myKey";
 			var config = FileConfigFactory.Create(key, new FileInfo(systemConfigPath));
@@ -100,6 +100,23 @@ namespace nJupiter.UnitTests.Configuration {
 			Assert.IsNull(config.ConfigSource.Watcher);
 			Assert.AreEqual(key, config.ConfigKey);
 		}
+		
+		
+		[Test]
+		public void Create_CreateFromPathWithCustomSource_ReturnConfigWithCustomSource() {
+			Assume.That(File.Exists(systemConfigPath));
+			const string key = "myKey";
+			var source = A.Fake<IConfigSource>();
+			var config = FileConfigFactory.Create(key, systemConfigPath, source);
+			Assert.IsNotNull(config);
+			Assert.AreEqual(source, config.ConfigSource);
+			Assert.AreEqual(key, config.ConfigKey);
+		}		
+		[Test]
+		public void Create_PassingNullFileInfo_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => FileConfigFactory.Create((FileInfo)null, A.Fake<IConfigSource>()));
+		}
+		
 
 	}
 }

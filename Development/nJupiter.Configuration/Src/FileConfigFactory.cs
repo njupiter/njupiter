@@ -2,7 +2,7 @@
 using System.IO;
 
 namespace nJupiter.Configuration {
-	public class FileConfigFactory {
+	public static class FileConfigFactory {
 
 		public static IConfig CreateWithWatcher(string path) {
 			return Create(path, true);

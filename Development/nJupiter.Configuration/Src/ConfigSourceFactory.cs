@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace nJupiter.Configuration {
-	public class ConfigSourceFactory {
+	public static class ConfigSourceFactory {
 
 		public static IConfigSource CreateConfigSource(object source) {
 			return CreateConfigSource(source, false);

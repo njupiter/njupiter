@@ -27,10 +27,11 @@ using System.IO;
 
 namespace nJupiter.Configuration {
 	public class FileConfigSource : UriConfigSource {
-		internal FileConfigSource(FileInfo file, FileConfigSourceWatcher watcher) : base(new Uri(file.FullName)) {
+		internal FileConfigSource(FileInfo file, FileConfigSourceWatcher watcher) : base(file != null ? new Uri(file.FullName) : null) {
 			if(file == null) {
 				throw new ArgumentNullException("file");
 			}
+			
 			base.Add(file);
 			if(watcher != null){
 				base.Add(watcher);

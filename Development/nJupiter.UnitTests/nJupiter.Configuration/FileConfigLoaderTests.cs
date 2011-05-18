@@ -11,7 +11,7 @@ namespace nJupiter.UnitTests.Configuration {
 	public class FileConfigLoaderTests {
 		const string nJupiterDevPath = @"C:\Projects\nJupiter\Development\";
 		static readonly string nJupiterConfigPath = string.Format(@"{0}Shared Resources\Config\", nJupiterDevPath);
-		static readonly string configForDevPath  = string.Format(@"<nJupiterConfiguration><configDirectories configSuffix="".targets""><configDirectory value=""{0}""/></configDirectories></nJupiterConfiguration>", nJupiterDevPath);
+		static readonly string configForDevPath  = string.Format(@"<nJupiterConfiguration><configDirectories enableFileWatching=""false"" configSuffix="".targets""><configDirectory value=""{0}""/></configDirectories></nJupiterConfiguration>", nJupiterDevPath);
 		static readonly string configForConfigFolder  = string.Format(@"<nJupiterConfiguration><configDirectories loadAllConfigFilesOnInit=""true""><configDirectory value=""{0}""/></configDirectories></nJupiterConfiguration>", nJupiterConfigPath);
 
 		[Test]

@@ -78,6 +78,7 @@ namespace nJupiter.Configuration {
 		public IConfig GetConfig(Assembly assembly) {
 			return GetConfig(assembly, false);
 		}
+		
 		public IConfig GetConfig(Assembly assembly, bool suppressMissingConfigException) {
 			if(assembly == null) {
 				throw new ArgumentNullException("assembly");

@@ -15,7 +15,7 @@ namespace nJupiter.UnitTests.Configuration {
 		private const string DummyString = "The quick brown fox jumps over the lazy dog";
 		private const char CorrectChar = 'F';
 		private const int CorrectInt = 242;
-
+		
 		[Test]
 		public void GetValue_ElementValueAttributeIsDummyString_AreEqual() {
 			var config = GetTestConfig(string.Format(@"<element value=""{0}"" />", DummyString));
@@ -580,6 +580,23 @@ namespace nJupiter.UnitTests.Configuration {
 
 			Assert.NotNull(config.ConfigSource.Watcher != null);
 			Assert.AreEqual(1, listener.NumberOfCalled);
+		}
+		
+		[Test]
+		public void GetKey_ElementValueAttributeIsDummyString_AreEqual() {
+			var config = GetTestConfig(string.Format(@"<element value=""{0}"" />", DummyString));
+			var node = config.GetKey("element");
+			Assert.AreEqual("element", node.Name);
+		}
+		
+		[Test]
+		public void Create_FromNullElement_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => ConfigFactory.Create("myConfig", null));
+		}
+
+		[Test]
+		public void Create_FromNullStream_ThrowsArgumentNullException() {
+			Assert.Throws<ArgumentNullException>(() => ConfigFactory.Create("myConfig", (System.IO.Stream)null, null));
 		}
 		
 		[Test]

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
-
 using nJupiter.Configuration;
-
 using NUnit.Framework;
 
 namespace nJupiter.UnitTests.Configuration {
@@ -127,6 +126,22 @@ namespace nJupiter.UnitTests.Configuration {
 			Assert.IsNull(config);
 			Assert.AreEqual(configKey, configLoader.ConfigKeysLoaded[0]);
 		}
+		
+		[Test]
+		public void GetConfig_GetSameConfigTwice_ReturnsSameConfig() {
+			var configLoader = new FakeLoader();
+			var configHandler = new ConfigHandler(configLoader);
+			IConfig config1 = configHandler.GetConfig("myConfig");
+			Assert.IsTrue(configHandler.Configurations.Contains("myConfig"));
+			IConfig config2 = configHandler.GetConfig("myConfig");
+			Assert.AreEqual(config1, config2);
+		}		
+		
+		
+		[Test]
+		public void GetConfig_PassingNullAssembly_ThrowsArgumentNullExeption() {
+			Assert.Throws<ArgumentNullException>(() => ConfigHandler.Instance.GetConfig((Assembly)null));
+		}		
 
 		class FakeLoader : IConfigLoader {
 			private readonly bool configDoesNotExist;

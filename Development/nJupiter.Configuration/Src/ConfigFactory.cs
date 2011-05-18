@@ -27,7 +27,7 @@ using System.IO;
 using System.Xml;
 
 namespace nJupiter.Configuration {
-	public class ConfigFactory {
+	public static class ConfigFactory {
 		
 		public static IConfig Create(string configKey, Stream stream, IConfigSource source) {
 			XmlElement xmlElement = GetConfigXmlElement(stream);

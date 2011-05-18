@@ -24,7 +24,7 @@
 
 namespace nJupiter.Configuration {
 
-	internal class ConfigLoaderFactory {
+	internal static class ConfigLoaderFactory {
 
 		public static IConfigLoader Create() {
 			var compositeLoader = new CompositeConfigLoader();
