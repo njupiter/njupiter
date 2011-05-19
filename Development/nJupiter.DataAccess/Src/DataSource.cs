@@ -24,7 +24,6 @@
 
 using System;
 using System.Data;
-using System.Data.Common;
 using System.Globalization;
 
 namespace nJupiter.DataAccess {
@@ -315,9 +314,6 @@ namespace nJupiter.DataAccess {
 		}
 
 		public object ExecuteScalar(string command, CommandType commandType, IDbTransaction transaction) {
-			if(command == null)
-				throw new ArgumentNullException("command");
-
 			return ExecuteScalar(command, commandType, transaction, null);
 		}
 
@@ -364,7 +360,7 @@ namespace nJupiter.DataAccess {
 		}
 
 		public IDataReader ExecuteReader(string command, CommandType commandType, CommandBehavior behavior) {
-			return ExecuteReader(command, commandType, behavior);
+			return ExecuteReader(command, commandType, behavior, null);
 		}
 
 		public IDataReader ExecuteReader(string command, CommandType commandType, CommandBehavior behavior, params IDataParameter[] parameters) {
@@ -418,21 +414,26 @@ namespace nJupiter.DataAccess {
 		}
 
 		public IDataParameter CreateInputParameter(string name, object value) {
-			if(value is DateTime)
-				throw new ArgumentException("Date Parameters should be created with the CreateDateInputParameter method.", "value");
+			if(value is DateTime){
+				return CreateDateInputParameter(name, (DateTime)value);
+			}
 			if(value == null) {
 				value = DBNull.Value;
 			}
-			return CreateParameter(name, value);
+			var parameter = CreateParameter(name, value);
+			parameter.Direction = ParameterDirection.Input;
+			return parameter;
 		}
 
 		public IDataParameter CreateInputParameter(string name, DbType type, object value) {
-			if(value is string)
-				throw new ArgumentException("String Parameters should be created with the CreateStringInputParameter method.", "value");
+			if(value is string){
+				return CreateStringInputParameter(name, type, (string)value);
+			}
 			if(value == null)
 				value = DBNull.Value;
 			IDataParameter parameter = CreateParameter(name, type);
 			parameter.Value = value;
+			parameter.Direction = ParameterDirection.Input;
 			return parameter;
 		}
 
@@ -447,14 +448,17 @@ namespace nJupiter.DataAccess {
 			} else {
 				pramVal = value;
 			}
-			IDataParameter parameter = CreateParameter(name, type);
+			var parameter = CreateParameter(name, type);
 			parameter.Value = pramVal;
+			parameter.Direction = ParameterDirection.Input;
 			return parameter;
 		}
 
 		public IDataParameter CreateDateInputParameter(string name, DateTime value) {
 			var pramVal = value == DateTime.MinValue ? DBNull.Value : (object)value;
-			return CreateParameter(name, pramVal);
+			var parameter = CreateParameter(name, pramVal);
+			parameter.Direction = ParameterDirection.Input;
+			return parameter;
 		}
 
 		public IDataParameter CreateOutputParameter(string name, DbType type) {

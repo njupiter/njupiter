@@ -331,9 +331,9 @@ namespace nJupiter.UnitTests.DataAccess {
 			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
 			A.CallTo(() => dbCommand.ExecuteNonQuery()).Returns(12);
 
-			dataSource.ExecuteNonQuery("command", CommandType.StoredProcedure);
+			var result = dataSource.ExecuteNonQuery("command", CommandType.StoredProcedure);
 			
-			Assert.IsNotNull(12);
+			Assert.AreEqual(12, result);
 		}
 
 		[Test]
@@ -380,9 +380,9 @@ namespace nJupiter.UnitTests.DataAccess {
 			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
 			A.CallTo(() => dbCommand.ExecuteNonQuery()).Returns(242);
 
-			dataSource.ExecuteNonQuery("command");
+			var result = dataSource.ExecuteNonQuery("command");
 			
-			Assert.IsNotNull(242);
+			Assert.AreEqual(242, result);
 		}
 
 		[Test]
@@ -405,7 +405,301 @@ namespace nJupiter.UnitTests.DataAccess {
 			Assert.Throws<ArgumentNullException>(() => dataSource.ExecuteNonQuery((ICommand)null));
 		}
 
+		[Test]
+		public void ExecuteScalar_ExecuteCommand_ReturnsInt() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+			var dummyObject = A.Fake<MyDummyClass>();
 
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+			A.CallTo(() => dbCommand.ExecuteScalar()).Returns(dummyObject);
+
+			var result = dataSource.ExecuteScalar("command", CommandType.StoredProcedure);
+			
+			Assert.AreEqual(dummyObject, result);
+		}
+
+		[Test]
+		public void ExecuteScalar_ExecuteCommandWithParameters_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataAdapter = A.Fake<IDbDataAdapter>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+
+			A.CallTo(() => provider.CreateDataAdapter()).Returns(dataAdapter);
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
+
+			dataSource.ExecuteScalar("command", CommandType.Text, parameters);
+
+			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
+			
+		}
+
+		[Test]
+		public void ExecuteScalar_ExecuteSpWithParameters_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataAdapter = A.Fake<IDbDataAdapter>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+
+			A.CallTo(() => provider.CreateDataAdapter()).Returns(dataAdapter);
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
+
+			dataSource.ExecuteScalar("spname", parameters);
+
+			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
+			
+		}
+
+		[Test]
+		public void ExecuteScalar_ExecuteSp_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+			var dummyObject = A.Fake<MyDummyClass>();
+
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+			A.CallTo(() => dbCommand.ExecuteScalar()).Returns(dummyObject);
+
+			var result = dataSource.ExecuteScalar("command");
+			
+			Assert.AreEqual(dummyObject, result);
+		}
+
+		[Test]
+		public void ExecuteScalar_ExecuteCommandWithoutTransaction_TransactionCreatedAfterExecute() {
+			var provider = A.Fake<IProvider>();
+			var command = A.Fake<ICommand>();
+			var dataSource = new DataSource(provider);
+			command.Transaction = null;
+
+			dataSource.ExecuteScalar(command);
+
+			Assert.IsNotNull(command.Transaction);
+		}
+
+		[Test]
+		public void ExecuteScalar_PassingNullCommand_ThrowsArgumentNullException() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			Assert.Throws<ArgumentNullException>(() => dataSource.ExecuteScalar((ICommand)null));
+		}
+
+		[Test]
+		public void ExecuteReader_ExecuteCommand_ReturnsInt() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+			var dummyObject = A.Fake<IDataReader>();
+
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+			A.CallTo(() => dbCommand.ExecuteReader(CommandBehavior.SchemaOnly)).Returns(dummyObject);
+
+			var result = dataSource.ExecuteReader("command", CommandType.StoredProcedure, CommandBehavior.SchemaOnly);
+			
+			Assert.AreEqual(dummyObject, result);
+			A.CallTo(() => dbCommand.ExecuteReader(CommandBehavior.SchemaOnly)).MustHaveHappened(Repeated.Exactly.Once);
+		}
+
+		[Test]
+		public void ExecuteReader_ExecuteCommandWithParameters_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataAdapter = A.Fake<IDbDataAdapter>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+
+			A.CallTo(() => provider.CreateDataAdapter()).Returns(dataAdapter);
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
+
+			dataSource.ExecuteReader("command", CommandType.Text, CommandBehavior.SingleResult, parameters);
+
+			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
+			A.CallTo(() => dbCommand.ExecuteReader(CommandBehavior.SingleResult)).MustHaveHappened(Repeated.Exactly.Once);
+			
+		}
+
+		[Test]
+		public void ExecuteReader_ExecuteSpWithParameters_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataAdapter = A.Fake<IDbDataAdapter>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+
+			A.CallTo(() => provider.CreateDataAdapter()).Returns(dataAdapter);
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
+
+			dataSource.ExecuteReader("spname", CommandBehavior.Default, parameters);
+
+			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
+			A.CallTo(() => dbCommand.ExecuteReader(CommandBehavior.Default)).MustHaveHappened(Repeated.Exactly.Once);
+			
+		}
+
+		[Test]
+		public void ExecuteReader_ExecuteSp_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+			var dummyObject = A.Fake<IDataReader>();
+
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+			A.CallTo(() => dbCommand.ExecuteReader(CommandBehavior.KeyInfo)).Returns(dummyObject);
+
+			var result = dataSource.ExecuteReader("command", CommandBehavior.KeyInfo);
+			
+			Assert.AreEqual(dummyObject, result);
+			A.CallTo(() => dbCommand.ExecuteReader(CommandBehavior.KeyInfo)).MustHaveHappened(Repeated.Exactly.Once);
+		}
+
+		[Test]
+		public void ExecuteReader_ExecuteCommandWithTransaction_TransactionNotCommited() {
+			var provider = A.Fake<IProvider>();
+			var command = A.Fake<ICommand>();
+			var dataSource = new DataSource(provider);
+			var trans = A.Fake<IDbTransaction>();
+
+			command.Transaction = trans;
+
+			dataSource.ExecuteReader(command);
+			
+			A.CallTo(() => trans.Commit()).MustNotHaveHappened();
+		}
+
+		[Test]
+		public void ExecuteReader_ExecuteTextCommandPassingTransaction_TransactionSetOnCommand() {
+			var provider = A.Fake<IProvider>();
+			var dbCommand = A.Fake<IDbCommand>();
+			var dataSource = new DataSource(provider);
+			var trans = A.Fake<IDbTransaction>();
+
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			dataSource.ExecuteReader("command", CommandType.Text, trans, CommandBehavior.KeyInfo);
+			
+			Assert.AreEqual("command", dbCommand.CommandText);
+			Assert.AreEqual(trans, dbCommand.Transaction);
+		}
+
+		[Test]
+		public void ExecuteReader_Passingnull() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var trans = A.Fake<IDbTransaction>();
+
+			dataSource.ExecuteReader(null, trans, CommandBehavior.KeyInfo);
+		}
+
+
+		[Test]
+		public void ExecuteReader_ExecuteCommandWithoutTransaction_TransactionCreatedAfterExecute() {
+			var provider = A.Fake<IProvider>();
+			var command = A.Fake<ICommand>();
+			var conn = A.Fake<IDbConnection>();
+			var dataSource = new DataSource(provider);
+			command.DbCommand.Connection = null;
+
+			A.CallTo(() => provider.CreateConnection()).Returns(conn);
+
+			dataSource.ExecuteReader(command);
+
+			Assert.AreEqual(conn, command.DbCommand.Connection);
+			A.CallTo(() => conn.Open()).MustHaveHappened(Repeated.Exactly.Once);
+		}
+
+		[Test]
+		public void ExecuteReader_PassingNullCommand_ThrowsArgumentNullException() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			Assert.Throws<ArgumentNullException>(() => dataSource.ExecuteReader(null));
+		}
+
+		[Test]
+		public void CreateInputParameter_PassingNullValue_ReturnsImputParameterWithDbNullAsValue() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			var parameter = dataSource.CreateInputParameter("myParamter", null);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DBNull.Value, parameter.Value);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+		}
+
+		[Test]
+		public void CreateInputParameter_PassingDateTimeMinValue_ReturnsImputParameterWithDbNullAsValue() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			var parameter = dataSource.CreateInputParameter("myParamter", DateTime.MinValue);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DBNull.Value, parameter.Value);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+		}
+
+		[Test]
+		public void CreateInputParameter_PassingAnsiStringNullValue_ReturnsImputParameterWithDbNullAsValue() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			string dummyString = null;
+			var parameter = dataSource.CreateInputParameter("myParamter", DbType.AnsiString, dummyString);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DBNull.Value, parameter.Value);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+			Assert.AreEqual(DbType.AnsiString, parameter.DbType);
+		}
+
+		[Test]
+		public void CreateInputParameter_PassingDummyObjectNullValue_ReturnsImputParameterWithDbNullAsValue() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			
+			MyDummyClass myDummyObject = null;
+			var parameter = dataSource.CreateInputParameter("myParamter", DbType.AnsiString, myDummyObject);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DBNull.Value, parameter.Value);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+			Assert.AreEqual(DbType.AnsiString, parameter.DbType);
+		}
+
+		[Test]
+		public void CreateInputParameter_PassingAnsiStringValue_ReturnsImputParameterWithCorrectValue() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			const string dummyString = "myValue";
+			var parameter = dataSource.CreateInputParameter("myParamter", DbType.AnsiString, dummyString);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(dummyString, parameter.Value);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+			Assert.AreEqual(DbType.AnsiString, parameter.DbType);
+		}
+
+
+		[Test]
+		public void CreateStringInputParameter_PassingAnsiStringEmptyValueAndUseNullIfEmpty_ReturnsImputParameterWithDbNullValue() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			string dummyString = string.Empty;
+			var parameter = dataSource.CreateStringInputParameter("myParamter", DbType.AnsiString, dummyString, true);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DBNull.Value, parameter.Value);
+			Assert.AreEqual(ParameterDirection.Input, parameter.Direction);
+			Assert.AreEqual(DbType.AnsiString, parameter.DbType);
+		}
+
+		public class MyDummyClass{}
 
 	}
 }
