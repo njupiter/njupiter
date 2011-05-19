@@ -699,6 +699,41 @@ namespace nJupiter.Tests.DataAccess {
 			Assert.AreEqual(DbType.AnsiString, parameter.DbType);
 		}
 
+		[Test]
+		public void CreateOutputParameter_PassingType_ReturnsOutputParameterWithCorrectType() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			var parameter = dataSource.CreateOutputParameter("myParamter", DbType.Binary);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DbType.Binary, parameter.DbType);
+			Assert.AreEqual(ParameterDirection.Output, parameter.Direction);
+		}
+
+		[Test]
+		public void CreateInputOutputParameter_PassingType_ReturnsOutputParameterWithCorrectType() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			var parameter = dataSource.CreateInputOutputParameter("myParamter", DbType.DateTime);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DbType.DateTime, parameter.DbType);
+			Assert.AreEqual(ParameterDirection.InputOutput, parameter.Direction);
+		}
+
+		[Test]
+		public void CreateReturnParameter_PassingType_ReturnsOutputParameterWithCorrectType() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			var parameter = dataSource.CreateReturnParameter("myParamter", DbType.UInt32);
+			Assert.AreEqual("myParamter", parameter.ParameterName);
+			Assert.AreEqual(DbType.UInt32, parameter.DbType);
+			Assert.AreEqual(ParameterDirection.ReturnValue, parameter.Direction);
+		}
+
+
+
 		public class MyDummyClass{}
 
 	}
