@@ -279,11 +279,11 @@ namespace nJupiter.UnitTests.DataAccess {
 
 			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
 
-			var dataSet = dataSource.ExecuteDataSet("command", CommandType.Text, parameters);
+			var result = dataSource.ExecuteDataSet("command", CommandType.Text, parameters);
 
 			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
 			
-			Assert.IsNotNull(dataSet);
+			Assert.IsNotNull(result);
 		}
 
 		[Test]
@@ -298,11 +298,11 @@ namespace nJupiter.UnitTests.DataAccess {
 
 			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
 
-			var dataSet = dataSource.ExecuteDataSet("spname", parameters);
+			var result = dataSource.ExecuteDataSet("spname", parameters);
 
 			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
 			
-			Assert.IsNotNull(dataSet);
+			Assert.IsNotNull(result);
 		}
 
 		[Test]
@@ -321,9 +321,90 @@ namespace nJupiter.UnitTests.DataAccess {
 			var dataSource = new DataSource(provider);
 
 			Assert.Throws<ArgumentNullException>(() => dataSource.ExecuteDataSet((ICommand)null));
+		}
+
+		[Test]
+		public void ExecuteNonQuery_ExecuteCommand_ReturnsInt() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+			A.CallTo(() => dbCommand.ExecuteNonQuery()).Returns(12);
+
+			dataSource.ExecuteNonQuery("command", CommandType.StoredProcedure);
 			
+			Assert.IsNotNull(12);
+		}
+
+		[Test]
+		public void ExecuteNonQuery_ExecuteCommandWithParameters_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataAdapter = A.Fake<IDbDataAdapter>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+
+			A.CallTo(() => provider.CreateDataAdapter()).Returns(dataAdapter);
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
+
+			dataSource.ExecuteNonQuery("command", CommandType.Text, parameters);
+
+			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
 			
 		}
+
+		[Test]
+		public void ExecuteNonQuery_ExecuteSpWithParameters_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataAdapter = A.Fake<IDbDataAdapter>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+
+			A.CallTo(() => provider.CreateDataAdapter()).Returns(dataAdapter);
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+
+			var parameters = A.CollectionOfFake<IDataParameter>(12).ToArray();
+
+			dataSource.ExecuteNonQuery("spname", parameters);
+
+			A.CallTo(() => dbCommand.Parameters.Add(A<object>.Ignored)).MustHaveHappened(Repeated.Exactly.Times(12));
+			
+		}
+
+		[Test]
+		public void ExecuteNonQuery_ExecuteSp_ReturnsDataset() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+			var dbCommand = A.Fake<IDbCommand>();
+			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
+			A.CallTo(() => dbCommand.ExecuteNonQuery()).Returns(242);
+
+			dataSource.ExecuteNonQuery("command");
+			
+			Assert.IsNotNull(242);
+		}
+
+		[Test]
+		public void ExecuteNonQuery_ExecuteCommandWithoutTransaction_TransactionCreatedAfterExecute() {
+			var provider = A.Fake<IProvider>();
+			var command = A.Fake<ICommand>();
+			var dataSource = new DataSource(provider);
+			command.Transaction = null;
+
+			dataSource.ExecuteNonQuery(command);
+
+			Assert.IsNotNull(command.Transaction);
+		}
+
+		[Test]
+		public void ExecuteNonQuery_PassingNullCommand_ThrowsArgumentNullException() {
+			var provider = A.Fake<IProvider>();
+			var dataSource = new DataSource(provider);
+
+			Assert.Throws<ArgumentNullException>(() => dataSource.ExecuteNonQuery((ICommand)null));
+		}
+
 
 
 	}

@@ -420,7 +420,6 @@ namespace nJupiter.DataAccess {
 		public IDataParameter CreateInputParameter(string name, object value) {
 			if(value is DateTime)
 				throw new ArgumentException("Date Parameters should be created with the CreateDateInputParameter method.", "value");
-			//Check for null parameters (Required?);
 			if(value == null) {
 				value = DBNull.Value;
 			}
