@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Users",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Users.DirectoryService", "nJupiter.DataAccess.Users.DirectoryService\nJupiter.DataAccess.Users.DirectoryService.csproj", "{C2327074-4BD3-42B8-915F-6100B804CBBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.UnitTests", "nJupiter.UnitTests\nJupiter.UnitTests.csproj", "{5D5541D6-8C9C-4E52-91DE-ACE78C44AB9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Tests", "nJupiter.Tests\nJupiter.Tests.csproj", "{5D5541D6-8C9C-4E52-91DE-ACE78C44AB9A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Services.Forum", "nJupiter.Services.Forum\nJupiter.Services.Forum.csproj", "{E4BACBF1-34A3-4836-A95B-8CA9EF8AF75F}"
 EndProject

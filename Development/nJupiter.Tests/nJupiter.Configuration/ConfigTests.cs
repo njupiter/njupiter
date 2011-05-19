@@ -7,7 +7,7 @@ using nJupiter.Configuration;
 
 using NUnit.Framework;
 
-namespace nJupiter.UnitTests.Configuration {
+namespace nJupiter.Tests.Configuration {
 
 	[TestFixture]
 	public class ConfigTests {

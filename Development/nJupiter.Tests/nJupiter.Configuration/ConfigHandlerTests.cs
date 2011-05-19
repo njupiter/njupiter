@@ -5,7 +5,7 @@ using System.Xml;
 using nJupiter.Configuration;
 using NUnit.Framework;
 
-namespace nJupiter.UnitTests.Configuration {
+namespace nJupiter.Tests.Configuration {
 	
 	[TestFixture]
 	public class ConfigHandlerTests {
@@ -15,7 +15,7 @@ namespace nJupiter.UnitTests.Configuration {
 			var configLoader = new FakeLoader();
 			var configHandler = new ConfigHandler(configLoader);
 			IConfig config = configHandler.GetAppConfig();
-			Assert.AreEqual("nJupiter.UnitTests.dll", config.ConfigKey);
+			Assert.AreEqual("nJupiter.Tests.dll", config.ConfigKey);
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ namespace nJupiter.UnitTests.Configuration {
 			var configLoader = new FakeLoader();
 			var configHandler = new ConfigHandler(configLoader);
 			IConfig config = configHandler.GetConfig();
-			Assert.AreEqual("nJupiter.UnitTests", config.ConfigKey);
+			Assert.AreEqual("nJupiter.Tests", config.ConfigKey);
 		}
 
 		[Test]
@@ -55,7 +55,7 @@ namespace nJupiter.UnitTests.Configuration {
 			var configLoader = new FakeLoader(true);
 			var configHandler = new ConfigHandler(configLoader);
 			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig());
-			Assert.AreEqual("nJupiter.UnitTests", configLoader.ConfigKeysLoaded[0]);
+			Assert.AreEqual("nJupiter.Tests", configLoader.ConfigKeysLoaded[0]);
 		}
 
 
@@ -65,7 +65,7 @@ namespace nJupiter.UnitTests.Configuration {
 			var configHandler = new ConfigHandler(configLoader);
 			IConfig config = configHandler.GetConfig(true);
 			Assert.IsNull(config);
-			Assert.AreEqual("nJupiter.UnitTests", configLoader.ConfigKeysLoaded[0]);
+			Assert.AreEqual("nJupiter.Tests", configLoader.ConfigKeysLoaded[0]);
 		}
 
 		[Test]

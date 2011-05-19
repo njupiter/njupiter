@@ -4,7 +4,7 @@ using FakeItEasy;
 using nJupiter.Configuration;
 using NUnit.Framework;
 
-namespace nJupiter.UnitTests.Configuration {
+namespace nJupiter.Tests.Configuration {
 
 	[TestFixture]
 	internal class FileConfigFactoryTest {

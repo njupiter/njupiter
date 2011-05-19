@@ -7,13 +7,13 @@
     <ProjectGuid>{5D5541D6-8C9C-4E52-91DE-ACE78C44AB9A}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <AssemblyName>nJupiter.UnitTests</AssemblyName>
+    <AssemblyName>nJupiter.Tests</AssemblyName>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>nJupiter.UnitTests</RootNamespace>
+    <RootNamespace>nJupiter.Tests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <WebReference_EnableProperties>true</WebReference_EnableProperties>
     <WebReference_EnableSQLTypes>false</WebReference_EnableSQLTypes>
@@ -101,10 +101,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="nJupiter.UnitTests.nunit" />
-    <None Include="nJupiter.UnitTests.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="nJupiter.Tests.config" />
+    <None Include="nJupiter.Tests.nunit" />
     <None Include="Web References\MessagingWebService\MessagingWebService.disco" />
     <None Include="Web References\MessagingWebService\MessagingWebService.wsdl" />
     <None Include="Web References\MessagingWebService\Reference.map">

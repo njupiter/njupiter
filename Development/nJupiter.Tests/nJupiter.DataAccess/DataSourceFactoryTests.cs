@@ -7,7 +7,7 @@ using nJupiter.DataAccess;
 
 using NUnit.Framework;
 
-namespace nJupiter.UnitTests.DataAccess {
+namespace nJupiter.Tests.DataAccess {
 
 	[TestFixture]
 	public class DataSourceFactoryTests {
@@ -21,7 +21,7 @@ namespace nJupiter.UnitTests.DataAccess {
 
 		[Test]
 		public void Create_CreatingNonExistingProvider_TrowsArgumentException() {
-			Assert.Throws<ArgumentException>(() => DataSourceFactory.Create("Non existing provider for nJupiter.UnitTests.DataAccess.DataSourceFactoryTests"));
+			Assert.Throws<ArgumentException>(() => DataSourceFactory.Create("Non existing provider for nJupiter.Tests.DataAccess.DataSourceFactoryTests"));
 		}
 
 	}
