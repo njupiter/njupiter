@@ -164,9 +164,5 @@
     </WebReferenceUrl>
     <WebReferences Include="Web References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="ProfilingSessions\Session20110518_112140.sdps" />
-    <Content Include="ProfilingSessions\Session20110519_113504.sdps" />
-  </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>
