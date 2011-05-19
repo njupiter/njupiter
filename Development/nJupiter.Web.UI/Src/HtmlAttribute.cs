@@ -51,6 +51,7 @@ namespace nJupiter.Web.UI {
 		public const string Height		= "height";
 		public const string Href		= "href";
 		public const string Hreflang	= "hreflang";
+		public const string Httpequiv	= "http-equiv";
 		public const string Id			= "id";
 		public const string Ismap		= "ismap";
 		public const string Label		= "label";
