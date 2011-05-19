@@ -116,7 +116,7 @@ namespace nJupiter.Web.UI {
 		#endregion
 
 		#region Helper Methods
-		public static string HyperlinkUrl(string url, bool noFollow, HtmlLinkEvaluator htmlLinkEvaluator) {
+		private static string HyperlinkUrl(string url, bool noFollow, HtmlLinkEvaluator htmlLinkEvaluator) {
 			string linkText = url;
 			string linkUrl;
 			StringBuilder linkAttributes = null;
