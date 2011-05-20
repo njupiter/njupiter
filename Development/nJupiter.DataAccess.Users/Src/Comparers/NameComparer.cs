@@ -63,8 +63,8 @@ namespace nJupiter.DataAccess.Users.Comparers {
 
 		#region IComparer Members
 		public int Compare(object x, object y) {
-			User xUser = x as User;
-			User yUser = y as User;
+			IUser xUser = x as IUser;
+			IUser yUser = y as IUser;
 
 			if(xUser == null || yUser == null)
 				return 0;

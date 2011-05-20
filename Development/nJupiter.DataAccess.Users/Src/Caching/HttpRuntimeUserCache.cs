@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Caching;
 
@@ -34,18 +35,18 @@ namespace nJupiter.DataAccess.Users {
 	public class HttpRuntimeUserCache : IUserCache {
 
 		#region Members
-		private readonly UsersDAO usersDao;
+		private readonly UserProviderBase userProvider;
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private bool? slidingExpiration;
 		private CacheItemPriority? cacheItemPriority;
 		#endregion
 
 		#region Constructors
-		public HttpRuntimeUserCache(UsersDAO usersDao) {
-			if(usersDao == null) {
-				throw new ArgumentNullException("usersDao");
+		public HttpRuntimeUserCache(UserProviderBase userProvider) {
+			if(userProvider == null) {
+				throw new ArgumentNullException("userProvider");
 			}
-			this.usersDao = usersDao;
+			this.userProvider = userProvider;
 		}
 		#endregion
 
@@ -57,8 +58,8 @@ namespace nJupiter.DataAccess.Users {
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
-					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "minutesInCache")) {
-						this.minutesInCache = usersDao.Config.GetValue<int>("cache", "minutesInCache");
+					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "minutesInCache")) {
+						this.minutesInCache = this.userProvider.Config.GetValue<int>("cache", "minutesInCache");
 					} else {
 						this.minutesInCache = 0;
 					}
@@ -70,8 +71,8 @@ namespace nJupiter.DataAccess.Users {
 		private bool SlidingExpiration {
 			get {
 				if(slidingExpiration == null) {
-					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "slidingExpiration")) {
-						this.slidingExpiration = usersDao.Config.GetValue<bool>("cache", "slidingExpiration");
+					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "slidingExpiration")) {
+						this.slidingExpiration = this.userProvider.Config.GetValue<bool>("cache", "slidingExpiration");
 					} else {
 						this.slidingExpiration = false;
 					}
@@ -83,8 +84,8 @@ namespace nJupiter.DataAccess.Users {
 		private CacheItemPriority CachePriority {
 			get {
 				if(cacheItemPriority == null) {
-					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "cachePriority")) {
-						string configValue = usersDao.Config.GetValue("cache", "cachePriority");
+					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "cachePriority")) {
+						string configValue = this.userProvider.Config.GetValue("cache", "cachePriority");
 						this.cacheItemPriority = (CacheItemPriority)Enum.Parse(typeof(CacheItemPriority), configValue, true);
 					} else {
 						this.cacheItemPriority = CacheItemPriority.Normal;
@@ -96,44 +97,44 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Methods
-		public User GetUserById(string userId) {
+		public IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
-			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.usersDao, userId);
-			return HttpRuntime.Cache[userIdCacheKey.CacheKey] as User;
+			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.userProvider, userId);
+			return HttpRuntime.Cache[userIdCacheKey.CacheKey] as IUser;
 		}
 
-		public User GetUserByUserName(string userName, string domain) {
+		public IUser GetUserByUserName(string userName, string domain) {
 			if(userName == null || this.MinutesInCache == 0)
 				return null;
-			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.usersDao, userName, domain);
-			return HttpRuntime.Cache[usernameCacheKey.CacheKey] as User;
+			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.userProvider, userName, domain);
+			return HttpRuntime.Cache[usernameCacheKey.CacheKey] as IUser;
 		}
 		#endregion
 
 		#region Protected Methods
-		public void RemoveUserFromCache(User user) {
+		public void RemoveUserFromCache(IUser user) {
 			if(user != null) {
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.usersDao, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.usersDao, user.Id);
+				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.userProvider, user.UserName, user.Domain);
+				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.userProvider, user.Id);
 				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Removing user [{0}/{1}] from cache.", (user.Domain ?? string.Empty), user.UserName)); }
 				HttpRuntime.Cache.Remove(usernameCacheKey.CacheKey);
 				HttpRuntime.Cache.Remove(userIdCacheKey.CacheKey);
 			}
 		}
 
-		public void RemoveUsersFromCache(UserCollection users) {
+		public void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
-				foreach(User user in users) {
+				foreach(IUser user in users) {
 					this.RemoveUserFromCache(user);
 				}
 			}
 		}
 
-		public void AddUserToCache(User user) {
+		public void AddUserToCache(IUser user) {
 			if(user != null && this.MinutesInCache > 0) {
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.usersDao, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.usersDao, user.Id);
+				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.userProvider, user.UserName, user.Domain);
+				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.userProvider, user.Id);
 				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
 				if(this.SlidingExpiration) {
 					TimeSpan expirationTime = new TimeSpan(0, 0, this.MinutesInCache, 0);
@@ -147,9 +148,9 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public void AddUsersToCache(UserCollection users) {
+		public void AddUsersToCache(IList<IUser> users) {
 			if(users != null && this.MinutesInCache > 0) {
-				foreach(User user in users) {
+				foreach(IUser user in users) {
 					this.AddUserToCache(user);
 				}
 			}
@@ -159,27 +160,27 @@ namespace nJupiter.DataAccess.Users {
 		#region Private Structs
 		private struct UserIdCacheKey {
 
-			private readonly UsersDAO usersDao;
+			private readonly UserProviderBase userProvider;
 			private readonly string userId;
 			private readonly int hash;
 			private readonly string cacheKey;
 
-			public UserIdCacheKey(UsersDAO usersDao, string id) {
+			public UserIdCacheKey(UserProviderBase userProvider, string id) {
 				this.userId = id ?? string.Empty;
-				this.usersDao = usersDao;
+				this.userProvider = userProvider;
 
 				int result = 17;
 				result = (37 * result) + this.userId.GetHashCode();
-				result = (37 * result) + this.usersDao.Name.GetHashCode();
+				result = (37 * result) + this.userProvider.Name.GetHashCode();
 				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.UsersDao:{0}:UserIdCacheKey:{1}", usersDao.Name, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UserIdCacheKey:{1}", userProvider.Name, hash);
 			}
 
 			public override bool Equals(object obj) {
 				UserIdCacheKey map = (UserIdCacheKey)obj;
 				if(map.userId == null)
 					return false;
-				return map.userId.Equals(this.userId) && map.usersDao.Name.Equals(this.usersDao.Name);
+				return map.userId.Equals(this.userId) && map.userProvider.Name.Equals(this.userProvider.Name);
 			}
 
 			public string CacheKey {
@@ -195,32 +196,32 @@ namespace nJupiter.DataAccess.Users {
 
 		private struct UsernameCacheKey {
 
-			private readonly UsersDAO usersDao;
+			private readonly UserProviderBase userProvider;
 			private readonly string userName;
 			private readonly string domain;
 			private readonly int hash;
 			private readonly string cacheKey;
 
-			public UsernameCacheKey(UsersDAO usersDao, string userName, string domain) {
+			public UsernameCacheKey(UserProviderBase userProvider, string userName, string domain) {
 				this.userName = userName;
 				this.domain = domain ?? string.Empty;
-				this.usersDao = usersDao;
+				this.userProvider = userProvider;
 
 				// Calculate a unique hash that will match all id:s with the same user name and domain
 				int result = 17;
 				result = (37 * result) + this.userName.GetHashCode();
 				result = (37 * result) + this.domain.GetHashCode();
-				result = (37 * result) + this.usersDao.Name.GetHashCode();
+				result = (37 * result) + this.userProvider.Name.GetHashCode();
 
 				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.UsersDao:{0}:UsernameCacheKey:{1}", this.usersDao.Name, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UsernameCacheKey:{1}", this.userProvider.Name, hash);
 			}
 
 			public override bool Equals(object obj) {
 				UsernameCacheKey map = (UsernameCacheKey)obj;
 				if(map.userName == null)
 					return false;
-				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain) && map.usersDao.Name.Equals(this.usersDao.Name);
+				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain) && map.userProvider.Name.Equals(this.userProvider.Name);
 			}
 
 			public string CacheKey {

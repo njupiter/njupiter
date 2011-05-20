@@ -25,31 +25,28 @@
 using System;
 
 namespace nJupiter.DataAccess.Users {
-	
 	[Serializable]
-	public class Context {
+	public class PropertyDefinition {
 
-		private readonly string name;
+		private readonly string propertyName;
+		private readonly Type type;
 
-		private Context() {
+		internal PropertyDefinition(string propertyName, Type dataType) {
+			this.propertyName = propertyName;
+			this.type = dataType;
 		}
 
-		public Context(string contextName) {
-			this.name = contextName;
-		}
-
-		public string Name { get { return this.name; } }
+		public string PropertyName { get { return this.propertyName; } }
+		public Type DataType { get { return this.type; } }
 
 		public override int GetHashCode() {
-			return this.Name.ToLowerInvariant().GetHashCode();
+			return base.GetHashCode();
 		}
 
 		public override bool Equals(object obj) {
-			Context context = obj as Context;
-			if(context == null) {
-				return false;
-			}
-			return string.Equals(this.Name, context.Name, StringComparison.InvariantCultureIgnoreCase);
+			PropertyDefinition propertyDefinition = obj as PropertyDefinition;
+			return propertyDefinition != null && propertyDefinition.PropertyName.Equals(this.PropertyName);
 		}
 	}
+
 }

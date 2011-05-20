@@ -27,16 +27,16 @@ using System.Web.Security;
 
 namespace nJupiter.DataAccess.Users {
 
-	public class HybridMembershipUser : UsersDAOMembershipUser {
+	public class HybridMembershipUser : MembershipUser {
 
-		private readonly MembershipUser primaryMembershipUser;
+		private readonly System.Web.Security.MembershipUser primaryMembershipUser;
 
-		public HybridMembershipUser(MembershipUser membershipUser, User user, string provider)
+		public HybridMembershipUser(System.Web.Security.MembershipUser membershipUser, IUser user, string provider)
 			: base(user, provider) {
 			primaryMembershipUser = membershipUser;
 		}
 
-		public MembershipUser PrimaryMembershipUser {
+		public System.Web.Security.MembershipUser PrimaryMembershipUser {
 			get {
 				return primaryMembershipUser;
 			}

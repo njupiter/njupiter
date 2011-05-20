@@ -30,22 +30,22 @@ using System.Web.Profile;
 
 namespace nJupiter.DataAccess.Users {
 
-	public class UsersDAOProfileProvider : ProfileProvider {
+	public class ProfileProvider : System.Web.Profile.ProfileProvider {
 
 		#region Fields
 		private string appName;
 		private string providerName;
-		private UsersDAO usersDAO;
+		private IUserProvider userProvider;
 		#endregion
 
 		#region Properties
 		/// <summary>
-		/// Gets the UsersDAO instance associated with this provider.
+		/// Gets the UserProvider instance associated with this provider.
 		/// </summary>
-		/// <value>The UsersDAO instance associated with this provider.</value>
-		public UsersDAO UsersDAO {
+		/// <value>The UserProvider instance associated with this provider.</value>
+		public IUserProvider UserProvider {
 			get {
-				return this.usersDAO;
+				return this.userProvider;
 			}
 		}
 		#endregion
@@ -84,10 +84,10 @@ namespace nJupiter.DataAccess.Users {
 			return defaultValue;
 		}
 
-		private AbstractProperty GetAbstractProperty(User user, string propertyName) {
-			string contextName = this.UsersDAO.PropertyNames.GetContextName(propertyName);
+		private IProperty GetAbstractProperty(IUser user, string propertyName) {
+			string contextName = this.UserProvider.PropertyNames.GetContextName(propertyName);
 			if(!string.IsNullOrEmpty(contextName)) {
-				Context context = this.UsersDAO.GetContext(contextName);
+				Context context = this.UserProvider.GetContext(contextName);
 				return user.Properties[propertyName, context];
 			}
 			return user.Properties[propertyName];
@@ -115,15 +115,15 @@ namespace nJupiter.DataAccess.Users {
 				if(!string.IsNullOrEmpty(username)) {
 					string name = GetUserNameFromMembershipUserName(username);
 					string domain = GetDomainFromMembershipUserName(username);
-					User user = this.UsersDAO.GetUserByUserName(name, domain);
+					IUser user = this.UserProvider.GetUserByUserName(name, domain);
 					if(user == null) {
-						user = this.UsersDAO.CreateUserInstance(name, domain);
-						this.UsersDAO.SetPassword(user, Guid.NewGuid().ToString("N"));
-						this.UsersDAO.SaveUser(user);
+						user = this.UserProvider.CreateUserInstance(name, domain);
+						this.UserProvider.SetPassword(user, Guid.NewGuid().ToString("N"));
+						this.UserProvider.SaveUser(user);
 					}
 					if(user != null) {
 						foreach(SettingsPropertyValue sv in svc) {
-							AbstractProperty abstractProperty = GetAbstractProperty(user, sv.Name);
+							IProperty abstractProperty = GetAbstractProperty(user, sv.Name);
 							if(abstractProperty != null) {
 								sv.PropertyValue = abstractProperty.Value;
 								sv.IsDirty = false;
@@ -136,7 +136,7 @@ namespace nJupiter.DataAccess.Users {
 			return svc;
 		}
 
-		/// <summary>Updates the UsersDAO profile with the specified property values.</summary>
+		/// <summary>Updates the UserProvider profile with the specified property values.</summary>
 		/// <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyValueCollection"></see> containing profile information and values for the properties to be updated.</param>
 		/// <param name="sc">The <see cref="T:System.Configuration.SettingsContext"></see> that contains user profile information.</param>
 		public override void SetPropertyValues(SettingsContext sc, SettingsPropertyValueCollection properties) {
@@ -145,11 +145,11 @@ namespace nJupiter.DataAccess.Users {
 			if(isIsAuthenticated && !string.IsNullOrEmpty(username) && properties.Count > 0) {
 				string name = GetUserNameFromMembershipUserName(username);
 				string domain = GetDomainFromMembershipUserName(username);
-				User user = this.UsersDAO.GetUserByUserName(name, domain);
+				IUser user = this.UserProvider.GetUserByUserName(name, domain);
 				if(user != null) {
 					bool userIsDirty = false;
 					foreach(SettingsPropertyValue propertyValue in properties) {
-						AbstractProperty abstractProperty = GetAbstractProperty(user, propertyValue.Name);
+						IProperty abstractProperty = GetAbstractProperty(user, propertyValue.Name);
 						if(abstractProperty != null) {
 							if(propertyValue.IsDirty) {
 								abstractProperty.Value = propertyValue.PropertyValue;
@@ -157,11 +157,11 @@ namespace nJupiter.DataAccess.Users {
 							}
 						} else {
 							//TODO: Gör så man dynamiskt i userdaoen kan lägga dit property schema definitioner
-							throw new ProviderException(string.Format("UsersDAO {0} is not configured to handle a property with the name {1}", this.UsersDAO.Name, propertyValue.Name));
+							throw new ProviderException(string.Format("UserProvider {0} is not configured to handle a property with the name {1}", this.UserProvider.Name, propertyValue.Name));
 						}
 					}
 					if(userIsDirty) {
-						this.UsersDAO.SaveUser(user);
+						this.UserProvider.SaveUser(user);
 					}
 				}
 			}
@@ -185,11 +185,11 @@ namespace nJupiter.DataAccess.Users {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
-			string provider = UsersDAOProfileProvider.GetStringConfigValue(config, "userDAO", string.Empty);
-			this.usersDAO = string.IsNullOrEmpty(provider) ? UsersDAO.GetInstance() : UsersDAO.GetInstance(provider);
-			this.providerName = !string.IsNullOrEmpty(name) ? name : this.usersDAO.Name;
+			string provider = ProfileProvider.GetStringConfigValue(config, "userDAO", string.Empty);
+			this.userProvider = string.IsNullOrEmpty(provider) ? UserProviderFactory.Instance.CreateProvider() : UserProviderFactory.Instance.CreateProvider(provider);
+			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userProvider.Name;
 			base.Initialize(this.providerName, config);
-			this.appName = UsersDAOProfileProvider.GetStringConfigValue(config, "applicationName", this.usersDAO.Name);
+			this.appName = ProfileProvider.GetStringConfigValue(config, "applicationName", this.userProvider.Name);
 		}
 
 		/// <summary>
@@ -245,9 +245,9 @@ namespace nJupiter.DataAccess.Users {
 			foreach(string username in usernames) {
 				string name = GetUserNameFromMembershipUserName(username);
 				string domain = GetDomainFromMembershipUserName(username);
-				User user = this.UsersDAO.GetUserByUserName(name, domain);
+				IUser user = this.UserProvider.GetUserByUserName(name, domain);
 				if(user != null) {
-					this.UsersDAO.DeleteUser(user);
+					this.UserProvider.DeleteUser(user);
 					count++;
 				}
 			}
@@ -292,8 +292,8 @@ namespace nJupiter.DataAccess.Users {
 			ProfileInfoCollection pic = new ProfileInfoCollection();
 			totalRecords = 0;
 			if(!authenticationOption.Equals(ProfileAuthenticationOption.Anonymous)) {
-				UserCollection uc = this.UsersDAO.GetAllUsers(pageIndex, pageSize, out totalRecords);
-				foreach(User user in uc) {
+				var uc = this.UserProvider.GetAllUsers(pageIndex, pageSize, out totalRecords);
+				foreach(IUser user in uc) {
 					string username = string.IsNullOrEmpty(user.Domain) ? user.UserName : string.Format("{0}\\{1}", user.Domain, user.UserName);
 					pic.Add(new ProfileInfo(username, user.Properties.IsAnonymous, user.Properties.LastActivityDate, user.Properties.LastUpdatedDate, 0));
 				}
@@ -336,7 +336,7 @@ namespace nJupiter.DataAccess.Users {
 			usernameToMatch = usernameToMatch.Replace("%", string.Empty);
 			string name = GetUserNameFromMembershipUserName(usernameToMatch);
 			string domain = GetDomainFromMembershipUserName(usernameToMatch);
-			User user = this.UsersDAO.GetUserByUserName(name, domain);
+			IUser user = this.UserProvider.GetUserByUserName(name, domain);
 			totalRecords = 0;
 			if(user != null) {
 				string username = string.IsNullOrEmpty(user.Domain) ? user.UserName : string.Format("{0}\\{1}", user.Domain, user.UserName);

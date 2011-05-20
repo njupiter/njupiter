@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 
 using NUnit.Framework;
@@ -26,8 +28,8 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 		private const string TestString = "TestString";
 		private readonly DateTime testDate = DateTime.Now;
 
-		private User user;
-		private User user2;
+		private IUser user;
+		private IUser user2;
 		private UsersDAO usersDao;
 
 		[TestFixtureSetUp]
@@ -66,20 +68,20 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 			Random random = new Random((int)DateTime.Now.Ticks);
 			for(int i = 0; i < 1000; i++) {
 				string userName = "user" + i;
-				User userInstance = this.usersDao.CreateUserInstance(userName, "testUsers");
+				IUser userInstance = this.usersDao.CreateUserInstance(userName, "testUsers");
 				string firstName = GetRandomFirstname(random);
 				string lastName = GetRandomLastname(random);
-				userInstance.Properties[this.usersDao.PropertyNames.FirstName].Value = firstName;
-				userInstance.Properties[this.usersDao.PropertyNames.LastName].Value = lastName;
-				userInstance.Properties[this.usersDao.PropertyNames.Email].Value = userName + "@njupiter.org";
+				userInstance.Properties[this.usersDao.PropertyNames.FirstName].Object = firstName;
+				userInstance.Properties[this.usersDao.PropertyNames.LastName].Object = lastName;
+				userInstance.Properties[this.usersDao.PropertyNames.Email].Object = userName + "@njupiter.org";
 				this.usersDao.SaveUser(userInstance);
 			}
 		}
 
 		[Test]
 		public void UserDeleteTestUsers() {
-			UserCollection users = this.usersDao.GetUsersByDomain("testUsers");
-			foreach(User u in users) {
+			var users = this.usersDao.GetUsersByDomain("testUsers");
+			foreach(IUser u in users) {
 				this.usersDao.DeleteUser(u);
 			}
 		}
@@ -114,7 +116,7 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 					const string testString = "Test string";
 					SerializableTestClass testObject = new SerializableTestClass(testString, date);
 
-					this.user.Properties["object"].Value = testObject;
+					this.user.Properties["object"].Object = testObject;
 
 					// Save user to database
 					this.usersDao.SaveUser(this.user);
@@ -122,7 +124,7 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 					// Load user again by its user name
 					this.user = this.usersDao.GetUserByUserName(UserName);
 
-					testObject = (SerializableTestClass)this.user.Properties["object"].Value;
+					testObject = (SerializableTestClass)this.user.Properties["object"].Object;
 
 					Assert.IsTrue(testObject.TestString == testString && testObject.TestDate == date);
 				} finally {
@@ -154,13 +156,13 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 			if(this.user.Properties[this.usersDao.PropertyNames.FirstName] != null) {
 				try {
 					// If the property exist then set it
-					this.user.Properties[this.usersDao.PropertyNames.FirstName].Value = "Example Name";
+					this.user.Properties[this.usersDao.PropertyNames.FirstName].Object = "Example Name";
 					// Save user to database
 					this.usersDao.SaveUser(this.user);
 					// Load user again by its user name
 					this.user = this.usersDao.GetUserByUserName(UserName);
 					// Check so the property still has the value previously set
-					Assert.AreEqual(this.user.Properties[this.usersDao.PropertyNames.FirstName].Value, "Example Name");
+					Assert.AreEqual(this.user.Properties[this.usersDao.PropertyNames.FirstName].Object, "Example Name");
 				} finally {
 					// And finaly remobe user from database
 					this.usersDao.DeleteUser(this.user);
@@ -172,19 +174,19 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 		[Test]
 		public void UserSimpleExampleUsingContexts() {
 			// Get a collection of all contexts
-			ContextCollection contexts = this.usersDao.GetContexts();
+			var contexts = this.usersDao.GetContexts();
 			// Get the registration-context
-			Context context = contexts["registration"];
+			Context context = contexts.SingleOrDefault(c => c.Name == "registration");
 			// Check that the registration-context exists
 			if(context != null) {
 				// Create a new user
 				this.user = this.usersDao.CreateUserInstance(UserName);
 				// Get properties for user dependent on the context
-				PropertyCollection properties = this.usersDao.LoadProperties(this.user, context);
+				var properties = this.usersDao.LoadProperties(this.user, context);
 				// Check so firstName property does belong to this context
 				if(properties[this.usersDao.PropertyNames.FirstName] != null) {
 					// If it does then set it
-					properties[this.usersDao.PropertyNames.FirstName].Value = "Example Name";
+					properties[this.usersDao.PropertyNames.FirstName].Object = "Example Name";
 				}
 				// Save to database
 				this.usersDao.SaveUser(this.user);
@@ -192,13 +194,13 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 
 				if(properties[this.usersDao.PropertyNames.FirstName] != null) {
 					// Check so the firstName still is the same after attaching
-					Assert.IsTrue((string)this.user.Properties[this.usersDao.PropertyNames.FirstName, context].Value == "Example Name");
+					Assert.IsTrue((string)this.user.Properties[this.usersDao.PropertyNames.FirstName, context].Object == "Example Name");
 					// And then set it to a new name
-					this.user.Properties[this.usersDao.PropertyNames.FirstName, context].Value = "New Name";
+					this.user.Properties[this.usersDao.PropertyNames.FirstName, context].Object = "New Name";
 					// If you want to set a global value for firstname then access it without context
-					this.user.Properties[this.usersDao.PropertyNames.FirstName].Value = "Global Name";
+					this.user.Properties[this.usersDao.PropertyNames.FirstName].Object = "Global Name";
 					// Global firstName and context specific firstName are not the same
-					Assert.IsTrue(this.user.Properties[this.usersDao.PropertyNames.FirstName].Value.ToString() != this.user.Properties["firstName", context].Value.ToString(), "Global and context specific properties are same but shall be different.");
+					Assert.IsTrue(this.user.Properties[this.usersDao.PropertyNames.FirstName].Object.ToString() != this.user.Properties["firstName", context].Object.ToString(), "Global and context specific properties are same but shall be different.");
 				}
 
 				// And finally delete testuser from database
@@ -208,14 +210,14 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 
 		[Test]
 		public void DefaultUserCreate() {
-			User defaultUser = this.usersDao.CreateUserInstance("DefaultUser");
+			IUser defaultUser = this.usersDao.CreateUserInstance("DefaultUser");
 			this.usersDao.SaveUser(defaultUser);
 
 		}
 
 		[Test]
 		public void DefaultUserDelete() {
-			User defaultUser = this.usersDao.GetUserByUserName("DefaultUser");
+			IUser defaultUser = this.usersDao.GetUserByUserName("DefaultUser");
 			if(defaultUser != null)
 				this.usersDao.DeleteUser(defaultUser);
 		}
@@ -232,39 +234,39 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 			Assert.IsFalse(this.usersDao.CheckPassword(this.user, "WrongPassword"), "Wrong Password was accepted.");
 
 			// Get the definition for all properties that can be set for this user
-			PropertySchemaTable fdc = this.usersDao.GetPropertySchemas();
+			var fdc = this.usersDao.GetDefaultContextSchema();
 
 			// Get all properties in the collection of type string
-			PropertySchemaTable stringFdc = fdc.FilterOnType(typeof(string));
+			var stringFdc = fdc.Values.Where(p => typeof(string).Equals(p.DataType));
 			// Get all properties in the collection of type DateTime
-			PropertySchemaTable datetimeFdc = fdc.FilterOnType(typeof(DateTime));
+			var datetimeFdc = fdc.Values.Where(p => typeof(DateTime).Equals(p.DataType));
 			// Get all properties in the collection of type bool
-			PropertySchemaTable boolFdc = fdc.FilterOnType(typeof(bool));
+			var boolFdc = fdc.Values.Where(p => typeof(bool).Equals(p.DataType));
 
 			// If there is any property for the user of type string, then set it to TestString
-			if(stringFdc.Count > 0) {
-				PropertySchema stringPropertySchema = GetFirstPropertySchema(stringFdc);
-				this.user.Properties[stringPropertySchema.PropertyName].Value = TestString;
-				Assert.AreEqual(this.user.Properties[stringPropertySchema.PropertyName].Value, TestString); // And test
+			if(stringFdc.Any()) {
+				PropertyDefinition stringPropertyDefinition = stringFdc.First();
+				this.user.Properties[stringPropertyDefinition.PropertyName].Object = TestString;
+				Assert.AreEqual(this.user.Properties[stringPropertyDefinition.PropertyName].Object, TestString); // And test
 			}
 			// If there is any property for the user of type DateTime, then set it to testDate
-			if(datetimeFdc.Count > 0) {
-				PropertySchema datetimePropertySchema = GetFirstPropertySchema(datetimeFdc);
-				this.user.Properties[datetimePropertySchema.PropertyName].Value = this.testDate;
-				Assert.AreEqual(this.user.Properties[datetimePropertySchema.PropertyName].Value, this.testDate); // And test
+			if(datetimeFdc.Any()) {
+				PropertyDefinition datetimePropertyDefinition = datetimeFdc.First();
+				this.user.Properties[datetimePropertyDefinition.PropertyName].Object = this.testDate;
+				Assert.AreEqual(this.user.Properties[datetimePropertyDefinition.PropertyName].Object, this.testDate); // And test
 			}
 			// If there is any property for the user of type bool, then set it to true
-			if(boolFdc.Count > 0) {
-				PropertySchema boolPropertySchema = GetFirstPropertySchema(boolFdc);
-				this.user.Properties[boolPropertySchema.PropertyName].Value = true;
-				Assert.IsTrue(((BoolProperty)this.user.Properties[boolPropertySchema.PropertyName]).Value); // And test
+			if(boolFdc.Any()) {
+				PropertyDefinition boolPropertyDefinition = boolFdc.First();
+				this.user.Properties[boolPropertyDefinition.PropertyName].Object = true;
+				Assert.IsTrue(((BoolProperty)this.user.Properties[boolPropertyDefinition.PropertyName]).Value); // And test
 			}
 
 			// Save user to database
 			this.usersDao.SaveUser(this.user);
 
 			// Load the saved user into a new object. Get it by user name
-			User tmpUser1 = this.usersDao.GetUserByUserName(this.user.UserName);
+			IUser tmpUser1 = this.usersDao.GetUserByUserName(this.user.UserName);
 
 			// Check so the Password is loaded correctly from the database
 			Assert.IsTrue(this.usersDao.CheckPassword(tmpUser1, Password), "Passwordcheck failed after object has been saved to database.");
@@ -276,14 +278,14 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 			Assert.AreEqual(this.user.UserName, tmpUser1.UserName, "UserName differs after object has been saved to database.");
 
 			// If properties of different types was set above, check so they are still the same.
-			if(stringFdc.Count > 0) {
-				Assert.AreEqual(tmpUser1.Properties[GetFirstPropertySchema(stringFdc).PropertyName].Value, TestString);
+			if(stringFdc.Any()) {
+				Assert.AreEqual(tmpUser1.Properties[stringFdc.First().PropertyName].Object, TestString);
 			}
-			if(datetimeFdc.Count > 0) {
-				Assert.AreEqual(((DateTime)tmpUser1.Properties[GetFirstPropertySchema(datetimeFdc).PropertyName].Value), this.testDate);
+			if(datetimeFdc.Any()) {
+				Assert.AreEqual(((DateTime)tmpUser1.Properties[datetimeFdc.First().PropertyName].Object), this.testDate);
 			}
-			if(boolFdc.Count > 0) {
-				Assert.IsTrue(((BoolProperty)tmpUser1.Properties[GetFirstPropertySchema(boolFdc).PropertyName]).Value);
+			if(boolFdc.Any()) {
+				Assert.IsTrue(((BoolProperty)tmpUser1.Properties[boolFdc.First().PropertyName]).Value);
 			}
 
 			// And save user again
@@ -302,10 +304,10 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 		[Test]
 		public void TestContext() {
 			// Get a collection of all contexts
-			ContextCollection contexts = this.usersDao.GetContexts();
+			var contexts = this.usersDao.GetContexts();
 
 			// If there is any contexts available ten do test
-			if(contexts.Count > 0) {
+			if(contexts.Any()) {
 				// Get the first context in the collection
 				Context context = null;
 				foreach(Context c in contexts) {
@@ -322,46 +324,47 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 				this.usersDao.LoadProperties(this.user2, context);
 
 				// Get properties dependent on the context for user
-				PropertyCollection properties = this.usersDao.GetProperties(this.user2, context);
+				var properties = this.usersDao.GetProperties(this.user2, context);
 
 				// Get properties dependent on the context
-				PropertyCollection emptyFields = this.usersDao.GetProperties(context);
+				var emptyFields = this.usersDao.GetProperties(context);
 
 				Assert.IsTrue(properties.Count == emptyFields.Count, "The number of properties is not the same as an empty propertycollection");
 
 				if(context != null) {
-					Assert.IsTrue(context.PropertySchemas.Count == properties.Count,
+					Assert.IsTrue(context.ContextSchema.Count == properties.Count,
 								  "The number of properties not equal to the number of property definitions.");
 
 					// Get all properties in the collection of type string
-					PropertySchemaTable stringFdc = context.PropertySchemas.FilterOnType(typeof(string));
-					// Get all properties in the collection of type DateTime
-					PropertySchemaTable datetimeFdc = context.PropertySchemas.FilterOnType(typeof(DateTime));
-					// Get all properties in the collection of type bool
-					PropertySchemaTable boolFdc = context.PropertySchemas.FilterOnType(typeof(bool));
 
-					Context newContext = this.usersDao.CreateContext(context.Name + "-ClonedContext", context.PropertySchemas);
+					var stringFdc = context.ContextSchema.Values.Where(p => typeof(string).Equals(p.DataType));
+					// Get all properties in the collection of type DateTime
+					var datetimeFdc = context.ContextSchema.Values.Where(p => typeof(DateTime).Equals(p.DataType));
+					// Get all properties in the collection of type bool
+					var boolFdc = context.ContextSchema.Values.Where(p => typeof(bool).Equals(p.DataType));
+
+					Context newContext = this.usersDao.CreateContext(context.Name + "-ClonedContext", context.ContextSchema);
 					this.usersDao.LoadProperties(this.user2, newContext);
 
 					// If there is any property for the user of type string, then set it to TestString
-					if(stringFdc.Count > 0) {
-						PropertySchema stringPropertySchema = GetFirstPropertySchema(stringFdc);
-						properties[stringPropertySchema.PropertyName].Value = TestString;
-						Assert.AreEqual(properties[stringPropertySchema.PropertyName].Value, TestString); // And test
-						this.user2.Properties[stringPropertySchema.PropertyName, newContext].Value = TestString + "2";
-						Assert.AreEqual(this.user2.Properties[stringPropertySchema.PropertyName].Value.ToString(), TestString);
+					if(stringFdc.Any()) {
+						PropertyDefinition stringPropertyDefinition = stringFdc.First();
+						properties[stringPropertyDefinition.PropertyName].Object = TestString;
+						Assert.AreEqual(properties[stringPropertyDefinition.PropertyName].Object, TestString); // And test
+						this.user2.Properties[stringPropertyDefinition.PropertyName, newContext].Object = TestString + "2";
+						Assert.AreEqual(this.user2.Properties[stringPropertyDefinition.PropertyName].Object.ToString(), TestString);
 					}
 					// If there is any property for the user of type DateTime, then set it to testDate
-					if(datetimeFdc.Count > 0) {
-						PropertySchema datetimePropertySchema = GetFirstPropertySchema(datetimeFdc);
-						properties[datetimePropertySchema.PropertyName].Value = this.testDate;
-						Assert.AreEqual(properties[datetimePropertySchema.PropertyName].Value, this.testDate); // And test
+					if(datetimeFdc.Any()) {
+						PropertyDefinition datetimePropertyDefinition = datetimeFdc.First();
+						properties[datetimePropertyDefinition.PropertyName].Object = this.testDate;
+						Assert.AreEqual(properties[datetimePropertyDefinition.PropertyName].Object, this.testDate); // And test
 					}
 					// If there is any property for the user of type bool, then set it to true
-					if(boolFdc.Count > 0) {
-						PropertySchema boolPropertySchema = GetFirstPropertySchema(boolFdc);
-						properties[boolPropertySchema.PropertyName].Value = true;
-						Assert.IsTrue(((BoolProperty)properties[boolPropertySchema.PropertyName]).Value); // And test
+					if(boolFdc.Any()) {
+						PropertyDefinition boolPropertyDefinition = boolFdc.First();
+						properties[boolPropertyDefinition.PropertyName].Object = true;
+						Assert.IsTrue(((BoolProperty)properties[boolPropertyDefinition.PropertyName]).Value); // And test
 					}
 
 					// Save to database
@@ -369,21 +372,21 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 
 					this.user2 = this.usersDao.GetUserById(this.user2.Id);
 
-					if(stringFdc.Count > 0) {
-						PropertySchema stringPropertySchema = GetFirstPropertySchema(stringFdc);
-						Assert.AreEqual(this.user2.Properties[stringPropertySchema.PropertyName, newContext].Value.ToString(),
+					if(stringFdc.Any()) {
+						PropertyDefinition stringPropertyDefinition = stringFdc.First();
+						Assert.AreEqual(this.user2.Properties[stringPropertyDefinition.PropertyName, newContext].Object.ToString(),
 										TestString + "2");
-						Assert.AreEqual(this.user2.Properties[stringPropertySchema.PropertyName].Value.ToString(), TestString);
+						Assert.AreEqual(this.user2.Properties[stringPropertyDefinition.PropertyName].Object.ToString(), TestString);
 					}
 
 					this.usersDao.DeleteContext(newContext);
 					// Check so the context is removed by creating a new one with the same name
-					newContext = this.usersDao.CreateContext(newContext.Name, newContext.PropertySchemas);
+					newContext = this.usersDao.CreateContext(newContext.Name, newContext.ContextSchema);
 					this.usersDao.DeleteContext(newContext);
 
-					foreach(PropertySchema fd in context.PropertySchemas) {
-						if(this.user2.Properties[fd.PropertyName].Value != null)
-							Console.WriteLine(fd.PropertyName + ": " + this.user2.Properties[fd.PropertyName].Value);
+					foreach(PropertyDefinition fd in context.ContextSchema.Values) {
+						if(this.user2.Properties[fd.PropertyName].Object != null)
+							Console.WriteLine(fd.PropertyName + ": " + this.user2.Properties[fd.PropertyName].Object);
 						else
 							Console.WriteLine(fd.PropertyName + ": <null>");
 					}
@@ -402,21 +405,21 @@ namespace nJupiter.DataAccess.Users.SQLDAO {
 
 		[Test]
 		public void TestSearch() {
-			SearchCriteriaCollection scc = new SearchCriteriaCollection();
+			var scc = new List<SearchCriteria>();
 			scc.Add(new SearchCriteria("firstName", "", SearchCriteria.CompareCondition.StartsWith, false));
 			//scc.Add(new SearchCriteria("lastName", "oe", SearchCriteria.CompareCondition.EndsWith, true));
 			//scc.Add(new SearchCriteria("email", "sson", SearchCriteria.CompareCondition.Contains, true));
-			UserCollection usersContains = this.usersDao.GetUsersBySearchCriteria(scc);
+			var usersContains = this.usersDao.GetUsersBySearchCriteria(scc);
 			Console.WriteLine("StartsWith");
-			foreach(User u in usersContains) {
+			foreach(IUser u in usersContains) {
 				Console.WriteLine(u.UserName);
 			}
 		}
 
 
 
-		private static PropertySchema GetFirstPropertySchema(PropertySchemaTable pst) {
-			foreach(PropertySchema ps in pst) {
+		private static PropertyDefinition GetFirstPropertySchema(IDictionary<string, PropertyDefinition> pst) {
+			foreach(PropertyDefinition ps in pst.Values) {
 				return ps;
 			}
 			return null;

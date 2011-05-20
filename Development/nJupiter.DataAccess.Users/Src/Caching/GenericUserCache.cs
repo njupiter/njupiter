@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using log4net;
 
@@ -39,9 +40,10 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Members
-		private readonly UsersDAO usersDao;
-		private readonly UserCollection cachedUsers = new UserCollection();
+		private readonly UserProviderBase userProvider;
+		private readonly IList<IUser> cachedUsers = new List<IUser>();
 		private readonly Hashtable cachedMap = new Hashtable();
+		private readonly object padlock = new object();
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private int maxUsersInCache = -1; // If zero, then the cache can grow unrestrainedly
 		#endregion
@@ -51,11 +53,11 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Constructors
-		public GenericUserCache(UsersDAO usersDao) {
-			if(usersDao == null) {
-				throw new ArgumentNullException("usersDao");
+		public GenericUserCache(UserProviderBase userProvider) {
+			if(userProvider == null) {
+				throw new ArgumentNullException("userProvider");
 			}
-			this.usersDao = usersDao;
+			this.userProvider = userProvider;
 		}
 		#endregion
 
@@ -63,8 +65,8 @@ namespace nJupiter.DataAccess.Users {
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
-					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "minutesToCacheUser"))
-						this.minutesInCache = usersDao.Config.GetValue<int>("cache", "minutesToCacheUser");
+					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "minutesToCacheUser"))
+						this.minutesInCache = this.userProvider.Config.GetValue<int>("cache", "minutesToCacheUser");
 					else
 						this.minutesInCache = 0;
 				}
@@ -75,8 +77,8 @@ namespace nJupiter.DataAccess.Users {
 		private int MaxUsersInCache {
 			get {
 				if(this.maxUsersInCache < 0) {
-					if(usersDao.Config != null && usersDao.Config.ContainsKey("cache", "maxUsersInCache")) {
-						this.maxUsersInCache = usersDao.Config.GetValue<int>("cache", "maxUsersInCache");
+					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "maxUsersInCache")) {
+						this.maxUsersInCache = this.userProvider.Config.GetValue<int>("cache", "maxUsersInCache");
 						if(this.maxUsersInCache < MinimumCacheSize && this.maxUsersInCache != 0)
 							this.maxUsersInCache = MinimumCacheSize;
 					} else {
@@ -95,57 +97,55 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Methods
-		public User GetUserById(string userId) {
+		public IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
 			return GetUserFromCacheMap(userId);
 		}
 
-		public User GetUserByUserName(string userName, string domain) {
+		public IUser GetUserByUserName(string userName, string domain) {
 			if(userName == null || this.MinutesInCache == 0)
 				return null;
 			return GetUserFromCacheMap(userName, domain);
 		}
 
-		public void RemoveUserFromCache(User user) {
+		public void RemoveUserFromCache(IUser user) {
 			if(user != null) {
 				RemoveUserFromCache(user, GetCacheMapId(user));
 			}
 		}
 
-		public void RemoveUsersFromCache(UserCollection users) {
+		public void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
-				foreach(User user in users) {
+				foreach(IUser user in users) {
 					this.RemoveUserFromCache(user);
 				}
 			}
 		}
 
-		public void AddUserToCache(User user) {
+		public void AddUserToCache(IUser user) {
 			if(user != null && this.MinutesInCache > 0) {
-				lock(this.cachedUsers.SyncRoot) {
-					lock(this.cachedMap.SyncRoot) {
-						if(this.cachedUsers.Contains(user))
-							this.RemoveUserFromCache(user);
+				lock(padlock) {
+					if(this.cachedUsers.Contains(user))
+						this.RemoveUserFromCache(user);
 
-						// Truncate cache if it has grown out of size.
-						if(this.MaxUsersInCache != 0 && this.cachedUsers.Count >= this.MaxUsersInCache)
-							TruncateCache();
+					// Truncate cache if it has grown out of size.
+					if(this.MaxUsersInCache != 0 && this.cachedUsers.Count >= this.MaxUsersInCache)
+						TruncateCache();
 
-						if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
 
-						CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
-						CachedUser cachedUser = new CachedUser(user);
-						this.cachedMap.Add(cacheMapId, cachedUser);
-						this.cachedUsers.Add(user);
-					}
+					CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
+					CachedUser cachedUser = new CachedUser(user);
+					this.cachedMap.Add(cacheMapId, cachedUser);
+					this.cachedUsers.Add(user);
 				}
 			}
 		}
 
-		public void AddUsersToCache(UserCollection users) {
+		public void AddUsersToCache(IList<IUser> users) {
 			if(users != null && this.MinutesInCache > 0) {
-				foreach(User user in users) {
+				foreach(IUser user in users) {
 					this.AddUserToCache(user);
 				}
 			}
@@ -153,36 +153,44 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Private Methods
-		private void RemoveUserFromCache(User user, CacheMapId cacheMapId) {
+		private void RemoveUserFromCache(IUser user, CacheMapId cacheMapId) {
 			if(user != null) {
-				lock(this.cachedUsers.SyncRoot) {
-					lock(this.cachedMap.SyncRoot) {
-						if(Log.IsDebugEnabled) { Log.Debug(string.Format("Remove user [{0}/{1}] from cache.", (cacheMapId.Domain ?? string.Empty), cacheMapId.UserName)); }
-						this.cachedUsers.Remove(user);
-						this.cachedMap.Remove(cacheMapId);
-					}
+				lock(padlock) {
+					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Remove user [{0}/{1}] from cache.", (cacheMapId.Domain ?? string.Empty), cacheMapId.UserName)); }
+					this.cachedUsers.Remove(user);
+					this.cachedMap.Remove(cacheMapId);
 				}
 			}
 		}
 
-		private User GetUserFromCacheMap(string userId) {
-			lock(this.cachedUsers.SyncRoot) {
-				if(!this.cachedUsers.Contains(userId))
+		private IUser GetUserFromCacheMap(string userId) {
+			lock(padlock) {
+				var user = GetUser(userId);
+				if(user == null) {
 					return null;
-				User user = this.cachedUsers[userId];
+				}
 				CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
 				return GetUserFromCacheMap(cacheMapId);
 			}
 		}
 
-		private User GetUserFromCacheMap(string userName, string domain) {
-			lock(this.cachedUsers.SyncRoot) {
+		private IUser GetUser(string userId) {
+			foreach(IUser u in cachedUsers) {
+				if(u.Id.Equals(userId)) {
+					return u;
+				}
+			}
+			return null;
+		}
+
+		private IUser GetUserFromCacheMap(string userName, string domain) {
+			lock(padlock) {
 				CacheMapId cacheMapId = new CacheMapId(userName, domain);
 				return GetUserFromCacheMap(cacheMapId);
 			}
 		}
 
-		private User GetUserFromCacheMap(CacheMapId cacheMapId) {
+		private IUser GetUserFromCacheMap(CacheMapId cacheMapId) {
 			lock(this.cachedMap.SyncRoot) {
 				if(!this.cachedMap.Contains(cacheMapId))
 					return null;
@@ -199,7 +207,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		private static CacheMapId GetCacheMapId(User user) {
+		private static CacheMapId GetCacheMapId(IUser user) {
 			return GetCacheMapId(user.UserName, user.Domain);
 		}
 
@@ -270,10 +278,10 @@ namespace nJupiter.DataAccess.Users {
 		#region Private Structs
 		private struct CachedUser {
 
-			public readonly User User;
+			public readonly IUser User;
 			public readonly DateTime DateCreated;
 
-			public CachedUser(User user) {
+			public CachedUser(IUser user) {
 				User = user;
 				DateCreated = DateTime.Now;
 			}

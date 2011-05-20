@@ -22,11 +22,10 @@
 */
 #endregion
 
-using System.Web.Security;
 using System;
 
 namespace nJupiter.DataAccess.Users {
-	public class UsersDAOMembershipUser : MembershipUser {
+	public class MembershipUser : System.Web.Security.MembershipUser {
 		private readonly string id;
 		private readonly string userName;
 		private readonly string providerName;
@@ -41,7 +40,7 @@ namespace nJupiter.DataAccess.Users {
 		private bool active;
 		private DateTime lastActivityDate;
 
-		public UsersDAOMembershipUser(User user, string provider) {
+		public MembershipUser(IUser user, string provider) {
 			this.providerName = provider;
 			if(!string.IsNullOrEmpty(user.Domain)) {
 				this.userName = string.Format("{0}\\{1}", user.Domain, user.UserName);

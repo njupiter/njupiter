@@ -132,12 +132,6 @@
     <Compile Include="nJupiter.DataAccess.DirectoryService\DirectoryServiceTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="nJupiter.DataAccess.Users\UserTestDS.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="nJupiter.DataAccess.Users\UserTestSQL.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="nJupiter.DataAccess\CommandTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceFactoryTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceTests.cs" />
@@ -166,6 +160,9 @@
       </CachedSettingsPropName>
     </WebReferenceUrl>
     <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="nJupiter.DataAccess.Users\IntegarationTests\" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

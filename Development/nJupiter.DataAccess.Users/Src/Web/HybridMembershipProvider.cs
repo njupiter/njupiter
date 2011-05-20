@@ -31,32 +31,29 @@ using System.Web.Security;
 
 namespace nJupiter.DataAccess.Users {
 
-	public class HybridMembershipProvider : UsersDAOMembershipProvider {
+	public class HybridMembershipProvider : MembershipProvider {
 
-		#region Fields
-		private MembershipProvider primaryMembershipProvider;
+		private System.Web.Security.MembershipProvider primaryMembershipProvider;
 		private string primaryMembershipProviderName;
 		private readonly object padLock = new object();
-		#endregion
 
-		#region Private Methods
-		private HybridMembershipUser GetHybridMembershipUser(MembershipUser membershipUser) {
+		private HybridMembershipUser GetHybridMembershipUser(System.Web.Security.MembershipUser membershipUser) {
 			if(membershipUser == null)
 				return null;
 			string name = GetUserNameFromMembershipUserName(membershipUser.UserName);
 			string domain = GetDomainFromMembershipUserName(membershipUser.UserName);
-			User user = this.UsersDAO.GetUserByUserName(name, domain);
+			IUser user = this.UserProvider.GetUserByUserName(name, domain);
 			if(user == null) {
 				lock(padLock) {
-					user = this.UsersDAO.GetUserByUserName(name, domain);
+					user = this.UserProvider.GetUserByUserName(name, domain);
 					if(user == null) {
-						user = this.UsersDAO.CreateUserInstance(name, domain);
+						user = this.UserProvider.CreateUserInstance(name, domain);
 						user.Properties.Email = membershipUser.Email;
-						this.UsersDAO.SetPassword(user, Guid.NewGuid().ToString("N"));
+						this.UserProvider.SetPassword(user, Guid.NewGuid().ToString("N"));
 						try {
-							this.UsersDAO.SaveUser(user);
+							this.UserProvider.SaveUser(user);
 						} catch(UserNameAlreadyExistsException) {
-							user = this.UsersDAO.GetUserByUserName(name, domain);
+							user = this.UserProvider.GetUserByUserName(name, domain);
 						}
 					}
 				}
@@ -65,7 +62,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private HybridMembershipUser GetHybridMembershipUser(string username) {
-			MembershipUser membershipUser = this.PrimaryMembershipProvider.GetUser(username, false);
+			System.Web.Security.MembershipUser membershipUser = this.PrimaryMembershipProvider.GetUser(username, false);
 			return GetHybridMembershipUser(membershipUser);
 		}
 
@@ -73,7 +70,7 @@ namespace nJupiter.DataAccess.Users {
 			if(membershipUserCollection == null)
 				return null;
 			MembershipUserCollection hybridMembershipUserCollection = new MembershipUserCollection();
-			foreach(MembershipUser membershipUser in membershipUserCollection) {
+			foreach(System.Web.Security.MembershipUser membershipUser in membershipUserCollection) {
 				hybridMembershipUserCollection.Add(this.GetHybridMembershipUser(membershipUser));
 			}
 			return hybridMembershipUserCollection;
@@ -85,9 +82,8 @@ namespace nJupiter.DataAccess.Users {
 			}
 			return defaultValue;
 		}
-		#endregion
 
-		public MembershipProvider PrimaryMembershipProvider {
+		public System.Web.Security.MembershipProvider PrimaryMembershipProvider {
 			get {
 				if(primaryMembershipProvider == null) {
 					primaryMembershipProvider = Membership.Providers[primaryMembershipProviderName];
@@ -99,7 +95,6 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		#region Overridden Methods
 		public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config) {
 			primaryMembershipProviderName = HybridMembershipProvider.GetStringConfigValue(config, "primaryMembershipProvider", string.Empty);
 			if(string.IsNullOrEmpty(primaryMembershipProviderName)) {
@@ -137,8 +132,8 @@ namespace nJupiter.DataAccess.Users {
 			return BitConverter.ToString(hashArray).Replace("-", string.Empty);
 		}
 
-		public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status) {
-			MembershipUser membershipUser = this.PrimaryMembershipProvider.CreateUser(username, password, email, passwordQuestion, passwordAnswer, isApproved, providerUserKey, out status);
+		public override System.Web.Security.MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status) {
+			System.Web.Security.MembershipUser membershipUser = this.PrimaryMembershipProvider.CreateUser(username, password, email, passwordQuestion, passwordAnswer, isApproved, providerUserKey, out status);
 			if(membershipUser == null)
 				return null;
 			if(status.Equals(MembershipCreateStatus.Success)) {
@@ -198,7 +193,7 @@ namespace nJupiter.DataAccess.Users {
 			return this.PrimaryMembershipProvider.GetPassword(username, passwordAnswer);
 		}
 
-		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
+		public override System.Web.Security.MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
 			return this.GetHybridMembershipUser(this.PrimaryMembershipProvider.GetUser(providerUserKey, userIsOnline));
 		}
 
@@ -226,7 +221,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public override MembershipUser GetUser(string username, bool userIsOnline) {
+		public override System.Web.Security.MembershipUser GetUser(string username, bool userIsOnline) {
 			return this.GetHybridMembershipUser(this.PrimaryMembershipProvider.GetUser(username, userIsOnline));
 		}
 
@@ -283,7 +278,7 @@ namespace nJupiter.DataAccess.Users {
 			return result;
 		}
 
-		public override void UpdateUser(MembershipUser user) {
+		public override void UpdateUser(System.Web.Security.MembershipUser user) {
 			HybridMembershipUser hybridMembershipUser = user as HybridMembershipUser;
 			if(hybridMembershipUser == null) {
 				throw new ArgumentException(string.Format("User is not of type {0}", typeof(HybridMembershipUser).Name), "user");
@@ -291,7 +286,6 @@ namespace nJupiter.DataAccess.Users {
 			this.PrimaryMembershipProvider.UpdateUser(hybridMembershipUser.PrimaryMembershipUser);
 			base.UpdateUser(hybridMembershipUser);
 		}
-		#endregion
 
 	}
 

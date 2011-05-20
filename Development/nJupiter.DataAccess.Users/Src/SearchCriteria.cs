@@ -28,34 +28,17 @@ namespace nJupiter.DataAccess.Users {
 
 	public class SearchCriteria {
 		#region Enums
-		public enum CompareCondition {
-			Equal,
-			NotEqual,
-			GreaterThan,
-			GreaterThanOrEqual,
-			NotLessThan = GreaterThanOrEqual,
-			LessThan,
-			LessThanOrEqual,
-			NotGreaterThan = LessThanOrEqual,
-			StartsWith,
-			NotStartsWith,
-			EndsWith,
-			NotEndsWith,
-			Contains,
-			NotContains,
-			ContainsStartsWith
-		}
 		#endregion
 
 		#region Members
-		private AbstractProperty property;
+		private IProperty property;
 		private bool required;
 		private string domain;
 		private CompareCondition condition;
 		#endregion
 
 		#region Properties
-		public AbstractProperty Property {
+		public IProperty Property {
 			get { return this.property; }
 			set {
 				if(value == null) {
@@ -78,17 +61,17 @@ namespace nJupiter.DataAccess.Users {
 
 		//TODO: Implement overloads for Int, DateTime, Binary, Bool also
 		#region Constructors
-		public SearchCriteria(AbstractProperty property, string domain) : this(property, domain, CompareCondition.Equal, false) { }
-		public SearchCriteria(AbstractProperty property, string domain, CompareCondition condition) : this(property, domain, condition, false) { }
-		public SearchCriteria(AbstractProperty property, string domain, bool required) : this(property, domain, CompareCondition.Equal, required) { }
-		public SearchCriteria(AbstractProperty property, string domain, CompareCondition condition, bool required) {
+		public SearchCriteria(IProperty property, string domain) : this(property, domain, CompareCondition.Equal, false) { }
+		public SearchCriteria(IProperty property, string domain, CompareCondition condition) : this(property, domain, condition, false) { }
+		public SearchCriteria(IProperty property, string domain, bool required) : this(property, domain, CompareCondition.Equal, required) { }
+		public SearchCriteria(IProperty property, string domain, CompareCondition condition, bool required) {
 			this.InitCriteria(property, domain, condition, required);
 		}
 
-		public SearchCriteria(AbstractProperty property) : this(property, CompareCondition.Equal, false) { }
-		public SearchCriteria(AbstractProperty property, CompareCondition condition) : this(property, condition, false) { }
-		public SearchCriteria(AbstractProperty property, bool required) : this(property, CompareCondition.Equal, required) { }
-		public SearchCriteria(AbstractProperty property, CompareCondition condition, bool required) {
+		public SearchCriteria(IProperty property) : this(property, CompareCondition.Equal, false) { }
+		public SearchCriteria(IProperty property, CompareCondition condition) : this(property, condition, false) { }
+		public SearchCriteria(IProperty property, bool required) : this(property, CompareCondition.Equal, required) { }
+		public SearchCriteria(IProperty property, CompareCondition condition, bool required) {
 			this.InitCriteria(property, null, condition, required);
 		}
 
@@ -119,7 +102,7 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Private methods
-		private void InitCriteria(AbstractProperty property, string domain, CompareCondition condition, bool required) {
+		private void InitCriteria(IProperty property, string domain, CompareCondition condition, bool required) {
 			this.condition = condition;	//order is significant here
 			this.Property = property;
 			this.domain = domain;
@@ -128,7 +111,7 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Helper Methods
-		private static void CheckPropertyCompareCondition(AbstractProperty property, CompareCondition condition) {
+		private static void CheckPropertyCompareCondition(IProperty property, CompareCondition condition) {
 			switch(condition) {
 				case CompareCondition.GreaterThan:
 				case CompareCondition.GreaterThanOrEqual:

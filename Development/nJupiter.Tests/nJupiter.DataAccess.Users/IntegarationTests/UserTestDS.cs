@@ -23,23 +23,23 @@ namespace nJupiter.DataAccess.Users.DSDAO {
 		[Test]
 		public void UserTest() {
 			SearchCriteria sc = new SearchCriteria("givenName", "Andreas");
-			UserCollection uc = this.userDao.GetUsersBySearchCriteria(sc);
+			var uc = this.userDao.GetUsersBySearchCriteria(sc);
 			Assert.IsTrue(uc.Count > 0, "Andreas does not exist");
 
-			User andreas = this.userDao.GetUserByUserName("afredrik");
+			IUser andreas = this.userDao.GetUserByUserName("afredrik");
 			Assert.IsNotNull(andreas, "Can not get afredrik by user name");
 
-			User user = this.userDao.GetUserById("modhelius@njupiter.org");
+			IUser user = this.userDao.GetUserById("modhelius@njupiter.org");
 
 			Console.WriteLine(user.Properties.FullName);
 			Assert.IsNotNull(user, "User null");
 
-			Assert.IsTrue(user.Properties["telephoneNumber"].Value.ToString() == "+46 8 505 790 09", "Wrong prop");
-			user.Properties["telephoneNumber"].Value = "+46 8 505 790 00";
+			Assert.IsTrue(user.Properties["telephoneNumber"].Object.ToString() == "+46 8 505 790 09", "Wrong prop");
+			user.Properties["telephoneNumber"].Object = "+46 8 505 790 00";
 			this.userDao.SaveUser(user);
 			user = this.userDao.GetUserById("modhelius@njupiter.org");
-			Assert.IsTrue(user.Properties["telephoneNumber"].Value.ToString() == "+46 8 505 790 00", "Wrong prop");
-			user.Properties["telephoneNumber"].Value = "+46 8 505 790 09";
+			Assert.IsTrue(user.Properties["telephoneNumber"].Object.ToString() == "+46 8 505 790 00", "Wrong prop");
+			user.Properties["telephoneNumber"].Object = "+46 8 505 790 09";
 			this.userDao.SaveUser(user);
 		}
 	}

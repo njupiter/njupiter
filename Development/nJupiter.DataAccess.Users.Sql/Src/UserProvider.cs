@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 using System.Data;
@@ -31,20 +32,21 @@ using System.Reflection;
 using System.Collections;
 using System.Security.Cryptography;
 using System.Globalization;
+using System.Linq;
 
 // TODO: Make use of typed dataset and batch update of properties etc
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 
-	public class UsersDAOImplSQL : UsersDAO {
+	public class UserProvider : UserProviderBase {
 		#region Constants
 		private const int AddStatusUsernameTaken = 1;
 		#endregion
 
 		#region Members
 		private readonly object padlock = new object();
-		private readonly Hashtable propertySchemaTables = new Hashtable();
-		private ContextCollection contexts;
+		private readonly IDictionary<string, ContextSchema> contextSchema = new Dictionary<string, ContextSchema>();
+		private IList<Context> contexts;
 		private IDataSource dataAccess;
 		#endregion
 
@@ -60,7 +62,7 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Overridden Methods
-		public override UserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
+		public override IList<IUser> GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
 			IDataParameter returnParam = CurrentDB.CreateReturnParameter("@intPagingTotalNumber", DbType.Int32);
 			DataSet dsUser;
 			if(pageSize.Equals(int.MaxValue) || pageIndex.Equals(int.MaxValue)) {
@@ -71,14 +73,14 @@ namespace nJupiter.DataAccess.Users {
 					CurrentDB.CreateInputParameter("@intLimitSize", DbType.Int32, pageSize),
 					returnParam);
 			}
-			UserCollection uc = GetUsersFromDataSet(dsUser);
+			var uc = GetUsersFromDataSet(dsUser);
 			this.UserCache.AddUsersToCache(uc);
 			totalRecords = (int)returnParam.Value;
 			return uc;
 		}
 
-		public override User GetUserById(string userId) {
-			User user = this.UserCache.GetUserById(userId);
+		public override IUser GetUserById(string userId) {
+			IUser user = this.UserCache.GetUserById(userId);
 			if(user != null) {
 				return user;
 			}
@@ -90,8 +92,8 @@ namespace nJupiter.DataAccess.Users {
 			return user;
 		}
 
-		public override User GetUserByUserName(string userName, string domain) {
-			User user = this.UserCache.GetUserByUserName(userName, domain);
+		public override IUser GetUserByUserName(string userName, string domain) {
+			IUser user = this.UserCache.GetUserByUserName(userName, domain);
 			if(user != null) {
 				return user;
 			}
@@ -103,7 +105,7 @@ namespace nJupiter.DataAccess.Users {
 			return user;
 		}
 
-		public override UserCollection GetUsersBySearchCriteria(SearchCriteriaCollection searchCriteriaCollection) {
+		public override IList<IUser> GetUsersBySearchCriteria(IEnumerable<SearchCriteria> searchCriteriaCollection) {
 			if(searchCriteriaCollection == null) {
 				throw new ArgumentNullException("searchCriteriaCollection");
 			}
@@ -182,7 +184,7 @@ namespace nJupiter.DataAccess.Users {
 				string basicSubQueryStart = criteria.ToString();
 				switch(sc.Condition) {
 					// If value is bigger than 4000 bytes, search in the extended value column
-					case SearchCriteria.CompareCondition.ContainsStartsWith:
+					case CompareCondition.ContainsStartsWith:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondContainsstartswith, serializedValue.Replace(sqlSinglequote, sqlSinglequoteEscaped));
 					} else {
@@ -192,7 +194,7 @@ namespace nJupiter.DataAccess.Users {
 							Append(basicSubQueryStart);
 					}
 					break;
-					case SearchCriteria.CompareCondition.StartsWith:
+					case CompareCondition.StartsWith:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
 						command.AddInParameter(parameterNameValue, DbType.String, likeEscapedSerializedValue + "%");
@@ -203,7 +205,7 @@ namespace nJupiter.DataAccess.Users {
 							Append(basicSubQueryStart);
 					}
 					break;
-					case SearchCriteria.CompareCondition.NotStartsWith:
+					case CompareCondition.NotStartsWith:
 					if(!isDefaultValue) {
 						criteria.
 							AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
@@ -215,7 +217,7 @@ namespace nJupiter.DataAccess.Users {
 					}
 					command.AddInParameter(parameterNameValue, DbType.String, likeEscapedSerializedValue + "%");
 					break;
-					case SearchCriteria.CompareCondition.EndsWith:
+					case CompareCondition.EndsWith:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
 						command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue);
@@ -226,7 +228,7 @@ namespace nJupiter.DataAccess.Users {
 							Append(basicSubQueryStart);
 					}
 					break;
-					case SearchCriteria.CompareCondition.NotEndsWith:
+					case CompareCondition.NotEndsWith:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
 							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
@@ -237,7 +239,7 @@ namespace nJupiter.DataAccess.Users {
 						criteria.Append(sqlCriteriaCondNomatch);
 					}
 					break;
-					case SearchCriteria.CompareCondition.Contains:
+					case CompareCondition.Contains:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondLike : sqlCriteriaCondLikeOnlyext, parameterNameValue);
 						command.AddInParameter(parameterNameValue, DbType.String, "%" + likeEscapedSerializedValue + "%");
@@ -248,7 +250,7 @@ namespace nJupiter.DataAccess.Users {
 							Append(basicSubQueryStart);
 					}
 					break;
-					case SearchCriteria.CompareCondition.NotContains:
+					case CompareCondition.NotContains:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotlike : sqlCriteriaCondNotlikeOnlyext, parameterNameValue).
 							Append(sqlBasicSubqueryEnd).Append(sqlOr).Append(sqlNot).
@@ -259,45 +261,45 @@ namespace nJupiter.DataAccess.Users {
 						criteria.Append(sqlCriteriaCondNomatch);
 					}
 					break;
-					case SearchCriteria.CompareCondition.NotEqual:
+					case CompareCondition.NotEqual:
 					if(!isDefaultValue) {
 						criteria.AppendFormat(CultureInfo.InvariantCulture, serializedValue.Length <= 4000 ? sqlCriteriaCondNotequal : sqlCriteriaCondNotequalExt, parameterNameValue);
 						command.AddInParameter(parameterNameValue, DbType.String, serializedValue.Length <= 4000 ? serializedValue : likeEscapedSerializedValue);
 					}
 					//return all that has a row if defaultValue
 					break;
-					case SearchCriteria.CompareCondition.GreaterThan:
-					case SearchCriteria.CompareCondition.GreaterThanOrEqual:
-					case SearchCriteria.CompareCondition.LessThan:
-					case SearchCriteria.CompareCondition.LessThanOrEqual:
+					case CompareCondition.GreaterThan:
+					case CompareCondition.GreaterThanOrEqual:
+					case CompareCondition.LessThan:
+					case CompareCondition.LessThanOrEqual:
 					if(!sc.Property.SerializationPreservesOrder) {
 						throw new InvalidOperationException("Can not use inequality comparison on a property that does not maintain sort order of its underlying type in its serialized form.");
 					}
 					int comparedWithDefaultValue = sc.Property.Value == null ?
 						sc.Property.DefaultValue == null ? 0 : -1 : ((IComparable)sc.Property.Value).CompareTo(sc.Property.DefaultValue);
 					switch(sc.Condition) {
-						case SearchCriteria.CompareCondition.GreaterThan:
+						case CompareCondition.GreaterThan:
 						if(comparedWithDefaultValue < 0) {	// value > (<defaultValue)
 							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLessequal, parameterNameValue);
 						} else {							// value > (>=defaultValue)
 							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreater, parameterNameValue);
 						}
 						break;
-						case SearchCriteria.CompareCondition.GreaterThanOrEqual:
+						case CompareCondition.GreaterThanOrEqual:
 						if(comparedWithDefaultValue > 0) {	//value >= (>defaultValue)
 							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreaterequal, parameterNameValue);
 						} else {							//value >= (<=defaultValue>
 							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLess, parameterNameValue);
 						}
 						break;
-						case SearchCriteria.CompareCondition.LessThan:
+						case CompareCondition.LessThan:
 						if(comparedWithDefaultValue > 0) {	//value < (>defaultValue>
 							criteria.Insert(0, sqlNot).AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondGreaterequal, parameterNameValue);
 						} else {							//value < (<=defaultValue)
 							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLess, parameterNameValue);
 						}
 						break;
-						case SearchCriteria.CompareCondition.LessThanOrEqual:
+						case CompareCondition.LessThanOrEqual:
 						if(comparedWithDefaultValue < 0) {	//value <= (<defaultValue)
 							criteria.AppendFormat(CultureInfo.InvariantCulture, sqlCriteriaCondLessequal, parameterNameValue);
 						} else {							//value <= (>=defaultValue>
@@ -353,7 +355,7 @@ namespace nJupiter.DataAccess.Users {
 
 			command.CommandText = queryBuilder.ToString();
 			try {
-				UserCollection uc = GetUsersFromDataSet(CurrentDB.ExecuteDataSet(command));
+				var uc = GetUsersFromDataSet(CurrentDB.ExecuteDataSet(command));
 				this.UserCache.AddUsersToCache(uc);
 				return uc;
 			} catch(SqlException ex) {
@@ -363,45 +365,45 @@ namespace nJupiter.DataAccess.Users {
 					ex.Number.Equals(7643) ||	//the search generated too many results
 					ex.Number.Equals(7645)) {	//full-text predicate was null or empty (SQL Server 2005)
 					//return empty user collection
-					return new UserCollection();
+					return new List<IUser>();
 				}
 				throw;
 			}
 		}
 
-		public override UserCollection GetUsersByDomain(string domain) {
+		public override IList<IUser> GetUsersByDomain(string domain) {
 			if(domain == null) {
 				domain = string.Empty;
 			}
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetUsersByDomain",
 				CurrentDB.CreateStringInputParameter("@chvDomain", DbType.AnsiString, domain, false));
-			UserCollection uc = GetUsersFromDataSet(dsUser);
+			var uc = GetUsersFromDataSet(dsUser);
 			this.UserCache.AddUsersToCache(uc);
 			return uc;
 		}
 
-		public override User CreateUserInstance(string userName, string domain) {
+		public override IUser CreateUserInstance(string userName, string domain) {
 			if(domain == null)
 				domain = string.Empty;
 
 			string userId = Guid.NewGuid().ToString();
-			User user = new User(userId, userName, domain, GetPropertiesByUserId(userId), this.PropertyNames);
+			var user = new User(userId, userName, domain, GetPropertiesByUserId(userId), this.PropertyNames);
 			return user;
 		}
 
-		public override void SaveUser(User user) {
+		public override void SaveUser(IUser user) {
 			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 				this.SaveUser(user, transaction);
 				transaction.Commit();
 			}
 		}
 
-		public override void SaveUsers(UserCollection users) {
+		public override void SaveUsers(IList<IUser> users) {
 			if(users == null)
 				throw new ArgumentNullException("users");
 
 			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
-				foreach(User user in users) {
+				foreach(IUser user in users) {
 					this.SaveUser(user, transaction);
 				}
 				transaction.Commit();
@@ -428,22 +430,22 @@ namespace nJupiter.DataAccess.Users {
 			return GetPropertiesFromDataRows(null, context, null);
 		}
 
-		public override PropertyCollection GetProperties(User user, Context context) {
+		public override PropertyCollection GetProperties(IUser user, Context context) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 
-			PropertyCollection pc = base.GetProperties(user, context);
+			var pc = base.GetProperties(user, context);
 			return pc ?? this.GetPropertiesByUserId(user.Id, context);
 		}
 
-		public override void SaveProperties(User user, PropertyCollection propertyCollection) {
+		public override void SaveProperties(IUser user, PropertyCollection propertyCollection) {
 			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 				SaveProperties(user, propertyCollection, transaction);
 				transaction.Commit();
 			}
 		}
 
-		public override void DeleteUser(User user) {
+		public override void DeleteUser(IUser user) {
 			if(user == null) {
 				throw new ArgumentNullException("user");
 			}
@@ -453,28 +455,33 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override Context GetContext(string contextName) {
-			if(this.GetContexts().Contains(contextName))
-				return this.GetContexts()[contextName];
-			lock(this.padlock) {
-				if(!this.GetContexts().Contains(contextName))
-					this.contexts = null; // If not found then clear the cache and read the contexts from database again to be sure it is not created on a different computer.
-				if(!this.GetContexts().Contains(contextName))
-					return null;
+			if(!ContextsContains(contextName)){
+				lock(this.padlock) {
+					if(!ContextsContains(contextName))
+						this.contexts = null; // If not found then clear the cache and read the contexts from database again to be sure it is not created on a different computer.
+					if(!ContextsContains(contextName))
+						return null;
+				}
 			}
-			return this.GetContexts()[contextName];
+			return this.GetContexts().SingleOrDefault(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase));
 		}
-		public override ContextCollection GetContexts() {
+
+		private bool ContextsContains(string contextName) {
+			return GetContexts().Any(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		public override IEnumerable<Context> GetContexts() {
 			if(this.contexts != null)
 				return this.contexts;
 			lock(this.padlock) {
 				if(this.contexts == null) {
-					ContextCollection contextCollection = CreateContextCollectionInstance();
+					var contextCollection = new List<Context>();
 					DataSet dsFunction = CurrentDB.ExecuteDataSet("dbo.USER_GetContexts");
 					if(dsFunction.Tables.Count > 0) {
 						foreach(DataRow row in dsFunction.Tables[0].Rows) {
 							string contextName = (string)row["ContextName"];
-							Context uc = CreateContextInstance(contextName, this.GetPropertySchemas(contextName, null));
-							AddContextToCollection(uc, contextCollection);
+							Context uc = new Context(contextName);
+							contextCollection.Add(uc);
 						}
 					}
 					this.contexts = contextCollection;
@@ -483,29 +490,29 @@ namespace nJupiter.DataAccess.Users {
 			return this.contexts;
 		}
 
-		public override Context CreateContext(string contextName, PropertySchemaTable schemaTable) {
+		public override Context CreateContext(string contextName, ContextSchema schema) {
 			if(contextName == null)
 				throw new ArgumentNullException("contextName");
-			if(schemaTable == null)
-				throw new ArgumentNullException("schemaTable");
+			if(schema == null)
+				throw new ArgumentNullException("schema");
 
 			Context context;
 
-			lock(this.contexts.SyncRoot) {
-				if(this.GetContexts().Contains(contextName)) {
+			lock(padlock) {
+				if(ContextsContains(contextName)) {
 					throw new ContextAlreadyExistsException("A context with the name [" + contextName + "] already exists.");
 				}
 				using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 					CurrentDB.ExecuteNonQuery("dbo.USER_CreateContext", transaction,
 						CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName));
-					foreach(PropertySchema schema in schemaTable) {
-						this.AddSchemaToContext(schema, contextName, transaction);
+					foreach(PropertyDefinition s in schema) {
+						this.AddSchemaToContext(s, contextName, transaction);
 					}
-					context = CreateContextInstance(contextName, this.GetPropertySchemas(contextName, transaction));
+					context = new Context(contextName);
 					transaction.Commit();
 				}
 
-				AddContextToCollection(context, this.contexts);
+				contexts.Add(context);
 			}
 
 			return context;
@@ -515,21 +522,21 @@ namespace nJupiter.DataAccess.Users {
 			if(context == null) {
 				throw new ArgumentNullException("context");
 			}
-			lock(this.contexts.SyncRoot) {
+			lock(padlock) {
 				using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 					CurrentDB.ExecuteNonQuery("dbo.USER_DeleteContext", transaction,
 						CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context.Name, true));
 					transaction.Commit();
 				}
-				RemoveContextFromCollection(context, this.contexts);
+				contexts.Remove(context);
 			}
 		}
 
-		public override PropertySchemaTable GetPropertySchemas() {
-			return GetPropertySchemas(string.Empty, null);
+		public override ContextSchema GetDefaultContextSchema() {
+			return this.GetContextSchema(string.Empty, null);
 		}
 
-		public override void SetPassword(User user, string password) {
+		public override void SetPassword(IUser user, string password) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			if(user.Properties[this.PropertyNames.Password] == null)
@@ -546,7 +553,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public override bool CheckPassword(User user, string password) {
+		public override bool CheckPassword(IUser user, string password) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 			if(user.Properties["password"] == null)
@@ -609,33 +616,33 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Private And Protected Methods
-		private User GetUserFromDataSet(DataSet dsUser) {
-			UserCollection uc = GetUsersFromDataSet(dsUser);
+		private IUser GetUserFromDataSet(DataSet dsUser) {
+			var uc = GetUsersFromDataSet(dsUser);
 			return uc.Count > 0 ? uc[0] : null;
 		}
 
-		private UserCollection GetUsersFromDataSet(DataSet dsUser) {
-			UserCollection users = new UserCollection();
+		private IList<IUser> GetUsersFromDataSet(DataSet dsUser) {
+			var users = new List<IUser>();
 			// translate dataset
 			foreach(DataRow row in dsUser.Tables[0].Rows) {
 				string domain = (string)row["Domain"];
 				string userId = row["UserID"].ToString();
 
-				User user = new User(userId, (string)row["Username"], domain, GetPropertiesByUserId(userId), this.PropertyNames);
+				var user = new User(userId, (string)row["Username"], domain, GetPropertiesByUserId(userId), this.PropertyNames);
 				users.Add(user);
 			}
 			return users;
 		}
-		protected virtual void SaveUser(User user, IDbTransaction transaction) {
+		protected virtual void SaveUser(IUser user, IDbTransaction transaction) {
 			SaveUserInstance(user, transaction);
-			SaveProperties(user, this.GetProperties(user), transaction);
-			if(GetAttachedContextsToUser(user).Length > 0) {
+			SaveProperties(user, user.Properties.GetProperties(), transaction);
+			if(GetAttachedContextsToUser(user).Any()) {
 				foreach(Context context in GetAttachedContextsToUser(user)) {
 					SaveProperties(user, this.GetProperties(user, context), transaction);
 				}
 			}
 		}
-		protected virtual void SaveUserInstance(User user, IDbTransaction transaction) {
+		protected virtual void SaveUserInstance(IUser user, IDbTransaction transaction) {
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_Update", transaction,
 				CurrentDB.CreateInputParameter("@guidUserId", DbType.Guid, new Guid(user.Id)),
 				CurrentDB.CreateStringInputParameter("@chvnUsername", DbType.String, user.UserName, false),
@@ -664,10 +671,10 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private PropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, DbTransaction transaction) {
-			PropertySchemaTable pdt = (context == null ? this.GetPropertySchemas() : this.GetPropertySchemas(context.Name, transaction));
-			PropertyCollection upc = CreatePropertyCollectionInstance(pdt);
+			var schema = (context == null ? this.GetDefaultContextSchema() : this.GetContextSchema(context.Name, transaction));
+			var propertyList = new List<IProperty>();
 
-			foreach(PropertySchema pd in pdt) {
+			foreach(PropertyDefinition pd in schema) {
 				string propertyValue = null;
 				string propertyName = pd.PropertyName;
 				Type propertyType = pd.DataType;
@@ -680,14 +687,15 @@ namespace nJupiter.DataAccess.Users {
 						propertyValue = (string)currentField["ExtendedPropertyValue"];
 				}
 
-				AbstractProperty property = CreatePropertyInstance(propertyName, propertyValue, propertyType, context);
-				if(property != null)
-					AddPropertyToCollection(property, upc);
+				IProperty property = CreatePropertyInstance(propertyName, propertyValue, propertyType, context);
+				if(property != null){
+					propertyList.Add(property);
+				}
 			}
 
-			return upc;
+			return new PropertyCollection(propertyList, schema);
 		}
-		protected virtual void SaveProperty(User user, AbstractProperty property, IDbTransaction transaction) {
+		protected virtual void SaveProperty(IUser user, IProperty property, IDbTransaction transaction) {
 			string propertyValue = string.Empty;
 
 			if(!property.IsEmpty())
@@ -709,7 +717,7 @@ namespace nJupiter.DataAccess.Users {
 
 			property.IsDirty = false;
 		}
-		protected virtual void SaveProperties(User user, PropertyCollection propertyCollection, IDbTransaction transaction) {
+		protected virtual void SaveProperties(IUser user, IEnumerable<IProperty> propertyCollection, IDbTransaction transaction) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 
@@ -718,19 +726,20 @@ namespace nJupiter.DataAccess.Users {
 
 			this.UserCache.RemoveUserFromCache(user);
 
-			foreach(AbstractProperty property in propertyCollection) {
+			foreach(IProperty property in propertyCollection) {
 				SaveProperty(user, property, transaction);
 			}
 		}
-		protected virtual PropertySchemaTable GetPropertySchemas(string contextName, IDbTransaction transaction) {
-			if(this.propertySchemaTables.Contains(contextName))
-				return (PropertySchemaTable)this.propertySchemaTables[contextName];
+		
+		protected virtual ContextSchema GetContextSchema(string contextName, IDbTransaction transaction) {
+			if(this.contextSchema.Keys.Contains(contextName))
+				return this.contextSchema[contextName];
 
 			lock(padlock) {
-				if(this.propertySchemaTables.Contains(contextName))
-					return (PropertySchemaTable)this.propertySchemaTables[contextName];
+				if(this.contextSchema.Keys.Contains(contextName))
+					return this.contextSchema[contextName];
 
-				PropertySchemaTable pdt = CreatePropertySchemaTableInstance();
+				var pdt = new List<PropertyDefinition>();
 
 				IDataParameter[] prams = { CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName, true) };
 
@@ -760,18 +769,21 @@ namespace nJupiter.DataAccess.Users {
 						if(propertyType == null)
 							throw new UnsupportedTypeException("The given property has a type " + (string)row["DataType"] + " that can not be loaded.");
 
-						PropertySchema pd = CreatePropertySchemaInstance(propertyName, propertyType);
-						AddPropertySchemaToTable(pd, pdt);
+						PropertyDefinition pd = CreatePropertySchemaInstance(propertyName, propertyType);
+						pdt.Add(pd);
 					}
 				}
-				this.propertySchemaTables.Add(contextName, pdt);
-				return pdt;
+				var schema = new ContextSchema(pdt);
+				this.contextSchema.Add(contextName, schema);
+				return schema;
 			}
 		}
-		protected virtual void AddSchemaToContext(PropertySchema schema, string contextName, IDbTransaction transaction) {
+		
+		
+		protected virtual void AddSchemaToContext(PropertyDefinition definition, string contextName, IDbTransaction transaction) {
 			CurrentDB.ExecuteNonQuery("dbo.USER_AddContextualPropertySchema", transaction,
 				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, contextName, true),
-				CurrentDB.CreateStringInputParameter("@chvPropertyName", DbType.AnsiString, schema.PropertyName, true));
+				CurrentDB.CreateStringInputParameter("@chvPropertyName", DbType.AnsiString, definition.PropertyName, true));
 		}
 		#endregion
 

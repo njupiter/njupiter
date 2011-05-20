@@ -23,500 +23,212 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace nJupiter.DataAccess.Users {
 
 	[Serializable]
 	public sealed class Properties {
+		private readonly string username;
+		private readonly ICommonNames propertyNames;
+		private readonly IDictionary<Context, PropertyCollection> propertiesPerContext;
 
-		#region Members
-		private readonly User user;
-		private readonly CommonPropertyNames propertyNames;
-		#endregion
+		public IProperty this[string propertyName] { get { return this.GetProperty(propertyName); } }
+		public IProperty this[string propertyName, Context context] { get { return this.GetProperty(propertyName, context); } }
 
-		#region Indexers
-		public AbstractProperty this[string propertyName] { get { return this.user.GetProperty(propertyName); } }
-		public AbstractProperty this[string propertyName, Context context] { get { return this.user.GetProperty(propertyName, context); } }
-		#endregion
+		public ICommonNames PropertyNames { get { return this.propertyNames; } }
 
-		#region Properties
-		public CommonPropertyNames PropertyNames { get { return this.propertyNames; } }
-
-		internal Properties(User user, CommonPropertyNames propertyNames) {
-			this.user = user;
+		internal Properties(string username, PropertyCollection properties, ICommonNames propertyNames) {
+			this.username = username;
 			this.propertyNames = propertyNames;
+			this.propertiesPerContext = new Dictionary<Context, PropertyCollection>();
+			this.propertiesPerContext.Add(null, properties);
+			if(this.CreationDate == DateTime.MinValue) {
+				this.CreationDate = DateTime.UtcNow;
+			}
+		}
+
+		public T GetProperty<T>(string propertyName, string contextName) {
+			PropertyBase<T> ap = this.GetAbstractProperty<T>(propertyName, contextName);
+			if(ap == null) {
+				return default(T);
+			}
+			return ap.Value;
+		}
+
+		public void SetProperty<T>(string propertyName, string contextName, T value) {
+			PropertyBase<T> property = this.GetAbstractProperty<T>(propertyName, contextName);
+			if(property == null) {
+				return;
+			}
+			property.Value = value;
+		}
+
+		private void SetPropertyByKey<T>(string key, T value) {
+			if(this.propertyNames == null) {
+				return;
+			}
+			string propertyName = this.propertyNames.GetName(key);
+			string contextName = this.propertyNames.ContextNames.GetName(key);
+			this.SetProperty(propertyName, contextName, value);
+		}
+
+		private T GetPropertyByKey<T>(string key) {
+			if(this.propertyNames == null) {
+				return default(T);
+			}
+			string propertyName = this.propertyNames.GetName(key);
+			string contextName = this.propertyNames.ContextNames.GetName(key);
+			return this.GetProperty<T>(propertyName, contextName);
+		}
+
+		private PropertyBase<T> GetAbstractProperty<T>(string propertyName, string contextName) {
+			if(string.IsNullOrEmpty(propertyName)) {
+				return null;
+			}
+			PropertyBase<T> property = null;
+
+			if(contextName != null) {
+				var context = this.AttachedContexts.FirstOrDefault(c => c.Name.Equals(contextName));
+				if(context != null) {
+					property = this.GetProperty<T>(propertyName, context);
+				}
+			} else {
+				property = this.GetProperty<T>(propertyName);
+			}
+
+			if(property == null) {
+				return null;
+			}
+
+			return property;
+		}
+
+		public IEnumerable<Context> AttachedContexts {
+			get {
+				return this.propertiesPerContext.Keys.Where(context => context != null);
+			}
+		}
+
+		public IProperty GetProperty(string propertyName) {
+			return GetProperty(propertyName, null);
+		}
+
+		public IProperty GetProperty(string propertyName, Context context) {
+			if(this.propertiesPerContext.Keys.Contains(context))
+				return this.propertiesPerContext[context].SingleOrDefault(p => p.Name == propertyName);
+			return null;
+		}
+
+		public PropertyBase<T> GetProperty<T>(string propertyName) {
+			return GetProperty<T>(propertyName, (Context)null);
+		}
+
+		public PropertyBase<T> GetProperty<T>(string propertyName, Context context) {
+			if(this.propertiesPerContext.Keys.Contains(context))
+				return this.propertiesPerContext[context].Where(p => p.Name == propertyName) as PropertyBase<T>;
+			return null;
+		}
+
+		public PropertyCollection GetProperties() {
+			return this.propertiesPerContext[null];
+		}
+
+		public PropertyCollection GetProperties(Context context) {
+			if(context == null)
+				throw new ArgumentNullException("context");
+
+			if(this.propertiesPerContext.Keys.Contains(context))
+				return this.propertiesPerContext[context];
+			return null;
+		}
+
+		public bool ContainsPropertiesForContext(Context context) {
+			if(context == null)
+				throw new ArgumentNullException("context");
+			return this.propertiesPerContext.Keys.Contains(context);
+		}
+
+		public void AttachProperties(PropertyCollection properties) {
+
+			if(properties == null)
+				throw new ArgumentNullException("properties");
+
+			if(properties.Any()) {
+				
+				Context context = properties.First().Context;
+				
+				if(!properties.Count.Equals(properties.Schema.Count))
+					throw new PropertyCollectionMismatchException("The attached PropertyCollection does not match the attached Schema.");
+
+				var propertyList = new List<IProperty>();
+
+				foreach(PropertyDefinition pd in properties.Schema) {
+					IProperty newProperty = properties.FirstOrDefault(p => p.Name == pd.PropertyName);
+					if(newProperty == null || newProperty.Context != context)
+						throw new PropertyCollectionMismatchException("The attached PropertyCollection does not match the attached Schema.");
+					propertyList.Add(newProperty);
+				}
+				var newProperties = new PropertyCollection(propertyList, properties.Schema);
+				this.propertiesPerContext.Remove(context);
+				this.propertiesPerContext.Add(context, newProperties);
+			}
 		}
 
 		public string UserName {
 			get {
-				if(this.propertyNames == null)
-					return this.user.UserName;
-				string userName = this.GetPropertyFromKey(this.propertyNames.UserName, this.propertyNames.Contexts.UserName);
-				if(string.IsNullOrEmpty(userName))
-					return this.user.UserName;
+				string userName = this.GetPropertyByKey<string>("UserName");
+				if(string.IsNullOrEmpty(userName)) {
+					return username;
+				}
 				return userName;
 			}
 		}
 
 		public string DisplayName {
 			get {
-				if(!string.IsNullOrEmpty(this.FullName))
+				if(!string.IsNullOrEmpty(this.FullName)) {
 					return this.FullName;
-				if(!string.IsNullOrEmpty(this.FirstName) && !string.IsNullOrEmpty(this.LastName))
+				}
+				if(!string.IsNullOrEmpty(this.FirstName) && !string.IsNullOrEmpty(this.LastName)) {
 					return string.Format("{0} {1}", this.FirstName, this.LastName);
-				if(!string.IsNullOrEmpty(this.FirstName))
+				}
+				if(!string.IsNullOrEmpty(this.FirstName)) {
 					return string.Format("{0} ({1})", this.FirstName, this.UserName);
+				}
 				return this.UserName;
 			}
 		}
 
-		public string FullName {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.FullName, this.propertyNames.Contexts.FullName);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.FullName, this.propertyNames.Contexts.FullName);
-			}
-		}
-
-		public string FirstName {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.FirstName, this.propertyNames.Contexts.FirstName);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.FirstName, this.propertyNames.Contexts.FirstName);
-			}
-		}
-
-		public string LastName {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.LastName, this.propertyNames.Contexts.LastName);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.LastName, this.propertyNames.Contexts.LastName);
-			}
-
-		}
-
-		public string Description {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Description, this.propertyNames.Contexts.Description);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Description, this.propertyNames.Contexts.Description);
-			}
-		}
-
-		public string Email {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Email, this.propertyNames.Contexts.Email);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Email, this.propertyNames.Contexts.Email);
-			}
-		}
-
-		public string HomePage {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.HomePage, this.propertyNames.Contexts.HomePage);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.HomePage, this.propertyNames.Contexts.HomePage);
-			}
-		}
-
-		public string StreetAddress {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.StreetAddress, this.propertyNames.Contexts.StreetAddress);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.StreetAddress, this.propertyNames.Contexts.StreetAddress);
-			}
-
-		}
-
-		public string Company {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Company, this.propertyNames.Contexts.Company);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Company, this.propertyNames.Contexts.Company);
-			}
-		}
-
-		public string Department {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Department, this.propertyNames.Contexts.Department);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Department, this.propertyNames.Contexts.Department);
-			}
-		}
-
-		public string City {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.City, this.propertyNames.Contexts.City);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.City, this.propertyNames.Contexts.City);
-			}
-		}
-
-		public string Telephone {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Telephone, this.propertyNames.Contexts.Telephone);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Telephone, this.propertyNames.Contexts.Telephone);
-			}
-		}
-
-		public string Fax {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Fax, this.propertyNames.Contexts.Fax);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Fax, this.propertyNames.Contexts.Fax);
-			}
-		}
-
-
-		public string HomeTelephone {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.HomeTelephone, this.propertyNames.Contexts.HomeTelephone);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.HomeTelephone, this.propertyNames.Contexts.HomeTelephone);
-			}
-		}
-
-		public string MobileTelephone {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.MobileTelephone, this.propertyNames.Contexts.MobileTelephone);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.MobileTelephone, this.propertyNames.Contexts.MobileTelephone);
-			}
-		}
-
-		public string PostOfficeBox {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.PostOfficeBox, this.propertyNames.Contexts.PostOfficeBox);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.PostOfficeBox, this.propertyNames.Contexts.PostOfficeBox);
-			}
-		}
-
-		public string PostalCode {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.PostalCode, this.propertyNames.Contexts.PostalCode);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.PostalCode, this.propertyNames.Contexts.PostalCode);
-			}
-		}
-
-		public string Country {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Country, this.propertyNames.Contexts.Country);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Country, this.propertyNames.Contexts.Country);
-			}
-		}
-
-		public string Title {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.Title, this.propertyNames.Contexts.Title);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Title, this.propertyNames.Contexts.Title);
-			}
-		}
-
-		public bool Active {
-			get {
-				if(this.propertyNames == null)
-					return false;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.Active, this.propertyNames.Contexts.Active);
-				if(ap == null || ap.Value == null)
-					return false;
-				return (bool)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Active, this.propertyNames.Contexts.Active);
-			}
-		}
-
-		public string PasswordQuestion {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.PasswordQuestion, this.propertyNames.Contexts.PasswordQuestion);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.PasswordQuestion, this.propertyNames.Contexts.PasswordQuestion);
-			}
-		}
-
-		public string PasswordAnswer {
-			get {
-				if(this.propertyNames == null)
-					return null;
-				return this.GetPropertyFromKey(this.propertyNames.PasswordAnswer, this.propertyNames.Contexts.PasswordAnswer);
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.PasswordAnswer, this.propertyNames.Contexts.PasswordAnswer);
-			}
-		}
-
-		public DateTime LastActivityDate {
-			get {
-				if(this.propertyNames == null)
-					return DateTime.MinValue;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastActivityDate, this.propertyNames.Contexts.LastActivityDate);
-				if(ap == null || ap.Value == null)
-					return DateTime.MinValue;
-				return (DateTime)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.LastActivityDate, this.propertyNames.Contexts.LastActivityDate);
-			}
-		}
-
-		public DateTime CreationDate {
-			get {
-				if(this.propertyNames == null)
-					return DateTime.MinValue;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.CreationDate, this.propertyNames.Contexts.CreationDate);
-				if(ap == null || ap.Value == null)
-					return DateTime.MinValue;
-				return (DateTime)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.CreationDate, this.propertyNames.Contexts.CreationDate);
-			}
-		}
-
-		public DateTime LastLockoutDate {
-			get {
-				if(this.propertyNames == null)
-					return DateTime.MinValue;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastLockoutDate, this.propertyNames.Contexts.LastLockoutDate);
-				if(ap == null || ap.Value == null)
-					return DateTime.MinValue;
-				return (DateTime)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.LastLockoutDate, this.propertyNames.Contexts.LastLockoutDate);
-			}
-		}
-
-		public DateTime LastLoginDate {
-			get {
-				if(this.propertyNames == null)
-					return DateTime.MinValue;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastLoginDate, this.propertyNames.Contexts.LastLoginDate);
-				if(ap == null || ap.Value == null)
-					return DateTime.MinValue;
-				return (DateTime)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.LastLoginDate, this.propertyNames.Contexts.LastLoginDate);
-			}
-		}
-
-		public DateTime LastPasswordChangedDate {
-			get {
-				if(this.propertyNames == null)
-					return DateTime.MinValue;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastPasswordChangedDate, this.propertyNames.Contexts.LastPasswordChangedDate);
-				if(ap == null || ap.Value == null)
-					return DateTime.MinValue;
-				return (DateTime)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.LastPasswordChangedDate, this.propertyNames.Contexts.LastPasswordChangedDate);
-			}
-		}
-
-		public bool Locked {
-			get {
-				if(this.propertyNames == null)
-					return false;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.Locked, this.propertyNames.Contexts.Locked);
-				if(ap == null || ap.Value == null)
-					return false;
-				return (bool)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.Locked, this.propertyNames.Contexts.Locked);
-			}
-		}
-
-		public DateTime LastUpdatedDate {
-			get {
-				if(this.propertyNames == null)
-					return DateTime.MinValue;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.LastUpdatedDate, this.propertyNames.Contexts.LastUpdatedDate);
-				if(ap == null || ap.Value == null)
-					return DateTime.MinValue;
-				return (DateTime)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.LastUpdatedDate, this.propertyNames.Contexts.LastUpdatedDate);
-			}
-		}
-
-		public bool IsAnonymous {
-			get {
-				if(this.propertyNames == null)
-					return false;
-				AbstractProperty ap = this.GetAbstractPropertyFromKey(this.propertyNames.IsAnonymous, this.propertyNames.Contexts.IsAnonymous);
-				if(ap == null || ap.Value == null)
-					return false;
-				return (bool)ap.Value;
-			}
-			set {
-				if(this.propertyNames == null)
-					return;
-				this.SetPropertyFromKey(value, this.propertyNames.IsAnonymous, this.propertyNames.Contexts.IsAnonymous);
-			}
-		}
-
-		private AbstractProperty GetAbstractPropertyFromKey(string key, string contextKey) {
-			if(string.IsNullOrEmpty(key))
-				return null;
-			AbstractProperty property = null;
-
-			if(contextKey != null) {
-				Context context = null;
-				foreach(Context c in this.user.AttachedContexts) {
-					if(c.Name.Equals(contextKey)) {
-						context = c;
-						break;
-					}
-				}
-				if(context != null) {
-					property = this.user.Properties[key, context];
-				}
-			} else {
-				property = this.user.Properties[key];
-			}
-
-			if(property == null || property.Value == null)
-				return null;
-
-			return property;
-		}
-
-		private string GetPropertyFromKey(string key, string contextKey) {
-			AbstractProperty property = this.GetAbstractPropertyFromKey(key, contextKey);
-			if(property == null || property.Value == null)
-				return null;
-			return property.Value.ToString();
-		}
-
-		private void SetPropertyFromKey(object value, string key, string contextKey) {
-			AbstractProperty property = this.GetAbstractPropertyFromKey(key, contextKey);
-			if(property == null || property.Value == null)
-				return;
-			property.Value = value;
-		}
-		#endregion
-
+		public string FullName { get { return this.GetPropertyByKey<string>("FullName"); } set { this.SetPropertyByKey("FullName", value); } }
+		public string FirstName { get { return this.GetPropertyByKey<string>("FirstName"); } set { this.SetPropertyByKey("FirstName", value); } }
+		public string LastName { get { return this.GetPropertyByKey<string>("LastName"); } set { this.SetPropertyByKey("LastName", value); } }
+		public string Description { get { return this.GetPropertyByKey<string>("Description"); } set { this.SetPropertyByKey("Description", value); } }
+		public string Email { get { return this.GetPropertyByKey<string>("Email"); } set { this.SetPropertyByKey("Email", value); } }
+		public string HomePage { get { return this.GetPropertyByKey<string>("HomePage"); } set { this.SetPropertyByKey("HomePage", value); } }
+		public string StreetAddress { get { return this.GetPropertyByKey<string>("StreetAddress"); } set { this.SetPropertyByKey("StreetAddress", value); } }
+		public string Company { get { return this.GetPropertyByKey<string>("Company"); } set { this.SetPropertyByKey("Company", value); } }
+		public string Department { get { return this.GetPropertyByKey<string>("Department"); } set { this.SetPropertyByKey("Department", value); } }
+		public string City { get { return this.GetPropertyByKey<string>("City"); } set { this.SetPropertyByKey("City", value); } }
+		public string Telephone { get { return this.GetPropertyByKey<string>("Telephone"); } set { this.SetPropertyByKey("Telephone", value); } }
+		public string Fax { get { return this.GetPropertyByKey<string>("Fax"); } set { this.SetPropertyByKey("Fax", value); } }
+		public string HomeTelephone { get { return this.GetPropertyByKey<string>("HomeTelephone"); } set { this.SetPropertyByKey("HomeTelephone", value); } }
+		public string MobileTelephone { get { return this.GetPropertyByKey<string>("MobileTelephone"); } set { this.SetPropertyByKey("MobileTelephone", value); } }
+		public string PostOfficeBox { get { return this.GetPropertyByKey<string>("PostOfficeBox"); } set { this.SetPropertyByKey("PostOfficeBox", value); } }
+		public string PostalCode { get { return this.GetPropertyByKey<string>("PostalCode"); } set { this.SetPropertyByKey("PostalCode", value); } }
+		public string Country { get { return this.GetPropertyByKey<string>("Country"); } set { this.SetPropertyByKey("Country", value); } }
+		public string Title { get { return this.GetPropertyByKey<string>("Title"); } set { this.SetPropertyByKey("Title", value); } }
+		public bool Active { get { return this.GetPropertyByKey<bool>("Active"); } set { this.SetPropertyByKey("Active", value); } }
+		public string PasswordQuestion { get { return this.GetPropertyByKey<string>("PasswordQuestion"); } set { this.SetPropertyByKey("PasswordQuestion", value); } }
+		public string PasswordAnswer { get { return this.GetPropertyByKey<string>("PasswordAnswer"); } set { this.SetPropertyByKey("PasswordAnswer", value); } }
+		public DateTime LastActivityDate { get { return this.GetPropertyByKey<DateTime>("LastActivityDate"); } set { this.SetPropertyByKey("LastActivityDate", value); } }
+		public DateTime CreationDate { get { return this.GetPropertyByKey<DateTime>("CreationDate"); } set { this.SetPropertyByKey("CreationDate", value); } }
+		public DateTime LastLockoutDate { get { return this.GetPropertyByKey<DateTime>("LastLockoutDate"); } set { this.SetPropertyByKey("LastLockoutDate", value); } }
+		public DateTime LastLoginDate { get { return this.GetPropertyByKey<DateTime>("LastLoginDate"); } set { this.SetPropertyByKey("LastLoginDate", value); } }
+		public DateTime LastPasswordChangedDate { get { return this.GetPropertyByKey<DateTime>("LastPasswordChangedDate"); } set { this.SetPropertyByKey("LastPasswordChangedDate", value); } }
+		public bool Locked { get { return this.GetPropertyByKey<bool>("Locked"); } set { this.SetPropertyByKey("Locked", value); } }
+		public DateTime LastUpdatedDate { get { return this.GetPropertyByKey<DateTime>("LastUpdatedDate"); } set { this.SetPropertyByKey("LastUpdatedDate", value); } }
+		public bool IsAnonymous { get { return this.GetPropertyByKey<bool>("IsAnonymous"); } set { this.SetPropertyByKey("IsAnonymous", value); } }
 	}
 }

@@ -22,39 +22,45 @@
 */
 #endregion
 
-using System;
-
 namespace nJupiter.DataAccess.Users {
-	[Serializable]
-	public class PropertySchema {
+	
+	public interface ICommonNames {
+		string UserName { get; }
+		string FullName { get; }
+		string FirstName { get; }
+		string LastName { get; }
+		string Description { get; }
+		string Email { get; }
+		string HomePage { get; }
+		string StreetAddress { get; }
+		string Company { get; }
+		string Department { get; }
+		string City { get; }
+		string Telephone { get; }
+		string Fax { get; }
+		string HomeTelephone { get; }
+		string MobileTelephone { get; }
+		string PostOfficeBox { get; }
+		string PostalCode { get; }
+		string Country { get; }
+		string Title { get; }
+		string Active { get; }
+		string PasswordQuestion { get; }
+		string PasswordAnswer { get; }
+		string LastActivityDate { get; }
+		string CreationDate { get; }
+		string LastLockoutDate { get; }
+		string LastLoginDate { get; }
+		string LastPasswordChangedDate { get; }
+		string Locked { get; }
+		string Password { get; }
+		string PasswordSalt { get; }
+		string LastUpdatedDate { get; }
+		string IsAnonymous { get; }
+		ICommonNames ContextNames { get; }
 
-		#region Members
-		private readonly string propertyName;
-		private readonly Type type;
-		#endregion
-
-		#region Constructors
-		internal PropertySchema(string propertyName, Type dataType) {
-			this.propertyName = propertyName;
-			this.type = dataType;
-		}
-		#endregion
-
-		#region Properties
-		public string PropertyName { get { return this.propertyName; } }
-		public Type DataType { get { return this.type; } }
-		#endregion
-
-		#region Methods
-		public override int GetHashCode() {
-			return base.GetHashCode();
-		}
-
-		public override bool Equals(object obj) {
-			PropertySchema objPropertySchema = obj as PropertySchema;
-			return objPropertySchema != null && objPropertySchema.PropertyName.Equals(this.PropertyName);
-		}
-		#endregion
+		string GetName(string name);
+		string GetContextName(string name);
+		
 	}
-
 }

@@ -22,113 +22,32 @@
 */
 #endregion
 
-using System;
 using System.Collections;
-
+using System.Collections.Generic;
 namespace nJupiter.DataAccess.Users {
-	// TODO: Implement clonable
-	[Serializable]
-	public sealed class PropertyCollection : ICollection {
 
-		#region Members
-		private Hashtable innerHash;
-		private readonly PropertySchemaTable propertySchemaTable;
-		#endregion
+	public sealed class PropertyCollection : IEnumerable<IProperty> {
+		
+		private readonly List<IProperty> innerList;
+		private readonly ContextSchema schema;
+		
+		internal ContextSchema Schema { get { return this.schema; } }
+		
+		internal int Count { get { return innerList.Count; } }
 
-		#region Constructors
-		internal PropertyCollection(PropertySchemaTable pst) {
-			this.innerHash = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			this.propertySchemaTable = (pst ?? new PropertySchemaTable());
-		}
-		#endregion
+		public PropertyCollection() : this(null, null) {}
 
-		#region Indexers
-		public AbstractProperty this[string propertyName] { get { return (AbstractProperty)InnerHash[propertyName]; } }
-		#endregion
-
-		#region Properties
-		internal Hashtable InnerHash { get { return this.innerHash; } }
-		internal PropertySchemaTable PropertySchemas { get { return this.propertySchemaTable; } }
-		#endregion
-
-		#region Public Methods
-		internal void Add(AbstractProperty property) {
-			if(property == null)
-				throw new ArgumentNullException("property");
-			InnerHash.Add(property.Name, property);
+		public PropertyCollection(List<IProperty> innerList, ContextSchema schema) {
+			this.innerList = innerList ?? new List<IProperty>();
+			this.schema = schema ?? new ContextSchema(new List<PropertyDefinition>());
 		}
 
-		public AbstractProperty[] ToArray() {
-			return (AbstractProperty[])(new ArrayList(InnerHash.Values)).ToArray(typeof(AbstractProperty));
+		public IEnumerator<IProperty> GetEnumerator() {
+			return innerList.GetEnumerator();
 		}
 
-		public bool Contains(AbstractProperty property) {
-			return (InnerHash.ContainsValue(property));
-		}
-
-		public bool Contains(string propertyName) {
-			return (InnerHash.Contains(propertyName));
-		}
-
-		public void CopyTo(Array array, int index) {
-			InnerHash.Values.CopyTo(array, index);
-		}
-
-		public void CopyTo(AbstractProperty[] array, int index) {
-			InnerHash.Values.CopyTo(array, index);
-		}
-
-		public static PropertyCollection Synchronized(PropertyCollection nonSync) {
-			if(nonSync == null) {
-				throw new ArgumentNullException("nonSync");
-			}
-			PropertyCollection sync = new PropertyCollection(nonSync.propertySchemaTable);
-			sync.innerHash = Hashtable.Synchronized(nonSync.innerHash);
-			return sync;
-		}
-		#endregion
-
-		#region Implementation of IEnumerable
 		IEnumerator IEnumerable.GetEnumerator() {
-			return new PropertyCollectionEnumerator(this);
+			return innerList.GetEnumerator();
 		}
-
-		public PropertyCollectionEnumerator GetEnumerator() {
-			return new PropertyCollectionEnumerator(this);
-		}
-		#endregion
-
-		#region Implementation of ICollection
-		public bool IsSynchronized { get { return InnerHash.IsSynchronized; } }
-		public int Count { get { return InnerHash.Count; } }
-		public object SyncRoot { get { return this; } }
-		#endregion
-
 	}
-
-	#region PropertyCollectionEnumerator
-	[Serializable]
-	public class PropertyCollectionEnumerator : IEnumerator {
-		private readonly IEnumerator innerEnumerator;
-
-		public PropertyCollectionEnumerator(PropertyCollection enumerable) {
-			if(enumerable == null)
-				throw new ArgumentNullException("enumerable");
-			innerEnumerator = enumerable.InnerHash.GetEnumerator();
-		}
-
-		#region Implementation of IEnumerator
-		public void Reset() {
-			innerEnumerator.Reset();
-		}
-
-		public bool MoveNext() {
-			return innerEnumerator.MoveNext();
-		}
-
-		object IEnumerator.Current { get { return ((DictionaryEntry)innerEnumerator.Current).Value; } }
-		public AbstractProperty Current { get { return (AbstractProperty)((DictionaryEntry)innerEnumerator.Current).Value; } }
-		#endregion
-	}
-	#endregion
 }

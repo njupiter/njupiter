@@ -22,13 +22,15 @@
 */
 #endregion
 
+using System.Collections.Generic;
+
 namespace nJupiter.DataAccess.Users {
 	public interface IUserCache {
-		User GetUserById(string userId);
-		User GetUserByUserName(string userName, string domain);
-		void RemoveUserFromCache(User user);
-		void RemoveUsersFromCache(UserCollection users);
-		void AddUserToCache(User user);
-		void AddUsersToCache(UserCollection users);
+		IUser GetUserById(string userId);
+		IUser GetUserByUserName(string userName, string domain);
+		void RemoveUserFromCache(IUser user);
+		void RemoveUsersFromCache(IList<IUser> users);
+		void AddUserToCache(IUser user);
+		void AddUsersToCache(IList<IUser> users);
 	}
 }
