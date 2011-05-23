@@ -272,7 +272,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 					case CompareCondition.GreaterThanOrEqual:
 					case CompareCondition.LessThan:
 					case CompareCondition.LessThanOrEqual:
-					if(!sc.Property.SerializationPreservesOrder) {
+					if(sc.Property is ISqlProperty && !((ISqlProperty)sc.Property).SerializationPreservesOrder) {
 						throw new InvalidOperationException("Can not use inequality comparison on a property that does not maintain sort order of its underlying type in its serialized form.");
 					}
 					int comparedWithDefaultValue = sc.Property.Value == null ?

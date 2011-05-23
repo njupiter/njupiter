@@ -35,33 +35,21 @@ namespace nJupiter.DataAccess.Users {
 		private bool isDirty;
 		private bool isReadOnly;
 
-		protected PropertyBase(string propertyName, Context context) {
-			this.name = propertyName;
+		protected PropertyBase(string name, Context context) {
+			this.name = name;
 			this.context = context;
 		}
 
 		public virtual bool IsEmpty() {
-			return this.Value.Equals(default(T));
+			return object.Equals(value, default(T)) || (value is string && value.ToString().Length == 0);
 		}
 
 		public abstract string ToSerializedString();
 
 		public abstract T DeserializePropertyValue(string value);
 
-		public Type GetPropertyValueType() {
-			return typeof(T);
-		}
-
-		public override int GetHashCode() {
-			return this.Name.ToLowerInvariant().GetHashCode();
-		}
-
-		public override bool Equals(object obj) {
-			PropertyBase<T> objProperty = obj as PropertyBase<T>;
-			return objProperty != null && objProperty.Name.Equals(this.Name) && objProperty.Context.Equals(this.context);
-		}
-
 		public string Name { get { return this.name; } }
+		public Type Type { get { return typeof(T); } }
 		public Context Context { get { return this.context; } }
 		public T DefaultValue { get { return default(T); } }
 
@@ -76,7 +64,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public T Value {
 			get {
-				if(CheckIfDirty()) {
+				if(this.IsOfTypeDirtyOnTouch()) {
 					this.IsDirty = true;
 				}
 				return this.value;
@@ -95,28 +83,26 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private bool CheckIfDirty(T v) {
-			if(CheckIfDirty() || !object.Equals(v, this.value)) {
+			if(this.IsOfTypeDirtyOnTouch() || !object.Equals(v, value)) {
 				return true;
 			}
 			return false;
 		}
 
-		private bool CheckIfDirty() {
-			return !this.GetPropertyValueType().IsPrimitive && !(this.value is string) && !(this.value is DateTime);
+		private bool IsOfTypeDirtyOnTouch() {
+			return !this.Type.IsPrimitive && !(value is string) && !(value is DateTime);
 		}
 
-		public virtual bool SerializationPreservesOrder { get { return true; } }
-		
-		object IProperty.DefaultValue { get { return default(T); } }		
-		object IProperty.Value { get { return value; }  set { this.value = (T)value; } }
+		object IProperty.DefaultValue { get { return this.DefaultValue; } }		
+		object IProperty.Value { get { return Value; }  set { this.Value = (T)value; } }
 		object IProperty.DeserializePropertyValue(string v) {
 			return this.DeserializePropertyValue(v);
 		}
 
 		public object Clone() {
 			var newProperty = (PropertyBase<T>)this.MemberwiseClone();
-			if(!this.GetPropertyValueType().IsPrimitive){
-				newProperty.Value = DeserializePropertyValue(this.ToSerializedString());
+			if(!this.Type.IsPrimitive){
+				newProperty.value = DeserializePropertyValue(this.ToSerializedString());
 			}
 			newProperty.isReadOnly = false;
 			newProperty.isDirty = false;

@@ -1,20 +1,10 @@
 ﻿using System;
+using System.Globalization;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
-	public class BoolProperty : PropertyBase<bool> {
-		[NonSerialized]
-		private const bool Default = false;
-
-		public BoolProperty(string propertyName, Context context) : base(propertyName, context) { }
-
-		public override string ToSerializedString() {
-			return this.Value.ToString();
-		}
-
-		public override bool DeserializePropertyValue(string value) {
-			return value == null ? Default : bool.Parse(value);
-		}
-
+	public class BoolProperty : GenericProperty<bool>, ISqlProperty {
+		public BoolProperty(string propertyName, Context context) : base(propertyName, context, CultureInfo.InvariantCulture) { }
+		public bool SerializationPreservesOrder { get { return true; } }
 	}
 }

@@ -8,9 +8,8 @@ namespace nJupiter.DataAccess.Users {
 		bool IsDirty { get; set; }
 		object DefaultValue { get; }
 		object Value { get; set; }
-		Type GetPropertyValueType();
+		Type Type { get; }
 		string ToSerializedString();
-		bool SerializationPreservesOrder { get; }
 		object DeserializePropertyValue(string value);
 
 	}

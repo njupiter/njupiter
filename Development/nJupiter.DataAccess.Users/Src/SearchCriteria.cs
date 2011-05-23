@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace nJupiter.DataAccess.Users {
 
@@ -67,7 +68,7 @@ namespace nJupiter.DataAccess.Users {
 			if(propertyName == null) {
 				throw new ArgumentNullException("propertyName");
 			}
-			StringProperty stringProperty = new StringProperty(propertyName, context);
+			var stringProperty = new GenericProperty<string>(propertyName, context, CultureInfo.InvariantCulture);
 			stringProperty.Value = propertyValue;
 			this.InitCriteria(stringProperty, domain, condition, required);
 		}
@@ -110,7 +111,7 @@ namespace nJupiter.DataAccess.Users {
 				case CompareCondition.GreaterThanOrEqual:
 				case CompareCondition.LessThan:
 				case CompareCondition.LessThanOrEqual:
-				if(!typeof(IComparable).IsAssignableFrom(property.GetPropertyValueType())) {
+				if(!typeof(IComparable).IsAssignableFrom(property.Type)) {
 					throw new InvalidOperationException("Can not use inequality comparison on a property whose underlying type is not comparable.");
 				}
 				break;
@@ -121,7 +122,7 @@ namespace nJupiter.DataAccess.Users {
 				case CompareCondition.NotEndsWith:
 				case CompareCondition.StartsWith:
 				case CompareCondition.NotStartsWith:
-				if(!property.GetPropertyValueType().Equals(typeof(string))) {
+				if(!property.Type.Equals(typeof(string))) {
 					throw new InvalidOperationException("Can not use string comparisons on a property whose underlying type is not a string.");
 				}
 				break;

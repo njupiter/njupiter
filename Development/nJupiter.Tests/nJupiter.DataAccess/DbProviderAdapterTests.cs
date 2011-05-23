@@ -6,7 +6,7 @@ using nJupiter.DataAccess;
 
 using NUnit.Framework;
 
-namespace nJupiter.Tests.nJupiter.DataAccess {
+namespace nJupiter.Tests.DataAccess {
 	
 	[TestFixture]
 	public class DbProviderAdapterTests {

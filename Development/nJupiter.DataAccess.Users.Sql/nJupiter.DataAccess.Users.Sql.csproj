@@ -55,7 +55,9 @@
     <Compile Include="Src\Properties\BoolProperty.cs" />
     <Compile Include="Src\Properties\DateTimeProperty.cs" />
     <Compile Include="Src\Properties\IntProperty.cs" />
+    <Compile Include="Src\Properties\ISqlProperty.cs" />
     <Compile Include="Src\Properties\PropertyFactory.cs" />
+    <Compile Include="Src\Properties\StringProperty.cs" />
     <Compile Include="Src\Properties\XmlSerializedProperty.cs" />
     <Compile Include="Src\UserProvider.cs" />
   </ItemGroup>

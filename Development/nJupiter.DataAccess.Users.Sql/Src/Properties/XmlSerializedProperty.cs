@@ -7,16 +7,12 @@ using System.Xml.Serialization;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
-	public class XmlSerializedProperty : PropertyBase<object> {
-		[NonSerialized]
-		private const object Default = null;
+	public class XmlSerializedProperty : PropertyBase<object>, ISqlProperty {
 
 		public XmlSerializedProperty(string propertyName, Context context) : base(propertyName, context) { }
 
-		public override bool SerializationPreservesOrder { get { return false; } }
-
 		public override string ToSerializedString() {
-			if(this.Value == Default)
+			if(this.IsEmpty())
 				return null;
 			Type type = this.Value.GetType();
 			XmlSerializer serializer = new XmlSerializer(type);
@@ -25,6 +21,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			serializer.Serialize(xmlwriter, this.Value);
 			string xmlSerializedData = stringwriter.ToString();
 			ValueWrapper valueWrapper = new ValueWrapper(type, xmlSerializedData);
+			this.IsDirty = false;
 			using(MemoryStream stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, valueWrapper);
 				return Convert.ToBase64String(stream.ToArray());
@@ -32,14 +29,15 @@ namespace nJupiter.DataAccess.Users.Sql {
 		}
 
 		public override object DeserializePropertyValue(string value) {
-			if(value == null)
-				return null;
+			if(string.IsNullOrEmpty(value)) {
+				return this.DefaultValue;	
+			}
 			ValueWrapper valueWrapper;
 			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
 				valueWrapper = (new BinaryFormatter()).Deserialize(stream) as ValueWrapper;
 			}
 			if(valueWrapper == null || valueWrapper.Type == null || valueWrapper.Value == null)
-				return null;
+				return this.DefaultValue;
 
 			XmlSerializer serializer = new XmlSerializer(valueWrapper.Type);
 			StringReader stringReader = new StringReader(valueWrapper.Value);
@@ -58,5 +56,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			public Type Type { get { return this.type; } }
 			public string Value { get { return this.value; } }
 		}
+
+		public bool SerializationPreservesOrder { get { return false; } }
 	}
 }

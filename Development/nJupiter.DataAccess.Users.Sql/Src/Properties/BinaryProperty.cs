@@ -4,26 +4,25 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
-	public class BinaryProperty : PropertyBase<object> {
-		[NonSerialized]
-		private const object Default = null;
+	public class BinaryProperty : PropertyBase<object>, ISqlProperty {
 
-		public BinaryProperty(string propertyName, Context context) : base(propertyName, context) { }
+		public BinaryProperty(string name, Context context) : base(name, context) { }
 
-		public override bool SerializationPreservesOrder { get { return false; } }
+		public bool SerializationPreservesOrder { get { return false; } }
 
 		public override string ToSerializedString() {
-			if(this.Value == Default)
+			if(this.IsEmpty())
 				return null;
 			using(MemoryStream stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, this.Value);
+				this.IsDirty = false;
 				return Convert.ToBase64String(stream.ToArray());
 			}
 		}
 
 		public override object DeserializePropertyValue(string value) {
 			if(value == null)
-				return null;
+				return this.DefaultValue;
 			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
 				return new BinaryFormatter().Deserialize(stream);
 			}

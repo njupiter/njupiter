@@ -3,13 +3,8 @@ using System.Globalization;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
-	public class DateTimeProperty : PropertyBase<DateTime> {
-		#region Constants
+	public class DateTimeProperty : PropertyBase<DateTime>, ISqlProperty {
 		private const string Format = "D19";
-		#endregion
-
-		[NonSerialized]
-		private readonly DateTime defaultValue = DateTime.MinValue;
 
 		public DateTimeProperty(string propertyName, Context context) : base(propertyName, context) { }
 
@@ -18,7 +13,9 @@ namespace nJupiter.DataAccess.Users.Sql {
 		}
 
 		public override DateTime DeserializePropertyValue(string value) {
-			return value == null ? defaultValue : new DateTime(long.Parse(value, NumberFormatInfo.InvariantInfo));
+			return string.IsNullOrEmpty(value) ? this.DefaultValue : new DateTime(long.Parse(value, NumberFormatInfo.InvariantInfo));
 		}
+
+		public bool SerializationPreservesOrder { get { return true; } }
 	}
 }

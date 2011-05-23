@@ -79,6 +79,7 @@
     <Compile Include="Src\CompareCondition.cs" />
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserProvider.cs" />
+    <Compile Include="Src\Properties\GenericProperty.cs" />
     <Compile Include="Src\UserProviderFactory.cs" />
     <Compile Include="Src\Properties\IProperty.cs" />
     <Compile Include="Src\CommonNamesFactory.cs" />
@@ -100,7 +101,6 @@
     <Compile Include="Src\Web\HybridMembershipUser.cs" />
     <Compile Include="Src\IUser.cs" />
     <Compile Include="Src\Caching\IUserCache.cs" />
-    <Compile Include="Src\Properties\StringProperty.cs" />
     <Compile Include="Src\Web\MembershipProvider.cs" />
     <Compile Include="Src\Web\MembershipUser.cs" />
     <Compile Include="Src\Properties\PropertyHandler.cs">
