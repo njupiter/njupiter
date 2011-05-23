@@ -17,7 +17,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override bool IsEmpty() {
-			return this.Value.Trim().Equals(defaultValue);
+			return string.IsNullOrEmpty(this.Value);
 		}
 	}
 }

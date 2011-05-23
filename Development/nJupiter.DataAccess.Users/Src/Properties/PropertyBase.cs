@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Data;
 
 namespace nJupiter.DataAccess.Users {
 	
@@ -32,6 +33,7 @@ namespace nJupiter.DataAccess.Users {
 		private readonly Context context;
 		private T value;
 		private bool isDirty;
+		private bool isReadOnly;
 
 		protected PropertyBase(string propertyName, Context context) {
 			this.name = propertyName;
@@ -81,6 +83,9 @@ namespace nJupiter.DataAccess.Users {
 				return this.value;
 			}
 			set {
+				if(isReadOnly) {
+					throw new ReadOnlyException();
+				}
 				if(CheckIfDirty(value)) {
 					this.IsDirty = true;
 				}
@@ -108,5 +113,21 @@ namespace nJupiter.DataAccess.Users {
 		object IProperty.DeserializePropertyValue(string v) {
 			return this.DeserializePropertyValue(v);
 		}
+
+		public object Clone() {
+			var newProperty = (PropertyBase<T>)this.MemberwiseClone();
+			if(!this.GetPropertyValueType().IsPrimitive){
+				newProperty.Value = DeserializePropertyValue(this.ToSerializedString());
+			}
+			newProperty.isReadOnly = false;
+			newProperty.isDirty = false;
+			return newProperty;
+		}
+
+		public void MakeReadOnly() {
+			isReadOnly = true;
+		}
+
+		public bool IsReadOnly { get { return isReadOnly; } }
 	}
 }

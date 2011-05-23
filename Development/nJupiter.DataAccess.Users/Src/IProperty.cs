@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace nJupiter.DataAccess.Users {
-	public interface IProperty {
+	public interface IProperty: ILockable {
 		bool IsEmpty();
 		string ToSerializedString();
 		Type GetPropertyValueType();

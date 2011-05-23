@@ -25,15 +25,15 @@
 using System;
 
 namespace nJupiter.DataAccess.Users {
-	// TODO: Implement clonable
 
 	[Serializable]
 	public class User : IUser {
 
-		private readonly Properties properties;
+		private PropertyHandler properties;
 		private readonly string id;
 		private readonly string domain;
 		private readonly string userName;
+		private bool isReadOnly;
 
 		private User() {
 		}
@@ -45,22 +45,36 @@ namespace nJupiter.DataAccess.Users {
 			this.id = userId;
 			this.domain = (domain ?? string.Empty);
 			this.userName = userName;
-			this.properties = new Properties(userName, properties, propertyNames);
+			this.properties = new PropertyHandler(userName, properties, propertyNames);
 		}
 
 		public string Id { get { return this.id; } }
 		public string UserName { get { return this.userName; } }
 		public string Domain { get { return this.domain; } }
-		public Properties Properties { get { return this.properties; } }
+		public PropertyHandler Properties { get { return this.properties; } }
 
 
 		public override int GetHashCode() {
 			return this.Id.GetHashCode();
 		}
 
+		public object Clone() {
+			var newUser = (User)this.MemberwiseClone();
+			newUser.isReadOnly = false;
+			newUser.properties = (PropertyHandler)properties.Clone();
+			return newUser;
+		}
+
 		public override bool Equals(object obj) {
 			User objUser = obj as User;
 			return objUser != null && objUser.Id.Equals(this.Id);
 		}
+
+		public void MakeReadOnly() {
+			isReadOnly = true;
+			properties.MakeReadOnly();
+		}
+
+		public bool IsReadOnly { get { return isReadOnly; } }
 	}
 }

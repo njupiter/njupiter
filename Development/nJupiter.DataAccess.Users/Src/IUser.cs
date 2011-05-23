@@ -1,9 +1,11 @@
 ﻿
+using System;
+
 namespace nJupiter.DataAccess.Users {
-	public interface IUser {
+	public interface IUser : ILockable {
 		string Id { get; }
 		string UserName { get; }
 		string Domain { get; }
-		Properties Properties { get; }
+		PropertyHandler Properties { get; }
 	}
 }
