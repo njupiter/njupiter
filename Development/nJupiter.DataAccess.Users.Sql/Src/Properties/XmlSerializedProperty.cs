@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class XmlSerializedProperty : PropertyBase<object> {
 		[NonSerialized]

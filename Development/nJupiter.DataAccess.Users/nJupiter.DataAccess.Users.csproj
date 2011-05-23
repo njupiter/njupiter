@@ -80,12 +80,8 @@
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserProvider.cs" />
     <Compile Include="Src\UserProviderFactory.cs" />
-    <Compile Include="Src\IProperty.cs" />
-    <Compile Include="Src\Properties\BinaryProperty.cs" />
-    <Compile Include="Src\Properties\IntProperty.cs" />
-    <Compile Include="Src\Properties\BoolProperty.cs" />
+    <Compile Include="Src\Properties\IProperty.cs" />
     <Compile Include="Src\CommonNamesFactory.cs" />
-    <Compile Include="Src\Properties\DateTimeProperty.cs" />
     <Compile Include="Src\ICommonNames.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,19 +101,18 @@
     <Compile Include="Src\IUser.cs" />
     <Compile Include="Src\Caching\IUserCache.cs" />
     <Compile Include="Src\Properties\StringProperty.cs" />
-    <Compile Include="Src\Properties\PropertyFactory.cs" />
     <Compile Include="Src\Web\MembershipProvider.cs" />
     <Compile Include="Src\Web\MembershipUser.cs" />
-    <Compile Include="Src\PropertyHandler.cs">
+    <Compile Include="Src\Properties\PropertyHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\Properties\PropertyBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\PropertyCollection.cs">
+    <Compile Include="Src\Properties\PropertyCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\PropertyDefinition.cs">
+    <Compile Include="Src\Properties\PropertyDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\SearchCriteria.cs">
@@ -133,7 +128,6 @@
     <Compile Include="Src\Caching\HttpRuntimeUserCache.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\Properties\XmlSerializedProperty.cs" />
     <None Include="Install\Database\2.DefaultDatabase.FullText.sql" />
     <None Include="Install\Database\3.DefaultDatabase.SPs.sql" />
     <None Include="Install\Database\4.DefaultDatabase.TableData.sql" />

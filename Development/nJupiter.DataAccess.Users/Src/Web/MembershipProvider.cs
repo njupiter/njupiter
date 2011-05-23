@@ -479,7 +479,7 @@ namespace nJupiter.DataAccess.Users {
 				return membershipUser;
 			} catch(UserNameAlreadyExistsException) {
 				status = MembershipCreateStatus.DuplicateUserName;
-			} catch(UserNameEmptyException) {
+			} catch(ArgumentException) {
 				status = MembershipCreateStatus.InvalidUserName;
 			}
 			return null;
@@ -698,10 +698,12 @@ namespace nJupiter.DataAccess.Users {
 		/// The number of users currently accessing the application.
 		/// </returns>
 		public override int GetNumberOfUsersOnline() {
+			/*
 			DateTimeProperty lastActivityDateProperty = new DateTimeProperty(this.UserProvider.PropertyNames.LastActivityDate, null);
 			lastActivityDateProperty.Value = DateTime.UtcNow.AddMinutes(-Membership.UserIsOnlineTimeWindow);
 			SearchCriteria sc = new SearchCriteria(lastActivityDateProperty, CompareCondition.GreaterThan);
-			return this.UserProvider.GetUsersBySearchCriteria(sc).Count;
+			return this.UserProvider.GetUsersBySearchCriteria(sc).Count;*/
+			return 0;
 		}
 
 		/// <summary>

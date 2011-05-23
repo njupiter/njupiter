@@ -27,40 +27,12 @@ using System;
 namespace nJupiter.DataAccess.Users {
 
 	public class SearchCriteria {
-		#region Enums
-		#endregion
 
-		#region Members
 		private IProperty property;
 		private bool required;
 		private string domain;
 		private CompareCondition condition;
-		#endregion
 
-		#region Properties
-		public IProperty Property {
-			get { return this.property; }
-			set {
-				if(value == null) {
-					throw new ArgumentNullException("value");
-				}
-				CheckPropertyCompareCondition(value, this.Condition);
-				this.property = value;
-			}
-		}
-		public CompareCondition Condition {
-			get { return this.condition; }
-			set {
-				CheckPropertyCompareCondition(this.Property, value);
-				this.condition = value;
-			}
-		}
-		public bool Required { get { return this.required; } set { this.required = value; } }
-		public string Domain { get { return this.domain; } set { this.domain = value; } }
-		#endregion
-
-		//TODO: Implement overloads for Int, DateTime, Binary, Bool also
-		#region Constructors
 		public SearchCriteria(IProperty property, string domain) : this(property, domain, CompareCondition.Equal, false) { }
 		public SearchCriteria(IProperty property, string domain, CompareCondition condition) : this(property, domain, condition, false) { }
 		public SearchCriteria(IProperty property, string domain, bool required) : this(property, domain, CompareCondition.Equal, required) { }
@@ -99,18 +71,39 @@ namespace nJupiter.DataAccess.Users {
 			stringProperty.Value = propertyValue;
 			this.InitCriteria(stringProperty, domain, condition, required);
 		}
-		#endregion
 
-		#region Private methods
+		public IProperty Property {
+			get { return this.property; }
+			set {
+				if(value == null) {
+					throw new ArgumentNullException("value");
+				}
+				this.SetPropertyValueAndCondition(value, this.Condition);
+			}
+		}
+		
+		public CompareCondition Condition {
+			get { return this.condition; }
+			set {
+				this.SetPropertyValueAndCondition(this.Property, value);
+			}
+		}
+
+		public bool Required { get { return this.required; } set { this.required = value; } }
+		public string Domain { get { return this.domain; } set { this.domain = value; } }
+
 		private void InitCriteria(IProperty property, string domain, CompareCondition condition, bool required) {
-			this.condition = condition;	//order is significant here
-			this.Property = property;
+			this.SetPropertyValueAndCondition(property, condition);
 			this.domain = domain;
 			this.required = required;
 		}
-		#endregion
 
-		#region Helper Methods
+		private void SetPropertyValueAndCondition(IProperty property, CompareCondition condition) {
+			CheckPropertyCompareCondition(property, condition);
+			this.property = property;
+			this.condition = condition;
+		}
+
 		private static void CheckPropertyCompareCondition(IProperty property, CompareCondition condition) {
 			switch(condition) {
 				case CompareCondition.GreaterThan:
@@ -134,8 +127,6 @@ namespace nJupiter.DataAccess.Users {
 				break;
 			}
 		}
-		#endregion
-
 
 	}
 }

@@ -227,7 +227,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 				string propertyName = property.Name;
 				Type propertyType = typeof(StringProperty);
 
-				PropertyDefinition pd = CreatePropertySchemaInstance(propertyName, propertyType);
+				PropertyDefinition pd = new PropertyDefinition(propertyName, propertyType);
 				pdt.Add(pd);
 			}
 
@@ -259,13 +259,11 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			var propertyList = new List<IProperty>();
 
 			foreach(PropertyDefinition pd in schema) {
-				string propertyValue = ((doUser != null && doUser.Contains(pd.PropertyName)) ? doUser[pd.PropertyName] : null);
+				string propertyValue = (doUser != null && doUser.Contains(pd.PropertyName)) ? doUser[pd.PropertyName] : null;
 				string propertyName = pd.PropertyName;
-				Type propertyType = pd.DataType;
-				IProperty property = CreatePropertyInstance(propertyName, propertyValue, propertyType, null);
-				if(property != null) {
-					propertyList.Add(property);
-				}
+				IProperty property = new StringProperty(propertyName, null);
+				property.Value = propertyValue;
+				propertyList.Add(property);
 			}
 			return new PropertyCollection(propertyList, schema);
 		}

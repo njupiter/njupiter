@@ -687,7 +687,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 						propertyValue = (string)currentField["ExtendedPropertyValue"];
 				}
 
-				IProperty property = CreatePropertyInstance(propertyName, propertyValue, propertyType, context);
+				IProperty property = PropertyFactory.Create(propertyName, propertyValue, propertyType, context);
 				if(property != null){
 					propertyList.Add(property);
 				}
@@ -767,9 +767,9 @@ namespace nJupiter.DataAccess.Users.Sql {
 							propertyType = Type.GetType((string)row["DataType"]);
 						}
 						if(propertyType == null)
-							throw new UnsupportedTypeException("The given property has a type " + (string)row["DataType"] + " that can not be loaded.");
+							throw new NotSupportedException("The given property has a type " + (string)row["DataType"] + " that can not be loaded.");
 
-						PropertyDefinition pd = CreatePropertySchemaInstance(propertyName, propertyType);
+						PropertyDefinition pd = new PropertyDefinition(propertyName, propertyType);
 						pdt.Add(pd);
 					}
 				}

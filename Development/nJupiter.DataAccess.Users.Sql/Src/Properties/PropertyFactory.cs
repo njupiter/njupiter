@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 	internal class PropertyFactory {
 		internal static IProperty Create<T>(string propertyName, string serializedPropertyValue, Context context) where T : IProperty {
 			

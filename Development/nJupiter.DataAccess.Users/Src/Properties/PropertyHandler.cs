@@ -34,6 +34,7 @@ namespace nJupiter.DataAccess.Users {
 		private readonly string username;
 		private readonly ICommonNames propertyNames;
 		private IDictionary<Context, PropertyCollection> propertiesPerContext;
+		private readonly object padlock = new object();
 		private bool isReadOnly;
 
 		public IProperty this[string propertyName] { get { return this.GetProperty(propertyName); } }
@@ -58,45 +59,30 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public PropertyCollection GetProperties() {
-			return this.propertiesPerContext[null];
+			return GetProperties(null);
 		}
 
 		public PropertyCollection GetProperties(Context context) {
-			if(context == null)
+			if(context == null){
 				throw new ArgumentNullException("context");
-
+			}
 			if(this.propertiesPerContext.Keys.Contains(context))
 				return this.propertiesPerContext[context];
 			return null;
 		}
 
 		public void AttachProperties(PropertyCollection properties) {
-			if(isReadOnly) {
-				throw new ReadOnlyException();
-			}
-
-			if(properties == null)
+			if(properties == null){
 				throw new ArgumentNullException("properties");
-
-			if(properties.Any()) {
-				
-				Context context = properties.First().Context;
-				
-				if(!properties.Count.Equals(properties.Schema.Count))
-					throw new PropertyCollectionMismatchException("The attached PropertyCollection does not match the attached Schema.");
-
-				var propertyList = new List<IProperty>();
-
-				foreach(PropertyDefinition pd in properties.Schema) {
-					IProperty newProperty = properties.FirstOrDefault(p => p.Name == pd.PropertyName);
-					if(newProperty == null || newProperty.Context != context)
-						throw new PropertyCollectionMismatchException("The attached PropertyCollection does not match the attached Schema.");
-					propertyList.Add(newProperty);
-				}
-				var newProperties = new PropertyCollection(propertyList, properties.Schema);
-				this.propertiesPerContext.Remove(context);
-				this.propertiesPerContext.Add(context, newProperties);
 			}
+
+			Context context = GetContextFromPropertyCollection(properties);
+			if(!ValidatePropertyCollection(properties, context)) {
+				throw new ArgumentException("The attached PropertyCollection does not match the attached Schema.");
+			}
+
+			AttachProperties(properties, context);
+
 		}
 
 		public bool ContainsPropertiesForContext(Context context) {
@@ -128,9 +114,6 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public void SetProperty<T>(string propertyName, string contextName, T value) {
-			if(this.isReadOnly) {
-				throw new ReadOnlyException();
-			}
 			PropertyBase<T> property = this.GetAbstractProperty<T>(propertyName, contextName);
 			if(property == null) {
 				return;
@@ -142,6 +125,48 @@ namespace nJupiter.DataAccess.Users {
 			if(this.propertiesPerContext.Keys.Contains(context))
 				return this.propertiesPerContext[context].Where(p => p.Name == propertyName) as PropertyBase<T>;
 			return null;
+		}
+
+		private static bool ValidatePropertyCollection(PropertyCollection properties, Context context) {
+			if(!properties.Count.Equals(properties.Schema.Count)){
+				return false;
+			}
+			if(!IsAllPropertiesInContext(properties, context)){
+				return false;
+			}
+			if(!IsPropertiesConsistantToSchema(properties)) {
+				return false;
+			}
+			return true;
+		}
+
+		private static bool IsPropertiesConsistantToSchema(PropertyCollection properties) {
+			foreach(IProperty property in properties) {
+				if(!properties.Schema.Any(definition => definition.PropertyName == property.Name)){
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private static bool IsAllPropertiesInContext(PropertyCollection properties, Context context) {
+			return properties.All(property => property.Context == context);
+		}
+
+		private static Context GetContextFromPropertyCollection(PropertyCollection properties) {
+			return properties.First().Context;
+		}
+
+		private void AttachProperties(PropertyCollection properties, Context context) {
+			if(isReadOnly) {
+				properties.MakeReadOnly();
+			}
+			lock(this.padlock) {
+				if(this.propertiesPerContext.Keys.Contains(context)) {
+					throw new ArgumentException("The context for the attached PropertyCollection is already attached.");
+				}
+				this.propertiesPerContext.Add(context, properties);
+			}
 		}
 
 		private void SetPropertyByKey<T>(string key, T value) {
@@ -174,7 +199,7 @@ namespace nJupiter.DataAccess.Users {
 					property = this.GetProperty<T>(propertyName, context);
 				}
 			} else {
-				property = this.GetProperty<T>(propertyName, (Context)null);
+				property = this.GetProperty<T>(propertyName, null);
 			}
 
 			if(property == null) {

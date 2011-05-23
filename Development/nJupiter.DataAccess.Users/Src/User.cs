@@ -41,7 +41,7 @@ namespace nJupiter.DataAccess.Users {
 		public User(string userId, string userName, string domain, PropertyCollection properties, ICommonNames propertyNames)
 			: this() {
 			if(string.IsNullOrEmpty(userName))
-				throw new UserNameEmptyException("User name can not be empty.");
+				throw new ArgumentException("User name can not be empty.");
 			this.id = userId;
 			this.domain = (domain ?? string.Empty);
 			this.userName = userName;

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class BinaryProperty : PropertyBase<object> {
 		[NonSerialized]

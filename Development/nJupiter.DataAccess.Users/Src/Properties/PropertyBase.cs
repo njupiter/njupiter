@@ -41,8 +41,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual bool IsEmpty() {
-			object v = this.Value;
-			return v == null || v.Equals(default(T));
+			return this.Value.Equals(default(T));
 		}
 
 		public abstract string ToSerializedString();

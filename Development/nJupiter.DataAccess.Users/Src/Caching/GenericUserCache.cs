@@ -30,7 +30,6 @@ using log4net;
 
 namespace nJupiter.DataAccess.Users {
 
-	// TODO: Return a cloned instance, without it usercache isn't thread safe. should be configurable
 	public class GenericUserCache : IUserCache {
 
 		#region Constants
@@ -135,6 +134,8 @@ namespace nJupiter.DataAccess.Users {
 
 					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
 
+					user.MakeReadOnly();
+					
 					CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
 					CachedUser cachedUser = new CachedUser(user);
 					this.cachedMap.Add(cacheMapId, cachedUser);

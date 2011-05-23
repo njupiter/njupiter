@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class BoolProperty : PropertyBase<bool> {
 		[NonSerialized]

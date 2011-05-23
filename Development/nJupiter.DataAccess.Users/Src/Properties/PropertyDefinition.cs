@@ -31,7 +31,7 @@ namespace nJupiter.DataAccess.Users {
 		private readonly string propertyName;
 		private readonly Type type;
 
-		internal PropertyDefinition(string propertyName, Type dataType) {
+		public PropertyDefinition(string propertyName, Type dataType) {
 			this.propertyName = propertyName;
 			this.type = dataType;
 		}

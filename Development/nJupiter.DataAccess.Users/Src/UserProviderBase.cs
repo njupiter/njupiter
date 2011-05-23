@@ -152,19 +152,6 @@ namespace nJupiter.DataAccess.Users {
 			return CreateUserInstance(userName, null, loadAllContexts);
 		}
 
-		protected static IProperty CreatePropertyInstance(string propertyName, string serializedPropertyValue, Type propertyType, Context context){
-                return PropertyFactory.Create(propertyName, serializedPropertyValue, propertyType, context);
-        }
-
-		protected static PropertyDefinition CreatePropertySchemaInstance(string propertyName, Type dataType) {
-			if(propertyName == null)
-				throw new ArgumentNullException("propertyName");
-			if(dataType == null)
-				throw new ArgumentNullException("dataType");
-
-			return new PropertyDefinition(propertyName, dataType);
-		}
-
 		protected static void AttachPropertiesToUser(IUser user, PropertyCollection properties) {
 			if(user == null)
 				throw new ArgumentNullException("user");

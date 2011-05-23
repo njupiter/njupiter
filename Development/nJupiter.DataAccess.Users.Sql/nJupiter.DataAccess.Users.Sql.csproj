@@ -51,6 +51,12 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\Properties\BinaryProperty.cs" />
+    <Compile Include="Src\Properties\BoolProperty.cs" />
+    <Compile Include="Src\Properties\DateTimeProperty.cs" />
+    <Compile Include="Src\Properties\IntProperty.cs" />
+    <Compile Include="Src\Properties\PropertyFactory.cs" />
+    <Compile Include="Src\Properties\XmlSerializedProperty.cs" />
     <Compile Include="Src\UserProvider.cs" />
   </ItemGroup>
   <ItemGroup>

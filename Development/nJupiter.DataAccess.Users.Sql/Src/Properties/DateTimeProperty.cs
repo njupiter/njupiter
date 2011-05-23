@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class DateTimeProperty : PropertyBase<DateTime> {
 		#region Constants

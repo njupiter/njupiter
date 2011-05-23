@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class IntProperty : PropertyBase<int> {
 		private const string Format = "D10";
