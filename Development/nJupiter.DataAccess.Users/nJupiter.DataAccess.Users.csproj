@@ -80,6 +80,7 @@
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserProvider.cs" />
     <Compile Include="Src\Properties\GenericProperty.cs" />
+    <Compile Include="Src\Properties\IPropertyCollection.cs" />
     <Compile Include="Src\UserProviderFactory.cs" />
     <Compile Include="Src\Properties\IProperty.cs" />
     <Compile Include="Src\CommonNamesFactory.cs" />

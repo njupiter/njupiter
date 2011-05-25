@@ -28,6 +28,8 @@ using System.Collections.Generic;
 
 using log4net;
 
+using nJupiter.Configuration;
+
 namespace nJupiter.DataAccess.Users {
 
 	public class GenericUserCache : IUserCache {
@@ -39,7 +41,7 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Members
-		private readonly UserProviderBase userProvider;
+		private readonly IConfig config;
 		private readonly IList<IUser> cachedUsers = new List<IUser>();
 		private readonly Hashtable cachedMap = new Hashtable();
 		private readonly object padlock = new object();
@@ -52,11 +54,11 @@ namespace nJupiter.DataAccess.Users {
 		#endregion
 
 		#region Constructors
-		public GenericUserCache(UserProviderBase userProvider) {
-			if(userProvider == null) {
-				throw new ArgumentNullException("userProvider");
+		public GenericUserCache(IConfig config) {
+			if(config == null) {
+				throw new ArgumentNullException("config");
 			}
-			this.userProvider = userProvider;
+			this.config = config;
 		}
 		#endregion
 
@@ -64,8 +66,8 @@ namespace nJupiter.DataAccess.Users {
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
-					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "minutesToCacheUser"))
-						this.minutesInCache = this.userProvider.Config.GetValue<int>("cache", "minutesToCacheUser");
+					if(this.config.ContainsKey("cache", "minutesToCacheUser"))
+						this.minutesInCache = this.config.GetValue<int>("cache", "minutesToCacheUser");
 					else
 						this.minutesInCache = 0;
 				}
@@ -76,15 +78,15 @@ namespace nJupiter.DataAccess.Users {
 		private int MaxUsersInCache {
 			get {
 				if(this.maxUsersInCache < 0) {
-					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "maxUsersInCache")) {
-						this.maxUsersInCache = this.userProvider.Config.GetValue<int>("cache", "maxUsersInCache");
+					if(this.config.ContainsKey("cache", "maxUsersInCache")) {
+						this.maxUsersInCache = this.config.GetValue<int>("cache", "maxUsersInCache");
 						if(this.maxUsersInCache < MinimumCacheSize && this.maxUsersInCache != 0)
 							this.maxUsersInCache = MinimumCacheSize;
 					} else {
 						this.maxUsersInCache = DefaultCacheSize;
 					}
 				}
-				return 10;
+				return 10000;
 			}
 		}
 

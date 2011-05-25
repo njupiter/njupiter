@@ -132,8 +132,13 @@
     <Compile Include="nJupiter.DataAccess.DirectoryService\DirectoryServiceTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="nJupiter.DataAccess.Users\CommonNamesTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\ContextTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\DummyFactory.cs" />
     <Compile Include="nJupiter.DataAccess.Users\PropertyHandlerTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\PropertyTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\UserProviderBaseTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\UserTests.cs" />
     <Compile Include="nJupiter.DataAccess\CommandTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceFactoryTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceTests.cs" />

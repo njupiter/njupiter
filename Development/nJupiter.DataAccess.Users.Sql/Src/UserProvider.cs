@@ -422,23 +422,15 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return new string[0];
 		}
 
-		public override PropertyCollection GetProperties() {
+		public override IPropertyCollection GetProperties() {
 			return GetPropertiesFromDataRows(null, null, null);
 		}
 
-		public override PropertyCollection GetProperties(Context context) {
+		public override IPropertyCollection GetProperties(Context context) {
 			return GetPropertiesFromDataRows(null, context, null);
 		}
 
-		public override PropertyCollection GetProperties(IUser user, Context context) {
-			if(user == null)
-				throw new ArgumentNullException("user");
-
-			var pc = base.GetProperties(user, context);
-			return pc ?? this.GetPropertiesByUserId(user.Id, context);
-		}
-
-		public override void SaveProperties(IUser user, PropertyCollection propertyCollection) {
+		public override void SaveProperties(IUser user, IPropertyCollection propertyCollection) {
 			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(CurrentDB)) {
 				SaveProperties(user, propertyCollection, transaction);
 				transaction.Commit();
@@ -633,15 +625,17 @@ namespace nJupiter.DataAccess.Users.Sql {
 			}
 			return users;
 		}
+		
 		protected virtual void SaveUser(IUser user, IDbTransaction transaction) {
 			SaveUserInstance(user, transaction);
 			SaveProperties(user, user.Properties.GetProperties(), transaction);
 			if(user.Properties.AttachedContexts.Any()) {
 				foreach(Context context in user.Properties.AttachedContexts) {
-					SaveProperties(user, this.GetProperties(user, context), transaction);
+					SaveProperties(user, user.Properties.GetProperties(context), transaction);
 				}
 			}
 		}
+		
 		protected virtual void SaveUserInstance(IUser user, IDbTransaction transaction) {
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_Update", transaction,
 				CurrentDB.CreateInputParameter("@guidUserId", DbType.Guid, new Guid(user.Id)),
@@ -652,11 +646,13 @@ namespace nJupiter.DataAccess.Users.Sql {
 				throw new UserNameAlreadyExistsException("Cannot save user. User name already exists.");
 			}
 		}
-		protected PropertyCollection GetPropertiesByUserId(string userId) {
+		
+		protected IPropertyCollection GetPropertiesByUserId(string userId) {
 			return GetPropertiesByUserId(userId, null);
 		}
-		protected virtual PropertyCollection GetPropertiesByUserId(string userId, Context context) {
-			PropertyCollection upc = null;
+		
+		protected virtual IPropertyCollection GetPropertiesByUserId(string userId, Context context) {
+			IPropertyCollection upc = null;
 
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties",
 				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(userId)),
@@ -670,7 +666,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return upc;
 		}
 
-		private PropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, DbTransaction transaction) {
+		private IPropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, DbTransaction transaction) {
 			var schema = (context == null ? this.GetDefaultContextSchema() : this.GetContextSchema(context.Name, transaction));
 			var propertyList = new List<IProperty>();
 
@@ -695,6 +691,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 
 			return new PropertyCollection(propertyList, schema);
 		}
+		
 		protected virtual void SaveProperty(IUser user, IProperty property, IDbTransaction transaction) {
 			string propertyValue = string.Empty;
 
@@ -717,6 +714,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 
 			property.IsDirty = false;
 		}
+		
 		protected virtual void SaveProperties(IUser user, IEnumerable<IProperty> propertyCollection, IDbTransaction transaction) {
 			if(user == null)
 				throw new ArgumentNullException("user");

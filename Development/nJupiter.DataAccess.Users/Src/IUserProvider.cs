@@ -92,7 +92,7 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="user">The specified user</param>
 		/// <param name="propertyCollection">PropertyCollection containing the properties</param>
-		void SaveProperties(IUser user, PropertyCollection propertyCollection);
+		void SaveProperties(IUser user, IPropertyCollection propertyCollection);
 
 		/// <summary>
 		/// Deletes a user
@@ -104,14 +104,14 @@ namespace nJupiter.DataAccess.Users {
 		/// Gets an collection with all properties empty
 		/// </summary>
 		/// <returns>A collection of properties</returns>
-		PropertyCollection GetProperties();
+		IPropertyCollection GetProperties();
 
 		/// <summary>
 		/// Gets a collection of empty properties depending on context
 		/// </summary>
 		/// <param name="context">The specified context</param>
 		/// <returns>A collection of properties</returns>
-		PropertyCollection GetProperties(Context context);
+		IPropertyCollection GetProperties(Context context);
 
 		/// <summary>
 		/// Returns a collection of available contexts
@@ -221,7 +221,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="user">The specified user</param>
 		/// <param name="context">The specified context to load intro the user</param>
 		/// <returns>Return a property collection if properties for the context exists, else returns null</returns>
-		PropertyCollection LoadProperties(IUser user, Context context);
+		IPropertyCollection LoadProperties(IUser user, Context context);
 
 		/// <summary>
 		/// Gets a user for the current domain by its user name

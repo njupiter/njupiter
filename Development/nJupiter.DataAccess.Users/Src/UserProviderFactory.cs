@@ -77,12 +77,12 @@ namespace nJupiter.DataAccess.Users {
 							string cacheAssemblyName = userProvider.Config.GetValue(Cache, Assembly);
 							string cacheAssemblyPath = userProvider.Config.GetValue(Cache, AssemblyPath);
 							string cacheAssemblyType = userProvider.Config.GetValue(Cache, Type);
-							object[] constructorArgs = { userProvider };
+							object[] constructorArgs = { userProvider.Config };
 							userProvider.UserCache = CreateInstance(cacheAssemblyPath, cacheAssemblyName, cacheAssemblyType, constructorArgs) as IUserCache;
 						}
 					}
 					if(userProvider.UserCache == null) {
-						userProvider.UserCache = new GenericUserCache(userProvider);
+						userProvider.UserCache = new GenericUserCache(userProvider.Config);
 					}
 
 					userProvider.PropertyNames = CommonNamesFactory.Create(userProvider.Config);

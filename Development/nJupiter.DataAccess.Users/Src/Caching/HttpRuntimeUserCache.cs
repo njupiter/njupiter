@@ -29,23 +29,25 @@ using System.Web.Caching;
 
 using log4net;
 
+using nJupiter.Configuration;
+
 namespace nJupiter.DataAccess.Users {
 
 	public class HttpRuntimeUserCache : IUserCache {
 
 		#region Members
-		private readonly UserProviderBase userProvider;
+		private readonly IConfig config;
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private bool? slidingExpiration;
 		private CacheItemPriority? cacheItemPriority;
 		#endregion
 
 		#region Constructors
-		public HttpRuntimeUserCache(UserProviderBase userProvider) {
-			if(userProvider == null) {
-				throw new ArgumentNullException("userProvider");
+		public HttpRuntimeUserCache(IConfig config) {
+			if(config == null) {
+				throw new ArgumentNullException("config");
 			}
-			this.userProvider = userProvider;
+			this.config = config;
 		}
 		#endregion
 
@@ -57,8 +59,8 @@ namespace nJupiter.DataAccess.Users {
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
-					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "minutesInCache")) {
-						this.minutesInCache = this.userProvider.Config.GetValue<int>("cache", "minutesInCache");
+					if(config.ContainsKey("cache", "minutesInCache")) {
+						this.minutesInCache = config.GetValue<int>("cache", "minutesInCache");
 					} else {
 						this.minutesInCache = 0;
 					}
@@ -70,8 +72,8 @@ namespace nJupiter.DataAccess.Users {
 		private bool SlidingExpiration {
 			get {
 				if(slidingExpiration == null) {
-					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "slidingExpiration")) {
-						this.slidingExpiration = this.userProvider.Config.GetValue<bool>("cache", "slidingExpiration");
+					if(config.ContainsKey("cache", "slidingExpiration")) {
+						this.slidingExpiration = config.GetValue<bool>("cache", "slidingExpiration");
 					} else {
 						this.slidingExpiration = false;
 					}
@@ -83,8 +85,8 @@ namespace nJupiter.DataAccess.Users {
 		private CacheItemPriority CachePriority {
 			get {
 				if(cacheItemPriority == null) {
-					if(this.userProvider.Config != null && this.userProvider.Config.ContainsKey("cache", "cachePriority")) {
-						string configValue = this.userProvider.Config.GetValue("cache", "cachePriority");
+					if(config.ContainsKey("cache", "cachePriority")) {
+						string configValue = config.GetValue("cache", "cachePriority");
 						this.cacheItemPriority = (CacheItemPriority)Enum.Parse(typeof(CacheItemPriority), configValue, true);
 					} else {
 						this.cacheItemPriority = CacheItemPriority.Normal;
@@ -99,14 +101,14 @@ namespace nJupiter.DataAccess.Users {
 		public IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
-			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.userProvider, userId);
+			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, userId);
 			return HttpRuntime.Cache[userIdCacheKey.CacheKey] as IUser;
 		}
 
 		public IUser GetUserByUserName(string userName, string domain) {
 			if(userName == null || this.MinutesInCache == 0)
 				return null;
-			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.userProvider, userName, domain);
+			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, userName, domain);
 			return HttpRuntime.Cache[usernameCacheKey.CacheKey] as IUser;
 		}
 		#endregion
@@ -114,8 +116,8 @@ namespace nJupiter.DataAccess.Users {
 		#region Protected Methods
 		public void RemoveUserFromCache(IUser user) {
 			if(user != null) {
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.userProvider, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.userProvider, user.Id);
+				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, user.UserName, user.Domain);
+				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, user.Id);
 				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Removing user [{0}/{1}] from cache.", (user.Domain ?? string.Empty), user.UserName)); }
 				HttpRuntime.Cache.Remove(usernameCacheKey.CacheKey);
 				HttpRuntime.Cache.Remove(userIdCacheKey.CacheKey);
@@ -133,8 +135,8 @@ namespace nJupiter.DataAccess.Users {
 		public void AddUserToCache(IUser user) {
 			if(user != null && this.MinutesInCache > 0) {
 				user.MakeReadOnly();
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(this.userProvider, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(this.userProvider, user.Id);
+				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, user.UserName, user.Domain);
+				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, user.Id);
 				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
 				if(this.SlidingExpiration) {
 					TimeSpan expirationTime = new TimeSpan(0, 0, this.MinutesInCache, 0);
@@ -160,27 +162,27 @@ namespace nJupiter.DataAccess.Users {
 		#region Private Structs
 		private struct UserIdCacheKey {
 
-			private readonly UserProviderBase userProvider;
+			private readonly string userProvider;
 			private readonly string userId;
 			private readonly int hash;
 			private readonly string cacheKey;
 
-			public UserIdCacheKey(UserProviderBase userProvider, string id) {
+			public UserIdCacheKey(string userProvider, string id) {
 				this.userId = id ?? string.Empty;
 				this.userProvider = userProvider;
 
 				int result = 17;
 				result = (37 * result) + this.userId.GetHashCode();
-				result = (37 * result) + this.userProvider.Name.GetHashCode();
+				result = (37 * result) + this.userProvider.GetHashCode();
 				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UserIdCacheKey:{1}", userProvider.Name, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UserIdCacheKey:{1}", userProvider, hash);
 			}
 
 			public override bool Equals(object obj) {
 				UserIdCacheKey map = (UserIdCacheKey)obj;
 				if(map.userId == null)
 					return false;
-				return map.userId.Equals(this.userId) && map.userProvider.Name.Equals(this.userProvider.Name);
+				return map.userId.Equals(this.userId) && map.userProvider.Equals(this.userProvider);
 			}
 
 			public string CacheKey {
@@ -196,13 +198,13 @@ namespace nJupiter.DataAccess.Users {
 
 		private struct UsernameCacheKey {
 
-			private readonly UserProviderBase userProvider;
+			private readonly string userProvider;
 			private readonly string userName;
 			private readonly string domain;
 			private readonly int hash;
 			private readonly string cacheKey;
 
-			public UsernameCacheKey(UserProviderBase userProvider, string userName, string domain) {
+			public UsernameCacheKey(string userProvider, string userName, string domain) {
 				this.userName = userName;
 				this.domain = domain ?? string.Empty;
 				this.userProvider = userProvider;
@@ -211,17 +213,17 @@ namespace nJupiter.DataAccess.Users {
 				int result = 17;
 				result = (37 * result) + this.userName.GetHashCode();
 				result = (37 * result) + this.domain.GetHashCode();
-				result = (37 * result) + this.userProvider.Name.GetHashCode();
+				result = (37 * result) + this.userProvider.GetHashCode();
 
 				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UsernameCacheKey:{1}", this.userProvider.Name, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UsernameCacheKey:{1}", this.userProvider, hash);
 			}
 
 			public override bool Equals(object obj) {
 				UsernameCacheKey map = (UsernameCacheKey)obj;
 				if(map.userName == null)
 					return false;
-				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain) && map.userProvider.Name.Equals(this.userProvider.Name);
+				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain) && map.userProvider.Equals(this.userProvider);
 			}
 
 			public string CacheKey {

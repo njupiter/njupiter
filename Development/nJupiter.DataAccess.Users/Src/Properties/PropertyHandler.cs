@@ -32,7 +32,7 @@ namespace nJupiter.DataAccess.Users {
 	public sealed class PropertyHandler : ILockable {
 		private readonly string username;
 		private readonly ICommonNames propertyNames;
-		private IDictionary<Context, PropertyCollection> propertiesPerContext;
+		private IDictionary<Context, IPropertyCollection> propertiesPerContext;
 		private readonly object padlock = new object();
 		private bool isReadOnly;
 
@@ -47,21 +47,21 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		internal PropertyHandler(string username, PropertyCollection properties, ICommonNames propertyNames) {
+		internal PropertyHandler(string username, IPropertyCollection properties, ICommonNames propertyNames) {
 			this.username = username;
 			this.propertyNames = propertyNames;
-			this.propertiesPerContext = new Dictionary<Context, PropertyCollection>();
+			this.propertiesPerContext = new Dictionary<Context, IPropertyCollection>();
 			this.AttachProperties(properties);
 			if(this.CreationDate == DateTime.MinValue) {
 				this.CreationDate = DateTime.UtcNow;
 			}
 		}
 
-		public PropertyCollection GetProperties() {
+		public IPropertyCollection GetProperties() {
 			return GetProperties(Context.DefaultContext);
 		}
 
-		public PropertyCollection GetProperties(Context context) {
+		public IPropertyCollection GetProperties(Context context) {
 			if(context == null){
 				throw new ArgumentNullException("context");
 			}
@@ -71,7 +71,7 @@ namespace nJupiter.DataAccess.Users {
 			return null;
 		}
 
-		public void AttachProperties(PropertyCollection properties) {
+		public void AttachProperties(IPropertyCollection properties) {
 			if(properties == null){
 				throw new ArgumentNullException("properties");
 			}
@@ -134,7 +134,7 @@ namespace nJupiter.DataAccess.Users {
 			property.Value = value;
 		}
 
-		private static bool ValidatePropertyCollection(PropertyCollection properties, Context context) {
+		private static bool ValidatePropertyCollection(IPropertyCollection properties, Context context) {
 			if(!properties.Count.Equals(properties.Schema.Count)){
 				return false;
 			}
@@ -147,7 +147,7 @@ namespace nJupiter.DataAccess.Users {
 			return true;
 		}
 
-		private void AttachProperties(PropertyCollection properties, Context context) {
+		private void AttachProperties(IPropertyCollection properties, Context context) {
 			if(isReadOnly) {
 				properties.MakeReadOnly();
 			}
@@ -192,7 +192,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		private static bool IsPropertiesConsistantToSchema(PropertyCollection properties) {
+		private static bool IsPropertiesConsistantToSchema(IPropertyCollection properties) {
 			return properties.All(p => properties.Schema.Any(definition => PropertyConformDefinition(p, definition)));
 		}
 
@@ -277,9 +277,9 @@ namespace nJupiter.DataAccess.Users {
 		
 		public object Clone() {
 			var newPropertyHandler = (PropertyHandler)this.MemberwiseClone();
-			var newPropertiesPerContext = new Dictionary<Context, PropertyCollection>();
+			var newPropertiesPerContext = new Dictionary<Context, IPropertyCollection>();
 			foreach(var pair in propertiesPerContext) {
-				newPropertiesPerContext.Add(pair.Key, (PropertyCollection)pair.Value.Clone());
+				newPropertiesPerContext.Add(pair.Key, (IPropertyCollection)pair.Value.Clone());
 			}
 			newPropertyHandler.propertiesPerContext = newPropertiesPerContext;
 			newPropertyHandler.isReadOnly = false;

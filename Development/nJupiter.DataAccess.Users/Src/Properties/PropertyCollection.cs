@@ -27,8 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace nJupiter.DataAccess.Users {
-
-	public class PropertyCollection : IEnumerable<IProperty>, ILockable {
+	public class PropertyCollection : IPropertyCollection {
 		
 		private readonly IList<IProperty> innerList;
 		private readonly ContextSchema schema;

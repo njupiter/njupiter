@@ -147,7 +147,7 @@ namespace nJupiter.DataAccess.Users {
 			if(propertyInfo != null) {
 				return propertyInfo.GetValue(this, null) as string;
 			}
-			return null;
+			throw new NotSupportedException(string.Format("Property with name {0} is not supported.", name));
 		}
 
 		public string GetContextName(string name) {
@@ -250,7 +250,7 @@ namespace nJupiter.DataAccess.Users {
 			if(name == this.IsAnonymous) {
 				return this.ContextNames.IsAnonymous;
 			}
-			return null;
+			throw new NotSupportedException(string.Format("Property with name {0} is not supported.", name));
 		}
 	}
 }

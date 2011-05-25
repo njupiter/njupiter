@@ -147,27 +147,17 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			throw new NotImplementedException();
 		}
 
-		public override PropertyCollection GetProperties() {
+		public override IPropertyCollection GetProperties() {
 			return GetPropertiesFromDirectoryObject(null);
 		}
 
-		public override PropertyCollection GetProperties(Context context) {
+		public override IPropertyCollection GetProperties(Context context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
 			return GetPropertiesFromDirectoryObject(null);
 		}
 
-		public override PropertyCollection GetProperties(IUser user, Context context) {
-			if(user == null)
-				throw new ArgumentNullException("user");
-			var pc = base.GetProperties(user, context);
-			if(pc != null){
-				return pc;
-			}
-			return new PropertyCollection();
-		}
-
-		public override void SaveProperties(IUser user, PropertyCollection propertyCollection) {
+		public override void SaveProperties(IUser user, IPropertyCollection propertyCollection) {
 			if(user == null)
 				throw new ArgumentNullException("user");
 
@@ -255,7 +245,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			return user;
 		}
 
-		private PropertyCollection GetPropertiesFromDirectoryObject(DirectoryObject doUser) {
+		private IPropertyCollection GetPropertiesFromDirectoryObject(DirectoryObject doUser) {
 			var schema = this.GetDefaultContextSchema();
 			var propertyList = new List<IProperty>();
 

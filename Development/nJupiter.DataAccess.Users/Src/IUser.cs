@@ -1,6 +1,4 @@
 ﻿
-using System;
-
 namespace nJupiter.DataAccess.Users {
 	public interface IUser : ILockable {
 		string Id { get; }
