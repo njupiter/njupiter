@@ -42,18 +42,18 @@ namespace nJupiter.DataAccess.Users {
 				return null;
 			string name = GetUserNameFromMembershipUserName(membershipUser.UserName);
 			string domain = GetDomainFromMembershipUserName(membershipUser.UserName);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				lock(padLock) {
-					user = this.UserProvider.GetUserByUserName(name, domain);
+					user = this.UserRepository.GetUserByUserName(name, domain);
 					if(user == null) {
-						user = this.UserProvider.CreateUserInstance(name, domain);
+						user = this.UserRepository.CreateUserInstance(name, domain);
 						user.Properties.Email = membershipUser.Email;
-						this.UserProvider.SetPassword(user, Guid.NewGuid().ToString("N"));
+						this.UserRepository.SetPassword(user, Guid.NewGuid().ToString("N"));
 						try {
-							this.UserProvider.SaveUser(user);
+							this.UserRepository.SaveUser(user);
 						} catch(UserNameAlreadyExistsException) {
-							user = this.UserProvider.GetUserByUserName(name, domain);
+							user = this.UserRepository.GetUserByUserName(name, domain);
 						}
 					}
 				}
@@ -88,7 +88,7 @@ namespace nJupiter.DataAccess.Users {
 				if(primaryMembershipProvider == null) {
 					primaryMembershipProvider = Membership.Providers[primaryMembershipProviderName];
 					if(primaryMembershipProvider == null) {
-						throw new ConfigurationErrorsException(string.Format("The MembershipProvider {0} configured as the primary provider does not exist", primaryMembershipProviderName));
+						throw new ConfigurationErrorsException(string.Format("The MembershipProvider {0} configured as the primary repository does not exist", primaryMembershipProviderName));
 					}
 				}
 				return primaryMembershipProvider;

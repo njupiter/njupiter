@@ -36,7 +36,7 @@ using System.Linq;
 
 namespace nJupiter.DataAccess.Users.Sql {
 
-	public class UserProvider : UserProviderBase {
+	public class UserRepository : UserRepositoryBase {
 		#region Constants
 		private const int AddStatusUsernameTaken = 1;
 		#endregion

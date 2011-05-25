@@ -35,17 +35,17 @@ namespace nJupiter.DataAccess.Users {
 		#region Fields
 		private string appName;
 		private string providerName;
-		private IUserProvider userProvider;
+		private IUserRepository userRepository;
 		#endregion
 
 		#region Properties
 		/// <summary>
-		/// Gets the UserProvider instance associated with this provider.
+		/// Gets the userRepository instance associated with this repository.
 		/// </summary>
-		/// <value>The UserProvider instance associated with this provider.</value>
-		public IUserProvider UserProvider {
+		/// <value>The userRepository instance associated with this repository.</value>
+		public IUserRepository UserRepository {
 			get {
-				return this.userProvider;
+				return this.userRepository;
 			}
 		}
 		#endregion
@@ -85,9 +85,9 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private IProperty GetAbstractProperty(IUser user, string propertyName) {
-			string contextName = this.UserProvider.PropertyNames.GetContextName(propertyName);
+			string contextName = this.UserRepository.PropertyNames.GetContextName(propertyName);
 			if(!string.IsNullOrEmpty(contextName)) {
-				IContext context = this.UserProvider.GetContext(contextName);
+				IContext context = this.UserRepository.GetContext(contextName);
 				return user.Properties[propertyName, context];
 			}
 			return user.Properties[propertyName];
@@ -115,11 +115,11 @@ namespace nJupiter.DataAccess.Users {
 				if(!string.IsNullOrEmpty(username)) {
 					string name = GetUserNameFromMembershipUserName(username);
 					string domain = GetDomainFromMembershipUserName(username);
-					IUser user = this.UserProvider.GetUserByUserName(name, domain);
+					IUser user = this.UserRepository.GetUserByUserName(name, domain);
 					if(user == null) {
-						user = this.UserProvider.CreateUserInstance(name, domain);
-						this.UserProvider.SetPassword(user, Guid.NewGuid().ToString("N"));
-						this.UserProvider.SaveUser(user);
+						user = this.UserRepository.CreateUserInstance(name, domain);
+						this.UserRepository.SetPassword(user, Guid.NewGuid().ToString("N"));
+						this.UserRepository.SaveUser(user);
 					}
 					if(user != null) {
 						foreach(SettingsPropertyValue sv in svc) {
@@ -136,7 +136,7 @@ namespace nJupiter.DataAccess.Users {
 			return svc;
 		}
 
-		/// <summary>Updates the UserProvider profile with the specified property values.</summary>
+		/// <summary>Updates the userRepository profile with the specified property values.</summary>
 		/// <param name="properties">A <see cref="T:System.Configuration.SettingsPropertyValueCollection"></see> containing profile information and values for the properties to be updated.</param>
 		/// <param name="sc">The <see cref="T:System.Configuration.SettingsContext"></see> that contains user profile information.</param>
 		public override void SetPropertyValues(SettingsContext sc, SettingsPropertyValueCollection properties) {
@@ -145,7 +145,7 @@ namespace nJupiter.DataAccess.Users {
 			if(isIsAuthenticated && !string.IsNullOrEmpty(username) && properties.Count > 0) {
 				string name = GetUserNameFromMembershipUserName(username);
 				string domain = GetDomainFromMembershipUserName(username);
-				IUser user = this.UserProvider.GetUserByUserName(name, domain);
+				IUser user = this.UserRepository.GetUserByUserName(name, domain);
 				if(user != null) {
 					bool userIsDirty = false;
 					foreach(SettingsPropertyValue propertyValue in properties) {
@@ -157,39 +157,39 @@ namespace nJupiter.DataAccess.Users {
 							}
 						} else {
 							//TODO: Gör så man dynamiskt i userdaoen kan lägga dit property schema definitioner
-							throw new ProviderException(string.Format("UserProvider {0} is not configured to handle a property with the name {1}", this.UserProvider.Name, propertyValue.Name));
+							throw new ProviderException(string.Format("userRepository {0} is not configured to handle a property with the name {1}", this.UserRepository.Name, propertyValue.Name));
 						}
 					}
 					if(userIsDirty) {
-						this.UserProvider.SaveUser(user);
+						this.UserRepository.SaveUser(user);
 					}
 				}
 			}
 		}
 
 		/// <summary>
-		/// Initializes the provider.
+		/// Initializes the repository.
 		/// </summary>
-		/// <param name="name">The friendly name of the provider.</param>
-		/// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
+		/// <param name="name">The friendly name of the repository.</param>
+		/// <param name="config">A collection of the name/value pairs representing the repository-specific attributes specified in the configuration for this repository.</param>
 		/// <exception cref="T:System.ArgumentNullException">
-		/// The name of the provider is null.
+		/// The name of the repository is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
-		/// The name of the provider has a length of zero.
+		/// The name of the repository has a length of zero.
 		/// </exception>
 		/// <exception cref="T:System.InvalidOperationException">
-		/// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
+		/// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a repository after the repository has already been initialized.
 		/// </exception>
 		public override void Initialize(string name, NameValueCollection config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
 			string provider = ProfileProvider.GetStringConfigValue(config, "userDAO", string.Empty);
-			this.userProvider = string.IsNullOrEmpty(provider) ? UserProviderFactory.Instance.CreateProvider() : UserProviderFactory.Instance.CreateProvider(provider);
-			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userProvider.Name;
+			this.userRepository = string.IsNullOrEmpty(provider) ? UserRepositoryFactory.Instance.CreateProvider() : UserRepositoryFactory.Instance.CreateProvider(provider);
+			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userRepository.Name;
 			base.Initialize(this.providerName, config);
-			this.appName = ProfileProvider.GetStringConfigValue(config, "applicationName", this.userProvider.Name);
+			this.appName = ProfileProvider.GetStringConfigValue(config, "applicationName", this.userRepository.Name);
 		}
 
 		/// <summary>
@@ -245,9 +245,9 @@ namespace nJupiter.DataAccess.Users {
 			foreach(string username in usernames) {
 				string name = GetUserNameFromMembershipUserName(username);
 				string domain = GetDomainFromMembershipUserName(username);
-				IUser user = this.UserProvider.GetUserByUserName(name, domain);
+				IUser user = this.UserRepository.GetUserByUserName(name, domain);
 				if(user != null) {
-					this.UserProvider.DeleteUser(user);
+					this.UserRepository.DeleteUser(user);
 					count++;
 				}
 			}
@@ -292,7 +292,7 @@ namespace nJupiter.DataAccess.Users {
 			ProfileInfoCollection pic = new ProfileInfoCollection();
 			totalRecords = 0;
 			if(!authenticationOption.Equals(ProfileAuthenticationOption.Anonymous)) {
-				var uc = this.UserProvider.GetAllUsers(pageIndex, pageSize, out totalRecords);
+				var uc = this.UserRepository.GetAllUsers(pageIndex, pageSize, out totalRecords);
 				foreach(IUser user in uc) {
 					string username = string.IsNullOrEmpty(user.Domain) ? user.UserName : string.Format("{0}\\{1}", user.Domain, user.UserName);
 					pic.Add(new ProfileInfo(username, user.Properties.IsAnonymous, user.Properties.LastActivityDate, user.Properties.LastUpdatedDate, 0));
@@ -336,7 +336,7 @@ namespace nJupiter.DataAccess.Users {
 			usernameToMatch = usernameToMatch.Replace("%", string.Empty);
 			string name = GetUserNameFromMembershipUserName(usernameToMatch);
 			string domain = GetDomainFromMembershipUserName(usernameToMatch);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			totalRecords = 0;
 			if(user != null) {
 				string username = string.IsNullOrEmpty(user.Domain) ? user.UserName : string.Format("{0}\\{1}", user.Domain, user.UserName);

@@ -44,34 +44,34 @@ namespace nJupiter.DataAccess.Users {
 		private string passwordStrengthRegularExpression = string.Empty;
 		private bool requiresQuestionAndAnswer;
 		private bool requiresUniqueEmail;
-		private IUserProvider userProvider;
+		private IUserRepository userRepository;
 		#endregion
 
 		#region Properties
 		/// <summary>
-		/// The name of the application using the custom membership provider.
+		/// The name of the application using the custom membership repository.
 		/// </summary>
 		/// <value></value>
 		/// <returns>
-		/// The name of the application using the custom membership provider.
+		/// The name of the application using the custom membership repository.
 		/// </returns>
 		public override string ApplicationName { get { return this.appName; } set { this.appName = value; } }
 		/// <summary>
-		/// Indicates whether the membership provider is configured to allow users to retrieve their passwords.
+		/// Indicates whether the membership repository is configured to allow users to retrieve their passwords.
 		/// </summary>
 		/// <value></value>
-		/// <returns>true if the membership provider is configured to support password retrieval; otherwise, false. The default is false.
+		/// <returns>true if the membership repository is configured to support password retrieval; otherwise, false. The default is false.
 		/// </returns>
 		public override bool EnablePasswordRetrieval { get { return this.enablePasswordRetrieval; } }
 		/// <summary>
-		/// Indicates whether the membership provider is configured to allow users to reset their passwords.
+		/// Indicates whether the membership repository is configured to allow users to reset their passwords.
 		/// </summary>
 		/// <value></value>
-		/// <returns>true if the membership provider supports password reset; otherwise, false. The default is true.
+		/// <returns>true if the membership repository supports password reset; otherwise, false. The default is true.
 		/// </returns>
 		public override bool EnablePasswordReset { get { return this.enablePasswordReset; } }
 		/// <summary>
-		/// Gets a value indicating whether the membership provider is configured to require the user to answer a password question for password reset and retrieval.
+		/// Gets a value indicating whether the membership repository is configured to require the user to answer a password question for password reset and retrieval.
 		/// </summary>
 		/// <value></value>
 		/// <returns>true if a password answer is required for password reset and retrieval; otherwise, false. The default is true.
@@ -94,10 +94,10 @@ namespace nJupiter.DataAccess.Users {
 		/// </returns>
 		public override int PasswordAttemptWindow { get { return this.passwordAttemptWindow; } }
 		/// <summary>
-		/// Gets a value indicating whether the membership provider is configured to require a unique e-mail address for each user name.
+		/// Gets a value indicating whether the membership repository is configured to require a unique e-mail address for each user name.
 		/// </summary>
 		/// <value></value>
-		/// <returns>true if the membership provider requires a unique e-mail address; otherwise, false. The default is true.
+		/// <returns>true if the membership repository requires a unique e-mail address; otherwise, false. The default is true.
 		/// </returns>
 		public override bool RequiresUniqueEmail { get { return this.requiresUniqueEmail; } }
 		/// <summary>
@@ -133,11 +133,11 @@ namespace nJupiter.DataAccess.Users {
 		/// </returns>
 		public override string PasswordStrengthRegularExpression { get { return this.passwordStrengthRegularExpression; } }
 		/// <summary>
-		/// Gets the friendly name used to refer to the provider during configuration.
+		/// Gets the friendly name used to refer to the repository during configuration.
 		/// </summary>
 		/// <value></value>
 		/// <returns>
-		/// The friendly name used to refer to the provider during configuration.
+		/// The friendly name used to refer to the repository during configuration.
 		/// </returns>
 		public override string Name {
 			get {
@@ -145,12 +145,12 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 		/// <summary>
-		/// Gets the UserProvider instance associated with this membership provider.
+		/// Gets the userRepository instance associated with this membership repository.
 		/// </summary>
-		/// <value>The UserProvider instance associated with this membership provider.</value>
-		public IUserProvider UserProvider {
+		/// <value>The userRepository instance associated with this membership repository.</value>
+		public IUserRepository UserRepository {
 			get {
-				return this.userProvider;
+				return this.userRepository;
 			}
 		}
 		#endregion
@@ -214,7 +214,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("user");
 			}
 			user.Properties.LastUpdatedDate = DateTime.UtcNow;
-			this.UserProvider.SaveUser(user);
+			this.UserRepository.SaveUser(user);
 		}
 		#endregion
 
@@ -262,7 +262,7 @@ namespace nJupiter.DataAccess.Users {
 
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				throw new UserDoesNotExistException(string.Format("User with username {0} does not exist.", username));
 			}
@@ -288,10 +288,10 @@ namespace nJupiter.DataAccess.Users {
 				if(args.Cancel) {
 					throw new ProviderException("Custom password validation failed.", args.FailureInformation);
 				}
-				if(!this.UserProvider.CheckPassword(user, oldPassword))
+				if(!this.UserRepository.CheckPassword(user, oldPassword))
 					return false;
 			}
-			this.UserProvider.SetPassword(user, newPassword);
+			this.UserRepository.SetPassword(user, newPassword);
 			user.Properties.LastPasswordChangedDate = DateTime.UtcNow;
 			this.UpdateUserDAOUser(user);
 			return true;
@@ -315,12 +315,12 @@ namespace nJupiter.DataAccess.Users {
 			MembershipProvider.CheckParameter(password, true, true, false, 256, "password");
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				throw new UserDoesNotExistException(string.Format("User with username {0} does not exist.", username));
 			}
 			if(doChecks) {
-				if(!this.UserProvider.CheckPassword(user, password)) {
+				if(!this.UserRepository.CheckPassword(user, password)) {
 					return false;
 				}
 				MembershipProvider.CheckParameter(newPasswordQuestion, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, false, 256, "newPasswordQuestion");
@@ -346,13 +346,13 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("username");
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				return false;
 			}
 			bool passwordCorrect = true;
 			if(checkPassword) {
-				passwordCorrect = this.UserProvider.CheckPassword(user, password);
+				passwordCorrect = this.UserRepository.CheckPassword(user, password);
 			}
 			if(passwordCorrect) {
 				user.Properties.LastLoginDate = DateTime.UtcNow;
@@ -364,28 +364,28 @@ namespace nJupiter.DataAccess.Users {
 
 		#region Overridden Methods
 		/// <summary>
-		/// Initializes the provider.
+		/// Initializes the repository.
 		/// </summary>
-		/// <param name="name">The friendly name of the provider.</param>
-		/// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
+		/// <param name="name">The friendly name of the repository.</param>
+		/// <param name="config">A collection of the name/value pairs representing the repository-specific attributes specified in the configuration for this repository.</param>
 		/// <exception cref="T:System.ArgumentNullException">
-		/// The name of the provider is null.
+		/// The name of the repository is null.
 		/// </exception>
 		/// <exception cref="T:System.ArgumentException">
-		/// The name of the provider has a length of zero.
+		/// The name of the repository has a length of zero.
 		/// </exception>
 		/// <exception cref="T:System.InvalidOperationException">
-		/// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
+		/// An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a repository after the repository has already been initialized.
 		/// </exception>
 		public override void Initialize(string name, NameValueCollection config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
 			string provider = MembershipProvider.GetStringConfigValue(config, "userDAO", string.Empty);
-			this.userProvider = string.IsNullOrEmpty(provider) ? UserProviderFactory.Instance.CreateProvider() : UserProviderFactory.Instance.CreateProvider(provider);
+			this.userRepository = string.IsNullOrEmpty(provider) ? UserRepositoryFactory.Instance.CreateProvider() : UserRepositoryFactory.Instance.CreateProvider(provider);
 
-			this.appName = MembershipProvider.GetStringConfigValue(config, "applicationName", this.userProvider.Name);
-			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userProvider.Name;
+			this.appName = MembershipProvider.GetStringConfigValue(config, "applicationName", this.userRepository.Name);
+			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userRepository.Name;
 
 			base.Initialize(this.providerName, config);
 
@@ -465,8 +465,8 @@ namespace nJupiter.DataAccess.Users {
 			try {
 				string name = GetUserNameFromMembershipUserName(username);
 				string domain = GetDomainFromMembershipUserName(username);
-				IUser user = this.UserProvider.CreateUserInstance(name, domain);
-				this.UserProvider.SetPassword(user, password);
+				IUser user = this.UserRepository.CreateUserInstance(name, domain);
+				this.UserRepository.SetPassword(user, password);
 				user.Properties.Email = email;
 				user.Properties.PasswordQuestion = passwordQuestion;
 				user.Properties.PasswordAnswer = passwordAnswer;
@@ -528,7 +528,7 @@ namespace nJupiter.DataAccess.Users {
 
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				throw new UserDoesNotExistException(string.Format("User with username {0} does not exist.", username));
 			}
@@ -536,7 +536,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new MembershipPasswordException();
 			}
 			string newPassword = Membership.GeneratePassword(this.MinRequiredPasswordLength < 6 ? 6 : this.MinRequiredPasswordLength, this.MinRequiredNonAlphanumericCharacters);
-			this.UserProvider.SetPassword(user, newPassword);
+			this.UserRepository.SetPassword(user, newPassword);
 			user.Properties.LastPasswordChangedDate = DateTime.UtcNow;
 			this.UpdateUserDAOUser(user);
 			return newPassword;
@@ -557,7 +557,7 @@ namespace nJupiter.DataAccess.Users {
 			if(membershipUser == null) {
 				throw new ArgumentException(string.Format("User is not of type {0}", typeof(MembershipUser).Name), "user");
 			}
-			IUser userDaoUser = this.UserProvider.GetUserById(membershipUser.UserDAOId);
+			IUser userDaoUser = this.UserRepository.GetUserById(membershipUser.UserDAOId);
 			userDaoUser.Properties.LastLoginDate = user.LastLoginDate;
 			userDaoUser.Properties.Description = user.Comment;
 			userDaoUser.Properties.Email = user.Email;
@@ -591,7 +591,7 @@ namespace nJupiter.DataAccess.Users {
 			MembershipProvider.CheckParameter(username, true, true, true, 0x100, "username");
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				throw new UserDoesNotExistException(string.Format("User with username {0} does not exist.", username));
 			}
@@ -614,9 +614,9 @@ namespace nJupiter.DataAccess.Users {
 			MembershipProvider.CheckParameter(username, true, true, true, 256, "username");
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user != null) {
-				this.UserProvider.DeleteUser(user);
+				this.UserRepository.DeleteUser(user);
 				return true;
 			}
 			return false;
@@ -634,7 +634,7 @@ namespace nJupiter.DataAccess.Users {
 			if(providerUserKey == null) {
 				throw new ArgumentNullException("providerUserKey");
 			}
-			IUser user = this.UserProvider.GetUserById(providerUserKey.ToString());
+			IUser user = this.UserRepository.GetUserById(providerUserKey.ToString());
 			if(user != null) {
 				if(userIsOnline) {
 					user.Properties.LastActivityDate = DateTime.UtcNow;
@@ -660,7 +660,7 @@ namespace nJupiter.DataAccess.Users {
 			MembershipProvider.CheckParameter(username, true, false, true, 256, "username");
 			string name = GetUserNameFromMembershipUserName(username);
 			string domain = GetDomainFromMembershipUserName(username);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user != null) {
 				if(userIsOnline) {
 					user.Properties.LastUpdatedDate = DateTime.UtcNow;
@@ -680,8 +680,8 @@ namespace nJupiter.DataAccess.Users {
 		/// </returns>
 		public override string GetUserNameByEmail(string email) {
 			MembershipProvider.CheckParameter(email, false, false, false, 256, "email");
-			SearchCriteria sc = new SearchCriteria(this.UserProvider.PropertyNames.Email, email, true);
-			var uc = this.UserProvider.GetUsersBySearchCriteria(sc);
+			SearchCriteria sc = new SearchCriteria(this.UserRepository.PropertyNames.Email, email, true);
+			var uc = this.UserRepository.GetUsersBySearchCriteria(sc);
 			if(this.RequiresUniqueEmail && uc.Count > 1) {
 				throw new ProviderException(string.Format("More than one user with email {0}", email));
 			}
@@ -699,10 +699,10 @@ namespace nJupiter.DataAccess.Users {
 		/// </returns>
 		public override int GetNumberOfUsersOnline() {
 			/*
-			DateTimeProperty lastActivityDateProperty = new DateTimeProperty(this.UserProvider.PropertyNames.LastActivityDate, null);
+			DateTimeProperty lastActivityDateProperty = new DateTimeProperty(this.userRepository.PropertyNames.LastActivityDate, null);
 			lastActivityDateProperty.Value = DateTime.UtcNow.AddMinutes(-Membership.UserIsOnlineTimeWindow);
 			SearchCriteria sc = new SearchCriteria(lastActivityDateProperty, CompareCondition.GreaterThan);
-			return this.UserProvider.GetUsersBySearchCriteria(sc).Count;*/
+			return this.userRepository.GetUsersBySearchCriteria(sc).Count;*/
 			return 0;
 		}
 
@@ -723,14 +723,14 @@ namespace nJupiter.DataAccess.Users {
 
 				string name = GetUserNameFromMembershipUserName(username);
 				string domain = GetDomainFromMembershipUserName(username);
-				IUser user = this.UserProvider.GetUserByUserName(name, domain);
+				IUser user = this.UserRepository.GetUserByUserName(name, domain);
 				if(user == null) {
 					throw new UserDoesNotExistException(string.Format("User with username {0} does not exist.", username));
 				}
 				if(this.RequiresQuestionAndAnswer && (user.Properties.PasswordAnswer == null || !user.Properties.PasswordAnswer.Equals(passwordAnswer, StringComparison.CurrentCultureIgnoreCase))) {
 					throw new MembershipPasswordException();
 				}
-				return user.Properties[this.UserProvider.PropertyNames.Password] != null && user.Properties[this.UserProvider.PropertyNames.Password].Value != null ? user.Properties[this.UserProvider.PropertyNames.Password].Value.ToString() : string.Empty;
+				return user.Properties[this.UserRepository.PropertyNames.Password] != null && user.Properties[this.UserRepository.PropertyNames.Password].Value != null ? user.Properties[this.UserRepository.PropertyNames.Password].Value.ToString() : string.Empty;
 			}
 			throw new NotSupportedException();
 		}
@@ -745,7 +745,7 @@ namespace nJupiter.DataAccess.Users {
 		/// A <see cref="T:System.Web.Security.MembershipUserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:System.Web.Security.MembershipUser"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
 		/// </returns>
 		public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
-			var uc = this.UserProvider.GetAllUsers(pageIndex, pageSize, out totalRecords);
+			var uc = this.UserRepository.GetAllUsers(pageIndex, pageSize, out totalRecords);
 			MembershipUserCollection users = new MembershipUserCollection();
 			foreach(IUser user in uc) {
 				users.Add(new MembershipUser(user, this.Name));
@@ -771,7 +771,7 @@ namespace nJupiter.DataAccess.Users {
 			MembershipUserCollection users = new MembershipUserCollection();
 			string name = GetUserNameFromMembershipUserName(usernameToMatch);
 			string domain = GetDomainFromMembershipUserName(usernameToMatch);
-			IUser user = this.UserProvider.GetUserByUserName(name, domain);
+			IUser user = this.UserRepository.GetUserByUserName(name, domain);
 			totalRecords = 0;
 			if(user != null) {
 				users.Add(new MembershipUser(user, this.Name));
@@ -795,8 +795,8 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("emailToMatch");
 			MembershipProvider.CheckParameter(emailToMatch, false, false, false, 256, "emailToMatch");
 			emailToMatch = emailToMatch.Replace("%", string.Empty);
-			SearchCriteria sc = new SearchCriteria(this.UserProvider.PropertyNames.Email, emailToMatch, CompareCondition.Contains);
-			var uc = this.UserProvider.GetUsersBySearchCriteria(sc);
+			SearchCriteria sc = new SearchCriteria(this.UserRepository.PropertyNames.Email, emailToMatch, CompareCondition.Contains);
+			var uc = this.UserRepository.GetUsersBySearchCriteria(sc);
 			totalRecords = uc.Count;
 			MembershipUserCollection users = new MembershipUserCollection();
 			for(int i = pageIndex * pageSize; (i < ((pageIndex * pageSize) + pageSize)) && (i < uc.Count); i++) {

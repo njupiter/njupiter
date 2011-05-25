@@ -175,7 +175,7 @@ namespace nJupiter.DataAccess.Users {
 				result = (37 * result) + this.userId.GetHashCode();
 				result = (37 * result) + this.userProvider.GetHashCode();
 				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UserIdCacheKey:{1}", userProvider, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.userRepository:{0}:UserIdCacheKey:{1}", userProvider, hash);
 			}
 
 			public override bool Equals(object obj) {
@@ -216,7 +216,7 @@ namespace nJupiter.DataAccess.Users {
 				result = (37 * result) + this.userProvider.GetHashCode();
 
 				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.UserProvider:{0}:UsernameCacheKey:{1}", this.userProvider, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.userRepository:{0}:UsernameCacheKey:{1}", this.userProvider, hash);
 			}
 
 			public override bool Equals(object obj) {

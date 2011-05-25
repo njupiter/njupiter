@@ -36,7 +36,7 @@ using ds = nJupiter.DataAccess.DirectoryService;
 
 namespace nJupiter.DataAccess.Users.DirectoryService {
 
-	public class UserProvider : Users.UserProviderBase {
+	public class UserRepository : Users.UserRepositoryBase {
 		#region Members
 		private ContextSchema defaultContextSchema;
 		private IList<IContext> contexts;

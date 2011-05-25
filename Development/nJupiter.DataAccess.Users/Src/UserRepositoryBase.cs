@@ -22,7 +22,6 @@
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +29,7 @@ using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users {
 	
-	public abstract class UserProviderBase : IUserProvider {
+	public abstract class UserRepositoryBase : IUserRepository {
 
 		protected readonly string DefaultDomain = string.Empty;
 

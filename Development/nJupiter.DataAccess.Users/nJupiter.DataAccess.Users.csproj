@@ -78,12 +78,12 @@
     <Compile Include="Src\ContextSchema.cs" />
     <Compile Include="Src\CompareCondition.cs" />
     <Compile Include="Src\ILockable.cs" />
-    <Compile Include="Src\IUserProvider.cs" />
+    <Compile Include="Src\IUserRepository.cs" />
     <Compile Include="Src\Properties\GenericProperty.cs" />
     <Compile Include="Src\Properties\IPredefinedProperties.cs" />
     <Compile Include="Src\Properties\IPropertyCollection.cs" />
     <Compile Include="Src\Properties\IPropertyHandler.cs" />
-    <Compile Include="Src\UserProviderFactory.cs" />
+    <Compile Include="Src\UserRepositoryFactory.cs" />
     <Compile Include="Src\Properties\IProperty.cs" />
     <Compile Include="Src\PredefinedNamesFactory.cs" />
     <Compile Include="Src\IPredefinedNames.cs">
@@ -124,7 +124,7 @@
     <Compile Include="Src\User.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\UserProviderBase.cs">
+    <Compile Include="Src\UserRepositoryBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\Web\ProfileProvider.cs" />

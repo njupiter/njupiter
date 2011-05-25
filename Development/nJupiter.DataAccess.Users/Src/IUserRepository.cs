@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Users {
-	public interface IUserProvider {
+	public interface IUserRepository {
 		
         /// <summary>
-        /// The name of the current UserProvider instance.
+        /// The name of the current userRepository instance.
         /// </summary>
-        /// <value>The UserProvider name.</value>
+        /// <value>The userRepository name.</value>
         string Name { get; }
 
 	
 		/// <summary>
-        /// Gets the common property names that is associated with the current UserProvider instance.
+        /// Gets the common property names that is associated with the current userRepository instance.
         /// </summary>
-        /// <value>The common property names that is associated with the current UserProvider instance.</value>
+        /// <value>The common property names that is associated with the current userRepository instance.</value>
 		IPredefinedNames PropertyNames { get; }
 		
 		/// <summary>

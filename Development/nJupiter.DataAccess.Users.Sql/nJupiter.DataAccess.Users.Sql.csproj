@@ -59,7 +59,7 @@
     <Compile Include="Src\Properties\PropertyFactory.cs" />
     <Compile Include="Src\Properties\StringProperty.cs" />
     <Compile Include="Src\Properties\XmlSerializedProperty.cs" />
-    <Compile Include="Src\UserProvider.cs" />
+    <Compile Include="Src\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
