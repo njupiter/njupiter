@@ -4,11 +4,16 @@ namespace nJupiter.DataAccess.Users {
 
 	internal class CommonNamesFactory {
 		
-		public static ICommonNames CreateCommonPropertyNames(IConfig config, ICommonNames context) {
+		public static ICommonNames Create(IConfig config) {
+			var contextNames = CreateCommonContextNames(config);
+			return CreateCommonPropertyNames(config, contextNames);
+		}
+
+		private static ICommonNames CreateCommonPropertyNames(IConfig config, ICommonNames context) {
 			return CreateCommonNames(config, GetCommonPropertyKey, context);
 		}
 
-		public static ICommonNames CreateCommonContextNames(IConfig config) {
+		private static ICommonNames CreateCommonContextNames(IConfig config) {
 			return CreateCommonNames(config, GetCommonContextAttribute, null);
 		}
 

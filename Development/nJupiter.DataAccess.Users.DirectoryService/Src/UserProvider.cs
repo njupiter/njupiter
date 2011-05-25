@@ -127,8 +127,8 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 
 			this.UserCache.RemoveUserFromCache(user);
 			SaveProperties(user, user.Properties.GetProperties());
-			if(GetAttachedContextsToUser(user).Any()) {
-				foreach(Context context in GetAttachedContextsToUser(user)) {
+			if(user.Properties.AttachedContexts.Any()) {
+				foreach(Context context in user.Properties.AttachedContexts) {
 					SaveProperties(user, user.Properties.GetProperties(context));
 				}
 			}
@@ -190,7 +190,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 		public override Context GetContext(string contextName) {
 			if(!this.GetContexts().Any(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase)))
 				return null;
-			return this.GetContexts().SingleOrDefault(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase));
+			return this.GetContexts().FirstOrDefault(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		public override IEnumerable<Context> GetContexts() {

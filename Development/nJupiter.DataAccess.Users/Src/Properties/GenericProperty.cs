@@ -17,6 +17,12 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
+		protected override bool SetDirtyOnTouch {
+			get {
+				return !this.Type.IsPrimitive && !this.Type.IsValueType && !this.Type.Equals(typeof(string));
+			}
+		}
+
 		public override string ToSerializedString() {
 			return converter.ConvertToString(null, culture, Value);
 		}

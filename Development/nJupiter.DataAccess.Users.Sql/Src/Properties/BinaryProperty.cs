@@ -9,13 +9,13 @@ namespace nJupiter.DataAccess.Users.Sql {
 		public BinaryProperty(string name, Context context) : base(name, context) { }
 
 		public bool SerializationPreservesOrder { get { return false; } }
+		protected override bool SetDirtyOnTouch { get { return true; } }
 
 		public override string ToSerializedString() {
 			if(this.IsEmpty())
 				return null;
 			using(MemoryStream stream = new MemoryStream()) {
-				new BinaryFormatter().Serialize(stream, this.Value);
-				this.IsDirty = false;
+				new BinaryFormatter().Serialize(stream, this.ValueUntouched);
 				return Convert.ToBase64String(stream.ToArray());
 			}
 		}

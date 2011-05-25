@@ -10,6 +10,8 @@ namespace nJupiter.DataAccess.Users.Sql {
 	public class XmlSerializedProperty : PropertyBase<object>, ISqlProperty {
 
 		public XmlSerializedProperty(string propertyName, Context context) : base(propertyName, context) { }
+		
+		protected override bool SetDirtyOnTouch { get { return true; } }
 
 		public override string ToSerializedString() {
 			if(this.IsEmpty())
@@ -18,10 +20,9 @@ namespace nJupiter.DataAccess.Users.Sql {
 			XmlSerializer serializer = new XmlSerializer(type);
 			StringWriter stringwriter = new StringWriter(CultureInfo.InvariantCulture);
 			XmlTextWriter xmlwriter = new XmlTextWriter(stringwriter);
-			serializer.Serialize(xmlwriter, this.Value);
+			serializer.Serialize(xmlwriter, this.ValueUntouched);
 			string xmlSerializedData = stringwriter.ToString();
 			ValueWrapper valueWrapper = new ValueWrapper(type, xmlSerializedData);
-			this.IsDirty = false;
 			using(MemoryStream stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, valueWrapper);
 				return Convert.ToBase64String(stream.ToArray());

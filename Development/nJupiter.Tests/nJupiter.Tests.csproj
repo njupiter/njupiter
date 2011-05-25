@@ -132,6 +132,7 @@
     <Compile Include="nJupiter.DataAccess.DirectoryService\DirectoryServiceTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="nJupiter.DataAccess.Users\PropertyHandlerTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\PropertyTests.cs" />
     <Compile Include="nJupiter.DataAccess\CommandTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceFactoryTests.cs" />

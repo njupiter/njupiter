@@ -636,8 +636,8 @@ namespace nJupiter.DataAccess.Users.Sql {
 		protected virtual void SaveUser(IUser user, IDbTransaction transaction) {
 			SaveUserInstance(user, transaction);
 			SaveProperties(user, user.Properties.GetProperties(), transaction);
-			if(GetAttachedContextsToUser(user).Any()) {
-				foreach(Context context in GetAttachedContextsToUser(user)) {
+			if(user.Properties.AttachedContexts.Any()) {
+				foreach(Context context in user.Properties.AttachedContexts) {
 					SaveProperties(user, this.GetProperties(user, context), transaction);
 				}
 			}
@@ -677,7 +677,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			foreach(PropertyDefinition pd in schema) {
 				string propertyValue = null;
 				string propertyName = pd.PropertyName;
-				Type propertyType = pd.DataType;
+				Type propertyType = pd.PropertyType;
 
 				DataRow currentField = (rows != null ? rows.Find(pd.PropertyName) : null);
 				if(currentField != null) {
@@ -766,9 +766,9 @@ namespace nJupiter.DataAccess.Users.Sql {
 						} else {
 							propertyType = Type.GetType((string)row["DataType"]);
 						}
-						if(propertyType == null)
-							throw new NotSupportedException("The given property has a type " + (string)row["DataType"] + " that can not be loaded.");
-
+						if(propertyType == null){
+							throw new NotSupportedException(string.Format("The given property has a type {0} that can not be loaded.", row["DataType"]));
+						}
 						PropertyDefinition pd = new PropertyDefinition(propertyName, propertyType);
 						pdt.Add(pd);
 					}

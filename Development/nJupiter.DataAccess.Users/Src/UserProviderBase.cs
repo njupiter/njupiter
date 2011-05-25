@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using nJupiter.Configuration;
 
@@ -126,10 +127,10 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("user");
 			if(context == null)
 				throw new ArgumentNullException("context");
-			if(!user.Properties.ContainsPropertiesForContext(context)) {
+			if(!user.Properties.AttachedContexts.Contains(context)) {
 				var pc = this.GetProperties(user, context);
 				if(pc != null) {
-					AttachPropertiesToUser(user, pc);
+					user.Properties.AttachProperties(pc);
 				}
 				return pc;
 			}
@@ -150,19 +151,6 @@ namespace nJupiter.DataAccess.Users {
 
 		public IUser CreateUserInstance(string userName, bool loadAllContexts) {
 			return CreateUserInstance(userName, null, loadAllContexts);
-		}
-
-		protected static void AttachPropertiesToUser(IUser user, PropertyCollection properties) {
-			if(user == null)
-				throw new ArgumentNullException("user");
-			user.Properties.AttachProperties(properties);
-		}
-
-		protected static IEnumerable<Context> GetAttachedContextsToUser(IUser user) {
-			if(user == null)
-				throw new ArgumentNullException("user");
-
-			return user.Properties.AttachedContexts;
 		}
 
 		protected void LoadAllContextsForUser(IUser user) {

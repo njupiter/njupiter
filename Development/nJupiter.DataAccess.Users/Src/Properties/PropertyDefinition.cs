@@ -37,15 +37,20 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public string PropertyName { get { return this.propertyName; } }
-		public Type DataType { get { return this.type; } }
+		public Type PropertyType { get { return this.type; } }
 
 		public override int GetHashCode() {
-			return base.GetHashCode();
+			int result = 17;
+			result = (37 * result) + propertyName.GetHashCode();
+			result = (37 * result) + type.GetHashCode();
+			return result;			
 		}
 
 		public override bool Equals(object obj) {
 			PropertyDefinition propertyDefinition = obj as PropertyDefinition;
-			return propertyDefinition != null && propertyDefinition.PropertyName.Equals(this.PropertyName);
+			return propertyDefinition != null &&
+					propertyDefinition.PropertyName.Equals(this.PropertyName) &&
+					propertyDefinition.PropertyType.Equals(this.PropertyType);
 		}
 	}
 

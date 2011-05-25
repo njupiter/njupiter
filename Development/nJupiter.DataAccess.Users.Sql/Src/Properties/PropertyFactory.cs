@@ -25,11 +25,30 @@ namespace nJupiter.DataAccess.Users.Sql {
 
 
 		internal static IProperty Create(string propertyName, string serializedPropertyValue, Type propertyType, Context context) {
+			IProperty property;
+			if(propertyType.Equals(typeof(string))) {
+				property = new StringProperty(propertyName, context);
+			} else if(propertyType.Equals(typeof(bool))) {
+				property = new BoolProperty(propertyName, context);
+			} else if(propertyType.Equals(typeof(int))) {
+				property = new IntProperty(propertyName, context);
+			} else if(propertyType.Equals(typeof(DateTime))) {
+				property = new DateTimeProperty(propertyName, context);
+			} else if(propertyType.IsSerializable) {
+				property = new BinaryProperty(propertyName, context);
+			} else {
+				property = new XmlSerializedProperty(propertyName, context);
+			}
+			property.Value = property.DeserializePropertyValue(serializedPropertyValue);
+			property.IsDirty = false;
+			return property;
+	
+			/*
 			object[] constructorArgs = { propertyName, context };
 			IProperty property = (IProperty)Activator.CreateInstance(propertyType, constructorArgs);
 			property.Value = property.DeserializePropertyValue(serializedPropertyValue);
 			property.IsDirty = false;
-			return property;
+			return property;*/
 		}
 
 	}

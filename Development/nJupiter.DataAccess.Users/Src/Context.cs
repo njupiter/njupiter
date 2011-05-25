@@ -29,12 +29,19 @@ namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public class Context {
 
+		private static readonly Context defaultContext = new Context();
+		public static Context DefaultContext { get { return defaultContext; } }
+
 		private readonly string name;
 
 		private Context() {
+			this.name = string.Empty;
 		}
 
 		public Context(string contextName) {
+			if(string.IsNullOrEmpty(contextName)) {
+				throw new ArgumentException("contextName can not be empty.", "contextName");
+			}
 			this.name = contextName;
 		}
 

@@ -52,6 +52,8 @@ namespace nJupiter.DataAccess.Users {
 		public Type Type { get { return typeof(T); } }
 		public Context Context { get { return this.context; } }
 		public T DefaultValue { get { return default(T); } }
+		protected virtual bool SetDirtyOnTouch { get { return false; } }
+		protected T ValueUntouched { get { return value; } }
 
 		public bool IsDirty {
 			get {
@@ -64,7 +66,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public T Value {
 			get {
-				if(this.IsOfTypeDirtyOnTouch()) {
+				if(this.SetDirtyOnTouch) {
 					this.IsDirty = true;
 				}
 				return this.value;
@@ -83,15 +85,13 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private bool CheckIfDirty(T v) {
-			if(this.IsOfTypeDirtyOnTouch() || !object.Equals(v, value)) {
+			if(this.SetDirtyOnTouch || !object.Equals(v, value)) {
 				return true;
 			}
 			return false;
 		}
 
-		private bool IsOfTypeDirtyOnTouch() {
-			return !this.Type.IsPrimitive && !(value is string) && !(value is DateTime);
-		}
+		
 
 		object IProperty.DefaultValue { get { return this.DefaultValue; } }		
 		object IProperty.Value { get { return Value; }  set { this.Value = (T)value; } }

@@ -22,26 +22,25 @@
 */
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace nJupiter.DataAccess.Users {
 
-	public sealed class PropertyCollection : IEnumerable<IProperty>, ILockable {
+	public class PropertyCollection : IEnumerable<IProperty>, ILockable {
 		
-		private readonly List<IProperty> innerList;
+		private readonly IList<IProperty> innerList;
 		private readonly ContextSchema schema;
 		private bool isReadOnly;
-		
-		internal ContextSchema Schema { get { return this.schema; } }
-		
-		internal int Count { get { return innerList.Count; } }
+
+		public ContextSchema Schema { get { return this.schema; } }
+
+		public int Count { get { return innerList.Count; } }
 
 		public PropertyCollection() : this(null, null) {}
 
-		public PropertyCollection(List<IProperty> innerList, ContextSchema schema) {
+		public PropertyCollection(IList<IProperty> innerList, ContextSchema schema) {
 			this.innerList = innerList ?? new List<IProperty>();
 			this.schema = schema ?? new ContextSchema(new List<PropertyDefinition>());
 		}
