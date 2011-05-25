@@ -23,8 +23,11 @@
 #endregion
 
 namespace nJupiter.DataAccess.Users {
-	
-	public interface ICommonNames {
+	public interface IPredefinedNames {
+		string GetName(string name);
+		string GetContextName(string name);
+		IPredefinedNames ContextNames { get; }
+
 		string UserName { get; }
 		string FullName { get; }
 		string FirstName { get; }
@@ -53,14 +56,9 @@ namespace nJupiter.DataAccess.Users {
 		string LastLoginDate { get; }
 		string LastPasswordChangedDate { get; }
 		string Locked { get; }
-		string Password { get; }
-		string PasswordSalt { get; }
 		string LastUpdatedDate { get; }
 		string IsAnonymous { get; }
-		ICommonNames ContextNames { get; }
-
-		string GetName(string name);
-		string GetContextName(string name);
-		
+		string Password { get; }
+		string PasswordSalt { get; }
 	}
 }

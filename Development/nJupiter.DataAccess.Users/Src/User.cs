@@ -29,7 +29,7 @@ namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public class User : IUser {
 
-		private PropertyHandler properties;
+		private IPropertyHandler properties;
 		private readonly string id;
 		private readonly string domain;
 		private readonly string userName;
@@ -38,7 +38,7 @@ namespace nJupiter.DataAccess.Users {
 		private User() {
 		}
 
-		public User(string userId, string userName, string domain, IPropertyCollection properties, ICommonNames propertyNames) {
+		public User(string userId, string userName, string domain, IPropertyCollection properties, IPredefinedNames propertyNames) {
 			if(userId == null) {
 				throw new ArgumentNullException("userId");
 			}
@@ -54,7 +54,7 @@ namespace nJupiter.DataAccess.Users {
 		public string Id { get { return this.id; } }
 		public string UserName { get { return this.userName; } }
 		public string Domain { get { return this.domain; } }
-		public PropertyHandler Properties { get { return this.properties; } }
+		public IPropertyHandler Properties { get { return this.properties; } }
 
 
 		public override int GetHashCode() {
@@ -64,7 +64,7 @@ namespace nJupiter.DataAccess.Users {
 		public object Clone() {
 			var newUser = (User)this.MemberwiseClone();
 			newUser.isReadOnly = false;
-			newUser.properties = (PropertyHandler)properties.Clone();
+			newUser.properties = (IPropertyHandler)properties.Clone();
 			return newUser;
 		}
 

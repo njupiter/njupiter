@@ -27,30 +27,29 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace nJupiter.DataAccess.Users {
-
 	[Serializable]
-	public sealed class PropertyHandler : ILockable {
+	public sealed class PropertyHandler : IPropertyHandler {
 		private readonly string username;
-		private readonly ICommonNames propertyNames;
-		private IDictionary<Context, IPropertyCollection> propertiesPerContext;
+		private readonly IPredefinedNames propertyNames;
+		private IDictionary<IContext, IPropertyCollection> propertiesPerContext;
 		private readonly object padlock = new object();
 		private bool isReadOnly;
 
 		public IProperty this[string propertyName] { get { return this.GetProperty(propertyName); } }
-		public IProperty this[string propertyName, Context context] { get { return this.GetProperty(propertyName, context); } }
+		public IProperty this[string propertyName, IContext context] { get { return this.GetProperty(propertyName, context); } }
 
-		public ICommonNames PropertyNames { get { return this.propertyNames; } }
+		public IPredefinedNames PropertyNames { get { return this.propertyNames; } }
 
-		public IEnumerable<Context> AttachedContexts {
+		public IEnumerable<IContext> AttachedContexts {
 			get {
 				return this.propertiesPerContext.Keys.Where(context => !context.Equals(Context.DefaultContext));
 			}
 		}
 
-		internal PropertyHandler(string username, IPropertyCollection properties, ICommonNames propertyNames) {
+		internal PropertyHandler(string username, IPropertyCollection properties, IPredefinedNames propertyNames) {
 			this.username = username;
 			this.propertyNames = propertyNames;
-			this.propertiesPerContext = new Dictionary<Context, IPropertyCollection>();
+			this.propertiesPerContext = new Dictionary<IContext, IPropertyCollection>();
 			this.AttachProperties(properties);
 			if(this.CreationDate == DateTime.MinValue) {
 				this.CreationDate = DateTime.UtcNow;
@@ -61,7 +60,7 @@ namespace nJupiter.DataAccess.Users {
 			return GetProperties(Context.DefaultContext);
 		}
 
-		public IPropertyCollection GetProperties(Context context) {
+		public IPropertyCollection GetProperties(IContext context) {
 			if(context == null){
 				throw new ArgumentNullException("context");
 			}
@@ -76,7 +75,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("properties");
 			}
 
-			Context context = GetContextFromPropertyCollection(properties);
+			IContext context = GetContextFromPropertyCollection(properties);
 			if(!ValidatePropertyCollection(properties, context)) {
 				throw new ArgumentException("The attached PropertyCollection does not match the attached Schema.");
 			}
@@ -87,7 +86,7 @@ namespace nJupiter.DataAccess.Users {
 			return GetValue<T>(propertyName, Context.DefaultContext);
 		}
 
-		public T GetValue<T>(string propertyName, Context context) {
+		public T GetValue<T>(string propertyName, IContext context) {
 			IProperty porperty = this.GetProperty(propertyName, context);
 			return GetValue<T>(porperty);
 		}
@@ -102,11 +101,11 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public IProperty GetProperty(string propertyName, string contextName) {
-			Context context = GetContext(contextName);
+			IContext context = GetContext(contextName);
 			return this.GetProperty(propertyName, context);
 		}
 
-		public IProperty GetProperty(string propertyName, Context context) {
+		public IProperty GetProperty(string propertyName, IContext context) {
 			if(propertyName == null) {
 				throw new ArgumentNullException("propertyName");
 			}
@@ -125,99 +124,13 @@ namespace nJupiter.DataAccess.Users {
 			SetProperty(propertyName, context, value);
 		}
 
-		public void SetProperty(string propertyName, Context context, object value) {
+		public void SetProperty(string propertyName, IContext context, object value) {
 			IProperty property = this.GetProperty(propertyName, context);
 			if(property == null) {
 				string incontext = Context.DefaultContext.Equals(context) ? "default context" : string.Format("context [{0}]", context.Name);
 				throw new ArgumentException(string.Format("Property with name [{0}] in {1} is either not loader or does not exist.", propertyName, incontext));
 			}
 			property.Value = value;
-		}
-
-		private static bool ValidatePropertyCollection(IPropertyCollection properties, Context context) {
-			if(!properties.Count.Equals(properties.Schema.Count)){
-				return false;
-			}
-			if(!IsAllPropertiesInContext(properties, context)){
-				return false;
-			}
-			if(!IsPropertiesConsistantToSchema(properties)) {
-				return false;
-			}
-			return true;
-		}
-
-		private void AttachProperties(IPropertyCollection properties, Context context) {
-			if(isReadOnly) {
-				properties.MakeReadOnly();
-			}
-			lock(this.padlock) {
-				if(this.propertiesPerContext.Keys.Contains(context)) {
-					throw new ArgumentException("The context for the attached PropertyCollection is already attached.");
-				}
-				this.propertiesPerContext.Add(context, properties);
-			}
-		}
-
-		private static T GetValue<T>(IProperty porperty) {
-			if(porperty == null) {
-				return default(T);
-			}
-			return (T)porperty.Value;
-		}
-
-		private T GetPropertyByKey<T>(string key) {
-			if(this.propertyNames == null) {
-				return default(T);
-			}
-			string propertyName = this.propertyNames.GetName(key);
-			string contextName = this.propertyNames.ContextNames.GetName(key);
-			if(propertyName == null) {
-				return default(T);
-			}
-			return this.GetValue<T>(propertyName, contextName);
-		}
-
-		private void SetPropertyByKey(string key, object value) {
-			if(this.propertyNames == null) {
-				return;
-			}
-			string propertyName = this.propertyNames.GetName(key);
-			string contextName = this.propertyNames.ContextNames.GetName(key);
-			if(propertyName != null) {
-				IProperty property = this.GetProperty(propertyName, contextName);
-				if(property != null) {
-					property.Value = value;
-				}
-			}
-		}
-
-		private static bool IsPropertiesConsistantToSchema(IPropertyCollection properties) {
-			return properties.All(p => properties.Schema.Any(definition => PropertyConformDefinition(p, definition)));
-		}
-
-		private static bool PropertyConformDefinition(IProperty property, PropertyDefinition definition) {
-			return definition.PropertyName.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase) && definition.PropertyType.Equals(property.GetType());
-		}
-
-		private static bool IsAllPropertiesInContext(IEnumerable<IProperty> properties, Context context) {
-			return properties.All(property => property.Context == context);
-		}
-
-		private Context GetContext(string contextName) {
-			if(string.IsNullOrEmpty(contextName)) {
-				return Context.DefaultContext;
-			}
-			var context = this.AttachedContexts.FirstOrDefault(c => c.Name.Equals(contextName, StringComparison.InvariantCultureIgnoreCase));
-			if(context == null) {
-				throw new ArgumentException(string.Format("The context with name [{0}] is not attached.", contextName));
-			}
-			return context;
-		}
-
-		private static Context GetContextFromPropertyCollection(IEnumerable<IProperty> properties) {
-			var property = properties.FirstOrDefault();
-			return property != null ? property.Context : Context.DefaultContext;
 		}
 
 		public string UserName {
@@ -274,10 +187,96 @@ namespace nJupiter.DataAccess.Users {
 		public bool Locked { get { return this.GetPropertyByKey<bool>("Locked"); } set { this.SetPropertyByKey("Locked", value); } }
 		public DateTime LastUpdatedDate { get { return this.GetPropertyByKey<DateTime>("LastUpdatedDate"); } set { this.SetPropertyByKey("LastUpdatedDate", value); } }
 		public bool IsAnonymous { get { return this.GetPropertyByKey<bool>("IsAnonymous"); } set { this.SetPropertyByKey("IsAnonymous", value); } }
+
+		private static bool ValidatePropertyCollection(IPropertyCollection properties, IContext context) {
+			if(!properties.Count.Equals(properties.Schema.Count)){
+				return false;
+			}
+			if(!IsAllPropertiesInContext(properties, context)){
+				return false;
+			}
+			if(!IsPropertiesConsistantToSchema(properties)) {
+				return false;
+			}
+			return true;
+		}
+
+		private void AttachProperties(IPropertyCollection properties, IContext context) {
+			if(this.isReadOnly) {
+				properties.MakeReadOnly();
+			}
+			lock(this.padlock) {
+				if(this.propertiesPerContext.Keys.Contains(context)) {
+					throw new ArgumentException("The context for the attached PropertyCollection is already attached.");
+				}
+				this.propertiesPerContext.Add(context, properties);
+			}
+		}
+
+		private static T GetValue<T>(IProperty porperty) {
+			if(porperty == null) {
+				return default(T);
+			}
+			return (T)porperty.Value;
+		}
+
+		private static bool IsPropertiesConsistantToSchema(IPropertyCollection properties) {
+			return properties.All(p => properties.Schema.Any(definition => PropertyConformDefinition(p, definition)));
+		}
+
+		private static bool PropertyConformDefinition(IProperty property, PropertyDefinition definition) {
+			return definition.PropertyName.Equals(property.Name, StringComparison.InvariantCultureIgnoreCase) && definition.PropertyType.Equals(property.GetType());
+		}
+
+		private static bool IsAllPropertiesInContext(IEnumerable<IProperty> properties, IContext context) {
+			return properties.All(property => property.Context == context);
+		}
+
+		private IContext GetContext(string contextName) {
+			if(string.IsNullOrEmpty(contextName)) {
+				return Context.DefaultContext;
+			}
+			var context = this.AttachedContexts.FirstOrDefault(c => c.Name.Equals(contextName, StringComparison.InvariantCultureIgnoreCase));
+			if(context == null) {
+				throw new ArgumentException(string.Format("The context with name [{0}] is not attached.", contextName));
+			}
+			return context;
+		}
+
+		private static IContext GetContextFromPropertyCollection(IEnumerable<IProperty> properties) {
+			var property = properties.FirstOrDefault();
+			return property != null ? property.Context : Context.DefaultContext;
+		}
+
+		private T GetPropertyByKey<T>(string key) {
+			if(this.propertyNames == null) {
+				return default(T);
+			}
+			string propertyName = this.propertyNames.GetName(key);
+			string contextName = this.propertyNames.ContextNames.GetName(key);
+			if(propertyName == null) {
+				return default(T);
+			}
+			return this.GetValue<T>(propertyName, contextName);
+		}
+
+		private void SetPropertyByKey(string key, object value) {
+			if(this.propertyNames == null) {
+				return;
+			}
+			string propertyName = this.propertyNames.GetName(key);
+			string contextName = this.propertyNames.ContextNames.GetName(key);
+			if(propertyName != null) {
+				IProperty property = this.GetProperty(propertyName, contextName);
+				if(property != null) {
+					property.Value = value;
+				}
+			}
+		}
 		
 		public object Clone() {
 			var newPropertyHandler = (PropertyHandler)this.MemberwiseClone();
-			var newPropertiesPerContext = new Dictionary<Context, IPropertyCollection>();
+			var newPropertiesPerContext = new Dictionary<IContext, IPropertyCollection>();
 			foreach(var pair in propertiesPerContext) {
 				newPropertiesPerContext.Add(pair.Key, (IPropertyCollection)pair.Value.Clone());
 			}

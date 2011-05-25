@@ -4,6 +4,6 @@ namespace nJupiter.DataAccess.Users {
 		string Id { get; }
 		string UserName { get; }
 		string Domain { get; }
-		PropertyHandler Properties { get; }
+		IPropertyHandler Properties { get; }
 	}
 }

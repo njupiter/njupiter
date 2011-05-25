@@ -6,7 +6,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class BinaryProperty : PropertyBase<object>, ISqlProperty {
 
-		public BinaryProperty(string name, Context context) : base(name, context) { }
+		public BinaryProperty(string name, IContext context) : base(name, context) { }
 
 		public bool SerializationPreservesOrder { get { return false; } }
 		protected override bool SetDirtyOnTouch { get { return true; } }

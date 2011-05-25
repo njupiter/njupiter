@@ -2,7 +2,7 @@
 
 namespace nJupiter.DataAccess.Users.Sql {
 	internal class PropertyFactory {
-		internal static IProperty Create<T>(string propertyName, string serializedPropertyValue, Context context) where T : IProperty {
+		internal static IProperty Create<T>(string propertyName, string serializedPropertyValue, IContext context) where T : IProperty {
 			
 			IProperty property = null;
 			if(typeof(T).Equals(typeof(StringProperty))) {
@@ -24,7 +24,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 
 
 
-		internal static IProperty Create(string propertyName, string serializedPropertyValue, Type propertyType, Context context) {
+		internal static IProperty Create(string propertyName, string serializedPropertyValue, Type propertyType, IContext context) {
 			IProperty property;
 			if(propertyType.Equals(typeof(string))) {
 				property = new StringProperty(propertyName, context);

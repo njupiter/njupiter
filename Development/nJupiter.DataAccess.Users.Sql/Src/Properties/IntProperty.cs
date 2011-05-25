@@ -6,7 +6,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 	public class IntProperty : PropertyBase<int>, ISqlProperty {
 		private const string Format = "D10";
 
-		public IntProperty(string propertyName, Context context) : base(propertyName, context) { }
+		public IntProperty(string propertyName, IContext context) : base(propertyName, context) { }
 
 		public override string ToSerializedString() {
 			return ToLexicographicallyFormat();

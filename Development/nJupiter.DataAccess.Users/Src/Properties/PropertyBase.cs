@@ -30,12 +30,12 @@ namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public abstract class PropertyBase<T> : IProperty {
 		private readonly string name;
-		private readonly Context context;
+		private readonly IContext context;
 		private T value;
 		private bool isDirty;
 		private bool isReadOnly;
 
-		protected PropertyBase(string name, Context context) {
+		protected PropertyBase(string name, IContext context) {
 			this.name = name;
 			this.context = context;
 		}
@@ -50,7 +50,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public string Name { get { return this.name; } }
 		public Type Type { get { return typeof(T); } }
-		public Context Context { get { return this.context; } }
+		public IContext Context { get { return this.context; } }
 		public T DefaultValue { get { return default(T); } }
 		protected virtual bool SetDirtyOnTouch { get { return false; } }
 		protected T ValueUntouched { get { return value; } }

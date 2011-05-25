@@ -25,7 +25,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_AttachCollectionForContext_ContextAttached() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var context = new Context("context");
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12, context);
@@ -38,7 +38,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_AttachCollectionForContext_AnotherContextNotAttached() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var context = new Context("context");
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12, context);
@@ -51,7 +51,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_PropertyCollectionWithMishmatchingSchemaCount_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var propertyList = DummyFactory.GetPropertyList(12);
 			var schema = DummyFactory.GetSchema(11);
@@ -62,7 +62,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_PropertyCollectionWithMishmatchingSchemaNames_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var propertyList = DummyFactory.GetPropertyList(12);
 			var schema = DummyFactory.GetSchema<string>("otherpropertyname", 12);
@@ -73,7 +73,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_PropertyCollectionWithMishmatchingSchemaTypes_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var propertyList = DummyFactory.GetPropertyList(12);
 			var schema = DummyFactory.GetSchema<int>("property", 12);
@@ -85,7 +85,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_PropertyCollectionWithMishmatchingContext_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var propertyList = DummyFactory.GetPropertyList(12);
 			propertyList.Add(new GenericProperty<string>("property13", new Context("othercontext"), CultureInfo.InvariantCulture));
@@ -97,7 +97,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_AttachAlreadyAttachedContext_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12);
 
@@ -107,31 +107,31 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void AttachProperties_PassingNull_ThrowsArgumentNullException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			Assert.Throws<ArgumentNullException>(() => prophandler.AttachProperties(null));
 		}
 
 		[Test]
 		public void GetProperties_PassingNull_ThrowsArgumentNullException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			Assert.Throws<ArgumentNullException>(() => prophandler.GetProperties(null));
 		}
 
 		[Test]
 		public void GetProperty_PassingNullProperty_ThrowsArgumentNullException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			Assert.Throws<ArgumentNullException>(() => prophandler.GetProperty(null));
 		}
 
 		[Test]
 		public void GetProperty_PassingNullContext_ThrowsArgumentNullException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
-			Assert.Throws<ArgumentNullException>(() => prophandler.GetProperty("MyProperty", (Context)null));
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			Assert.Throws<ArgumentNullException>(() => prophandler.GetProperty("MyProperty", (IContext)null));
 		}
 
 		[Test]
 		public void GetProperty_SetCommonName_ReturnsPropertyWithSetValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			prophandler.Title = "Hello world";
 			var prop = prophandler.GetProperty(prophandler.PropertyNames.Title, prophandler.PropertyNames.ContextNames.Title);
 			Assert.NotNull(prop);
@@ -141,7 +141,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void SetProperty_SetPropertyInOtherContextAndReadTheCommonName_ReturnsSetValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			var anotherContext = new Context("AnotherContext");
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12, anotherContext);
 			prophandler.AttachProperties(attachedProperties);
@@ -152,40 +152,40 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void SetProperty_PassingNonExistingPropertyName_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			Assert.Throws<ArgumentException>(() => prophandler.SetProperty("NoExisingPropertyName", null));
 		}
 
 		[Test]
 		public void SetProperty_PassingNonExistingContext_ThrowsArgumentException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			Assert.Throws<ArgumentException>(() => prophandler.SetProperty(prophandler.FirstName, "NonExisgingContext", null));
 		}
 
 		[Test]
 		public void GetValue_GetNonExistingProperty_ReturnsDefaultValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			var result = prophandler.GetValue<DateTime>("NonExistantDate");
 			Assert.AreEqual(DateTime.MinValue, result);
 		}
 
 		[Test]
 		public void GetValue_SetTheValueInDefaultContext_ReturnsCorrectValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			prophandler.SetProperty("Description", "Hello World");
 			Assert.AreEqual("Hello World", prophandler.GetValue<string>("Description"));
 		}
 
 		[Test]
 		public void GetProperty_SetTheValueInDefaultContext_ReturnsCorrectValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			prophandler.SetProperty("Country", "Hello World");
 			Assert.AreEqual("Hello World", prophandler.GetProperty("Country").Value);
 		}
 
 		[Test]
 		public void Indexer_TryGetProperty8FromDefaultContext_ReturnsSameAsMethod() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			var property = prophandler.GetProperty("FirstName");
 			property.Value = "Hello world";
 			Assert.AreEqual(property, prophandler["FirstName"]);
@@ -194,7 +194,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void Indexer_TryGetFirstPropertyFromContext_ReturnsProperty() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12);
 			prophandler.AttachProperties(attachedProperties);
 			var firstProperty = attachedProperties.First();
@@ -204,20 +204,20 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void LastLockoutDate_PropertyNotDefiendInCommonNamesAndIsThereforNotSet_ReturnsDefaultValueAfterSet() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler();
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 			prophandler.LastLockoutDate = DateTime.UtcNow;
 			Assert.AreEqual(DateTime.MinValue, prophandler.LastLockoutDate);
 		}
 
 		[Test]
 		public void UserName_NoUserNameIsSet_ReturnsDefault() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("username");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("username");
 			Assert.AreEqual("username", prophandler.UserName);
 		}
 
 		[Test]
 		public void UserName_SetUserName_ReturnsSetValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("username");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("username");
 			prophandler.SetProperty(prophandler.PropertyNames.UserName,
 			                        prophandler.PropertyNames.ContextNames.UserName,
 			                        "newusername");
@@ -226,7 +226,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void DisplayName_FullNameSet_ReturnsFullname() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.FirstName = "Martin";
 			prophandler.LastName = "Odhelius";
 			prophandler.FullName = "Mr. Martin Odhelius";
@@ -235,7 +235,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void DisplayName_FullNameNotSet_ReturnsFirstnameAndLastname() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.FirstName = "Martin";
 			prophandler.LastName = "Odhelius";
 			Assert.AreEqual("Martin Odhelius", prophandler.DisplayName);
@@ -243,21 +243,21 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void DisplayName_LastNameNotSet_ReturnsFirstnameAndUsername() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.FirstName = "Martin";
 			Assert.AreEqual("Martin (modhelius)", prophandler.DisplayName);
 		}
 
 		[Test]
 		public void DisplayName_OnlyLastNameSet_ReturnsUsername() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.LastName = "Odhelius";
 			Assert.AreEqual("modhelius", prophandler.DisplayName);
 		}
 
 		[Test]
 		public void MakeReadOnly_CheckObjectAndDefaultProperties_ReturnsTrue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.MakeReadOnly();
 			Assert.IsTrue(prophandler.IsReadOnly);
 			Assert.IsTrue(prophandler.GetProperties().IsReadOnly);
@@ -266,7 +266,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void MakeReadOnly_SetAPropertyAfterReadOnly_ThrowsReadOnlyException() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 
 			var anotherContext = new Context("AnotherContext");
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12, anotherContext);
@@ -279,7 +279,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void MakeReadOnly_AttachContextAfterReadonly_AttachContextBecomesReadonly() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.MakeReadOnly();
 
 			var anotherContext = new Context("AnotherContext");
@@ -292,14 +292,14 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void Clone_AttachContextAfterReadonly_AttachContextBecomesReadonly() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.MakeReadOnly();
 
 			var anotherContext = new Context("AnotherContext");
 			IPropertyCollection attachedProperties = DummyFactory.GetPropertyCollection(12, anotherContext);
 			prophandler.AttachProperties(attachedProperties);
 
-			var newprophander = (PropertyHandler)prophandler.Clone();
+			var newprophander = (IPropertyHandler)prophandler.Clone();
 
 			Assert.AreNotSame(prophandler, newprophander);
 
@@ -316,7 +316,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void CommonNameProperties_SetAndGetSameValue() {
-			PropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler("modhelius");
 			prophandler.FullName = "fullname";
 			prophandler.FirstName = "firstname";
 			prophandler.LastName = "lastname";

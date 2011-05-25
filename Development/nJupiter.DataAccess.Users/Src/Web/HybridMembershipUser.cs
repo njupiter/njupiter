@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Web.Security;
 
 namespace nJupiter.DataAccess.Users {
 

@@ -87,7 +87,7 @@ namespace nJupiter.DataAccess.Users {
 		private IProperty GetAbstractProperty(IUser user, string propertyName) {
 			string contextName = this.UserProvider.PropertyNames.GetContextName(propertyName);
 			if(!string.IsNullOrEmpty(contextName)) {
-				Context context = this.UserProvider.GetContext(contextName);
+				IContext context = this.UserProvider.GetContext(contextName);
 				return user.Properties[propertyName, context];
 			}
 			return user.Properties[propertyName];

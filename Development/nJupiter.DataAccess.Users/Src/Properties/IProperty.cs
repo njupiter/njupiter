@@ -4,7 +4,7 @@ namespace nJupiter.DataAccess.Users {
 	public interface IProperty: ILockable {
 		bool IsEmpty();
 		string Name { get; }
-		Context Context { get; }
+		IContext Context { get; }
 		bool IsDirty { get; set; }
 		object DefaultValue { get; }
 		object Value { get; set; }

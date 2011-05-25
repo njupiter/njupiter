@@ -8,11 +8,11 @@ using nJupiter.DataAccess.Users;
 
 namespace nJupiter.Tests.DataAccess.Users {
 	public class DummyFactory{
-		internal static PropertyHandler GetPropertyHandler() {
+		internal static IPropertyHandler GetPropertyHandler() {
 			return GetPropertyHandler("username");
 		}
 
-		internal static PropertyHandler GetPropertyHandler(string username) {
+		internal static IPropertyHandler GetPropertyHandler(string username) {
 			var props = GetDefaultPropertyCollection();
 			var names = GetDummyCommonNames();
 			return new PropertyHandler(username, props, names);
@@ -24,7 +24,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 			return new PropertyCollection(propertyList, schema);
 		}
 
-		internal static IPropertyCollection GetPropertyCollection(int count, Context context) {
+		internal static IPropertyCollection GetPropertyCollection(int count, IContext context) {
 			var propertyList = GetPropertyList(count, context);
 			var schema = GetSchema(count);
 			return new PropertyCollection(propertyList, schema);
@@ -34,7 +34,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 			return GetPropertyList(count, new Context("context"));
 		}
 
-		internal static IList<IProperty> GetPropertyList(int count, Context context) {
+		internal static IList<IProperty> GetPropertyList(int count, IContext context) {
 			IList<IProperty> properties = new List<IProperty>();
 			for(int i = 0; i < count; i++) {
 				string name = String.Format("property{0}", i);
@@ -137,9 +137,9 @@ namespace nJupiter.Tests.DataAccess.Users {
 			return new ContextSchema(propertyDefinitions);
 		}
 
-		internal static ICommonNames GetDummyCommonNames() {
+		internal static IPredefinedNames GetDummyCommonNames() {
 			var settings =	@"<settings>
-									<commonProperties>
+									<predefinedProperties>
 										<userName value=""userName"" />
 										<firstName value=""firstName"" />
 										<fullName value=""fullName"" />
@@ -169,13 +169,13 @@ namespace nJupiter.Tests.DataAccess.Users {
 										<active value=""active"" />
 										<lastUpdatedDate value=""lastUpdatedDate"" />
 										<isAnonymous value=""isAnonymous"" />
-									</commonProperties>			
+									</predefinedProperties>			
 								</settings>";
 
 			XmlDocument xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(settings);
 			var config = ConfigFactory.Create("config", xmlDocument.DocumentElement);
-			return CommonNamesFactory.Create(config);
+			return PredefinedNamesFactory.Create(config);
 		}
 	}
 }

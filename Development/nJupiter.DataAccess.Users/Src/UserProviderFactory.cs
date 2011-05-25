@@ -85,7 +85,7 @@ namespace nJupiter.DataAccess.Users {
 						userProvider.UserCache = new GenericUserCache(userProvider.Config);
 					}
 
-					userProvider.PropertyNames = CommonNamesFactory.Create(userProvider.Config);
+					userProvider.PropertyNames = PredefinedNamesFactory.Create(userProvider.Config);
 
 					UserProviders.Add(userProvider);
 					return userProvider;

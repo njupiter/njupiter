@@ -25,12 +25,15 @@
 using System;
 
 namespace nJupiter.DataAccess.Users {
-	
-	[Serializable]
-	public class Context {
+	public interface IContext {
+		string Name { get; }
+	}
 
-		private static readonly Context defaultContext = new Context();
-		public static Context DefaultContext { get { return defaultContext; } }
+	[Serializable]
+	public class Context : IContext {
+
+		private static readonly IContext defaultContext = new Context();
+		public static IContext DefaultContext { get { return defaultContext; } }
 
 		private readonly string name;
 
@@ -52,7 +55,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override bool Equals(object obj) {
-			Context context = obj as Context;
+			IContext context = obj as IContext;
 			if(context == null) {
 				return false;
 			}

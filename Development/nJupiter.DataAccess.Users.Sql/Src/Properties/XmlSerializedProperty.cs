@@ -9,7 +9,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
 	public class XmlSerializedProperty : PropertyBase<object>, ISqlProperty {
 
-		public XmlSerializedProperty(string propertyName, Context context) : base(propertyName, context) { }
+		public XmlSerializedProperty(string propertyName, IContext context) : base(propertyName, context) { }
 		
 		protected override bool SetDirtyOnTouch { get { return true; } }
 

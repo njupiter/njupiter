@@ -52,19 +52,19 @@ namespace nJupiter.DataAccess.Users {
 		public SearchCriteria(string propertyName, string propertyValue, string domain, bool required) : this(propertyName, propertyValue, domain, null, CompareCondition.Equal, required) { }
 		public SearchCriteria(string propertyName, string propertyValue, string domain, CompareCondition condition) : this(propertyName, propertyValue, domain, null, condition, false) { }
 		public SearchCriteria(string propertyName, string propertyValue, string domain, CompareCondition condition, bool required) : this(propertyName, propertyValue, domain, null, condition, required) { }
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, false) { }
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, bool required) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, required) { }
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, CompareCondition condition) : this(propertyName, propertyValue, domain, context, condition, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, IContext context) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, IContext context, bool required) : this(propertyName, propertyValue, domain, context, CompareCondition.Equal, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, string domain, IContext context, CompareCondition condition) : this(propertyName, propertyValue, domain, context, condition, false) { }
 
 		public SearchCriteria(string propertyName, string propertyValue) : this(propertyName, propertyValue, null, null, CompareCondition.Equal, false) { }
 		public SearchCriteria(string propertyName, string propertyValue, bool required) : this(propertyName, propertyValue, null, null, CompareCondition.Equal, required) { }
 		public SearchCriteria(string propertyName, string propertyValue, CompareCondition condition) : this(propertyName, propertyValue, null, null, condition, false) { }
 		public SearchCriteria(string propertyName, string propertyValue, CompareCondition condition, bool required) : this(propertyName, propertyValue, null, null, condition, required) { }
-		public SearchCriteria(string propertyName, string propertyValue, Context context) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, false) { }
-		public SearchCriteria(string propertyName, string propertyValue, Context context, bool required) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, required) { }
-		public SearchCriteria(string propertyName, string propertyValue, Context context, CompareCondition condition) : this(propertyName, propertyValue, null, context, condition, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, IContext context) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, false) { }
+		public SearchCriteria(string propertyName, string propertyValue, IContext context, bool required) : this(propertyName, propertyValue, null, context, CompareCondition.Equal, required) { }
+		public SearchCriteria(string propertyName, string propertyValue, IContext context, CompareCondition condition) : this(propertyName, propertyValue, null, context, condition, false) { }
 
-		public SearchCriteria(string propertyName, string propertyValue, string domain, Context context, CompareCondition condition, bool required) {
+		public SearchCriteria(string propertyName, string propertyValue, string domain, IContext context, CompareCondition condition, bool required) {
 			if(propertyName == null) {
 				throw new ArgumentNullException("propertyName");
 			}

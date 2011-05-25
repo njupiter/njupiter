@@ -2,7 +2,7 @@
 
 namespace nJupiter.DataAccess.Users {
 	[Serializable]
-	public sealed class CommonNames : ICommonNames {
+	public sealed class PredefinedNames : IPredefinedNames {
 		private readonly string userName;
 		private readonly string fullName;
 		private readonly string firstName;
@@ -36,9 +36,9 @@ namespace nJupiter.DataAccess.Users {
 		private readonly string password;
 		private readonly string passwordSalt;
 
-		private readonly ICommonNames contextNames;
+		private readonly IPredefinedNames contextNames;
 
-		internal CommonNames(
+		internal PredefinedNames(
 			string username,
 			string fullname,
 			string firstname,
@@ -71,7 +71,7 @@ namespace nJupiter.DataAccess.Users {
 			string isAnonymous,
 			string password,
 			string passwordSalt,
-			ICommonNames contextNames) {
+			IPredefinedNames contextNames) {
 			
 			this.userName					= username;
 			this.fullName					= fullname;
@@ -140,10 +140,11 @@ namespace nJupiter.DataAccess.Users {
 		public string		IsAnonymous				{ get { return this.isAnonymous;				} }
 		public string		Password				{ get { return this.password;					} }
 		public string		PasswordSalt			{ get { return this.passwordSalt;				} }
-		public ICommonNames	ContextNames			{ get { return this.contextNames;				} }
+		
+		public IPredefinedNames	ContextNames		{ get { return this.contextNames;				} }
 
 		public string GetName(string name) {
-			var propertyInfo = typeof(ICommonNames).GetProperty(name);
+			var propertyInfo = typeof(IPredefinedNames).GetProperty(name);
 			if(propertyInfo != null) {
 				return propertyInfo.GetValue(this, null) as string;
 			}

@@ -6,7 +6,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 	public class DateTimeProperty : PropertyBase<DateTime>, ISqlProperty {
 		private const string Format = "D19";
 
-		public DateTimeProperty(string propertyName, Context context) : base(propertyName, context) { }
+		public DateTimeProperty(string propertyName, IContext context) : base(propertyName, context) { }
 
 		public override string ToSerializedString() {
 			return this.Value.Ticks.ToString(Format, NumberFormatInfo.InvariantInfo);

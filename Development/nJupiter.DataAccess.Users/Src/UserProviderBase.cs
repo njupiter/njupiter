@@ -32,11 +32,11 @@ namespace nJupiter.DataAccess.Users {
 	
 	public abstract class UserProviderBase : IUserProvider {
 
-		protected readonly string DefaultDomain = null;
+		protected readonly string DefaultDomain = string.Empty;
 
 		public string Name { get; internal set; }
 		public IConfig Config { get; internal set; }
-		public ICommonNames PropertyNames { get; internal set; }
+		public IPredefinedNames PropertyNames { get; internal set; }
 		protected internal IUserCache UserCache { get; internal set; }
 
 		public abstract IUser GetUserById(string userId);
@@ -52,12 +52,61 @@ namespace nJupiter.DataAccess.Users {
 		public abstract void SaveProperties(IUser user, IPropertyCollection propertyCollection);
 		public abstract void DeleteUser(IUser user);
 		public abstract IPropertyCollection GetProperties();
-		public abstract IPropertyCollection GetProperties(Context context);
-		public abstract IEnumerable<Context> GetContexts();
-		public abstract Context GetContext(string contextName);
-		public abstract Context CreateContext(string contextName, ContextSchema schemaTable);
-		public abstract void DeleteContext(Context context);
+		public abstract IPropertyCollection GetProperties(IContext context);
+		public abstract IPropertyCollection GetProperties(IUser user, IContext context);
+		public abstract IEnumerable<IContext> GetContexts();
+		public abstract IContext GetContext(string contextName);
+		public abstract IContext CreateContext(string contextName, ContextSchema schemaTable);
+		public abstract void DeleteContext(IContext context);
 		public abstract ContextSchema GetDefaultContextSchema();
+
+		public IUser GetUserByUserName(string userName) {
+			return GetUserByUserName(userName, false);
+		}
+
+		public IUser GetUserByUserName(string userName, bool loadAllContexts) {
+			return this.GetUserByUserName(userName, this.DefaultDomain, loadAllContexts);
+		}
+
+		public IUser CreateUserInstance(string userName) {
+			return CreateUserInstance(userName, false);
+		}
+
+		public IUser CreateUserInstance(string userName, bool loadAllContexts) {
+			return CreateUserInstance(userName, this.DefaultDomain, loadAllContexts);
+		}
+
+		public virtual IUser GetUserById(string userId, bool loadAllContexts) {
+			IUser user = this.GetUserById(userId);
+			if(loadAllContexts){
+				this.LoadAndAttachAllContextsForUser(user);
+			}
+			return user;
+		}
+
+		public virtual IUser GetUserByUserName(string userName, string domain, bool loadAllContexts) {
+			IUser user = this.GetUserByUserName(userName, domain);
+			if(loadAllContexts){
+				this.LoadAndAttachAllContextsForUser(user);
+			}
+			return user;
+		}
+
+		public virtual IList<IUser> GetUsersBySearchCriteria(IEnumerable<SearchCriteria> searchCriteriaCollection, bool loadAllContexts) {
+			var users = GetUsersBySearchCriteria(searchCriteriaCollection);
+			if(loadAllContexts){
+				this.LoadAndAttachAllContextsForUsers(users);
+			}
+			return users;
+		}
+
+		public virtual IList<IUser> GetUsersByDomain(string domain, bool loadAllContexts) {
+			var users = GetUsersByDomain(domain);
+			if(loadAllContexts){
+				this.LoadAndAttachAllContextsForUsers(users);
+			}
+			return users;
+		}
 
 		public virtual IList<IUser> GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
 			var users = this.GetUsersBySearchCriteria((SearchCriteria)null);
@@ -69,40 +118,10 @@ namespace nJupiter.DataAccess.Users {
 			return pagedUsers;
 		}
 
-		public virtual IUser GetUserById(string userId, bool loadAllContexts) {
-			IUser user = this.GetUserById(userId);
-			if(loadAllContexts){
-				this.LoadAllContextsForUser(user);
-			}
-			return user;
-		}
-
-		public virtual IUser GetUserByUserName(string userName, string domain, bool loadAllContexts) {
-			IUser user = this.GetUserByUserName(userName, domain);
-			if(loadAllContexts){
-				this.LoadAllContextsForUser(user);
-			}
-			return user;
-		}
-
-		public virtual IList<IUser> GetUsersBySearchCriteria(IEnumerable<SearchCriteria> searchCriteriaCollection, bool loadAllContexts) {
-			var users = GetUsersBySearchCriteria(searchCriteriaCollection);
-			if(loadAllContexts)
-				return this.LoadAllContextsForUsers(users);
-			return users;
-		}
-
-		public virtual IList<IUser> GetUsersByDomain(string domain, bool loadAllContexts) {
-			if(loadAllContexts){
-				return this.LoadAllContextsForUsers(GetUsersByDomain(domain));
-			}
-			return this.GetUsersByDomain(domain);
-		}
-
 		public virtual IUser CreateUserInstance(string userName, string domain, bool loadAllContexts) {
 			IUser user = this.CreateUserInstance(userName, domain);
 			if(loadAllContexts){
-				this.LoadAllContextsForUser(user);
+				this.LoadAndAttachAllContextsForUser(user);
 			}
 			return user;
 		}
@@ -118,60 +137,26 @@ namespace nJupiter.DataAccess.Users {
 		public virtual IList<IUser> GetUsersBySearchCriteria(SearchCriteria searchCriteria, bool loadAllContexts) {
 			var users = GetUsersBySearchCriteria(searchCriteria);
 			if(loadAllContexts){
-				return this.LoadAllContextsForUsers(users);
+				this.LoadAndAttachAllContextsForUsers(users);
 			}
 			return users;
 		}
 
-		public virtual IPropertyCollection LoadProperties(IUser user, Context context) {
-			if(user == null){
-				throw new ArgumentNullException("user");
-			}
-			if(context == null){
-				throw new ArgumentNullException("context");
-			}
-			if(!user.Properties.AttachedContexts.Contains(context)) {
-				var properties = user.Properties.GetProperties(context);
-				if(properties != null) {
-					user.Properties.AttachProperties(properties);
-				}
-				return properties;
-			}
-			return user.Properties.GetProperties(context);
-		}
-
-		public IUser GetUserByUserName(string userName) {
-			return GetUserByUserName(userName, this.DefaultDomain);
-		}
-
-		public IUser GetUserByUserName(string userName, bool loadAllContexts) {
-			return this.GetUserByUserName(userName, this.DefaultDomain, loadAllContexts);
-		}
-
-		public IUser CreateUserInstance(string userName) {
-			return CreateUserInstance(userName, this.DefaultDomain);
-		}
-
-		public IUser CreateUserInstance(string userName, bool loadAllContexts) {
-			return CreateUserInstance(userName, this.DefaultDomain, loadAllContexts);
-		}
-
-		protected void LoadAllContextsForUser(IUser user) {
+		protected void LoadAndAttachAllContextsForUser(IUser user) {
 			if(user != null){
-				foreach(Context context in this.GetContexts()) {
-					this.LoadProperties(user, context);
+				foreach(IContext context in this.GetContexts()) {
+					if(!user.Properties.AttachedContexts.Contains(context)){
+						var properties = this.GetProperties(user, context);
+						user.Properties.AttachProperties(properties);
+					}
 				}
 			}
 		}
 
-		protected IList<IUser> LoadAllContextsForUsers(IList<IUser> users) {
-			if(users == null){
-				throw new ArgumentNullException("users");
-			}
+		protected void LoadAndAttachAllContextsForUsers(IList<IUser> users) {
 			foreach(IUser user in users) {
-				this.LoadAllContextsForUser(user);
+				this.LoadAndAttachAllContextsForUser(user);
 			}
-			return users;
 		}
 
 	}

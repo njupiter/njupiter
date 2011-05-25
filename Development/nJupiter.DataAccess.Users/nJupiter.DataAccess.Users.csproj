@@ -80,20 +80,22 @@
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserProvider.cs" />
     <Compile Include="Src\Properties\GenericProperty.cs" />
+    <Compile Include="Src\Properties\IPredefinedProperties.cs" />
     <Compile Include="Src\Properties\IPropertyCollection.cs" />
+    <Compile Include="Src\Properties\IPropertyHandler.cs" />
     <Compile Include="Src\UserProviderFactory.cs" />
     <Compile Include="Src\Properties\IProperty.cs" />
-    <Compile Include="Src\CommonNamesFactory.cs" />
-    <Compile Include="Src\ICommonNames.cs">
+    <Compile Include="Src\PredefinedNamesFactory.cs" />
+    <Compile Include="Src\IPredefinedNames.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\Comparers\NameComparer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\Context.cs">
+    <Compile Include="Src\IContext.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\CommonNames.cs" />
+    <Compile Include="Src\PredefinedNames.cs" />
     <Compile Include="Src\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>

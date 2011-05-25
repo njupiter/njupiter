@@ -14,7 +14,7 @@ namespace nJupiter.DataAccess.Users {
         /// Gets the common property names that is associated with the current UserProvider instance.
         /// </summary>
         /// <value>The common property names that is associated with the current UserProvider instance.</value>
-		ICommonNames PropertyNames { get; }
+		IPredefinedNames PropertyNames { get; }
 		
 		/// <summary>
 		/// Gets a user by its Id
@@ -111,20 +111,20 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="context">The specified context</param>
 		/// <returns>A collection of properties</returns>
-		IPropertyCollection GetProperties(Context context);
+		IPropertyCollection GetProperties(IContext context);
 
 		/// <summary>
 		/// Returns a collection of available contexts
 		/// </summary>
 		/// <returns>A collection containing all available contexts</returns>
-		IEnumerable<Context> GetContexts();
+		IEnumerable<IContext> GetContexts();
 
 		/// <summary>
 		/// Get a specific context on name
 		/// </summary>
 		/// <param name="contextName">The name of the context</param>
 		/// <returns>A context</returns>
-		Context GetContext(string contextName);
+		IContext GetContext(string contextName);
 
 		/// <summary>
 		/// Create a context
@@ -132,13 +132,13 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="contextName">Context name</param>
 		/// <param name="schemaTable">Schema table for the context</param>
 		/// <returns></returns>
-		Context CreateContext(string contextName, ContextSchema schemaTable);
+		IContext CreateContext(string contextName, ContextSchema schemaTable);
 
 		/// <summary>
 		/// Delete a context permanently
 		/// </summary>
 		/// <param name="context">The context to delete</param>
-		void DeleteContext(Context context);
+		void DeleteContext(IContext context);
 
 		/// <summary>
 		/// Gets definitions for all properties
@@ -221,7 +221,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="user">The specified user</param>
 		/// <param name="context">The specified context to load intro the user</param>
 		/// <returns>Return a property collection if properties for the context exists, else returns null</returns>
-		IPropertyCollection LoadProperties(IUser user, Context context);
+		IPropertyCollection GetProperties(IUser user, IContext context);
 
 		/// <summary>
 		/// Gets a user for the current domain by its user name

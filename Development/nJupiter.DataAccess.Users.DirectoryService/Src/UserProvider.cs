@@ -39,7 +39,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 	public class UserProvider : Users.UserProviderBase {
 		#region Members
 		private ContextSchema defaultContextSchema;
-		private IList<Context> contexts;
+		private IList<IContext> contexts;
 		private DataAccess.DirectoryService.DirectoryService directoryService;
 		#endregion
 
@@ -128,7 +128,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			this.UserCache.RemoveUserFromCache(user);
 			SaveProperties(user, user.Properties.GetProperties());
 			if(user.Properties.AttachedContexts.Any()) {
-				foreach(Context context in user.Properties.AttachedContexts) {
+				foreach(IContext context in user.Properties.AttachedContexts) {
 					SaveProperties(user, user.Properties.GetProperties(context));
 				}
 			}
@@ -151,10 +151,15 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			return GetPropertiesFromDirectoryObject(null);
 		}
 
-		public override IPropertyCollection GetProperties(Context context) {
+		public override IPropertyCollection GetProperties(IContext context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
 			return GetPropertiesFromDirectoryObject(null);
+		}
+
+
+		public override IPropertyCollection GetProperties(IUser user, IContext context) {
+			return new PropertyCollection();
 		}
 
 		public override void SaveProperties(IUser user, IPropertyCollection propertyCollection) {
@@ -177,23 +182,23 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			CurrentDS.SaveDirectoryObject(dirObj);
 		}
 
-		public override Context GetContext(string contextName) {
+		public override IContext GetContext(string contextName) {
 			if(!this.GetContexts().Any(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase)))
 				return null;
 			return this.GetContexts().FirstOrDefault(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		public override IEnumerable<Context> GetContexts() {
+		public override IEnumerable<IContext> GetContexts() {
 			if(this.contexts == null)
-				this.contexts = new List<Context>();
+				this.contexts = new List<IContext>();
 			return this.contexts;
 		}
 
-		public override Context CreateContext(string contextName, ContextSchema schemaTable) {
+		public override IContext CreateContext(string contextName, ContextSchema schemaTable) {
 			throw new NotImplementedException();
 		}
 
-		public override void DeleteContext(Context context) {
+		public override void DeleteContext(IContext context) {
 			throw new NotImplementedException();
 		}
 

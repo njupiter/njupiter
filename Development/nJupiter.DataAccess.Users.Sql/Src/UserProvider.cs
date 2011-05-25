@@ -34,8 +34,6 @@ using System.Security.Cryptography;
 using System.Globalization;
 using System.Linq;
 
-// TODO: Make use of typed dataset and batch update of properties etc
-
 namespace nJupiter.DataAccess.Users.Sql {
 
 	public class UserProvider : UserProviderBase {
@@ -46,7 +44,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		#region Members
 		private readonly object padlock = new object();
 		private readonly IDictionary<string, ContextSchema> contextSchema = new Dictionary<string, ContextSchema>();
-		private IList<Context> contexts;
+		private IList<IContext> contexts;
 		private IDataSource dataAccess;
 		#endregion
 
@@ -426,8 +424,14 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return GetPropertiesFromDataRows(null, null, null);
 		}
 
-		public override IPropertyCollection GetProperties(Context context) {
+		public override IPropertyCollection GetProperties(IContext context) {
 			return GetPropertiesFromDataRows(null, context, null);
+		}
+
+		public override IPropertyCollection GetProperties(IUser user, IContext context) {
+            if(user == null)
+                    throw new ArgumentNullException("user");
+            return this.GetPropertiesByUserId(user.Id, context);
 		}
 
 		public override void SaveProperties(IUser user, IPropertyCollection propertyCollection) {
@@ -446,7 +450,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(user.Id)));
 		}
 
-		public override Context GetContext(string contextName) {
+		public override IContext GetContext(string contextName) {
 			if(!ContextsContains(contextName)){
 				lock(this.padlock) {
 					if(!ContextsContains(contextName))
@@ -462,17 +466,17 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return GetContexts().Any(c => string.Equals(c.Name, contextName, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		public override IEnumerable<Context> GetContexts() {
+		public override IEnumerable<IContext> GetContexts() {
 			if(this.contexts != null)
 				return this.contexts;
 			lock(this.padlock) {
 				if(this.contexts == null) {
-					var contextCollection = new List<Context>();
+					var contextCollection = new List<IContext>();
 					DataSet dsFunction = CurrentDB.ExecuteDataSet("dbo.USER_GetContexts");
 					if(dsFunction.Tables.Count > 0) {
 						foreach(DataRow row in dsFunction.Tables[0].Rows) {
 							string contextName = (string)row["ContextName"];
-							Context uc = new Context(contextName);
+							IContext uc = new Context(contextName);
 							contextCollection.Add(uc);
 						}
 					}
@@ -482,13 +486,13 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return this.contexts;
 		}
 
-		public override Context CreateContext(string contextName, ContextSchema schema) {
+		public override IContext CreateContext(string contextName, ContextSchema schema) {
 			if(contextName == null)
 				throw new ArgumentNullException("contextName");
 			if(schema == null)
 				throw new ArgumentNullException("schema");
 
-			Context context;
+			IContext context;
 
 			lock(padlock) {
 				if(ContextsContains(contextName)) {
@@ -510,7 +514,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return context;
 		}
 
-		public override void DeleteContext(Context context) {
+		public override void DeleteContext(IContext context) {
 			if(context == null) {
 				throw new ArgumentNullException("context");
 			}
@@ -630,7 +634,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			SaveUserInstance(user, transaction);
 			SaveProperties(user, user.Properties.GetProperties(), transaction);
 			if(user.Properties.AttachedContexts.Any()) {
-				foreach(Context context in user.Properties.AttachedContexts) {
+				foreach(IContext context in user.Properties.AttachedContexts) {
 					SaveProperties(user, user.Properties.GetProperties(context), transaction);
 				}
 			}
@@ -651,7 +655,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return GetPropertiesByUserId(userId, null);
 		}
 		
-		protected virtual IPropertyCollection GetPropertiesByUserId(string userId, Context context) {
+		protected virtual IPropertyCollection GetPropertiesByUserId(string userId, IContext context) {
 			IPropertyCollection upc = null;
 
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties",
@@ -666,7 +670,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			return upc;
 		}
 
-		private IPropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, Context context, DbTransaction transaction) {
+		private IPropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, IContext context, DbTransaction transaction) {
 			var schema = (context == null ? this.GetDefaultContextSchema() : this.GetContextSchema(context.Name, transaction));
 			var propertyList = new List<IProperty>();
 
