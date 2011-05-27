@@ -46,10 +46,6 @@
     <NoWarn>1699</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Shared Resources\Libraries\Log4Net\Compile Version\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -75,10 +71,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\Caching\IUserCacheFactory.cs" />
     <Compile Include="Src\ContextSchema.cs" />
     <Compile Include="Src\CompareCondition.cs" />
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserRepository.cs" />
+    <Compile Include="Src\IUserRepositoryFactory.cs" />
     <Compile Include="Src\Properties\GenericProperty.cs" />
     <Compile Include="Src\Properties\IPredefinedProperties.cs" />
     <Compile Include="Src\Properties\IPropertyCollection.cs" />

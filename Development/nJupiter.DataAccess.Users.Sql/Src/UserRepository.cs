@@ -34,9 +34,11 @@ using System.Security.Cryptography;
 using System.Globalization;
 using System.Linq;
 
+using nJupiter.Configuration;
+
 namespace nJupiter.DataAccess.Users.Sql {
 
-	public class UserRepository : UserRepositoryBase {
+	public class UserRepository : UserRepositoryBase, IUserRepositoryFactory {
 		#region Constants
 		private const int AddStatusUsernameTaken = 1;
 		#endregion
@@ -52,7 +54,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		private IDataSource CurrentDB {
 			get {
 				if(this.dataAccess == null) {
-					return DataSourceFactory.Create(Config.GetValue("dataSource"));
+					return DataSourceFactory.Create(config.GetValue("dataSource"));
 				}
 				return this.dataAccess;
 			}
@@ -60,6 +62,29 @@ namespace nJupiter.DataAccess.Users.Sql {
 		#endregion
 
 		#region Overridden Methods
+		public override string Name { get { return name; } }
+		public override IPredefinedNames PropertyNames { get { return predefinedNames; } }
+		public  IUserCache UserCache { get { return cache; } }
+
+		private readonly string name;
+		private readonly IConfig config;
+		private readonly IPredefinedNames predefinedNames;
+		private readonly IUserCache cache;
+
+		public IUserRepository Create(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
+			return new UserRepository(name, config, predefinedNames, cache);
+		}
+
+		public UserRepository() {}
+
+		public UserRepository(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
+			this.name = name;
+			this.config = config;
+			this.predefinedNames = predefinedNames;
+			this.cache = cache;
+		}
+
+
 		public override IList<IUser> GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
 			IDataParameter returnParam = CurrentDB.CreateReturnParameter("@intPagingTotalNumber", DbType.Int32);
 			DataSet dsUser;
@@ -540,7 +565,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			if(user.Properties[this.PropertyNames.PasswordSalt] == null)
 				throw new UsersException("Database does not contain a field for password salt.");
 
-			if(this.Config.GetValue<bool>("hashPassword")) {
+			if(this.config.GetValue<bool>("hashPassword")) {
 				user.Properties[this.PropertyNames.PasswordSalt].Value = GenerateSalt(); // Generate new salt every time password is changed
 				user.Properties[this.PropertyNames.Password].Value = MD5Hash(user.Properties["passwordSalt"].Value + password);
 			} else {
@@ -557,7 +582,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			if(user.Properties["passwordSalt"] == null)
 				throw new UsersException("Database does not contain a field for password salt.");
 
-			if(this.Config.GetValue<bool>("hashPassword")) {
+			if(this.config.GetValue<bool>("hashPassword")) {
 				return user.Properties["password"].Value.Equals(MD5Hash(user.Properties["passwordSalt"].Value + password));
 			}
 			return user.Properties["password"].Value.Equals(password);

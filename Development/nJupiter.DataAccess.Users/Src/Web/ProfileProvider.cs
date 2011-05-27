@@ -186,7 +186,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("config");
 			}
 			string provider = ProfileProvider.GetStringConfigValue(config, "userDAO", string.Empty);
-			this.userRepository = string.IsNullOrEmpty(provider) ? UserRepositoryFactory.Instance.CreateProvider() : UserRepositoryFactory.Instance.CreateProvider(provider);
+			this.userRepository = string.IsNullOrEmpty(provider) ? UserRepositoryFactory.Instance.Create() : UserRepositoryFactory.Instance.Create(provider);
 			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userRepository.Name;
 			base.Initialize(this.providerName, config);
 			this.appName = ProfileProvider.GetStringConfigValue(config, "applicationName", this.userRepository.Name);

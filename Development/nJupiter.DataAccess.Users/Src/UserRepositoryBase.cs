@@ -33,10 +33,8 @@ namespace nJupiter.DataAccess.Users {
 
 		protected readonly string DefaultDomain = string.Empty;
 
-		public string Name { get; internal set; }
-		public IConfig Config { get; internal set; }
-		public IPredefinedNames PropertyNames { get; internal set; }
-		protected internal IUserCache UserCache { get; internal set; }
+		public abstract string Name { get;  }
+		public abstract IPredefinedNames PropertyNames { get; }
 
 		public abstract IUser GetUserById(string userId);
 		public abstract IUser GetUserByUserName(string userName, string domain);

@@ -1,27 +1,48 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 
 using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users {
-
 	public class UserRepositoryFactory {
 
-		private static readonly IList<UserRepositoryBase> UserProviders = new List<UserRepositoryBase>();
+		private readonly IList<IUserRepository> userRepositories = new List<IUserRepository>();
 
-		private const string UsersRepositorySection = "usersRepositories/usersRepository";
+		private const string UsersRepositorySection = "userRepositories/userRepository";
+		private const string NameAttribute = "name";
 		private const string UsersRepositoryDefaultSection = UsersRepositorySection + "[@default='true']";
-		private const string UsersRepositorySectionFormat = UsersRepositorySection + "[@value='{0}']";
-		private const string AssemblyPath = "assemblyPath";
-		private const string Assembly = "assembly";
-		private const string Type = "type";
-		private const string Cache = "cache";
+		private const string UsersRepositorySectionFormat = UsersRepositorySection + "[@name='{0}']";
+		private const string UsersRepositoryFactoryElement = "userRepositoryFactory";
+		private const string CacheFactoryTypeElement = "cache/userCacheFactory";
+		private const string QualifiedNameAttribute = "qualifiedTypeName";
 
-		private static readonly object Padlock = new object();
+		private readonly object padlock = new object();
 
 		private readonly IConfigHandler configHandler;
+		private IConfig config;
+
+		private IConfig Config {
+			get {
+				if(config == null) {
+					lock(this.padlock) {
+						if(config == null) {
+							config = configHandler.GetConfig();
+							config.Discarded += this.ConfigDiscarded;
+						}
+					}
+				}
+				return config;
+			}
+		}
+
+		private void ConfigDiscarded(object sender, EventArgs e) {
+			lock(padlock) {
+				config = null;
+				userRepositories.Clear();
+			}
+		}
 
 		public static UserRepositoryFactory Instance { get { return NestedSingleton.instance; } }
 
@@ -33,8 +54,8 @@ namespace nJupiter.DataAccess.Users {
 		/// Gets the default userRepository instance.
 		/// </summary>
 		/// <returns>The default userRepository instance.</returns>
-		public IUserRepository CreateProvider() {
-			return GetUserProviderFromSection(UsersRepositoryDefaultSection);
+		public IUserRepository Create() {
+			return this.GetUserRepository(UsersRepositoryDefaultSection);
 		}
 
 		/// <summary>
@@ -42,77 +63,73 @@ namespace nJupiter.DataAccess.Users {
 		/// </summary>
 		/// <param name="name">The userRepository name to get.</param>
 		/// <returns>The userRepository instance with the name <paramref name="name"/></returns>
-		public IUserRepository CreateProvider(string name) {
-			return GetUserProviderFromSection(string.Format(CultureInfo.InvariantCulture, UsersRepositorySectionFormat, name));
+		public IUserRepository Create(string name) {
+			return this.GetUserRepository(string.Format(CultureInfo.InvariantCulture, UsersRepositorySectionFormat, name));
+		
+		
 		}
 
-
-		private IUserRepository GetUserProviderFromSection(string section) {
-
-			string name = ConfigHandler.Instance.GetConfig().GetValue(section);
-			
-			var provider = UserProviders.FirstOrDefault(userProvider => userProvider.Name == name);
-			if(provider != null){
-				return provider;
+		private IUserRepository GetUserRepository(string section) {
+			try {
+				return GetUserRepositoryFromSection(section);
+			}catch(Exception ex) {
+				throw new ApplicationException(string.Format("Error while creating UserRepository with section [{0}]", section), ex);
 			}
+		}
 
-			lock(Padlock) {
-				if(!UserProviders.Any(userProvider => userProvider.Name == name)) {
+		private IUserRepository GetUserRepositoryFromSection(string section) {
 
-					IConfig config = configHandler.GetConfig();
-
-					string assemblyPath = config.GetValue(section, AssemblyPath);
-					string assemblyName = config.GetValue(section, Assembly);
-					string assemblyType = config.GetValue(section, Type);
-
-					object instance = CreateInstance(assemblyPath, assemblyName, assemblyType);
-					UserRepositoryBase userRepository = (UserRepositoryBase)instance;
-					if(userRepository == null)
-						throw new ConfigurationException(string.Format("Could not load DataSource from {0} {1} {2}.", assemblyName, assemblyType, assemblyPath));
-
-					userRepository.Name = name;
-					userRepository.Config = config.GetConfigSection(section + "/settings");
-					if(userRepository.Config != null && userRepository.Config.ContainsKey(Cache)) {
-						if(userRepository.Config.ContainsKey(Cache, Assembly)) {
-							string cacheAssemblyName = userRepository.Config.GetValue(Cache, Assembly);
-							string cacheAssemblyPath = userRepository.Config.GetValue(Cache, AssemblyPath);
-							string cacheAssemblyType = userRepository.Config.GetValue(Cache, Type);
-							object[] constructorArgs = { userRepository.Config };
-							userRepository.UserCache = CreateInstance(cacheAssemblyPath, cacheAssemblyName, cacheAssemblyType, constructorArgs) as IUserCache;
+			string name = this.Config.GetAttribute(section, NameAttribute);
+			
+			var provider = this.GetUserRepositoryFromCache(name);
+			if(provider == null) {
+				lock(this.padlock) {
+					provider = this.GetUserRepositoryFromCache(name);
+					if(provider == null) {
+						if(!this.userRepositories.Any(userProvider => userProvider.Name == name)) {
+							provider = this.CreateUserRepository(name, section);
+							this.userRepositories.Add(provider);
 						}
 					}
-					if(userRepository.UserCache == null) {
-						userRepository.UserCache = new GenericUserCache(userRepository.Config);
-					}
-
-					userRepository.PropertyNames = PredefinedNamesFactory.Create(userRepository.Config);
-
-					UserProviders.Add(userRepository);
-					return userRepository;
 				}
-				return UserProviders.FirstOrDefault(userProvider => userProvider.Name == name);
 			}
+			return provider;
 		}
 
-		private static object CreateInstance(string assemblyPath, string assemblyName, string typeName) {
-			return CreateInstance(assemblyPath, assemblyName, typeName, null);
+		private IUserRepository GetUserRepositoryFromCache(string name) {
+			return this.userRepositories.FirstOrDefault(userProvider => userProvider.Name == name);
 		}
 
-		private static object CreateInstance(string assemblyPath, string assemblyName, string typeName, object[] constructorArgs) {
-			Assembly assembly;
-			if(!string.IsNullOrEmpty(assemblyPath)) {
-				assembly = System.Reflection.Assembly.LoadFrom(assemblyPath);
-			} else if(assemblyName == null || assemblyName.Length.Equals(0) ||
-				System.Reflection.Assembly.GetExecutingAssembly().GetName().Name.Equals(assemblyName)) {
-				assembly = System.Reflection.Assembly.GetExecutingAssembly();	//Load current assembly
-			} else {
-				assembly = System.Reflection.Assembly.Load(assemblyName); // Late binding to an assembly on disk (current directory)
+		private IUserRepository CreateUserRepository(string name, string section) {
+			var config = this.Config;
+			var typeName = this.Config.GetAttribute(section, UsersRepositoryFactoryElement, QualifiedNameAttribute);
+			var settings = config.GetConfigSection(string.Format("{0}/settings", section));
+			var predifinedNames = PredefinedNamesFactory.Create(settings);
+			var cache = GetUserCache(settings);
+
+			IUserRepositoryFactory userRepositoryFactory = CreateInstance(typeName) as IUserRepositoryFactory;
+			return userRepositoryFactory.Create(name, settings, predifinedNames, cache);
+		}
+
+		private static IUserCache GetUserCache(IConfig settings) {
+			IUserCache cache = null;
+			if(settings.ContainsAttribute(CacheFactoryTypeElement, QualifiedNameAttribute)) {
+				var typeName = settings.GetAttribute(CacheFactoryTypeElement, QualifiedNameAttribute);
+				cache = CreateInstance(typeName) as IUserCache;
+				if(cache == null) {
+					cache = new GenericUserCache(settings);
+				}
 			}
-			return assembly.CreateInstance(
-				typeName, false,
-				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly |
-				BindingFlags.Instance | BindingFlags.IgnoreCase,
-				null, constructorArgs, null, null);
+			return cache;
+		}
+
+		private static object CreateInstance(string typeName) {
+			try {
+				Type userReporistoryType = System.Type.GetType(typeName, true, true);
+				return Activator.CreateInstance(userReporistoryType);
+			}catch(Exception ex) {
+				throw new ApplicationException(string.Format("Error while creating instance of [{0}]", typeName), ex);
+			}
 		}
 
 		// thread safe Singleton implementation with fully lazy instantiation and with full performance

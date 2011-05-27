@@ -26,43 +26,36 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using log4net;
-
 using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users {
 
-	public class GenericUserCache : IUserCache {
+	public class GenericUserCache : IUserCache, IUserCacheFactory {
 
-		#region Constants
 		private const int DefaultCacheSize = 1000;
 		private const int MinimumCacheSize = 100;
 		private const int CacheTruncateFactor = 10; // The precentage to truncate the cache when max users has been reched
-		#endregion
 
-		#region Members
 		private readonly IConfig config;
 		private readonly IList<IUser> cachedUsers = new List<IUser>();
 		private readonly Hashtable cachedMap = new Hashtable();
 		private readonly object padlock = new object();
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private int maxUsersInCache = -1; // If zero, then the cache can grow unrestrainedly
-		#endregion
 
-		#region Static Members
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		#endregion
+		public IUserCache Create(IConfig config) {
+			return new GenericUserCache(config);
+		}
 
-		#region Constructors
+		public GenericUserCache() {}
+
 		public GenericUserCache(IConfig config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
 			this.config = config;
 		}
-		#endregion
 
-		#region Properties
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
@@ -95,9 +88,7 @@ namespace nJupiter.DataAccess.Users {
 				return CacheTruncateFactor;
 			}
 		}
-		#endregion
 
-		#region Methods
 		public IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
@@ -134,8 +125,6 @@ namespace nJupiter.DataAccess.Users {
 					if(this.MaxUsersInCache != 0 && this.cachedUsers.Count >= this.MaxUsersInCache)
 						TruncateCache();
 
-					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
-
 					user.MakeReadOnly();
 					
 					CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
@@ -153,13 +142,10 @@ namespace nJupiter.DataAccess.Users {
 				}
 			}
 		}
-		#endregion
 
-		#region Private Methods
 		private void RemoveUserFromCache(IUser user, CacheMapId cacheMapId) {
 			if(user != null) {
 				lock(padlock) {
-					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Remove user [{0}/{1}] from cache.", (cacheMapId.Domain ?? string.Empty), cacheMapId.UserName)); }
 					this.cachedUsers.Remove(user);
 					this.cachedMap.Remove(cacheMapId);
 				}
@@ -205,7 +191,6 @@ namespace nJupiter.DataAccess.Users {
 					this.RemoveUserFromCache(cachedUser.User, cacheMapId);
 					return null;
 				}
-				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Get user [{0}/{1}] from cache.", (cacheMapId.Domain ?? string.Empty), cacheMapId.UserName)); }
 				return cachedUser.User;
 			}
 		}
@@ -219,7 +204,6 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private void TruncateCache() {
-			if(Log.IsDebugEnabled) { Log.Debug("Truncating user cache"); }
 
 			ArrayList truncateList = new ArrayList(this.cachedMap);
 			truncateList.Sort(CachedUserComparer.Instance);
@@ -276,9 +260,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 			#endregion
 		}
-		#endregion
 
-		#region Private Structs
 		private struct CachedUser {
 
 			public readonly IUser User;
@@ -319,7 +301,7 @@ namespace nJupiter.DataAccess.Users {
 				return hash;
 			}
 		}
-		#endregion
+
 
 	}
 }

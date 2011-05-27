@@ -27,35 +27,30 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Caching;
 
-using log4net;
-
 using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users {
 
-	public class HttpRuntimeUserCache : IUserCache {
+	public class HttpRuntimeUserCache : IUserCache, IUserCacheFactory {
 
-		#region Members
 		private readonly IConfig config;
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private bool? slidingExpiration;
 		private CacheItemPriority? cacheItemPriority;
-		#endregion
 
-		#region Constructors
+		public IUserCache Create(IConfig config) {
+			return new HttpRuntimeUserCache(config); 
+		}
+
+		public HttpRuntimeUserCache() {}
+
 		public HttpRuntimeUserCache(IConfig config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
 			this.config = config;
 		}
-		#endregion
 
-		#region Static Members
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		#endregion
-
-		#region Properties
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
@@ -95,9 +90,7 @@ namespace nJupiter.DataAccess.Users {
 				return (CacheItemPriority)this.cacheItemPriority;
 			}
 		}
-		#endregion
 
-		#region Methods
 		public IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
@@ -111,14 +104,11 @@ namespace nJupiter.DataAccess.Users {
 			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, userName, domain);
 			return HttpRuntime.Cache[usernameCacheKey.CacheKey] as IUser;
 		}
-		#endregion
 
-		#region Protected Methods
 		public void RemoveUserFromCache(IUser user) {
 			if(user != null) {
 				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, user.UserName, user.Domain);
 				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, user.Id);
-				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Removing user [{0}/{1}] from cache.", (user.Domain ?? string.Empty), user.UserName)); }
 				HttpRuntime.Cache.Remove(usernameCacheKey.CacheKey);
 				HttpRuntime.Cache.Remove(userIdCacheKey.CacheKey);
 			}
@@ -137,7 +127,6 @@ namespace nJupiter.DataAccess.Users {
 				user.MakeReadOnly();
 				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, user.UserName, user.Domain);
 				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, user.Id);
-				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Adding user [{0}/{1}] to cache.", (user.Domain ?? string.Empty), user.UserName)); }
 				if(this.SlidingExpiration) {
 					TimeSpan expirationTime = new TimeSpan(0, 0, this.MinutesInCache, 0);
 					HttpRuntime.Cache.Add(usernameCacheKey.CacheKey, user, null, Cache.NoAbsoluteExpiration, expirationTime, this.CachePriority, null);
@@ -157,9 +146,7 @@ namespace nJupiter.DataAccess.Users {
 				}
 			}
 		}
-		#endregion
 
-		#region Private Structs
 		private struct UserIdCacheKey {
 
 			private readonly string userProvider;
@@ -236,7 +223,5 @@ namespace nJupiter.DataAccess.Users {
 				return hash;
 			}
 		}
-		#endregion
-
 	}
 }
