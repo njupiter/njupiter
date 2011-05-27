@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 
 using nJupiter.Configuration;
+using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
 	public class UserRepositoryFactory {

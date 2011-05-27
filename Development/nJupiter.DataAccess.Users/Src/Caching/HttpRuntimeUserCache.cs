@@ -29,20 +29,14 @@ using System.Web.Caching;
 
 using nJupiter.Configuration;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Caching {
 
-	public class HttpRuntimeUserCache : IUserCache, IUserCacheFactory {
+	public class HttpRuntimeUserCache : IUserCache {
 
 		private readonly IConfig config;
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private bool? slidingExpiration;
 		private CacheItemPriority? cacheItemPriority;
-
-		public IUserCache Create(IConfig config) {
-			return new HttpRuntimeUserCache(config); 
-		}
-
-		public HttpRuntimeUserCache() {}
 
 		public HttpRuntimeUserCache(IConfig config) {
 			if(config == null) {

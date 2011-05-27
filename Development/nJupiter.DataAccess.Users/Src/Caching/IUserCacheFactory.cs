@@ -24,7 +24,7 @@
 
 using nJupiter.Configuration;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Caching {
 	public interface IUserCacheFactory {
 		IUserCache Create(IConfig config);
 	}

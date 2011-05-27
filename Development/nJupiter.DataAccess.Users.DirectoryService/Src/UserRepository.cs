@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 
 using nJupiter.Configuration;
 using nJupiter.DataAccess.DirectoryService;
+using nJupiter.DataAccess.Users.Caching;
 
 using ds = nJupiter.DataAccess.DirectoryService;
 

@@ -1,4 +1,5 @@
 ﻿using nJupiter.Configuration;
+using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
 

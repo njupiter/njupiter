@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml;
+﻿using System.Xml;
 
 using FakeItEasy;
 
@@ -38,13 +37,13 @@ namespace nJupiter.Tests.nJupiter.DataAccess.Users {
 				<userRepositories>
 					<userRepository name=""SQLRepository"" default=""true"">
 						<userRepositoryFactory
-							qualifiedTypeName=""nJupiter.DataAccess.Users.Sql.UserRepository, nJupiter.DataAccess.Users.Sql""/>
+							qualifiedTypeName=""nJupiter.DataAccess.Users.Sql.UserRepositoryFactory, nJupiter.DataAccess.Users.Sql""/>
 						<settings>
 							<dataSource value=""SQLAdapter"" />
 							<hashPassword value=""true"" />
 							<cache>
 								<userCacheFactory
-									qualifiedTypeName=""nJupiter.DataAccess.Users.HttpRuntimeUserCache, nJupiter.DataAccess.Users""/>
+									qualifiedTypeName=""nJupiter.DataAccess.Users.Caching.HttpRuntimeUserCacheFactory, nJupiter.DataAccess.Users""/>
 								<minutesInCache value=""60"" />
 							</cache>
 							<predefinedProperties>

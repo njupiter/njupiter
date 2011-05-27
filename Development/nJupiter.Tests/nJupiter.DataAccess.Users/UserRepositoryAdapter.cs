@@ -2,6 +2,7 @@
 
 using nJupiter.Configuration;
 using nJupiter.DataAccess.Users;
+using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.Tests.DataAccess.Users {
 	public class UserRepositoryAdapter : UserRepositoryBase, IUserRepositoryFactory {

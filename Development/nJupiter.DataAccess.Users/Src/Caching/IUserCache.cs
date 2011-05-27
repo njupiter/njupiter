@@ -24,7 +24,7 @@
 
 using System.Collections.Generic;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Caching {
 	public interface IUserCache {
 		IUser GetUserById(string userId);
 		IUser GetUserByUserName(string userName, string domain);

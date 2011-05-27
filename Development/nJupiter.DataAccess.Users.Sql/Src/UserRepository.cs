@@ -35,10 +35,11 @@ using System.Globalization;
 using System.Linq;
 
 using nJupiter.Configuration;
+using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users.Sql {
 
-	public class UserRepository : UserRepositoryBase, IUserRepositoryFactory {
+	public class UserRepository : UserRepositoryBase {
 		#region Constants
 		private const int AddStatusUsernameTaken = 1;
 		#endregion
@@ -70,12 +71,6 @@ namespace nJupiter.DataAccess.Users.Sql {
 		private readonly IConfig config;
 		private readonly IPredefinedNames predefinedNames;
 		private readonly IUserCache cache;
-
-		public IUserRepository Create(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
-			return new UserRepository(name, config, predefinedNames, cache);
-		}
-
-		public UserRepository() {}
 
 		public UserRepository(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
 			this.name = name;

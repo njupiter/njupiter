@@ -28,9 +28,9 @@ using System.Collections.Generic;
 
 using nJupiter.Configuration;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Caching {
 
-	public class GenericUserCache : IUserCache, IUserCacheFactory {
+	public class GenericUserCache : IUserCache {
 
 		private const int DefaultCacheSize = 1000;
 		private const int MinimumCacheSize = 100;
@@ -42,12 +42,6 @@ namespace nJupiter.DataAccess.Users {
 		private readonly object padlock = new object();
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private int maxUsersInCache = -1; // If zero, then the cache can grow unrestrainedly
-
-		public IUserCache Create(IConfig config) {
-			return new GenericUserCache(config);
-		}
-
-		public GenericUserCache() {}
 
 		public GenericUserCache(IConfig config) {
 			if(config == null) {
