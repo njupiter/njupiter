@@ -65,7 +65,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 		#region Methods
 		public override string Name { get { return name; } }
 		public override IPredefinedNames PropertyNames { get { return predefinedNames; } }
-		public  IUserCache UserCache { get { return cache; } }
+		public override IUserCache UserCache { get { return cache; } }
 
 		private readonly string name;
 		private readonly IConfig config;

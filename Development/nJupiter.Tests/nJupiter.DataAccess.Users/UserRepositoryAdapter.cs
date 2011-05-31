@@ -9,7 +9,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		public override string Name { get { return name; } }
 		public override IPredefinedNames PropertyNames { get { return predefinedNames; } }
-		public  IUserCache UserCache { get { return cache; } }
+		public override IUserCache UserCache { get { return cache; } }
 
 		private readonly string name;
 		private readonly IPredefinedNames predefinedNames;
@@ -22,6 +22,9 @@ namespace nJupiter.Tests.DataAccess.Users {
 		}
 
 		private readonly IUserRepository repository;
+
+		public UserRepositoryAdapter() {
+		}
 
 		public UserRepositoryAdapter(IUserRepository repository) {
 			this.repository = repository;

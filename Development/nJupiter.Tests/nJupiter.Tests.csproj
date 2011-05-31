@@ -135,11 +135,15 @@
     <Compile Include="nJupiter.DataAccess.Users\CommonNamesTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\ContextTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\DummyFactory.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\MembershipProviderTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\MembershipUserTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\ProfileProviderTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\PropertyDefinitionTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\PropertyHandlerTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\PropertyTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\UserRepositoryAdapter.cs" />
     <Compile Include="nJupiter.DataAccess.Users\UserRepositoryBaseTests.cs" />
-    <Compile Include="nJupiter.DataAccess.Users\UserRepositoryFactoryTests.cs" />
+    <Compile Include="nJupiter.DataAccess.Users\UserRepositoryManagerTests.cs" />
     <Compile Include="nJupiter.DataAccess.Users\UserTests.cs" />
     <Compile Include="nJupiter.DataAccess\CommandTests.cs" />
     <Compile Include="nJupiter.DataAccess\DataSourceFactoryTests.cs" />
@@ -169,9 +173,6 @@
       </CachedSettingsPropName>
     </WebReferenceUrl>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="nJupiter.DataAccess.Users\IntegarationTests\" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

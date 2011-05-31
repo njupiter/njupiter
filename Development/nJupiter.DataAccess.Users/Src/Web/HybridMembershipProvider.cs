@@ -29,7 +29,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Security;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Web {
 
 	public class HybridMembershipProvider : MembershipProvider {
 

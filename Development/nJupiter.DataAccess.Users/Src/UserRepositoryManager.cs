@@ -7,7 +7,7 @@ using nJupiter.Configuration;
 using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
-	public class UserRepositoryFactory {
+	public class UserRepositoryManager : IUserRepositoryManager {
 
 		private readonly IList<IUserRepository> userRepositories = new List<IUserRepository>();
 
@@ -45,63 +45,54 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public static UserRepositoryFactory Instance { get { return NestedSingleton.instance; } }
+		public static IUserRepositoryManager Instance { get { return NestedSingleton.instance; } }
 
-		public UserRepositoryFactory(IConfigHandler configHandler) {
+		public UserRepositoryManager(IConfigHandler configHandler) {
 			this.configHandler = configHandler;
 		}
 
-		/// <summary>
-		/// Gets the default userRepository instance.
-		/// </summary>
-		/// <returns>The default userRepository instance.</returns>
-		public IUserRepository Create() {
-			return this.GetUserRepository(UsersRepositoryDefaultSection);
+		public IUserRepository GetRepository() {
+			return this.GetRepositoryFromSection(UsersRepositoryDefaultSection);
 		}
 
-		/// <summary>
-		/// Gets the userRepository instance with the name <paramref name="name"/>.
-		/// </summary>
-		/// <param name="name">The userRepository name to get.</param>
-		/// <returns>The userRepository instance with the name <paramref name="name"/></returns>
-		public IUserRepository Create(string name) {
-			return this.GetUserRepository(string.Format(CultureInfo.InvariantCulture, UsersRepositorySectionFormat, name));
+		public IUserRepository GetRepository(string name) {
+			string section = UsersRepositoryDefaultSection;
+			if(!string.IsNullOrEmpty(name)) {
+				section = string.Format(CultureInfo.InvariantCulture, UsersRepositorySectionFormat, name);
+			}
+			return this.GetRepositoryFromSection(section);
 		
 		
 		}
 
-		private IUserRepository GetUserRepository(string section) {
+		private IUserRepository GetRepositoryFromSection(string section) {
 			try {
-				return GetUserRepositoryFromSection(section);
+				string name = this.Config.GetAttribute(section, NameAttribute);
+				return this.GetRepositoryFromCacheOrCreate(section, name);
 			}catch(Exception ex) {
 				throw new ApplicationException(string.Format("Error while creating UserRepository with section [{0}]", section), ex);
 			}
 		}
 
-		private IUserRepository GetUserRepositoryFromSection(string section) {
-
-			string name = this.Config.GetAttribute(section, NameAttribute);
-			
-			var provider = this.GetUserRepositoryFromCache(name);
-			if(provider == null) {
+		private IUserRepository GetRepositoryFromCacheOrCreate(string section, string name) {
+			IUserRepository userRepository = GetRepositoryFromCache(name);
+			if(userRepository == null) {
 				lock(this.padlock) {
-					provider = this.GetUserRepositoryFromCache(name);
-					if(provider == null) {
-						if(!this.userRepositories.Any(userProvider => userProvider.Name == name)) {
-							provider = this.CreateUserRepository(name, section);
-							this.userRepositories.Add(provider);
-						}
+					userRepository = GetRepositoryFromCache(name);
+					if(userRepository == null) {
+						userRepository = this.CreateRepository(name, section);
+						this.userRepositories.Add(userRepository);
 					}
 				}
 			}
-			return provider;
+			return userRepository;
 		}
 
-		private IUserRepository GetUserRepositoryFromCache(string name) {
+		private IUserRepository GetRepositoryFromCache(string name) {
 			return this.userRepositories.FirstOrDefault(userProvider => userProvider.Name == name);
 		}
 
-		private IUserRepository CreateUserRepository(string name, string section) {
+		private IUserRepository CreateRepository(string name, string section) {
 			var config = this.Config;
 			var typeName = this.Config.GetAttribute(section, UsersRepositoryFactoryElement, QualifiedNameAttribute);
 			var settings = config.GetConfigSection(string.Format("{0}/settings", section));
@@ -116,21 +107,18 @@ namespace nJupiter.DataAccess.Users {
 			IUserCache cache = null;
 			if(settings.ContainsAttribute(CacheFactoryTypeElement, QualifiedNameAttribute)) {
 				var typeName = settings.GetAttribute(CacheFactoryTypeElement, QualifiedNameAttribute);
-				cache = CreateInstance(typeName) as IUserCache;
-				if(cache == null) {
-					cache = new GenericUserCache(settings);
-				}
+				var cacheFactory = (IUserCacheFactory)CreateInstance(typeName);
+				cache = cacheFactory.Create(settings);
+			}
+			if(cache == null) {
+				cache = new GenericUserCache(settings);
 			}
 			return cache;
 		}
 
 		private static object CreateInstance(string typeName) {
-			try {
-				Type userReporistoryType = System.Type.GetType(typeName, true, true);
-				return Activator.CreateInstance(userReporistoryType);
-			}catch(Exception ex) {
-				throw new ApplicationException(string.Format("Error while creating instance of [{0}]", typeName), ex);
-			}
+			Type userReporistoryType = System.Type.GetType(typeName, true, true);
+			return Activator.CreateInstance(userReporistoryType);
 		}
 
 		// thread safe Singleton implementation with fully lazy instantiation and with full performance
@@ -138,7 +126,7 @@ namespace nJupiter.DataAccess.Users {
 			// ReSharper disable EmptyConstructor
 			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			// ReSharper restore EmptyConstructor
-			internal static readonly UserRepositoryFactory instance = new UserRepositoryFactory(ConfigHandler.Instance);
+			internal static readonly IUserRepositoryManager instance = new UserRepositoryManager(ConfigHandler.Instance);
 		}
 
 

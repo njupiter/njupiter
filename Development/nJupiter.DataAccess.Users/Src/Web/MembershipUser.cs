@@ -24,7 +24,7 @@
 
 using System;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Web {
 	public class MembershipUser : System.Web.Security.MembershipUser {
 		private readonly string id;
 		private readonly string userName;
@@ -240,12 +240,6 @@ namespace nJupiter.DataAccess.Users {
 		/// The user identifier from the membership data source for the user.
 		/// </returns>
 		public override object ProviderUserKey {
-			get {
-				return id;
-			}
-		}
-
-		public virtual string UserDAOId {
 			get {
 				return id;
 			}

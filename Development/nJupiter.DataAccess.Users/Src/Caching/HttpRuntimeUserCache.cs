@@ -143,20 +143,18 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		private struct UserIdCacheKey {
 
+			private const int InitialPrime = 17;
+			private const int MultiplierPrime = 37;
+			
 			private readonly string userProvider;
 			private readonly string userId;
-			private readonly int hash;
 			private readonly string cacheKey;
 
 			public UserIdCacheKey(string userProvider, string id) {
 				this.userId = id ?? string.Empty;
 				this.userProvider = userProvider;
 
-				int result = 17;
-				result = (37 * result) + this.userId.GetHashCode();
-				result = (37 * result) + this.userProvider.GetHashCode();
-				hash = result;
-				cacheKey = string.Format("nJupiter.DataAccess.Users.userRepository:{0}:UserIdCacheKey:{1}", userProvider, hash);
+				cacheKey = string.Format("nJupiter.DataAccess.Users.userRepository:{0}:userId:{1}", userProvider, id);
 			}
 
 			public override bool Equals(object obj) {
@@ -173,6 +171,10 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 
 			public override int GetHashCode() {
+				// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
+				int hash = InitialPrime;
+				hash = (MultiplierPrime * hash) + this.userId.GetHashCode();
+				hash = (MultiplierPrime * hash) + this.userProvider.GetHashCode();
 				return hash;
 			}
 		}

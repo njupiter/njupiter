@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using nJupiter.Configuration;
+using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
 	
@@ -35,6 +35,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public abstract string Name { get;  }
 		public abstract IPredefinedNames PropertyNames { get; }
+		public abstract IUserCache UserCache { get; }
 
 		public abstract IUser GetUserById(string userId);
 		public abstract IUser GetUserByUserName(string userName, string domain);

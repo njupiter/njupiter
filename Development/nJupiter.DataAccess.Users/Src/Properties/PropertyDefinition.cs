@@ -28,22 +28,31 @@ namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public class PropertyDefinition {
 
+		private const int InitialPrime = 17;
+		private const int MultiplierPrime = 37;
 		private readonly string propertyName;
 		private readonly Type type;
 
-		public PropertyDefinition(string propertyName, Type dataType) {
+		public PropertyDefinition(string propertyName, Type propertyType) {
+			if(propertyName == null) {
+				throw new ArgumentNullException("propertyName");
+			}
+			if(propertyType == null) {
+				throw new ArgumentNullException("propertyType");
+			}
 			this.propertyName = propertyName;
-			this.type = dataType;
+			this.type = propertyType;
 		}
 
 		public string PropertyName { get { return this.propertyName; } }
 		public Type PropertyType { get { return this.type; } }
 
 		public override int GetHashCode() {
-			int result = 17;
-			result = (37 * result) + propertyName.GetHashCode();
-			result = (37 * result) + type.GetHashCode();
-			return result;			
+			// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
+			int hash = InitialPrime;
+			hash = (MultiplierPrime * hash) + propertyName.GetHashCode();
+			hash = (MultiplierPrime * hash) + type.GetHashCode();
+			return hash;			
 		}
 
 		public override bool Equals(object obj) {

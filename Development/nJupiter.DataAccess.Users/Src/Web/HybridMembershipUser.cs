@@ -24,7 +24,7 @@
 
 using System;
 
-namespace nJupiter.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Web {
 
 	public class HybridMembershipUser : MembershipUser {
 

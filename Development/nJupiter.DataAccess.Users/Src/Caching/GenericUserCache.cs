@@ -268,30 +268,29 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		private struct CacheMapId {
 
-			public readonly string UserName;
-			public readonly string Domain;
-			private readonly int hash;
+			private const int InitialPrime = 17;
+			private const int MultiplierPrime = 37;
+
+			private readonly string userName;
+			private readonly string domain;
 
 			public CacheMapId(string userName, string domain) {
-				UserName = userName;
-				Domain = domain ?? string.Empty;
-
-				// Calculate a unique hash that will match all id:s with the same user name and domain
-				int result = 17;
-				result = (37 * result) + UserName.GetHashCode();
-				result = (37 * result) + Domain.GetHashCode();
-
-				hash = result;
+				this.userName = userName;
+				this.domain = domain ?? string.Empty;
 			}
 
 			public override bool Equals(object obj) {
 				CacheMapId map = (CacheMapId)obj;
-				if(map.UserName == null)
+				if(map.userName == null)
 					return false;
-				return map.UserName.Equals(UserName) && map.Domain.Equals(Domain);
+				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain);
 			}
 
 			public override int GetHashCode() {
+				// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
+				int hash = InitialPrime;
+				hash = (MultiplierPrime * hash) + this.userName.GetHashCode();
+				hash = (MultiplierPrime * hash) + this.domain.GetHashCode();
 				return hash;
 			}
 		}

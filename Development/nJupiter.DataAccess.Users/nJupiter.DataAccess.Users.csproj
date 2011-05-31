@@ -79,11 +79,12 @@
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserRepository.cs" />
     <Compile Include="Src\IUserRepositoryFactory.cs" />
+    <Compile Include="Src\IUserRepositoryManager.cs" />
     <Compile Include="Src\Properties\GenericProperty.cs" />
     <Compile Include="Src\Properties\IPredefinedProperties.cs" />
     <Compile Include="Src\Properties\IPropertyCollection.cs" />
     <Compile Include="Src\Properties\IPropertyHandler.cs" />
-    <Compile Include="Src\UserRepositoryFactory.cs" />
+    <Compile Include="Src\UserRepositoryManager.cs" />
     <Compile Include="Src\Properties\IProperty.cs" />
     <Compile Include="Src\PredefinedNamesFactory.cs" />
     <Compile Include="Src\IPredefinedNames.cs">
