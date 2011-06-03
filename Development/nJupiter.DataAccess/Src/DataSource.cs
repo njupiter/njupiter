@@ -42,7 +42,7 @@ namespace nJupiter.DataAccess {
 			return this.Provider.CreateDataAdapter();
 		}
 
-		public ICommand CreateCommand(string command, IDbTransaction transaction, CommandType commandType, params IDataParameter[] parameters) {
+		public ICommand CreateCommand(string command, ITransaction transaction, CommandType commandType, params IDataParameter[] parameters) {
 			var dbCommand = this.Provider.CreateCommand();
 			dbCommand.CommandText = command;
 			dbCommand.CommandType = commandType;
@@ -77,7 +77,7 @@ namespace nJupiter.DataAccess {
 			return CreateSPCommand(spName, null, (IDataParameter[])null);
 		}
 
-		public ICommand CreateSPCommand(string spName, IDbTransaction transaction) {
+		public ICommand CreateSPCommand(string spName, ITransaction transaction) {
 			return CreateSPCommand(spName, transaction, null);
 		}
 
@@ -85,7 +85,7 @@ namespace nJupiter.DataAccess {
 			return CreateSPCommand(spName, null, parameters);
 		}
 
-		public ICommand CreateSPCommand(string spName, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public ICommand CreateSPCommand(string spName, ITransaction transaction, params IDataParameter[] parameters) {
 			return CreateCommand(spName, transaction, CommandType.StoredProcedure, parameters);
 		}
 
@@ -97,7 +97,7 @@ namespace nJupiter.DataAccess {
 			return CreateTextCommand(command, null, (IDataParameter[])null);
 		}
 
-		public ICommand CreateTextCommand(string command, IDbTransaction transaction) {
+		public ICommand CreateTextCommand(string command, ITransaction transaction) {
 			return CreateTextCommand(command, transaction, null);
 		}
 
@@ -105,7 +105,7 @@ namespace nJupiter.DataAccess {
 			return CreateTextCommand(command, null, parameters);
 		}
 
-		public ICommand CreateTextCommand(string command, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public ICommand CreateTextCommand(string command, ITransaction transaction, params IDataParameter[] parameters) {
 			return CreateCommand(command, transaction, CommandType.Text, parameters);
 		}
 
@@ -123,7 +123,7 @@ namespace nJupiter.DataAccess {
 				throw new ArgumentNullException("command");
 
 			if(command.Transaction == null) {
-				using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+				using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 					command.Transaction = transaction;
 					return GetDataSetInternal(command, dataSet, tables);
 				}
@@ -153,12 +153,12 @@ namespace nJupiter.DataAccess {
 		
 		
 		public int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand, string tableName) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return UpdateDataSet(dataSet, insertCommand, updateCommand, deleteCommand, tableName, transaction);
 			}
 		}
 
-		public int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand, string tableName, IDbTransaction transaction) {
+		public int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand, string tableName, ITransaction transaction) {
 			if(transaction == null)
 				throw new ArgumentNullException("transaction");
 			if(dataSet == null)
@@ -188,22 +188,22 @@ namespace nJupiter.DataAccess {
 		}
 
 		public DataSet ExecuteDataSet(string command, CommandType commandType) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return ExecuteDataSet(command, commandType, transaction);
 			}
 		}
 
 		public DataSet ExecuteDataSet(string command, CommandType commandType, params IDataParameter[] parameters) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return ExecuteDataSet(command, commandType, transaction, parameters);
 			}
 		}
 
-		public DataSet ExecuteDataSet(string command, CommandType commandType, IDbTransaction transaction) {
+		public DataSet ExecuteDataSet(string command, CommandType commandType, ITransaction transaction) {
 			return ExecuteDataSet(command, commandType, transaction, null);
 		}
 
-		public DataSet ExecuteDataSet(string command, CommandType commandType, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public DataSet ExecuteDataSet(string command, CommandType commandType, ITransaction transaction, params IDataParameter[] parameters) {
 			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteDataSet(command, transaction, parameters);
 			}
@@ -212,23 +212,23 @@ namespace nJupiter.DataAccess {
 		}
 
 		public DataSet ExecuteDataSet(string spName, params IDataParameter[] parameters) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return this.ExecuteDataSet(spName, transaction, parameters);
 			}
 		}
 
-		public DataSet ExecuteDataSet(string spName, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public DataSet ExecuteDataSet(string spName, ITransaction transaction, params IDataParameter[] parameters) {
 			ICommand command = CreateSPCommand(spName, transaction, parameters);
 			return this.ExecuteDataSet(command);
 		}
 
 		public DataSet ExecuteDataSet(string spName) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return this.ExecuteDataSet(spName, transaction);
 			}
 		}
 
-		public DataSet ExecuteDataSet(string spName, IDbTransaction transaction) {
+		public DataSet ExecuteDataSet(string spName, ITransaction transaction) {
 			ICommand command = CreateSPCommand(spName, transaction);
 			return this.ExecuteDataSet(command);
 		}
@@ -243,22 +243,22 @@ namespace nJupiter.DataAccess {
 		}
 
 		public int ExecuteNonQuery(string command, CommandType commandType) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return ExecuteNonQuery(command, commandType, transaction);
 			}
 		}
 
 		public int ExecuteNonQuery(string command, CommandType commandType, params IDataParameter[] parameters) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return ExecuteNonQuery(command, commandType, transaction, parameters);
 			}
 		}
 
-		public int ExecuteNonQuery(string command, CommandType commandType, IDbTransaction transaction) {
+		public int ExecuteNonQuery(string command, CommandType commandType, ITransaction transaction) {
 			return ExecuteNonQuery(command, commandType, transaction, null);
 		}
 
-		public int ExecuteNonQuery(string command, CommandType commandType, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public int ExecuteNonQuery(string command, CommandType commandType, ITransaction transaction, params IDataParameter[] parameters) {
 			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteNonQuery(command, transaction, parameters);
 			}
@@ -267,23 +267,23 @@ namespace nJupiter.DataAccess {
 		}
 
 		public int ExecuteNonQuery(string spName, params IDataParameter[] parameters) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return this.ExecuteNonQuery(spName, transaction, parameters);
 			}
 		}
 
-		public int ExecuteNonQuery(string spName, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public int ExecuteNonQuery(string spName, ITransaction transaction, params IDataParameter[] parameters) {
 			ICommand command = CreateSPCommand(spName, transaction, parameters);
 			return this.ExecuteNonQuery(command);
 		}
 
 		public int ExecuteNonQuery(string spName) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return this.ExecuteNonQuery(spName, transaction);
 			}
 		}
 
-		public int ExecuteNonQuery(string spName, IDbTransaction transaction) {
+		public int ExecuteNonQuery(string spName, ITransaction transaction) {
 			ICommand command = CreateSPCommand(spName, transaction);
 			return this.ExecuteNonQuery(command);
 		}
@@ -293,7 +293,7 @@ namespace nJupiter.DataAccess {
 				throw new ArgumentNullException("command");
 
 			if(command.Transaction == null) {
-				using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+				using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 					command.Transaction = transaction;
 					return command.DbCommand.ExecuteNonQuery();
 				}
@@ -302,22 +302,22 @@ namespace nJupiter.DataAccess {
 		}
 
 		public object ExecuteScalar(string command, CommandType commandType) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return ExecuteScalar(command, commandType, transaction);
 			}
 		}
 
 		public object ExecuteScalar(string command, CommandType commandType, params IDataParameter[] parameters) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return ExecuteScalar(command, commandType, transaction, parameters);
 			}
 		}
 
-		public object ExecuteScalar(string command, CommandType commandType, IDbTransaction transaction) {
+		public object ExecuteScalar(string command, CommandType commandType, ITransaction transaction) {
 			return ExecuteScalar(command, commandType, transaction, null);
 		}
 
-		public object ExecuteScalar(string command, CommandType commandType, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public object ExecuteScalar(string command, CommandType commandType, ITransaction transaction, params IDataParameter[] parameters) {
 			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteScalar(command, transaction, parameters);
 			}
@@ -326,23 +326,23 @@ namespace nJupiter.DataAccess {
 		}
 
 		public object ExecuteScalar(string spName, params IDataParameter[] parameters) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return this.ExecuteScalar(spName, transaction, parameters);
 			}
 		}
 
-		public object ExecuteScalar(string spName, IDbTransaction transaction, params IDataParameter[] parameters) {
+		public object ExecuteScalar(string spName, ITransaction transaction, params IDataParameter[] parameters) {
 			ICommand command = CreateSPCommand(spName, transaction, parameters);
 			return this.ExecuteScalar(command);
 		}
 
 		public object ExecuteScalar(string spName) {
-			using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+			using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 				return this.ExecuteScalar(spName, transaction);
 			}
 		}
 
-		public object ExecuteScalar(string spName, IDbTransaction transaction) {
+		public object ExecuteScalar(string spName, ITransaction transaction) {
 			ICommand command = CreateSPCommand(spName, transaction);
 			return this.ExecuteScalar(command);
 		}
@@ -351,7 +351,7 @@ namespace nJupiter.DataAccess {
 			if(command == null)
 				throw new ArgumentNullException("command");
 			if(command.Transaction == null) {
-				using(IDbTransaction transaction = TransactionFactory.GetTransaction(this, false)) {
+				using(ITransaction transaction = TransactionFactory.GetTransaction(this, false)) {
 					command.Transaction = transaction;
 					return command.DbCommand.ExecuteScalar();
 				}
@@ -367,11 +367,11 @@ namespace nJupiter.DataAccess {
 			return ExecuteReader(command, commandType, null, behavior, parameters);
 		}
 
-		public IDataReader ExecuteReader(string command, CommandType commandType, IDbTransaction transaction, CommandBehavior behavior) {
+		public IDataReader ExecuteReader(string command, CommandType commandType, ITransaction transaction, CommandBehavior behavior) {
 			return ExecuteReader(command, commandType, transaction, behavior, null);
 		}
 
-		public IDataReader ExecuteReader(string command, CommandType commandType, IDbTransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters) {
+		public IDataReader ExecuteReader(string command, CommandType commandType, ITransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters) {
 			if(commandType == CommandType.StoredProcedure) {
 				return this.ExecuteReader(command, transaction, behavior, parameters);
 			}
@@ -384,7 +384,7 @@ namespace nJupiter.DataAccess {
 			return this.ExecuteReader(command, behavior);
 		}
 
-		public IDataReader ExecuteReader(string spName, IDbTransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters) {
+		public IDataReader ExecuteReader(string spName, ITransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters) {
 			var command = CreateSPCommand(spName, transaction, parameters);
 			return this.ExecuteReader(command, behavior);
 		}
@@ -394,7 +394,7 @@ namespace nJupiter.DataAccess {
 			return this.ExecuteReader(command, behavior);
 		}
 
-		public IDataReader ExecuteReader(string spName, IDbTransaction transaction, CommandBehavior behavior) {
+		public IDataReader ExecuteReader(string spName, ITransaction transaction, CommandBehavior behavior) {
 			var command = CreateSPCommand(spName, transaction);
 			return this.ExecuteReader(command, behavior);
 		}

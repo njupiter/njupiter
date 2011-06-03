@@ -1,4 +1,7 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Configuration;
+using System.Data.Common;
+using System.Web.Configuration;
 
 namespace nJupiter.DataAccess {
 	public static class DataSourceFactory {
@@ -8,12 +11,16 @@ namespace nJupiter.DataAccess {
 		/// <param name="name">The name of the data source.</param>
 		/// <returns>A <see cref="DataSource" /> instance.</returns>
 		public static IDataSource Create(string name) {
-			DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(name);
-			return Create(dbProviderFactory);
+			var connectionStringSettings = ConfigurationManager.ConnectionStrings[name];
+			if(connectionStringSettings == null) {
+				throw new ArgumentException(string.Format("The connection name '{0}' was not found in the applications configuration or the connection string is empty", name), "name");
+			}
+			DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
+			return Create(dbProviderFactory, connectionStringSettings.ConnectionString);
 		}
 		
-		public static IDataSource Create(DbProviderFactory dbProviderFactory) {
-			var wrapper = new DbProviderAdapter(dbProviderFactory);
+		public static IDataSource Create(DbProviderFactory dbProviderFactory, string connectionString) {
+			var wrapper = new DbProviderAdapter(dbProviderFactory, connectionString);
 			return new DataSource(wrapper);
 		}
 

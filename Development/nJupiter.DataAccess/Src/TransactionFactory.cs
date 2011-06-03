@@ -7,7 +7,7 @@ namespace nJupiter.DataAccess {
 		/// </summary>
 		/// <param name="dataSource">The data source for the transaction.</param>
 		/// <returns>The <see cref="Transaction" /> object</returns>
-		public static IDbTransaction BeginTransaction(IDataSource dataSource) {
+		public static ITransaction BeginTransaction(IDataSource dataSource) {
 			return GetTransaction(dataSource, true);
 		}
 
@@ -17,15 +17,15 @@ namespace nJupiter.DataAccess {
 		/// <param name="dataSource">The data source for the transaction.</param>
 		/// <param name="isolationLevel">The isolation level for the transaction.</param>
 		/// <returns>The <see cref="Transaction" /> object</returns>
-		public static IDbTransaction BeginTransaction(IDataSource dataSource, IsolationLevel isolationLevel) {
+		public static ITransaction BeginTransaction(IDataSource dataSource, IsolationLevel isolationLevel) {
 			return GetTransaction(dataSource, isolationLevel, true);
 		}
 
-		internal static IDbTransaction GetTransaction(IDataSource dataSource, bool beginTransaction) {
+		internal static ITransaction GetTransaction(IDataSource dataSource, bool beginTransaction) {
 			return GetTransaction(dataSource, IsolationLevel.ReadCommitted, beginTransaction);
 		}
 
-		internal static IDbTransaction GetTransaction(IDataSource dataSource, IsolationLevel isolationLevel, bool beginTransaction) {
+		internal static ITransaction GetTransaction(IDataSource dataSource, IsolationLevel isolationLevel, bool beginTransaction) {
 			IDbConnection connection = dataSource.OpenConnection();
 			Transaction transaction = new Transaction(connection, isolationLevel);
 			if(beginTransaction) {

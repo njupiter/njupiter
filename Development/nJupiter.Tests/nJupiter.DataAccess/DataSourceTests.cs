@@ -17,13 +17,13 @@ namespace nJupiter.Tests.DataAccess {
 		public void CreateCommand_CreateCommand_CheckThatCorrectCommandIsCreated() {
 			var provider = A.Fake<IProvider>();
 			var dataSource = new DataSource(provider);
-			var transaction = A.Fake<IDbTransaction>();
+			var transaction = A.Fake<ITransaction>();
 			var parameter = A.Fake<IDataParameter>();
 
 			var command = dataSource.CreateCommand("commandSting", transaction, CommandType.TableDirect, parameter);
 			Assert.AreEqual("commandSting", command.DbCommand.CommandText);
 			Assert.AreEqual(transaction.Connection, command.DbCommand.Connection);
-			Assert.AreEqual(transaction, command.DbCommand.Transaction);
+			Assert.AreEqual(transaction.DbTransaction, command.DbCommand.Transaction);
 			Assert.AreEqual(CommandType.TableDirect, command.DbCommand.CommandType);
 		}
 
@@ -79,11 +79,11 @@ namespace nJupiter.Tests.DataAccess {
 		public void CreateSPCommand_CreateSpCommandWithTransaction_ReturnsCommandWithCorrectTransaction() {
 			var provider = A.Fake<IProvider>();
 			var dataSource = new DataSource(provider);
-			var trans = A.Fake<IDbTransaction>();
+			var trans = A.Fake<ITransaction>();
 			var command = dataSource.CreateSPCommand("command", trans);
 			Assert.AreEqual(CommandType.StoredProcedure, command.DbCommand.CommandType);
 			Assert.AreEqual("command", command.DbCommand.CommandText);
-			Assert.AreEqual(trans, command.DbCommand.Transaction);
+			Assert.AreEqual(trans.DbTransaction, command.DbCommand.Transaction);
 		}
 
 		[Test]
@@ -128,11 +128,11 @@ namespace nJupiter.Tests.DataAccess {
 		public void CreateTextCommand_CreateTextCommandWithTransaction_ReturnsCommandWithCorrectTransaction() {
 			var provider = A.Fake<IProvider>();
 			var dataSource = new DataSource(provider);
-			var trans = A.Fake<IDbTransaction>();
+			var trans = A.Fake<ITransaction>();
 			var command = dataSource.CreateTextCommand("command", trans);
 			Assert.AreEqual(CommandType.Text, command.DbCommand.CommandType);
 			Assert.AreEqual("command", command.DbCommand.CommandText);
-			Assert.AreEqual(trans, command.DbCommand.Transaction);
+			Assert.AreEqual(trans.DbTransaction, command.DbCommand.Transaction);
 		}
 
 		[Test]
@@ -566,7 +566,7 @@ namespace nJupiter.Tests.DataAccess {
 			var provider = A.Fake<IProvider>();
 			var command = A.Fake<ICommand>();
 			var dataSource = new DataSource(provider);
-			var trans = A.Fake<IDbTransaction>();
+			var trans = A.Fake<ITransaction>();
 
 			command.Transaction = trans;
 
@@ -580,21 +580,21 @@ namespace nJupiter.Tests.DataAccess {
 			var provider = A.Fake<IProvider>();
 			var dbCommand = A.Fake<IDbCommand>();
 			var dataSource = new DataSource(provider);
-			var trans = A.Fake<IDbTransaction>();
+			var trans = A.Fake<ITransaction>();
 
 			A.CallTo(() => provider.CreateCommand()).Returns(dbCommand);
 
 			dataSource.ExecuteReader("command", CommandType.Text, trans, CommandBehavior.KeyInfo);
 			
 			Assert.AreEqual("command", dbCommand.CommandText);
-			Assert.AreEqual(trans, dbCommand.Transaction);
+			Assert.AreEqual(trans.DbTransaction, dbCommand.Transaction);
 		}
 
 		[Test]
 		public void ExecuteReader_Passingnull() {
 			var provider = A.Fake<IProvider>();
 			var dataSource = new DataSource(provider);
-			var trans = A.Fake<IDbTransaction>();
+			var trans = A.Fake<ITransaction>();
 
 			dataSource.ExecuteReader(null, trans, CommandBehavior.KeyInfo);
 		}

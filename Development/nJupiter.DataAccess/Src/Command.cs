@@ -30,10 +30,10 @@ namespace nJupiter.DataAccess {
 	internal class Command : IDisposable, ICommand {
 
 		private readonly IDbCommand dbCommand;
-		private IDbTransaction transaction;
+		private ITransaction transaction;
 		private bool disposed;
 
-		internal Command(IDbCommand dbCommand, IDbTransaction transaction, params IDataParameter[] parameters) {
+		internal Command(IDbCommand dbCommand, ITransaction transaction, params IDataParameter[] parameters) {
 			if(dbCommand == null) {
 				throw new ArgumentNullException("dbCommand");
 			}
@@ -47,12 +47,17 @@ namespace nJupiter.DataAccess {
 
 		}
 
-		public IDbTransaction Transaction {
+		public ITransaction Transaction {
 			get { return this.transaction; }
 			set {
 				this.transaction = value;
-				this.DbCommand.Connection = this.transaction != null ? this.transaction.Connection : null;
-				this.DbCommand.Transaction = this.transaction;
+				if(this.transaction != null) {
+					this.DbCommand.Connection = this.transaction.Connection;
+					// Unfortunately Microsofts components does not conform to Liskov Substitution Principle, but cast this
+					// interface to a types DbTransaction in the DbCommand so we have to wrap the underlying transaction
+					// rather than to implement IDbTransaction and set our own implementation here.
+					this.DbCommand.Transaction = this.transaction.DbTransaction;
+				}
 			}
 		}
 		
@@ -105,7 +110,6 @@ namespace nJupiter.DataAccess {
 			if(!this.disposed) {
 				this.disposed = true;
 				dbCommand.Dispose();
-				// Suppress finalization of this disposed instance.
 				if(disposing)
 					GC.SuppressFinalize(this);
 			}

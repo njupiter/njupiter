@@ -7,7 +7,7 @@ namespace nJupiter.DataAccess {
 		/// Gets or set the transaction associated with the command.
 		/// </summary>
 		/// <value>The transaction.</value>
-		IDbTransaction Transaction { get; set; }
+		ITransaction Transaction { get; set; }
 		/// <summary>
 		/// Gets or sets the command text associated with the command.
 		/// </summary>

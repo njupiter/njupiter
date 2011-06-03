@@ -20,13 +20,13 @@ namespace nJupiter.Tests.DataAccess {
 			var command = new Command(dbCommand, dbTransaction, null);
 			Assert.AreEqual(dbTransaction, command.Transaction);
 			Assert.AreEqual(dbTransaction.Connection, dbCommand.Connection);
-			Assert.AreEqual(dbTransaction, dbCommand.Transaction);
+			Assert.AreEqual(dbTransaction.DbTransaction, dbCommand.Transaction);
 		}
 
 		[Test]
 		public void Constructor_CreatesConnectionWithParameters_ReturnsCommandWithRithtNumberOfParameters() {
 			var dbCommand = A.Fake<IDbCommand>();
-			var dbTransaction = A.Fake<IDbTransaction>();
+			var dbTransaction = A.Fake<ITransaction>();
 			var parameterCollection = A.Fake<IDataParameterCollection>();
 			A.CallTo(() => dbCommand.Parameters).Returns(parameterCollection);
 

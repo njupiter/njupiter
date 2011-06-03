@@ -71,7 +71,7 @@ namespace nJupiter.Configuration {
 			if(converter != null && converter.CanConvertFrom(typeof(string))) {
 				return (T)converter.ConvertFromString(null, culture, value);
 			}
-			throw new InvalidConfigTypeException(string.Format("Can not find converter for type [{0}]", typeof(T).FullName));
+			throw new InvalidConfigTypeException(string.Format("Can not find converter for type '{0}'", typeof(T).FullName));
 		}
 
 	}

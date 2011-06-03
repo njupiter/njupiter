@@ -26,8 +26,7 @@ using System;
 using System.Data;
 
 namespace nJupiter.DataAccess {
-
-	internal sealed class Transaction : IDbTransaction {
+	internal sealed class Transaction : ITransaction {
 
 		private readonly IsolationLevel isolationLevel;
 		private readonly IDbConnection connection;
@@ -40,7 +39,7 @@ namespace nJupiter.DataAccess {
 		}
 
 		public IDbConnection Connection { get { return this.connection; } }
-
+		public IDbTransaction DbTransaction { get { return this.dbTransaction; } }
 		public IsolationLevel IsolationLevel { get { return this.isolationLevel; } }
 
 		public void Begin() {

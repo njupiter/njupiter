@@ -116,7 +116,7 @@ namespace nJupiter.Net.Mail {
 			IPEndPoint endPoint = new IPEndPoint(ipAddress, 25);
 
 			using(Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)) {
-				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Connecting to SMTP-server [{0}]", this.host)); }
+				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Connecting to SMTP-server '{0}'", this.host)); }
 
 				socket.Connect(endPoint);
 				WaitForResponse(socket, SmtpReplyCode.ConnectSuccess);
@@ -141,7 +141,7 @@ namespace nJupiter.Net.Mail {
 		#region Helper Methods
 		private SmtpResponse SendData(Socket socket, string message, SmtpReplyCode expectedResponse) {
 			byte[] msg = Encoding.UTF8.GetBytes(message);
-			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Sending data [{0}] to SMTP-server {1}", message, this.host)); }
+			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Sending data '{0}' to SMTP-server {1}", message, this.host)); }
 			socket.Send(msg, 0, msg.Length, SocketFlags.None);
 			if(!expectedResponse.Equals(SmtpReplyCode.QuitSuccess)) {
 				return this.WaitForResponse(socket, expectedResponse);
@@ -153,7 +153,7 @@ namespace nJupiter.Net.Mail {
 			DateTime timeStamp = DateTime.Now.AddSeconds(this.timeout);
 			while(socket.Available == 0) {
 				if(DateTime.Now > timeStamp) {
-					throw new SmtpTimeoutException(string.Format("Connection timeout while sending data to the server [{0}].", this.host));
+					throw new SmtpTimeoutException(string.Format("Connection timeout while sending data to the server '{0}'", this.host));
 				}
 				Thread.Sleep(10);
 			}
@@ -169,14 +169,14 @@ namespace nJupiter.Net.Mail {
 			if(replyCode != (int)expectedResponse) {
 				switch(expectedResponse) {
 					case SmtpReplyCode.ConnectSuccess:
-					throw new SmtpConnectionException(string.Format("Failed to connect to SMTP-server [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
+					throw new SmtpConnectionException(string.Format("Failed to connect to SMTP-server '{0}'. Code: {1} Message: {2}", this.host, replyCode, message));
 					case SmtpReplyCode.AuthSuccess:
 					case SmtpReplyCode.AuthRequest:
-					throw new SmtpAuthenticationException(string.Format("Authentication to SMTP-server failed [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
+					throw new SmtpAuthenticationException(string.Format("Authentication to SMTP-server failed '{0}'. Code: {1} Message: {2}", this.host, replyCode, message));
 					case SmtpReplyCode.DataSuccess:
-					throw new SmtpDataTransferException(string.Format("Failed to send data to SMTP-server [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
+					throw new SmtpDataTransferException(string.Format("Failed to send data to SMTP-server '{0}'. Code: {1} Message: {2}", this.host, replyCode, message));
 					default:
-					throw new SmtpException(string.Format("Failed to send mail through SMTP-server [{0}]. Code: {1} Message: {2}", this.host, replyCode, message));
+					throw new SmtpException(string.Format("Failed to send mail through SMTP-server '{0}'. Code: {1} Message: {2}", this.host, replyCode, message));
 				}
 			}
 
@@ -204,7 +204,7 @@ namespace nJupiter.Net.Mail {
 					bytes = Encoding.UTF8.GetBytes(this.password);
 					SendData(socket, Convert.ToBase64String(bytes) + Environment.NewLine, SmtpReplyCode.AuthSuccess);
 				} else {
-					throw new SmtpAuthenticationException(string.Format("Authentication to SMTP-server failed [{0}]. Code: {1} Message: {2}", this.host, smtpResponse.ReplyCode, smtpResponse.Message));
+					throw new SmtpAuthenticationException(string.Format("Authentication to SMTP-server failed '{0}'. Code: {1} Message: {2}", this.host, smtpResponse.ReplyCode, smtpResponse.Message));
 				}
 			} else {
 				SendData(socket, string.Format(CultureInfo.InvariantCulture, "HELO {0}\r\n", Dns.GetHostName()), SmtpReplyCode.GenericSuccess);

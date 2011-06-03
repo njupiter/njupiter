@@ -255,7 +255,7 @@ namespace nJupiter.Services.Forum {
 			if(category == null) {
 				throw new ArgumentNullException(ParamNameCategory);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				SaveCategory(category, category.Domain, transaction);
 				transaction.Commit();
 			}
@@ -264,7 +264,7 @@ namespace nJupiter.Services.Forum {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				bool categoryWasAffected = DeleteCategories(id, null, null, transaction).Equals(1);
 				transaction.Commit();
 				return categoryWasAffected;
@@ -277,7 +277,7 @@ namespace nJupiter.Services.Forum {
 			if(name == null) {
 				throw new ArgumentNullException(ParamNameName);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				bool categoryWasAffected = DeleteCategories(null, domain, name, transaction).Equals(1);
 				transaction.Commit();
 				return categoryWasAffected;
@@ -285,7 +285,7 @@ namespace nJupiter.Services.Forum {
 		}
 
 		public override int DeleteCategories() {
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int categoriesAffected = DeleteCategories(null, null, null, transaction);
 				transaction.Commit();
 				return categoriesAffected;
@@ -295,7 +295,7 @@ namespace nJupiter.Services.Forum {
 			if(domain == null) {
 				throw new ArgumentNullException(ParamNameDomain);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int categoriesAffected = DeleteCategories(null, domain, null, transaction);
 				transaction.Commit();
 				return categoriesAffected;
@@ -455,7 +455,7 @@ namespace nJupiter.Services.Forum {
 			if(post == null) {
 				throw new ArgumentNullException(ParamNamePost);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				SavePost(post, transaction);
 				transaction.Commit();
 			}
@@ -474,7 +474,7 @@ namespace nJupiter.Services.Forum {
 			if(toCategoryName == null) {
 				throw new ArgumentNullException(ParamNameTocategoryname);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = MovePosts(null, fromDomain, fromCategoryName, null, toDomain, toCategoryName, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -490,7 +490,7 @@ namespace nJupiter.Services.Forum {
 			if(toCategoryId == null) {
 				throw new ArgumentNullException(ParamNameTocategoryid);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = MovePosts(null, fromDomain, fromCategoryName, toCategoryId, null, null, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -506,7 +506,7 @@ namespace nJupiter.Services.Forum {
 			if(toCategoryName == null) {
 				throw new ArgumentNullException(ParamNameTocategoryname);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = MovePosts(fromCategoryId, null, null, null, toDomain, toCategoryName, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -519,7 +519,7 @@ namespace nJupiter.Services.Forum {
 			if(toCategoryId == null) {
 				throw new ArgumentNullException(ParamNameTocategoryid);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = MovePosts(fromCategoryId, null, null, toCategoryId, null, null, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -530,7 +530,7 @@ namespace nJupiter.Services.Forum {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = DeletePosts(id, false, null, null, DateTime.MinValue, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -538,7 +538,7 @@ namespace nJupiter.Services.Forum {
 		}
 
 		public override int DeletePosts(DateTime until) {
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = DeletePosts(null, false, null, null, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -548,7 +548,7 @@ namespace nJupiter.Services.Forum {
 			if(domain == null) {
 				throw new ArgumentNullException(ParamNameDomain);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = DeletePosts(null, false, domain, null, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -558,7 +558,7 @@ namespace nJupiter.Services.Forum {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = DeletePosts(id, false, null, null, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -571,7 +571,7 @@ namespace nJupiter.Services.Forum {
 			if(categoryName == null) {
 				throw new ArgumentNullException(ParamNameCategoryname);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = DeletePosts(null, false, domain, categoryName, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -581,7 +581,7 @@ namespace nJupiter.Services.Forum {
 			if(id == null) {
 				throw new ArgumentNullException(ParamNameId);
 			}
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(this.CurrentDataSource)) {
 				int postsAffected = DeletePosts(id, true, null, null, until, transaction);
 				transaction.Commit();
 				return postsAffected;
@@ -843,7 +843,7 @@ namespace nJupiter.Services.Forum {
 			return attributes;
 		}
 
-		private void SavePost(Post post, IDbTransaction transaction) {
+		private void SavePost(Post post, ITransaction transaction) {
 			IDataParameter returnParam;
 			List<IDataParameter> saveParams = new List<IDataParameter>(
 				new [] {
@@ -886,7 +886,7 @@ namespace nJupiter.Services.Forum {
 				SaveAttributes(post.Id, post.Attributes, AttributeType.PostAttribute, transaction);
 			}
 		}
-		private void SaveCategory(Category category, string domain, IDbTransaction transaction) {
+		private void SaveCategory(Category category, string domain, ITransaction transaction) {
 			IDataParameter returnParam;
 			List<IDataParameter> saveParams = new List<IDataParameter>(
 				new [] {
@@ -916,7 +916,7 @@ namespace nJupiter.Services.Forum {
 				SaveAttributes(category.Id, category.Attributes, AttributeType.CategoryAttribute, transaction);
 			}
 		}
-		private void SaveAttributes(GuidId id, AttributeCollection attributes, AttributeType attributeType, IDbTransaction transaction) {
+		private void SaveAttributes(GuidId id, AttributeCollection attributes, AttributeType attributeType, ITransaction transaction) {
 			string spNameSave;
 			string spNameDelete;
 			string paramNameId;
@@ -948,7 +948,7 @@ namespace nJupiter.Services.Forum {
 			}
 		}
 
-		private int MovePosts(CategoryId fromCategoryId, string fromDomain, string fromCategoryName, CategoryId toCategoryId, string toDomain, string toCategoryName, DateTime until, IDbTransaction transaction) {
+		private int MovePosts(CategoryId fromCategoryId, string fromDomain, string fromCategoryName, CategoryId toCategoryId, string toDomain, string toCategoryName, DateTime until, ITransaction transaction) {
 			List<IDataParameter> moveParams = new List<IDataParameter>();
 			if(fromCategoryId != null) {
 				moveParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameFromcategoryid, DbType.Guid, fromCategoryId.Value));
@@ -971,7 +971,7 @@ namespace nJupiter.Services.Forum {
 			return (int)returnParam.Value;
 		}
 
-		private int DeletePosts(GuidId id, bool deleteOnlyChildren, string domain, string categoryName, DateTime until, IDbTransaction transaction) {
+		private int DeletePosts(GuidId id, bool deleteOnlyChildren, string domain, string categoryName, DateTime until, ITransaction transaction) {
 			List<IDataParameter> deleteParams = new List<IDataParameter>();
 			if(id != null) {
 				deleteParams.Add(this.CurrentDataSource.CreateInputParameter(id is PostId ? SpParamNameId : SpParamNameCategoryid, DbType.Guid, id.Value));
@@ -992,7 +992,7 @@ namespace nJupiter.Services.Forum {
 			this.CurrentDataSource.ExecuteNonQuery(SpNameDeleteposts, transaction, deleteParams.ToArray());
 			return (int)returnParam.Value;
 		}
-		private int DeleteCategories(CategoryId id, string domain, string name, IDbTransaction transaction) {
+		private int DeleteCategories(CategoryId id, string domain, string name, ITransaction transaction) {
 			List<IDataParameter> deleteParams = new List<IDataParameter>();
 			if(id != null) {
 				deleteParams.Add(this.CurrentDataSource.CreateInputParameter(SpParamNameId, DbType.Guid, id.Value));

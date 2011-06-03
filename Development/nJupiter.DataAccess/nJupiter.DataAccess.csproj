@@ -41,6 +41,7 @@
     <Reference Include="System.Data.OracleClient">
       <Name>System.Data.OracleClient</Name>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -63,6 +64,7 @@
     <Compile Include="Src\ICommand.cs" />
     <Compile Include="Src\IDataSource.cs" />
     <Compile Include="Src\IProvider.cs" />
+    <Compile Include="Src\ITransaction.cs" />
     <Compile Include="Src\Sql\Util\FullTextHandler.cs" />
     <Compile Include="Src\Transaction.cs">
       <SubType>Code</SubType>

@@ -127,8 +127,8 @@ namespace nJupiter.DataAccess.Users {
 		public void SetProperty(string propertyName, IContext context, object value) {
 			IProperty property = this.GetProperty(propertyName, context);
 			if(property == null) {
-				string incontext = Context.DefaultContext.Equals(context) ? "default context" : string.Format("context [{0}]", context.Name);
-				throw new ArgumentException(string.Format("Property with name [{0}] in {1} is either not loader or does not exist.", propertyName, incontext));
+				string incontext = Context.DefaultContext.Equals(context) ? "default context" : string.Format("context '{0}'", context.Name);
+				throw new ArgumentException(string.Format("Property with name '{0}' in {1} is either not loader or does not exist.", propertyName, incontext));
 			}
 			property.Value = value;
 		}
@@ -238,7 +238,7 @@ namespace nJupiter.DataAccess.Users {
 			}
 			var context = this.AttachedContexts.FirstOrDefault(c => c.Name.Equals(contextName, StringComparison.InvariantCultureIgnoreCase));
 			if(context == null) {
-				throw new ArgumentException(string.Format("The context with name [{0}] is not attached.", contextName));
+				throw new ArgumentException(string.Format("The context with name '{0}' is not attached.", contextName));
 			}
 			return context;
 		}

@@ -88,7 +88,7 @@ namespace nJupiter.Configuration {
 			if(node != null && (attribute == null || AttributeExistsInNode(attribute, node))) {
 				return this.GetValueFromXmlNode<T>(section, key, attribute, node);
 			}
-			throw new ConfigValueNotFoundException(string.Format("Value [{0}] was not found in the config with key [{1}].", GetXPath(section, key), this.ConfigKey));
+			throw new ConfigValueNotFoundException(string.Format("Value '{0}' was not found in the config with key '{1}'", GetXPath(section, key), this.ConfigKey));
 		}
 
 		public T[] GetValueArray<T>(string section, string key) {
@@ -207,7 +207,7 @@ namespace nJupiter.Configuration {
 			try {
 				return StringParser.Instance.Parse<T>(value, culture);
 			}catch(Exception ex) {
-				throw new InvalidConfigValueException(string.Format("Error wile parsing value [{0}] with key [{1}] in config with key [{2}] of expected type [{3}] with culture [{4}].", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name, culture.Name), ex);
+				throw new InvalidConfigValueException(string.Format("Error wile parsing value '{0}' with key '{1}' in config with key '{2}' of expected type '{3}' with culture '{4}'.", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name, culture.Name), ex);
 			}
 		}
 

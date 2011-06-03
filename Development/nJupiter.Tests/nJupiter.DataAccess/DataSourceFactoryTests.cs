@@ -15,7 +15,7 @@ namespace nJupiter.Tests.DataAccess {
 		[Test]
 		public void Create_CreatingExistingProvider_ReturnsDataSource() {
 			var providerFactory = A.Fake<DbProviderFactory>();
-			var dataSource = DataSourceFactory.Create(providerFactory);
+			var dataSource = DataSourceFactory.Create(providerFactory, string.Empty);
 			Assert.IsNotNull(dataSource);
 		}
 

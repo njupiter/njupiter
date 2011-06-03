@@ -68,7 +68,7 @@ namespace nJupiter.Configuration {
 			try {
 				this.LoadConfigsIntoCollectionFromFiles(pattern, configs);
 			}catch(Exception ex){
-				throw new ConfiguratorException(string.Format("Error while loading XML configuration for the config with pattern [{0}].", pattern), ex);
+				throw new ConfiguratorException(string.Format("Error while loading XML configuration for the config with pattern '{0}'", pattern), ex);
 			}
 		}
 
@@ -114,7 +114,7 @@ namespace nJupiter.Configuration {
 					System.Threading.Thread.Sleep(200);
 				}
 			}
-			throw new ConfiguratorException(string.Format("Failed to open XML config file [{0}].", configFile.Name), exception);
+			throw new ConfiguratorException(string.Format("Failed to open XML config file '{0}'.", configFile.Name), exception);
 		}
 
 		private static DirectoryInfo GetDirectory(string path) {
@@ -155,10 +155,7 @@ namespace nJupiter.Configuration {
 		}
 
 		private static string GetCurrentDirectory() {
-			if(HttpContext.Current != null) {
-				return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath;
-			}
-			return Environment.CurrentDirectory;
+			return AppDomain.CurrentDomain.BaseDirectory;
 		}
 	}
 }

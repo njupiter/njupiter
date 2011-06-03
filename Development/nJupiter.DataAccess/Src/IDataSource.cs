@@ -20,7 +20,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of command.</param>
 		/// <param name="parameters">Parameters associated with the command.</param>
 		/// <returns></returns>
-		ICommand CreateCommand(string command, IDbTransaction transaction, CommandType commandType, params IDataParameter[] parameters);
+		ICommand CreateCommand(string command, ITransaction transaction, CommandType commandType, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Creates a data parameter associated with the data source.
@@ -57,7 +57,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="spName">Name of the stored procedure.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		ICommand CreateSPCommand(string spName, IDbTransaction transaction);
+		ICommand CreateSPCommand(string spName, ITransaction transaction);
 
 		/// <summary>
 		/// Creates a Stored Procedure command for the data source.
@@ -74,7 +74,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be sent to the stored procedure.</param>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		ICommand CreateSPCommand(string spName, IDbTransaction transaction, params IDataParameter[] parameters);
+		ICommand CreateSPCommand(string spName, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Creates a text command for the data source.
@@ -95,7 +95,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="command">The command string.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>A <see cref="Command"/> object.</returns>
-		ICommand CreateTextCommand(string command, IDbTransaction transaction);
+		ICommand CreateTextCommand(string command, ITransaction transaction);
 
 		/// <summary>
 		/// Creates a text command for the data source.
@@ -112,7 +112,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be sent to the text command.</param>
 		/// <returns>A <see cref="Command" /> object.</returns>
-		ICommand CreateTextCommand(string command, IDbTransaction transaction, params IDataParameter[] parameters);
+		ICommand CreateTextCommand(string command, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Gets the resulting data set for a command.
@@ -167,7 +167,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="tableName">Name of the table in the dataset that shall be updated.</param>
 		/// <param name="transaction">The transaction that the update belongs to.</param>
 		/// <returns>The number of rows successfully updated from the <see cref="DataSet" />.</returns>
-		int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand, string tableName, IDbTransaction transaction);
+		int UpdateDataSet(DataSet dataSet, ICommand insertCommand, ICommand updateCommand, ICommand deleteCommand, string tableName, ITransaction transaction);
 
 		/// <summary>
 		/// Executes a command that results in a data set.
@@ -193,7 +193,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>The resulting data set.</returns>
-		DataSet ExecuteDataSet(string command, CommandType commandType, IDbTransaction transaction);
+		DataSet ExecuteDataSet(string command, CommandType commandType, ITransaction transaction);
 
 		/// <summary>
 		/// Executes a command that results in a data set.
@@ -203,7 +203,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The resulting data set.</returns>
-		DataSet ExecuteDataSet(string command, CommandType commandType, IDbTransaction transaction, params IDataParameter[] parameters);
+		DataSet ExecuteDataSet(string command, CommandType commandType, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Executes a command that results in a data set.
@@ -220,7 +220,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The resulting data set.</returns>
-		DataSet ExecuteDataSet(string spName, IDbTransaction transaction, params IDataParameter[] parameters);
+		DataSet ExecuteDataSet(string spName, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Executes a command that results in a data set.
@@ -235,7 +235,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="spName">Name of the stored procedure that shall be executed.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>The resulting data set.</returns>
-		DataSet ExecuteDataSet(string spName, IDbTransaction transaction);
+		DataSet ExecuteDataSet(string spName, ITransaction transaction);
 
 		/// <summary>
 		/// Executes a command that results in a data set.
@@ -268,7 +268,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="commandType">Type of the command.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>The number of rows affected.</returns>
-		int ExecuteNonQuery(string command, CommandType commandType, IDbTransaction transaction);
+		int ExecuteNonQuery(string command, CommandType commandType, ITransaction transaction);
 
 		/// <summary>
 		/// Runs the command without returning any results.
@@ -278,7 +278,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The number of rows affected.</returns>
-		int ExecuteNonQuery(string command, CommandType commandType, IDbTransaction transaction, params IDataParameter[] parameters);
+		int ExecuteNonQuery(string command, CommandType commandType, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Runs the command without returning any results.
@@ -295,7 +295,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>The number of rows affected.</returns>
-		int ExecuteNonQuery(string spName, IDbTransaction transaction, params IDataParameter[] parameters);
+		int ExecuteNonQuery(string spName, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Runs the command without returning any results.
@@ -310,7 +310,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="spName">Name of the stored procedure to be executed.</param>
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <returns>The number of rows affected.</returns>
-		int ExecuteNonQuery(string spName, IDbTransaction transaction);
+		int ExecuteNonQuery(string spName, ITransaction transaction);
 
 		/// <summary>
 		/// Runs the command without returning any results.
@@ -347,7 +347,7 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		object ExecuteScalar(string command, CommandType commandType, IDbTransaction transaction);
+		object ExecuteScalar(string command, CommandType commandType, ITransaction transaction);
 
 		/// <summary>
 		/// Executes the query, and returns the first column of the first row in the resultset returned by the query. Extra columns or rows are ignored.
@@ -359,7 +359,7 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		object ExecuteScalar(string command, CommandType commandType, IDbTransaction transaction, params IDataParameter[] parameters);
+		object ExecuteScalar(string command, CommandType commandType, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Executes the query, and returns the first column of the first row in the resultset returned by the query. Extra columns or rows are ignored.
@@ -380,7 +380,7 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		object ExecuteScalar(string spName, IDbTransaction transaction, params IDataParameter[] parameters);
+		object ExecuteScalar(string spName, ITransaction transaction, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Executes the query, and returns the first column of the first row in the resultset returned by the query. Extra columns or rows are ignored.
@@ -399,7 +399,7 @@ namespace nJupiter.DataAccess {
 		/// <returns>
 		/// The first column of the first row in the resultset.
 		/// </returns>
-		object ExecuteScalar(string spName, IDbTransaction transaction);
+		object ExecuteScalar(string spName, ITransaction transaction);
 
 		/// <summary>
 		/// Executes the query, and returns the first column of the first row in the resultset returned by the query. Extra columns or rows are ignored.
@@ -437,7 +437,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		IDataReader ExecuteReader(string command, CommandType commandType, IDbTransaction transaction, CommandBehavior behavior);
+		IDataReader ExecuteReader(string command, CommandType commandType, ITransaction transaction, CommandBehavior behavior);
 
 		/// <summary>
 		/// Executes the command and builds an IDataReader.
@@ -448,7 +448,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <param name="parameters">The parameters that shall be used in the command.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		IDataReader ExecuteReader(string command, CommandType commandType, IDbTransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters);
+		IDataReader ExecuteReader(string command, CommandType commandType, ITransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Executes the command and builds an IDataReader.
@@ -467,7 +467,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <param name="parameters">The parameters that shall be used by the stored procedure.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		IDataReader ExecuteReader(string spName, IDbTransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters);
+		IDataReader ExecuteReader(string spName, ITransaction transaction, CommandBehavior behavior, params IDataParameter[] parameters);
 
 		/// <summary>
 		/// Executes the command and builds an IDataReader.
@@ -484,7 +484,7 @@ namespace nJupiter.DataAccess {
 		/// <param name="transaction">The transaction that the command belongs to.</param>
 		/// <param name="behavior">One of the <see cref="CommandBehavior"/> values.</param>
 		/// <returns>An <see cref="IDataReader"/> object.</returns>
-		IDataReader ExecuteReader(string spName, IDbTransaction transaction, CommandBehavior behavior);
+		IDataReader ExecuteReader(string spName, ITransaction transaction, CommandBehavior behavior);
 
 		/// <summary>
 		/// Executes the command and builds an IDataReader.

@@ -17,7 +17,7 @@ namespace nJupiter.Tests.DataAccess {
 			var dataSource = A.Fake<IDataSource>();
 			var connection = A.Fake<IDbConnection>();
 			A.CallTo(() => dataSource.OpenConnection()).Returns(connection);
-			using(IDbTransaction transaction = TransactionFactory.BeginTransaction(dataSource)) {
+			using(ITransaction transaction = TransactionFactory.BeginTransaction(dataSource)) {
 				A.CallTo(() => connection.State).Returns(ConnectionState.Open);
 				A.CallTo(() => dataSource.OpenConnection()).MustHaveHappened(Repeated.Exactly.Once);
 				A.CallTo(() => connection.BeginTransaction(IsolationLevel.ReadCommitted)).MustHaveHappened(Repeated.Exactly.Once);

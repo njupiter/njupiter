@@ -1,13 +1,16 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
 using System.Data.Common;
 
 namespace nJupiter.DataAccess {
 	internal class DbProviderAdapter : IProvider {
 		
 		private readonly DbProviderFactory dbProviderFactory;
+		private readonly string connectionString;
 
-		public DbProviderAdapter(DbProviderFactory dbProviderFactory) {
-			this.dbProviderFactory = dbProviderFactory; 
+		public DbProviderAdapter(DbProviderFactory dbProviderFactory, string connectionString) {
+			this.dbProviderFactory = dbProviderFactory;
+			this.connectionString = connectionString;
 		}
 
 		public DbProviderFactory DbProvider {
@@ -27,7 +30,9 @@ namespace nJupiter.DataAccess {
 		}
 
 		public IDbConnection CreateConnection() {
-			return dbProviderFactory.CreateConnection();
+			var connection = dbProviderFactory.CreateConnection();
+			connection.ConnectionString = this.connectionString;
+			return connection;
 		}
 
 		public IDbDataAdapter CreateDataAdapter() {

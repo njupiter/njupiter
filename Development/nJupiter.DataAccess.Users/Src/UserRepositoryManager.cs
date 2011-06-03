@@ -70,7 +70,7 @@ namespace nJupiter.DataAccess.Users {
 				string name = this.Config.GetAttribute(section, NameAttribute);
 				return this.GetRepositoryFromCacheOrCreate(section, name);
 			}catch(Exception ex) {
-				throw new ApplicationException(string.Format("Error while creating UserRepository with section [{0}]", section), ex);
+				throw new ApplicationException(string.Format("Error while creating UserRepository with section '{0}'", section), ex);
 			}
 		}
 
