@@ -13,34 +13,16 @@ namespace nJupiter.DataAccess {
 			this.connectionString = connectionString;
 		}
 
-		public DbProviderFactory DbProvider {
-			get {
-				return dbProviderFactory;
-			}
-		}
-
-		public bool CanCreateDataSourceEnumerator {
-			get {
-				return dbProviderFactory.CanCreateDataSourceEnumerator;
-			}
-		}
-
-		public IDbCommand CreateCommand() {
-			return dbProviderFactory.CreateCommand();
-		}
-
-		public IDbConnection CreateConnection() {
+		public string ConnectionString { get { return connectionString; } }
+		public DbProviderFactory DbProvider { get { return dbProviderFactory; } }
+		public bool CanCreateDataSourceEnumerator { get { return dbProviderFactory.CanCreateDataSourceEnumerator; } }
+		public IDbCommand CreateCommand() { return dbProviderFactory.CreateCommand(); }
+		public IDbDataAdapter CreateDataAdapter() { return dbProviderFactory.CreateDataAdapter(); }
+		public IDataParameter CreateParameter() { return dbProviderFactory.CreateParameter(); }
+		public IDbConnection CreateConnection() { 
 			var connection = dbProviderFactory.CreateConnection();
 			connection.ConnectionString = this.connectionString;
 			return connection;
-		}
-
-		public IDbDataAdapter CreateDataAdapter() {
-			return dbProviderFactory.CreateDataAdapter();
-		}
-
-		public IDataParameter CreateParameter() {
-			return dbProviderFactory.CreateParameter();
 		}
 
 	}

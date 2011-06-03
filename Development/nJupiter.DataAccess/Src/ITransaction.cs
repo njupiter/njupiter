@@ -9,6 +9,5 @@ namespace nJupiter.DataAccess {
 		void Begin();
 		void Commit();
 		void Rollback();
-		void Dispose();
 	}
 }
