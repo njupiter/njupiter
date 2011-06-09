@@ -42,7 +42,7 @@ namespace nJupiter.Tests.nJupiter.DataAccess.Users {
 			A.CallTo(() => userRepository.GetUserByUserName("modhelius", null)).Returns(originalUser);
 			A.CallTo(() => originalUser.IsReadOnly).Returns(true);
 			A.CallTo(() => originalUser.Clone()).Returns(clonedUser);
-			var genericproperty = new GenericProperty<string>("propertyName", null, CultureInfo.InvariantCulture);
+			var genericproperty = new Property<string>("propertyName", null, CultureInfo.InvariantCulture);
 			A.CallTo(() => clonedUser.Properties.GetProperty("propertyName", Context.DefaultContext)).Returns(genericproperty);
 			var profileProvider = GetProfileProvider(userRepository);
 			var settings = new SettingsPropertyValueCollection();

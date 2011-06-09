@@ -4,12 +4,12 @@ using System.Globalization;
 
 namespace nJupiter.DataAccess.Users {
 	[Serializable]
-	public class GenericProperty<T> : PropertyBase<T> {
+	public class Property<T> : PropertyBase<T> {
 
 		private readonly CultureInfo culture;
 		private readonly TypeConverter converter;
 
-		public GenericProperty(string name, IContext  context, CultureInfo culture) : base(name, context) {
+		public Property(string name, IContext  context, CultureInfo culture) : base(name, context) {
 			this.culture = culture;
 			this.converter = TypeDescriptor.GetConverter(typeof(T));
 			if(this.converter == null || !converter.CanConvertFrom(typeof(string))) {

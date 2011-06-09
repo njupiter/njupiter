@@ -245,7 +245,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 
 			foreach(Property property in directoryObject.Properties) {
 				string propertyName = property.Name;
-				Type propertyType = typeof(GenericProperty<string>);
+				Type propertyType = typeof(Property<string>);
 
 				PropertyDefinition pd = new PropertyDefinition(propertyName, propertyType);
 				pdt.Add(pd);
@@ -281,7 +281,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			foreach(PropertyDefinition pd in schema) {
 				string propertyValue = (doUser != null && doUser.Contains(pd.PropertyName)) ? doUser[pd.PropertyName] : null;
 				string propertyName = pd.PropertyName;
-				IProperty property = new GenericProperty<string>(propertyName, null, CultureInfo.InvariantCulture);
+				IProperty property = new Property<string>(propertyName, null, CultureInfo.InvariantCulture);
 				property.Value = propertyValue;
 				propertyList.Add(property);
 			}

@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
-	public class BoolProperty : GenericProperty<bool>, ISqlProperty {
+	public class BoolProperty : Property<bool>, ISqlProperty {
 		public BoolProperty(string propertyName, IContext context) : base(propertyName, context, CultureInfo.InvariantCulture) { }
 		public bool SerializationPreservesOrder { get { return true; } }
 	}

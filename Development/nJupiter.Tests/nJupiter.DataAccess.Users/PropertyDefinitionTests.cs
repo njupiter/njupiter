@@ -10,21 +10,21 @@ namespace nJupiter.Tests.nJupiter.DataAccess.Users {
 
 		[Test]
 		public void Equals_TwoDifferentDefinitionsWithSameValues_ReturnsTrue() {
-			var definition1 = new PropertyDefinition("propertyName", typeof(GenericProperty<string>));
-			var definition2 = new PropertyDefinition("propertyName", typeof(GenericProperty<string>));
+			var definition1 = new PropertyDefinition("propertyName", typeof(Property<string>));
+			var definition2 = new PropertyDefinition("propertyName", typeof(Property<string>));
 			Assert.IsTrue(definition1.Equals(definition2));
 		}
 
 		[Test]
 		public void GetHashCode_TwoDifferentDefinitionsWithSameValues_ReturnsSameHashCode() {
-			var definition1 = new PropertyDefinition("propertyName", typeof(GenericProperty<string>));
-			var definition2 = new PropertyDefinition("propertyName", typeof(GenericProperty<string>));
+			var definition1 = new PropertyDefinition("propertyName", typeof(Property<string>));
+			var definition2 = new PropertyDefinition("propertyName", typeof(Property<string>));
 			Assert.AreEqual(definition1.GetHashCode(), definition2.GetHashCode());
 		}
 
 		[Test]
 		public void Constructor_PassingNullPropertyName_ThrowsArgumentNullException() {
-			Assert.Throws<ArgumentNullException>(() => new PropertyDefinition(null, typeof(GenericProperty<string>)));
+			Assert.Throws<ArgumentNullException>(() => new PropertyDefinition(null, typeof(Property<string>)));
 		}
 
 		[Test]

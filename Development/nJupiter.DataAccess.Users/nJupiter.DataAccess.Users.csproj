@@ -81,7 +81,7 @@
     <Compile Include="Src\IUserRepository.cs" />
     <Compile Include="Src\IUserRepositoryFactory.cs" />
     <Compile Include="Src\IUserRepositoryManager.cs" />
-    <Compile Include="Src\Properties\GenericProperty.cs" />
+    <Compile Include="Src\Properties\Property`T.cs" />
     <Compile Include="Src\Properties\IPredefinedProperties.cs" />
     <Compile Include="Src\Properties\IPropertyCollection.cs" />
     <Compile Include="Src\Properties\IPropertyHandler.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Src\Properties\PropertyHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\Properties\PropertyBase.cs">
+    <Compile Include="Src\Properties\PropertyBase`T.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\Properties\PropertyCollection.cs">

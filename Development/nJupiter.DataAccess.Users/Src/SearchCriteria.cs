@@ -68,7 +68,7 @@ namespace nJupiter.DataAccess.Users {
 			if(propertyName == null) {
 				throw new ArgumentNullException("propertyName");
 			}
-			var stringProperty = new GenericProperty<string>(propertyName, context, CultureInfo.InvariantCulture);
+			var stringProperty = new Property<string>(propertyName, context, CultureInfo.InvariantCulture);
 			stringProperty.Value = propertyValue;
 			this.InitCriteria(stringProperty, domain, condition, required);
 		}

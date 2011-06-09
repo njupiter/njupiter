@@ -88,7 +88,7 @@ namespace nJupiter.Tests.DataAccess.Users {
 			IPropertyHandler prophandler = DummyFactory.GetPropertyHandler();
 
 			var propertyList = DummyFactory.GetPropertyList(12);
-			propertyList.Add(new GenericProperty<string>("property13", new Context("othercontext"), CultureInfo.InvariantCulture));
+			propertyList.Add(new Property<string>("property13", new Context("othercontext"), CultureInfo.InvariantCulture));
 			var schema = DummyFactory.GetSchema<int>("property", 13);
 			var attachedProperties = new PropertyCollection(propertyList, schema);
 
