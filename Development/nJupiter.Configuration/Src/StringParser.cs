@@ -31,7 +31,7 @@ namespace nJupiter.Configuration {
 	internal class StringParser {
 
 		/// <summary>
-		/// Returns the default instance of IConfigHandler
+		/// Returns the default instance of StringParser
 		/// </summary>
 		public static StringParser Instance { get { return NestedSingleton.instance; } }
 

@@ -49,8 +49,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\CultureHandler.cs" />
+    <Compile Include="Src\ConfigurableCultureHandler.cs" />
+    <Compile Include="Src\CultureHandlerFactory.cs" />
     <Compile Include="Src\DateHandler.cs" />
+    <Compile Include="Src\ICultureHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">

@@ -29,34 +29,34 @@ using System.Globalization;
 using nJupiter.Configuration;
 
 namespace nJupiter.Globalization {
+	internal class ConfigurableCultureHandler : ICultureHandler {
 
-	public static class CultureHandler {
-		private static readonly Dictionary<String, CultureInfo> cultureInfoCache = new Dictionary<String, CultureInfo>(StringComparer.InvariantCultureIgnoreCase);
+		private readonly Dictionary<String, CultureInfo> cultureInfoCache = new Dictionary<String, CultureInfo>(StringComparer.InvariantCultureIgnoreCase);
 
-		public static CultureInfo CurrentCulture {
+		public CultureInfo CurrentCulture {
 			get {
 				return GetCultureInfo(System.Threading.Thread.CurrentThread.CurrentCulture);
 			}
 		}
 
-		public static CultureInfo CurrentUICulture {
+		public CultureInfo CurrentUICulture {
 			get {
 				return GetCultureInfo(System.Threading.Thread.CurrentThread.CurrentUICulture);
 			}
 		}
 
-		public static CultureInfo GetCultureInfo(int culture) {
+		public CultureInfo GetCultureInfo(int culture) {
 			return GetCultureInfo((new CultureInfo(culture))); // Can this be done nicer?
 		}
 
-		public static CultureInfo GetCultureInfo(CultureInfo culture) {
+		private CultureInfo GetCultureInfo(CultureInfo culture) {
 			if(culture == null) {
 				throw new ArgumentNullException("culture");
 			}
 			return GetCultureInfo(culture.Name);
 		}
 
-		public static CultureInfo GetCultureInfo(string name) {
+		public CultureInfo GetCultureInfo(string name) {
 			if(name == null) {
 				throw new ArgumentNullException("name");
 			}
@@ -343,7 +343,6 @@ namespace nJupiter.Globalization {
 
 			return (CultureInfo)cultureInfo.Clone();
 		}
-
 
 	}
 }
