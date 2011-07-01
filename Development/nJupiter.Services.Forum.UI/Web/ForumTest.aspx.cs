@@ -121,7 +121,7 @@ namespace nJupiter.Services.Forum.UI.Web {
 				SetFlatTabularPostListProperties();
 			}
 			if(!this.Trace.IsEnabled) {
-				ResponseHandler.PerformXhtmlContentNegotiation();
+				ResponseHandler.Instance.PerformXhtmlContentNegotiation();
 			}
 			this.Response.ContentEncoding = Encoding.UTF8;
 			base.OnLoad(e);

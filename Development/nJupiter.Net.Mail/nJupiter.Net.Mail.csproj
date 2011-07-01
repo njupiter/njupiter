@@ -71,10 +71,6 @@
       <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
       <Name>nJupiter.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\nJupiter.IO\nJupiter.IO.csproj">
-      <Project>{8C758019-57ED-441C-B6BF-8E5543D49F05}</Project>
-      <Name>nJupiter.IO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\nJupiter.Text\nJupiter.Text.csproj">
       <Project>{00A1BB7C-3D6A-4B30-8D40-5F910C8E4CAA}</Project>
       <Name>nJupiter.Text</Name>

@@ -25,7 +25,6 @@
 using System;
 using System.IO;
 
-using nJupiter.IO;
 using nJupiter.Web;
 
 namespace nJupiter.Net.Mail {
@@ -36,12 +35,17 @@ namespace nJupiter.Net.Mail {
 		private readonly FileInfo fileInfo;
 		private readonly Stream fileStream;
 		private readonly string fileName;
-		private readonly MimeType contentType;
+		private readonly IMimeType contentType;
+		private readonly IMimeTypeHandler mimeTypeHandler;
 		private bool disposed;
 		#endregion
 
 		#region Constructors
-		public Attachment(FileInfo file) {
+		private Attachment() {
+			mimeTypeHandler = MimeTypeHandler.Instance;
+		}
+
+		public Attachment(FileInfo file) : this() {
 			if(file == null)
 				throw new ArgumentNullException("file");
 			if(!file.Exists)
@@ -67,7 +71,7 @@ namespace nJupiter.Net.Mail {
 			this.contentType = new MimeType(contentType);
 		}
 
-		public Attachment(Stream fileStream, string name) {
+		public Attachment(Stream fileStream, string name) : this() {
 			if(fileStream == null)
 				throw new ArgumentNullException("fileStream");
 			if(name == null)
@@ -100,16 +104,16 @@ namespace nJupiter.Net.Mail {
 			}
 		}
 
-		public MimeType ContentType {
+		public IMimeType ContentType {
 			get {
-				MimeType result = null;
+				IMimeType result = null;
 
 				if(this.contentType != null) {
 					result = this.contentType;
 				} else if(this.fileInfo != null) {
-					result = FileHandler.GetMimeType(this.fileInfo);
+					result = mimeTypeHandler.GetMimeType(this.fileInfo);
 				} else if(this.fileStream != null) {
-					result = FileHandler.GetMimeType(this.fileStream);
+					result = mimeTypeHandler.GetMimeType(this.fileStream);
 				}
 
 				if(result != null && result.Parameters["file"] == null) {

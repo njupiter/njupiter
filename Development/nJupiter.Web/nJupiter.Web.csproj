@@ -46,10 +46,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\IMimeType.cs" />
+    <Compile Include="Src\IMimeTypeHandler.cs" />
     <Compile Include="Src\IndenterModule.cs" />
+    <Compile Include="Src\IResponseHandler.cs" />
     <Compile Include="Src\MimeType.cs" />
-    <Compile Include="Src\MimeTypeCollection.cs" />
-    <Compile Include="Src\RequestHandler.cs" />
+    <Compile Include="Src\MimeTypeHandler.cs" />
     <Compile Include="Src\ResponseHandler.cs" />
     <Compile Include="Src\UrlHandler.cs" />
   </ItemGroup>

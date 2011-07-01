@@ -45,15 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Src\FileCollection.cs" />
-    <Compile Include="Src\FileHandler.cs" />
+    <Compile Include="Src\MimeTypeHandler.cs" />
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\Stream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">

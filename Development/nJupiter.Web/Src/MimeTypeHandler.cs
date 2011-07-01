@@ -23,23 +23,48 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Web;
 
-using nJupiter.Web;
+namespace nJupiter.Web  {
+	public class MimeTypeHandler : IMimeTypeHandler {
 
-namespace nJupiter.IO {
+		private readonly HttpContext context;
 
-	public static class FileHandler {
-		#region Constructors
-		#endregion
+		private HttpContext CurrentContext { get { return context ?? HttpContext.Current; } }
 
-		#region Methods
-		///	<summary>
-		///	</summary>
-		/// <param name="stream">Stream containing the file</param>
-		/// <returns>Returns a MimeType object</returns>
-		public static MimeType GetMimeType(Stream stream) {
+		public MimeTypeHandler(HttpContext context) {
+			this.context = context;
+		}
+
+		public IEnumerable<IMimeType> GetAcceptedTypes() {
+			var acceptedTypes = new List<IMimeType>();
+			if(CurrentContext != null && CurrentContext.Request.AcceptTypes != null) {
+				foreach(string acceptedType in CurrentContext.Request.AcceptTypes) {
+					acceptedTypes.Add(new MimeType(acceptedType));
+				}
+			}
+			return acceptedTypes;
+		}
+
+		public IMimeType GetHighestQuality(IMimeType mimeType) {
+			return GetHighestQuality(mimeType, false);
+		}
+
+		public IMimeType GetHighestQuality(IMimeType mimeType, bool exactType) {
+			var acceptedTypes = GetAcceptedTypes();
+			IMimeType result = null;
+			foreach(IMimeType m in acceptedTypes) {
+				if(((exactType && m.EqualsExactType(mimeType)) || m.EqualsType(mimeType)) && (result == null || result.Quality < m.Quality)) {
+					result = m;
+				}
+			}
+			return result;
+		}
+
+		public IMimeType GetMimeType(Stream stream) {
 			if(stream == null) {
 				throw new ArgumentNullException("stream");
 			}
@@ -65,12 +90,8 @@ namespace nJupiter.IO {
 
 			return null;
 		}
-		/// <summary>
-		/// Ensures that file exists and retrieves the content type
-		/// </summary>
-		/// <param name="file">FileInfo object containing the file</param>
-		/// <returns>Returns a MimeType object</returns>
-		public static MimeType GetMimeType(FileInfo file) {
+
+		public IMimeType GetMimeType(FileInfo file) {
 			if(file == null) {
 				throw new ArgumentNullException("file");
 			}
@@ -82,7 +103,8 @@ namespace nJupiter.IO {
 				return GetMimeType(fs);
 			}
 		}
-		public static MimeType GetMimeType(byte[] bytes) {
+		
+		public IMimeType GetMimeType(byte[] bytes) {
 			if(bytes == null) {
 				throw new ArgumentNullException("bytes");
 			}
@@ -90,7 +112,19 @@ namespace nJupiter.IO {
 				return GetMimeType(s);
 			}
 		}
-		#endregion
+
+		/// <summary>
+		/// Returns the default instance of IMimeTypeHandler
+		/// </summary>
+		public static IMimeTypeHandler Instance { get { return NestedSingleton.instance; } }
+
+		// thread safe Singleton implementation with fully lazy instantiation and with full performance
+		private sealed class NestedSingleton {
+			// ReSharper disable EmptyConstructor
+			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+			// ReSharper restore EmptyConstructor
+			internal static readonly IMimeTypeHandler instance = new MimeTypeHandler(null);
+		}
 	}
 
 	internal static class NativeMethods {

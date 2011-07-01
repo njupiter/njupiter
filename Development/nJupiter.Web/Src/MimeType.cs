@@ -28,13 +28,12 @@ using System.Globalization;
 using System.Collections.Specialized;
 
 namespace nJupiter.Web {
-
 	/// <summary>
 	/// MimeType object implemented after RFC2046 and RFC2616
 	/// </summary>
 	/// <seealso cref="http://www.ietf.org/rfc/rfc2046.txt"/>
 	/// <seealso cref="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html"/>
-	public class MimeType {
+	public class MimeType : IMimeType {
 
 		#region Members
 		private readonly string type;
@@ -131,7 +130,7 @@ namespace nJupiter.Web {
 
 		#region Methods
 		public override bool Equals(object obj) {
-			MimeType mimeType = obj as MimeType;
+			var mimeType = obj as IMimeType;
 			if(mimeType == null)
 				return false;
 			return this.ContentType.Equals(mimeType.ContentType);
@@ -143,13 +142,13 @@ namespace nJupiter.Web {
 			return result;
 		}
 
-		public bool EqualsType(MimeType mimeType) {
+		public bool EqualsType(IMimeType mimeType) {
 			return mimeType != null &&
 				this.DiscreteType.Equals(mimeType.DiscreteType) &&
 				(this.CompositeType.Equals(mimeType.CompositeType) || this.CompositeType.Equals("*") || mimeType.CompositeType.Equals("*"));
 		}
 
-		public bool EqualsExactType(MimeType mimeType) {
+		public bool EqualsExactType(IMimeType mimeType) {
 			return mimeType != null &&
 				this.DiscreteType.Equals(mimeType.DiscreteType) &&
 				this.CompositeType.Equals(mimeType.CompositeType);
