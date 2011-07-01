@@ -8,12 +8,12 @@ namespace nJupiter.Text.SimpleTextParser {
 		}
 
 		public static IFormatter GetFormatter(string name) {
-			Configuration configuration =  Configuration.GetConfig(name);
+			var configuration =  Configuration.GetConfig(name);
 			return configuration.Formatter;
 		}
 
 		internal static IFormatter GetFormatter(IConfig config) {
-			CompositeFormatter formatters = new CompositeFormatter();
+			var formatters = new CompositeFormatter();
 			string[] patterns = config.GetAttributeArray(".", "rule", "pattern");
 			foreach(string pattern in patterns) {
 				string replacement = config.GetAttribute(".", string.Format("rule[@pattern='{0}']", pattern), "replacement");
@@ -23,8 +23,8 @@ namespace nJupiter.Text.SimpleTextParser {
 					caseSensitive = config.GetAttribute<bool>(".", string.Format("rule[@pattern='{0}']", pattern), "caseSensitive");
 				}
 
-				Rule rule = new Rule(pattern, replacement, caseSensitive);
-				IFormatter ruleFormatter = new RegexFormatter(rule);
+				var rule = new Rule(pattern, replacement, caseSensitive);
+				var ruleFormatter = new RegexFormatter(rule);
 
 				formatters.Add(ruleFormatter);
 			}

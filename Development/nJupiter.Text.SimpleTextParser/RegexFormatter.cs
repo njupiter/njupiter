@@ -8,7 +8,7 @@ namespace nJupiter.Text.SimpleTextParser {
 		public RegexFormatter(Rule rule) {
 			this.rule = rule;			
 			
-			RegexOptions options = RegexOptions.Compiled;
+			var options = RegexOptions.Compiled;
 
 			if(!this.rule.CaseSensitive) {
 				options |= RegexOptions.IgnoreCase;

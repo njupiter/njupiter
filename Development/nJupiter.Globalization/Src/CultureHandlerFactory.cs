@@ -1,4 +1,4 @@
-﻿namespace nJupiter.Globalization.Src {
+﻿namespace nJupiter.Globalization {
 	public class CultureHandlerFactory {
 		/// <summary>
 		/// Returns the default instance of StringParser
