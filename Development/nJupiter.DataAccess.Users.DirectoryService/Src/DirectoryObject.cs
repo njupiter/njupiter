@@ -25,7 +25,7 @@
 using System;
 using System.Collections;
 
-namespace nJupiter.DataAccess.DirectoryService {
+namespace nJupiter.DataAccess.Users.DirectoryService {
 
 	public class DirectoryObject {
 

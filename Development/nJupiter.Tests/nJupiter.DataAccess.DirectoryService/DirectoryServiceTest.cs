@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace nJupiter.DataAccess.DirectoryService {
+namespace nJupiter.DataAccess.Users.DirectoryService {
 
 	[Ignore] //Old tests depending on ad
 	[TestFixture]

@@ -82,10 +82,9 @@
       <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\nJupiter.DataAccess.DirectoryService\nJupiter.DataAccess.DirectoryService.csproj">
-      <Name>nJupiter.DataAccess.DirectoryService</Name>
-      <Project>{C75DBB5E-4E52-4C74-A2CD-080D0F2B781D}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    <ProjectReference Include="..\nJupiter.DataAccess.Users.DirectoryService\nJupiter.DataAccess.Users.DirectoryService.csproj">
+      <Project>{C2327074-4BD3-42B8-915F-6100B804CBBD}</Project>
+      <Name>nJupiter.DataAccess.Users.DirectoryService</Name>
     </ProjectReference>
     <ProjectReference Include="..\nJupiter.DataAccess.Users\nJupiter.DataAccess.Users.csproj">
       <Name>nJupiter.DataAccess.Users</Name>

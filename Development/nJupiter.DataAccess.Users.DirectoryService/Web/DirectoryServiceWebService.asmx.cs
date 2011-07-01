@@ -27,7 +27,7 @@ using System.Xml.Serialization;
 
 using nJupiter.Configuration;
 
-namespace nJupiter.DataAccess.DirectoryService.Web {
+namespace nJupiter.DataAccess.Users.DirectoryService.Web {
 
 	[WebService(Namespace="urn:services:dataaccess.directoryservice")]
 	internal sealed class DirectoryServiceWebService {

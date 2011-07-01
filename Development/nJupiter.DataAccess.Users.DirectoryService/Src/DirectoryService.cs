@@ -28,7 +28,7 @@ using System.Globalization;
 
 using nJupiter.Configuration;
 
-namespace nJupiter.DataAccess.DirectoryService {
+namespace nJupiter.DataAccess.Users.DirectoryService {
 
 	public abstract class DirectoryService {
 		#region Constants

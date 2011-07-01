@@ -30,7 +30,7 @@ using System.Globalization;
 
 using log4net;
 
-namespace nJupiter.DataAccess.DirectoryService.Adapters {
+namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 
 	public sealed class LdapDirectoryService : DirectoryService {
 		#region Constants

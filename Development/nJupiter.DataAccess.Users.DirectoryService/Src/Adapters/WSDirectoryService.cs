@@ -25,11 +25,11 @@
 using System;
 using System.Net;
 
-using nJupiter.DataAccess.DirectoryService.Adapters.WebService;
+using nJupiter.DataAccess.Users.DirectoryService.Adapters.WebService;
 
-using WS = nJupiter.DataAccess.DirectoryService.Adapters.WebService;
+using WS = nJupiter.DataAccess.Users.DirectoryService.Adapters.WebService;
 
-namespace nJupiter.DataAccess.DirectoryService.Adapters {
+namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 
 	public sealed class WSDirectoryService : DirectoryService {
 		#region Constructors

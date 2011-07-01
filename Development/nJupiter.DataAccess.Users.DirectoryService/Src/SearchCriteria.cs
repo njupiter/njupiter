@@ -22,42 +22,27 @@
 */
 #endregion
 
-using System;
+namespace nJupiter.DataAccess.Users.DirectoryService {
 
-namespace nJupiter.DataAccess.DirectoryService {
-
-	public class Property {
-
-		#region Variables
-		private string name;
-		private string value;
+	public class SearchCriteria : Property {
+		#region Members
+		private bool required;
 		#endregion
 
 		#region Constructors
-		public Property() {
+		public SearchCriteria() {
+			this.required = true;
 		}
-		public Property(string name, string value) {
-			Name = name;
-			Value = value;
+		public SearchCriteria(string name, string value) : this(name, value, true) { }
+		public SearchCriteria(string name, string value, bool required)
+			: base(name, value) {
+			this.required = required;
 		}
 		#endregion
 
 		#region Properties
-		public string Name {
-			get { return this.name; }
-			set {
-				if(value == null || value.Length.Equals(0)) {
-					throw new ArgumentOutOfRangeException("value");
-				}
-				this.name = value;
-			}
-		}
-		public string Value {
-			get { return this.value; }
-			set { this.value = value ?? string.Empty; }
-		}
+		public bool Required { get { return this.required; } set { this.required = value; } }
 		#endregion
 
 	}
-
 }

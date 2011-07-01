@@ -31,18 +31,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using nJupiter.Configuration;
-using nJupiter.DataAccess.DirectoryService;
 using nJupiter.DataAccess.Users.Caching;
-
-using ds = nJupiter.DataAccess.DirectoryService;
 
 namespace nJupiter.DataAccess.Users.DirectoryService {
 
-	public class UserRepository : Users.UserRepositoryBase, IUserRepositoryFactory {
+	public class UserRepository : UserRepositoryBase, IUserRepositoryFactory {
 		#region Members
 		private ContextSchema defaultContextSchema;
 		private IList<IContext> contexts;
-		private DataAccess.DirectoryService.DirectoryService directoryService;
+		private DirectoryService directoryService;
 		#endregion
 
 		#region Constants
@@ -52,10 +49,10 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 		#endregion
 
 		#region Properties
-		private DataAccess.DirectoryService.DirectoryService CurrentDS {
+		private DirectoryService CurrentDS {
 			get {
 				if(this.directoryService == null) {
-					this.directoryService = config.ContainsKey("directoryService") ? DataAccess.DirectoryService.DirectoryService.GetInstance(config.GetValue("directoryService")) : DataAccess.DirectoryService.DirectoryService.GetInstance();
+					this.directoryService = config.ContainsKey("directoryService") ? DirectoryService.GetInstance(config.GetValue("directoryService")) : DirectoryService.GetInstance();
 				}
 				return this.directoryService;
 			}
@@ -105,7 +102,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			if(user != null)
 				return user;
 
-			SearchCriteria searchCriteria = new SearchCriteria(this.PropertyNames.UserName, userName);
+			Users.SearchCriteria searchCriteria = new Users.SearchCriteria(this.PropertyNames.UserName, userName);
 			var uc = GetUsersBySearchCriteria(searchCriteria);
 			if(uc.Count > 0) {
 				user = uc[0];
@@ -114,17 +111,17 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			return user;
 		}
 
-		public override IList<IUser> GetUsersBySearchCriteria(IEnumerable<SearchCriteria> searchCriteriaCollection) {
+		public override IList<IUser> GetUsersBySearchCriteria(IEnumerable<Users.SearchCriteria> searchCriteriaCollection) {
 			if(searchCriteriaCollection == null)
 				throw new ArgumentNullException("searchCriteriaCollection");
 
 			var uc = new List<IUser>();
 			ArrayList arrayList = new ArrayList();
-			foreach(SearchCriteria searchCriteria in searchCriteriaCollection) {
-				DataAccess.DirectoryService.SearchCriteria sc = new DataAccess.DirectoryService.SearchCriteria(searchCriteria.Property.Name, searchCriteria.Property.ToSerializedString(), searchCriteria.Required);
+			foreach(var searchCriteria in searchCriteriaCollection) {
+				SearchCriteria sc = new SearchCriteria(searchCriteria.Property.Name, searchCriteria.Property.ToSerializedString(), searchCriteria.Required);
 				arrayList.Add(sc);
 			}
-			DataAccess.DirectoryService.SearchCriteria[] scArray = (DataAccess.DirectoryService.SearchCriteria[])arrayList.ToArray(typeof(DataAccess.DirectoryService.SearchCriteria));
+			SearchCriteria[] scArray = (SearchCriteria[])arrayList.ToArray(typeof(SearchCriteria));
 			DirectoryObject[] dirObjs = CurrentDS.GetDirectoryObjectsBySearchCriteria(scArray);
 			foreach(DirectoryObject dirObj in dirObjs) {
 				uc.Add(GetUserFromDirectoryObject(dirObj));
