@@ -65,15 +65,12 @@
     <Compile Include="Src\MailCollection.cs" />
     <Compile Include="Src\MailSender.cs" />
     <Compile Include="Src\SmtpClient.cs" />
+    <Compile Include="Src\StringHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
       <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
       <Name>nJupiter.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\nJupiter.Text\nJupiter.Text.csproj">
-      <Project>{00A1BB7C-3D6A-4B30-8D40-5F910C8E4CAA}</Project>
-      <Name>nJupiter.Text</Name>
     </ProjectReference>
     <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
       <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>

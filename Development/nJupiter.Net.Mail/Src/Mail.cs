@@ -29,8 +29,6 @@ using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Globalization;
 
-using nJupiter.Text;
-
 namespace nJupiter.Net.Mail {
 
 	/// <summary>
@@ -282,13 +280,13 @@ namespace nJupiter.Net.Mail {
 				message = string.Empty;
 			sb.Append("Content-Type: text/");
 			sb.Append(format);
-			if(TextHandler.IsAscii(message)) {
+			if(StringHandler.IsAscii(message)) {
 				sb.Append("\r\n");
 				sb.Append("Content-Transfer-Encoding: 7Bit\r\n");
 				sb.Append("\r\n");
 				sb.Append(message);
 			} else {
-				if((encoding == null && !TextHandler.IsAnsi(message)) || (encoding != null && encoding.Equals(Encoding.UTF8))) {
+				if((encoding == null && !StringHandler.IsAnsi(message)) || (encoding != null && encoding.Equals(Encoding.UTF8))) {
 					sb.Append("; charset=utf-8\r\n");
 					sb.Append("Content-Transfer-Encoding: base64\r\n");
 					sb.Append("\r\n");
@@ -302,7 +300,7 @@ namespace nJupiter.Net.Mail {
 					sb.Append("\r\n");
 					sb.Append("Content-Transfer-Encoding: quoted-printable\r\n");
 					sb.Append("\r\n");
-					sb.Append(TextHandler.EncodeToQuotedPrintable(message, encoding));
+					sb.Append(StringHandler.EncodeToQuotedPrintable(message, encoding));
 				}
 			}
 			if(!message.EndsWith("\r\n"))
@@ -409,14 +407,14 @@ namespace nJupiter.Net.Mail {
 
 		private static string EncodeHeaderValue(string value) {
 			StringBuilder sb = new StringBuilder();
-			if(TextHandler.IsAscii(value))
+			if(StringHandler.IsAscii(value))
 				return value;
-			if(TextHandler.IsAnsi(value)) {
+			if(StringHandler.IsAnsi(value)) {
 				Encoding enc = Encoding.GetEncoding(1252);
 				sb.Append("=?");
 				sb.Append(enc.BodyName);
 				sb.Append("?Q?");
-				sb.Append(TextHandler.EncodeToQuotedPrintable(value, enc, true));
+				sb.Append(StringHandler.EncodeToQuotedPrintable(value, enc, true));
 				sb.Append("?=");
 			} else {
 				sb.Append("=?utf-8?B?");

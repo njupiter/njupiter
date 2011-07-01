@@ -25,9 +25,9 @@
 using System;
 using System.Text;
 
-namespace nJupiter.Text {
+namespace nJupiter.Net.Mail {
 
-	public static class TextHandler {
+	public static class StringHandler {
 		public static bool IsAscii(string value) {
 			if(value == null)
 				throw new ArgumentNullException("value");
