@@ -90,21 +90,6 @@ namespace nJupiter.IO {
 				return GetMimeType(s);
 			}
 		}
-
-		public static string FormatSize(long bytes) {
-			double size = bytes;
-			double result = size / 1024;
-			if(result > 1) {
-				size = result;
-				result = size / 1024;
-				if(result > 1) {
-					size = result;
-					return Math.Round(size, 1) + " MB";
-				}
-				return Math.Round(size) + " kB";
-			}
-			return bytes + " B";
-		}
 		#endregion
 	}
 

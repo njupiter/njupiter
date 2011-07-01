@@ -48,16 +48,12 @@ namespace nJupiter.DataAccess.Users.Sql {
 		private readonly object padlock = new object();
 		private readonly IDictionary<string, ContextSchema> contextSchema = new Dictionary<string, ContextSchema>();
 		private IList<IContext> contexts;
-		private IDataSource dataAccess;
 		#endregion
 
 		#region Properties
 		private IDataSource CurrentDB {
 			get {
-				if(this.dataAccess == null) {
-					return DataSourceFactory.Create(config.GetValue("dataSource"));
-				}
-				return this.dataAccess;
+				return DataSourceFactory.Create(config.GetValue("dataSource"));
 			}
 		}
 		#endregion
