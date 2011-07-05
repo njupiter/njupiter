@@ -31,11 +31,11 @@ using System.Web;
 namespace nJupiter.Web  {
 	public class MimeTypeHandler : IMimeTypeHandler {
 
-		private readonly HttpContext context;
+		private readonly HttpContextBase context;
 
-		private HttpContext CurrentContext { get { return context ?? HttpContext.Current; } }
+		private HttpContextBase CurrentContext { get { return context ?? new HttpContextWrapper(HttpContext.Current); } }
 
-		public MimeTypeHandler(HttpContext context) {
+		public MimeTypeHandler(HttpContextBase context) {
 			this.context = context;
 		}
 

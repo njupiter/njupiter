@@ -32,61 +32,31 @@ namespace nJupiter.Web {
 
 	public static class UrlHandler {
 		public static string AddQueryKeyValue(string url, string key, string value, bool encodeValue) {
-			if(url == null) {
-				throw new ArgumentNullException("url");
-			}
-			if(key == null) {
-				throw new ArgumentNullException("key");
-			}
-			if(value == null) {
-				throw new ArgumentNullException("value");
-			}
-			if(encodeValue)
+			ValidateArguments(url, key, value);
+			if(encodeValue) {
 				value = HttpUtility.UrlEncode(value);
+			}
 			return AddQueryKeyValue(url, key, value);
 		}
 
 		public static string AddQueryKeyValue(string url, string key, string value) {
-			if(url == null) {
-				throw new ArgumentNullException("url");
-			}
-			if(key == null) {
-				throw new ArgumentNullException("key");
-			}
-			if(value == null) {
-				throw new ArgumentNullException("value");
-			}
-			return AddQueryParams(url, key + "=" + value);
+			ValidateArguments(url, key, value);
+			return AddQueryParams(url, string.Format("{0}={1}", key, value));
 		}
 
 		public static string ReplaceQueryKeyValue(string url, string key, string value, bool encodeValue) {
-			if(url == null) {
-				throw new ArgumentNullException("url");
-			}
-			if(key == null) {
-				throw new ArgumentNullException("key");
-			}
-			if(value == null) {
-				throw new ArgumentNullException("value");
-			}
-			if(encodeValue)
+			ValidateArguments(url, key, value);
+			if(encodeValue) {
 				value = HttpUtility.UrlEncode(value);
+			}
 			url = RemoveQueryKey(url, key);
 			return AddQueryKeyValue(url, key, value);
 		}
 
 		public static string ReplaceQueryKeyValue(string url, string key, string value) {
-			if(url == null) {
-				throw new ArgumentNullException("url");
-			}
-			if(key == null) {
-				throw new ArgumentNullException("key");
-			}
-			if(value == null) {
-				throw new ArgumentNullException("value");
-			}
+			ValidateArguments(url, key, value);
 			url = RemoveQueryKey(url, key);
-			return AddQueryParams(url, key + "=" + value);
+			return AddQueryParams(url, string.Format("{0}={1}", key, value));
 		}
 
 		public static string AddQueryParams(string url, params string[] parameters) {
@@ -98,7 +68,7 @@ namespace nJupiter.Web {
 			}
 
 			if(parameters.Length > 0) {
-				StringBuilder queryString = new StringBuilder(url);
+				var queryString = new StringBuilder(url);
 				int hashPos = url.IndexOf("#");
 				int hashPosFromEnd = hashPos >= 0 ? url.Length - hashPos : hashPos;
 				if(hashPosFromEnd >= 0) {
@@ -131,7 +101,7 @@ namespace nJupiter.Web {
 			if(queryStringCollection == null) {
 				throw new ArgumentNullException("queryStringCollection");
 			}
-			string[] parameters = new string[queryStringCollection.Count];
+			var parameters = new string[queryStringCollection.Count];
 			int i = 0;
 			foreach(string name in queryStringCollection) {
 				parameters[i++] = string.Format(CultureInfo.InvariantCulture, "{0}={1}", name, (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]));
@@ -146,7 +116,7 @@ namespace nJupiter.Web {
 			if(url == null) {
 				throw new ArgumentNullException("url");
 			}
-			NameValueCollection nvc = new NameValueCollection();
+			var nvc = new NameValueCollection();
 			if(url.IndexOf('?') > 0)
 				url = url.Substring(url.IndexOf('?') + 1);
 			string[] queryParams = url.Split('&');
@@ -185,7 +155,7 @@ namespace nJupiter.Web {
 			if(queryStringCollection == null) {
 				throw new ArgumentNullException("queryStringCollection");
 			}
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			foreach(string name in queryStringCollection) {
 				string value = (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]);
 				sb.AppendFormat("{0}={1}&", name, value);
@@ -217,12 +187,7 @@ namespace nJupiter.Web {
 			return path;
 		}
 		public static string RemoveQueryKey(string url, string key) {
-			if(url == null) {
-				throw new ArgumentNullException("url");
-			}
-			if(key == null) {
-				throw new ArgumentNullException("key");
-			}
+			ValidateArguments(url, key);
 			int queryStringSeparatorPos = url.IndexOf("?");
 			int hashSeparatorPos = url.IndexOf("#");
 			string path = url;
@@ -233,6 +198,22 @@ namespace nJupiter.Web {
 					path = path.Substring(0, queryStringSeparatorPos);
 			}
 			return AddQueryParams(path, UrlHandler.GetQueryString(url, key));
+		}
+
+		private static void ValidateArguments(string url, string key) {
+			if(url == null) {
+				throw new ArgumentNullException("url");
+			}
+			if(key == null) {
+				throw new ArgumentNullException("key");
+			}
+		}
+
+		private static void ValidateArguments(string url, string key, string value) {
+			ValidateArguments(url, key);
+			if(value == null) {
+				throw new ArgumentNullException("value");
+			}
 		}
 
 		[Obsolete("Originaly used to get around an Friendly Url Rewriter in an old CMS. Use System.Web.HttpContext.Current.Request.Path instead")]

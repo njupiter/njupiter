@@ -28,14 +28,14 @@ using System.Web;
 namespace nJupiter.Web {
 	public class ResponseHandler : IResponseHandler {
 		
-		private readonly HttpContext context;
+		private readonly HttpContextBase context;
 		private readonly IMimeTypeHandler mimeTypeHandler;
 		private readonly IMimeType htmlMimeType = new MimeType("text/html");
 		private readonly IMimeType xhtmlMimeType = new MimeType("application/xhtml+xml");
 
-		private HttpContext CurrentContext { get { return context ?? HttpContext.Current; } }
+		private HttpContextBase CurrentContext { get { return context ?? new HttpContextWrapper(HttpContext.Current); } }
 
-		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, HttpContext context) {
+		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, HttpContextBase context) {
 			this.mimeTypeHandler = mimeTypeHandler;
 			this.context = context;
 		}
