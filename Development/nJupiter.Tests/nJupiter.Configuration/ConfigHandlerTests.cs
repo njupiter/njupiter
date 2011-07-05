@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using System.Xml;
 using nJupiter.Configuration;
 using NUnit.Framework;
@@ -126,6 +127,42 @@ namespace nJupiter.Tests.Configuration {
 			Assert.IsNull(config);
 			Assert.AreEqual(configKey, configLoader.ConfigKeysLoaded[0]);
 		}
+
+		[Test]
+		public void GetConfig_CanLoadConfigsFromMultipleThreads() {
+
+			const string configKey = "MyCustomConfig";
+			var configLoader = new FakeLoader(false, true);
+			var configHandler = new ConfigHandler(configLoader);
+
+			const int maxThreads = 10;
+
+			Exception ex = null;
+			IConfig config = null;
+
+			var getConfigCompletedEvent = new ManualResetEvent(false);
+			for(int i = 0; i < maxThreads; i++) {
+				int remainingThreads = i;
+				ThreadPool.QueueUserWorkItem(s => {
+					try {
+						config = configHandler.GetConfig(configKey, false);
+						if(Interlocked.Decrement(ref remainingThreads) == 0) {
+							getConfigCompletedEvent.Set();
+						}
+					} catch(Exception innerEx) {
+						getConfigCompletedEvent.Set();
+						ex = innerEx;
+						throw;
+					}
+				});
+			}
+			getConfigCompletedEvent.WaitOne();
+			getConfigCompletedEvent.Close();
+			Assert.IsNotNull(config);
+			Assert.IsNull(ex);
+			
+		}
+
 		
 		[Test]
 		public void GetConfig_GetSameConfigTwice_ReturnsSameConfig() {
@@ -145,12 +182,18 @@ namespace nJupiter.Tests.Configuration {
 
 		class FakeLoader : IConfigLoader {
 			private readonly bool configDoesNotExist;
+			private bool sleepOnLoad;
 
 			public FakeLoader() {}
 
 			public FakeLoader(bool configDoesNotExist) {
 				this.configDoesNotExist = configDoesNotExist;
 			}
+
+			public FakeLoader(bool configDoesNotExist, bool sleepOnLoad) : this(configDoesNotExist) {
+				this.sleepOnLoad = sleepOnLoad;
+			}
+
 
 			private readonly List<string> configKeys = new List<string>();
 
@@ -169,6 +212,10 @@ namespace nJupiter.Tests.Configuration {
 				this.configKeys.Add(configKey);
 				if(configDoesNotExist) {
 					return null;
+				}
+				if(sleepOnLoad) {
+					Thread.Sleep(250);
+					sleepOnLoad = false;
 				}
 				return new Config(configKey, GetConfigXmlDocument("<test />"));
 			}

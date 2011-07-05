@@ -33,6 +33,7 @@ namespace nJupiter.Configuration {
 		private readonly IConfigLoader configLoader;
 		private readonly string systemConfigKey;
 		private readonly string appConfigKey;
+		private readonly object padLock = new object();
 
 		public string SystemConfigKey { get { return systemConfigKey; } }
 		public string AppConfigKey { get { return this.appConfigKey; } }
@@ -95,16 +96,22 @@ namespace nJupiter.Configuration {
 				return this.configurations[configKey];
 			}
 			try {
-				IConfig config = this.configLoader.Load(configKey);
-				if(config == null) {
-					throw new ConfigurationException(string.Format("The config with the config key '{0}' was not found", configKey));
+				lock(padLock) {
+					if(this.configurations.Contains(configKey)){
+						return this.configurations[configKey];
+					}
+					IConfig config = this.configLoader.Load(configKey);
+					if(config == null) {
+						throw new ConfigurationException(string.Format("The config with the config key '{0}' was not found", configKey));
+					}
+					this.configurations.Add(config);
+					return config;
 				}
-				this.configurations.Add(config);
-				return config;
 			} catch(Exception ex) {
-				if(suppressMissingConfigException)
+				if(suppressMissingConfigException) {
 					return null;
-					throw new ConfigurationException(string.Format("Error loading config file with the config key '{0}'", configKey), ex);				
+				}
+				throw new ConfigurationException(string.Format("Error loading config file with the config key '{0}'", configKey), ex);				
 			}
 		}
 
