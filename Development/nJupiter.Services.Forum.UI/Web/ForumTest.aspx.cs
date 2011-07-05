@@ -25,6 +25,7 @@
 #if DEBUG
 using System;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Security.Principal;
 
@@ -121,7 +122,9 @@ namespace nJupiter.Services.Forum.UI.Web {
 				SetFlatTabularPostListProperties();
 			}
 			if(!this.Trace.IsEnabled) {
-				ResponseHandler.Instance.PerformXhtmlContentNegotiation();
+				var context = new HttpContextWrapper(HttpContext.Current);
+				var responseHandler = new ResponseHandler(new MimeTypeHandler(context), context);
+				responseHandler.PerformXhtmlContentNegotiation();
 			}
 			this.Response.ContentEncoding = Encoding.UTF8;
 			base.OnLoad(e);

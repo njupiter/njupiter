@@ -24,6 +24,7 @@
 
 using System;
 using System.IO;
+using System.Web;
 
 using nJupiter.Web;
 
@@ -42,7 +43,7 @@ namespace nJupiter.Net.Mail {
 
 		#region Constructors
 		private Attachment() {
-			mimeTypeHandler = MimeTypeHandler.Instance;
+			mimeTypeHandler = new MimeTypeHandler(new HttpContextWrapper(HttpContext.Current));
 		}
 
 		public Attachment(FileInfo file) : this() {

@@ -57,6 +57,7 @@
       <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
       <Name>nJupiter.Web</Name>
     </ProjectReference>
+    <Reference Include="System.Web.Abstractions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
