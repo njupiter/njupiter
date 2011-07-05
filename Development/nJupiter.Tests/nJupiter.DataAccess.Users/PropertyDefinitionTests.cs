@@ -4,7 +4,7 @@ using nJupiter.DataAccess.Users;
 
 using NUnit.Framework;
 
-namespace nJupiter.Tests.nJupiter.DataAccess.Users {
+namespace nJupiter.Tests.DataAccess.Users {
 	[TestFixture]
 	public class PropertyDefinitionTests {
 

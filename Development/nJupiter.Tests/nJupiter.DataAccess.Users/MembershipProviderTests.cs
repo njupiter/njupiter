@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 using MembershipProvider = nJupiter.DataAccess.Users.Web.MembershipProvider;
 
-namespace nJupiter.Tests.nJupiter.DataAccess.Users {
+namespace nJupiter.Tests.DataAccess.Users {
 	
 	[TestFixture]
 	public class MembershipProviderTests {

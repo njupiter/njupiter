@@ -7,7 +7,7 @@ using nJupiter.DataAccess.Users.Web;
 
 using NUnit.Framework;
 
-namespace nJupiter.Tests.nJupiter.DataAccess.Users {
+namespace nJupiter.Tests.DataAccess.Users {
 	
 	[TestFixture]
 	public class MembershipUserTests {
