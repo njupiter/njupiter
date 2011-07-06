@@ -482,8 +482,8 @@ namespace nJupiter.Tests.Configuration {
 		[Test]
 		public void GetConfigurationSectionHandler_CreatenJupiterConfiguration_ReturnsnJupiterConfiguration() {
 			var config = GetTestConfig(@"<nJupiterConfiguration><configDirectories><configDirectory value=""~/Config""/></configDirectories></nJupiterConfiguration>");
-			var configHandler = config.GetConfigurationSectionHandler("nJupiterConfiguration", typeof(nJupiterConfigurationSectionHandler));
-			XmlNode node = configHandler as XmlNode;
+			var configRepository = config.GetConfigurationSectionHandler("nJupiterConfiguration", typeof(nJupiterConfigurationSectionHandler));
+			var node = configRepository as XmlNode;
 			Assert.IsNotNull(node);
 			Assert.AreEqual("~/Config", node.SelectSingleNode("./configDirectories/configDirectory").Attributes["value"].Value);
 		}
@@ -491,9 +491,9 @@ namespace nJupiter.Tests.Configuration {
 
 		[Test]
 		public void GetConfigurationSectionHandler_GetNonExistingSectionHandler_ReturnsNull() {
-			var config = GetTestConfig(@"<myConfigHandler><config /></myConfigHandler>");
-			var configHandler = config.GetConfigurationSectionHandler("myConfigHandler", this.GetType());
-			Assert.IsNull(configHandler);
+			var config = GetTestConfig(@"<myConfigRepository><config /></myConfigRepository>");
+			var configRepository = config.GetConfigurationSectionHandler("myConfigRepository", this.GetType());
+			Assert.IsNull(configRepository);
 		}		
 
 

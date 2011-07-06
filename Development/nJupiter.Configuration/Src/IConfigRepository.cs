@@ -25,7 +25,7 @@
 using System.Reflection;
 
 namespace nJupiter.Configuration {
-	public interface IConfigHandler {
+	public interface IConfigRepository {
 		
 		/// <summary>
 		/// Gets the config key used for AppConfig.

@@ -36,7 +36,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService.Web {
 		private DirectoryService CurrentDirectoryService{
 			get{
 				string dirService = null;
-				IConfig config = ConfigHandler.Instance.GetConfig(this.GetType().Assembly);
+				IConfig config = ConfigRepository.Instance.GetConfig(this.GetType().Assembly);
 				if(config.ContainsKey("webService", "directoryService"))
 					dirService = config.GetValue("webService", "directoryService");
 				if(dirService != null)

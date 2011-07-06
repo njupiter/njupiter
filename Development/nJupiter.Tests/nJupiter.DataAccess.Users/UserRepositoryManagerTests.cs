@@ -75,10 +75,10 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 		[Test]
 		public void GetRepository_DiscardConfig_ReturnsNewInstanceOfRepository() {
-			var configHandler = A.Fake<IConfigHandler>();
+			var configRepository = A.Fake<IConfigRepository>();
 			var config = GetConfig();
-			A.CallTo(() => configHandler.GetConfig()).Returns(config);
-			var repositoryFactory = new UserRepositoryManager(configHandler);
+			A.CallTo(() => configRepository.GetConfig()).Returns(config);
+			var repositoryFactory = new UserRepositoryManager(configRepository);
 			var repositoryBeforeDiscardedConfig = repositoryFactory.GetRepository();
 			config.Discard();
 			var repositoryAfterDiscardedConfig = repositoryFactory.GetRepository();
@@ -88,10 +88,10 @@ namespace nJupiter.Tests.DataAccess.Users {
 
 
 		private static UserRepositoryManager GetUserRepositoryManager() {
-			var configHandler = A.Fake<IConfigHandler>();
+			var configRepository = A.Fake<IConfigRepository>();
 			var config = GetConfig();
-			A.CallTo(() => configHandler.GetConfig()).Returns(config);
-			return new UserRepositoryManager(configHandler);
+			A.CallTo(() => configRepository.GetConfig()).Returns(config);
+			return new UserRepositoryManager(configRepository);
 		}
 
 		private static IConfig GetConfig() {

@@ -9,53 +9,53 @@ using NUnit.Framework;
 namespace nJupiter.Tests.Configuration {
 	
 	[TestFixture]
-	public class ConfigHandlerTests {
+	public class ConfigRepositoryTests {
 
 		[Test]
-		public void GetAppConfig_CreateConfigHandlerWithDefaultValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
+		public void GetAppConfig_CreateConfigRepositoryWithDefaultValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetAppConfig();
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetAppConfig();
 			Assert.AreEqual("nJupiter.Tests.dll", config.ConfigKey);
 		}
 
 		[Test]
-		public void GetSystemConfig_CreateConfigHandlerWithDefaultValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
+		public void GetSystemConfig_CreateConfigRepositoryWithDefaultValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetSystemConfig();
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetSystemConfig();
 			Assert.AreEqual("System", config.ConfigKey);
 		}
 
 		[Test]
-		public void GetAppConfig_CreateConfigHandlerWithCustomValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
+		public void GetAppConfig_CreateConfigRepositoryWithCustomValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader, "CustomSystemKey", "CustomAppKey");
-			IConfig config = configHandler.GetAppConfig();
+			var configRepository = new ConfigRepository(configLoader, "CustomSystemKey", "CustomAppKey");
+			IConfig config = configRepository.GetAppConfig();
 			Assert.AreEqual("CustomAppKey", config.ConfigKey);
 		}
 
 		[Test]
-		public void GetSystemConfig_CreateConfigHandlerWithCustomValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
+		public void GetSystemConfig_CreateConfigRepositoryWithCustomValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader, "CustomSystemKey", "CustomAppKey");
-			IConfig config = configHandler.GetSystemConfig();
+			var configRepository = new ConfigRepository(configLoader, "CustomSystemKey", "CustomAppKey");
+			IConfig config = configRepository.GetSystemConfig();
 			Assert.AreEqual("CustomSystemKey", config.ConfigKey);
 		}
 
 		[Test]
 		public void GetConfig_LoadCurrentConfig_ReturnsConfigWithCorrectSystemConfigKey() {
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetConfig();
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetConfig();
 			Assert.AreEqual("nJupiter.Tests", config.ConfigKey);
 		}
 
 		[Test]
 		public void GetConfig_LoadCurrentConfigThatDoesNotExist_ThrowsConfigurationException() {
 			var configLoader = new FakeLoader(true);
-			var configHandler = new ConfigHandler(configLoader);
-			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig());
+			var configRepository = new ConfigRepository(configLoader);
+			Assert.Throws<ConfigurationException>(() => configRepository.GetConfig());
 			Assert.AreEqual("nJupiter.Tests", configLoader.ConfigKeysLoaded[0]);
 		}
 
@@ -63,8 +63,8 @@ namespace nJupiter.Tests.Configuration {
 		[Test]
 		public void GetConfig_LoadCurrentConfigThatDoesNotExistAndSupressExceptions_ReturnsNull() {
 			var configLoader = new FakeLoader(true);
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetConfig(true);
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetConfig(true);
 			Assert.IsNull(config);
 			Assert.AreEqual("nJupiter.Tests", configLoader.ConfigKeysLoaded[0]);
 		}
@@ -73,8 +73,8 @@ namespace nJupiter.Tests.Configuration {
 		public void GetConfig_LoadConfigForCustomAssembly_ReturnsConfigWithCorrectSystemConfigKey() {
 			Assembly assembly = typeof(FakeItEasy.A).Assembly;
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetConfig(assembly);
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetConfig(assembly);
 			Assert.AreEqual(assembly.GetName().Name, config.ConfigKey);
 		}
 
@@ -82,8 +82,8 @@ namespace nJupiter.Tests.Configuration {
 		public void GetConfig_LoadConfigForCustomAssemblyDoesNotExist_ThrowsConfigurationException() {
 			Assembly assembly = typeof(FakeItEasy.A).Assembly;
 			var configLoader = new FakeLoader(true);
-			var configHandler = new ConfigHandler(configLoader);
-			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig(assembly));
+			var configRepository = new ConfigRepository(configLoader);
+			Assert.Throws<ConfigurationException>(() => configRepository.GetConfig(assembly));
 			Assert.AreEqual(assembly.GetName().Name, configLoader.ConfigKeysLoaded[0]);
 		}
 
@@ -92,8 +92,8 @@ namespace nJupiter.Tests.Configuration {
 		public void GetConfig_LoadConfigForCustomAssemblyDoesNotExistAndSupressExceptions_ReturnsNull() {
 			Assembly assembly = typeof(FakeItEasy.A).Assembly;
 			var configLoader = new FakeLoader(true);
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetConfig(assembly, true);
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetConfig(assembly, true);
 			Assert.IsNull(config);
 			Assert.AreEqual(assembly.GetName().Name, configLoader.ConfigKeysLoaded[0]);
 		}
@@ -103,8 +103,8 @@ namespace nJupiter.Tests.Configuration {
 		public void GetConfig_LoadConfigForCustomConfig_ReturnsConfigWithCorrectSystemConfigKey() {
 			const string configKey = "MyCustomConfig";
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetConfig(configKey);
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetConfig(configKey);
 			Assert.AreEqual(configKey, config.ConfigKey);
 		}
 
@@ -112,8 +112,8 @@ namespace nJupiter.Tests.Configuration {
 		public void GetConfig_LoadConfigForCustomConfigDoesNotExist_ThrowsConfigurationException() {
 			const string configKey = "MyCustomConfig";
 			var configLoader = new FakeLoader(true);
-			var configHandler = new ConfigHandler(configLoader);
-			Assert.Throws<ConfigurationException>(() => configHandler.GetConfig(configKey));
+			var configRepository = new ConfigRepository(configLoader);
+			Assert.Throws<ConfigurationException>(() => configRepository.GetConfig(configKey));
 			Assert.AreEqual(configKey, configLoader.ConfigKeysLoaded[0]);
 		}
 
@@ -122,8 +122,8 @@ namespace nJupiter.Tests.Configuration {
 		public void GetConfig_LoadConfigForCustomConfigDoesNotExistAndSupressExceptions_ReturnsNull() {
 			const string configKey = "MyCustomConfig";
 			var configLoader = new FakeLoader(true);
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config = configHandler.GetConfig(configKey, true);
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetConfig(configKey, true);
 			Assert.IsNull(config);
 			Assert.AreEqual(configKey, configLoader.ConfigKeysLoaded[0]);
 		}
@@ -133,7 +133,7 @@ namespace nJupiter.Tests.Configuration {
 
 			const string configKey = "MyCustomConfig";
 			var configLoader = new FakeLoader(false, true);
-			var configHandler = new ConfigHandler(configLoader);
+			var configRepository = new ConfigRepository(configLoader);
 
 			const int maxThreads = 10;
 
@@ -145,7 +145,7 @@ namespace nJupiter.Tests.Configuration {
 				int remainingThreads = i;
 				ThreadPool.QueueUserWorkItem(s => {
 					try {
-						config = configHandler.GetConfig(configKey, false);
+						config = configRepository.GetConfig(configKey, false);
 						if(Interlocked.Decrement(ref remainingThreads) == 0) {
 							getConfigCompletedEvent.Set();
 						}
@@ -167,17 +167,17 @@ namespace nJupiter.Tests.Configuration {
 		[Test]
 		public void GetConfig_GetSameConfigTwice_ReturnsSameConfig() {
 			var configLoader = new FakeLoader();
-			var configHandler = new ConfigHandler(configLoader);
-			IConfig config1 = configHandler.GetConfig("myConfig");
-			Assert.IsTrue(configHandler.Configurations.Contains("myConfig"));
-			IConfig config2 = configHandler.GetConfig("myConfig");
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config1 = configRepository.GetConfig("myConfig");
+			Assert.IsTrue(configRepository.Configurations.Contains("myConfig"));
+			IConfig config2 = configRepository.GetConfig("myConfig");
 			Assert.AreEqual(config1, config2);
 		}		
 		
 		
 		[Test]
 		public void GetConfig_PassingNullAssembly_ThrowsArgumentNullExeption() {
-			Assert.Throws<ArgumentNullException>(() => ConfigHandler.Instance.GetConfig((Assembly)null));
+			Assert.Throws<ArgumentNullException>(() => ConfigRepository.Instance.GetConfig((Assembly)null));
 		}		
 
 		class FakeLoader : IConfigLoader {

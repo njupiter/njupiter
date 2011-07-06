@@ -44,18 +44,18 @@ namespace nJupiter.Configuration {
 
 			this.watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
 
-			this.watcher.Changed += this.WatchedConfigHandlerOnChanged;
-			this.watcher.Created += this.WatchedConfigHandlerOnChanged;
-			this.watcher.Deleted += this.WatchedConfigHandlerOnChanged;
-			this.watcher.Renamed += this.WatchedConfigHandlerOnRenamed;
+			this.watcher.Changed += this.WatchedConfigOnChanged;
+			this.watcher.Created += this.WatchedConfigOnChanged;
+			this.watcher.Deleted += this.WatchedConfigOnChanged;
+			this.watcher.Renamed += this.WatchedConfigOnRenamed;
 
 			this.watcher.EnableRaisingEvents = true;
 		}
 
-		private void WatchedConfigHandlerOnChanged(object source, FileSystemEventArgs e) {
+		private void WatchedConfigOnChanged(object source, FileSystemEventArgs e) {
 			this.OnWatchedFileChange();
 		}
-		private void WatchedConfigHandlerOnRenamed(object source, RenamedEventArgs e) {
+		private void WatchedConfigOnRenamed(object source, RenamedEventArgs e) {
 			this.OnWatchedFileChange();
 		}
 

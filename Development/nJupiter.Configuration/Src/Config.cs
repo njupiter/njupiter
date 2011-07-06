@@ -32,7 +32,7 @@ namespace nJupiter.Configuration {
 	public class Config : IConfig {
 
 		private readonly ConfigCollection innerConfigurations = new ConfigCollection();
-		private readonly Dictionary<string, object> configHandlers = new Dictionary<string, object>();
+		private readonly Dictionary<string, object> configRepositories = new Dictionary<string, object>();
 		private readonly object padlock = new object();
 		private readonly IConfigSource source;
 		private readonly string configKey;
@@ -173,15 +173,15 @@ namespace nJupiter.Configuration {
 		}
 
 		public object GetConfigurationSectionHandler(string section, Type configurationSectionHandlerType) {
-			if(!configHandlers.ContainsKey(section)) {
+			if(!this.configRepositories.ContainsKey(section)) {
 				lock(padlock) {
-					if(!configHandlers.ContainsKey(section)) {
+					if(!this.configRepositories.ContainsKey(section)) {
 						object result = this.GetConfigurationSectionHandlerInternal(section, configurationSectionHandlerType);
-						configHandlers.Add(section, result);
+						this.configRepositories.Add(section, result);
 					}
 				}
 			}
-			return configHandlers[section];
+			return this.configRepositories[section];
 		}
 
 		private object GetConfigurationSectionHandlerInternal(string section, Type configurationSectionHandlerType) {

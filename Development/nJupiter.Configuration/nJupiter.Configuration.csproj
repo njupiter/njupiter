@@ -52,14 +52,14 @@
     </Compile>
     <Compile Include="Src\CompositeConfigLoader.cs" />
     <Compile Include="Src\ConfigFactory.cs" />
-    <Compile Include="Src\ConfigHandler.cs" />
+    <Compile Include="Src\ConfigRepository.cs" />
     <Compile Include="Src\ConfigLoaderFactory.cs" />
     <Compile Include="Src\FileConfigFactory.cs" />
     <Compile Include="Src\FileConfigLoader.cs" />
     <Compile Include="Src\ConfigSource.cs" />
     <Compile Include="Src\ConfigSourceFactory.cs" />
     <Compile Include="Src\FileConfigSource.cs" />
-    <Compile Include="Src\IConfigHandler.cs" />
+    <Compile Include="Src\IConfigRepository.cs" />
     <Compile Include="Src\IConfigLoader.cs" />
     <Compile Include="Src\IConfigSource.cs" />
     <Compile Include="Src\IConfigSourceWatcher.cs" />

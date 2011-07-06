@@ -27,7 +27,7 @@ using System.IO;
 using System.Reflection;
 
 namespace nJupiter.Configuration {
-	public class ConfigHandler : IConfigHandler {
+	public class ConfigRepository : IConfigRepository {
 
 		private readonly ConfigCollection configurations;
 		private readonly IConfigLoader configLoader;
@@ -39,15 +39,15 @@ namespace nJupiter.Configuration {
 		public string AppConfigKey { get { return this.appConfigKey; } }
 
 		/// <summary>
-		/// Returns the default instance of IConfigHandler
+		/// Returns the default instance of IConfigRepository
 		/// </summary>
-		public static IConfigHandler Instance { get { return NestedSingleton.instance; } }
+		public static IConfigRepository Instance { get { return NestedSingleton.instance; } }
 
-		public ConfigHandler(IConfigLoader configLoader) : this(configLoader, "System", null) {
+		public ConfigRepository(IConfigLoader configLoader) : this(configLoader, "System", null) {
 			this.appConfigKey = GetAppConfigKey();
 		}
 
-		public ConfigHandler(IConfigLoader configLoader, string systemConfigKey, string appConfigKey) {
+		public ConfigRepository(IConfigLoader configLoader, string systemConfigKey, string appConfigKey) {
 			this.configLoader = configLoader;
 			this.configurations = configLoader.LoadOnInit();
 			this.systemConfigKey = systemConfigKey;
@@ -125,7 +125,7 @@ namespace nJupiter.Configuration {
 			// ReSharper disable EmptyConstructor
 			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			// ReSharper restore EmptyConstructor
-			internal static readonly IConfigHandler instance = new ConfigHandler(ConfigLoaderFactory.Create());
+			internal static readonly IConfigRepository instance = new ConfigRepository(ConfigLoaderFactory.Create());
 		}
 	}
 }

@@ -21,7 +21,7 @@ namespace nJupiter.DataAccess.Users {
 
 		private readonly object padlock = new object();
 
-		private readonly IConfigHandler configHandler;
+		private readonly IConfigRepository configRepository;
 		private IConfig config;
 
 		private IConfig Config {
@@ -29,7 +29,7 @@ namespace nJupiter.DataAccess.Users {
 				if(config == null) {
 					lock(this.padlock) {
 						if(config == null) {
-							config = configHandler.GetConfig();
+							config = this.configRepository.GetConfig();
 							config.Discarded += this.ConfigDiscarded;
 						}
 					}
@@ -47,8 +47,8 @@ namespace nJupiter.DataAccess.Users {
 
 		public static IUserRepositoryManager Instance { get { return NestedSingleton.instance; } }
 
-		public UserRepositoryManager(IConfigHandler configHandler) {
-			this.configHandler = configHandler;
+		public UserRepositoryManager(IConfigRepository configRepository) {
+			this.configRepository = configRepository;
 		}
 
 		public IUserRepository GetRepository() {
@@ -126,7 +126,7 @@ namespace nJupiter.DataAccess.Users {
 			// ReSharper disable EmptyConstructor
 			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
 			// ReSharper restore EmptyConstructor
-			internal static readonly IUserRepositoryManager instance = new UserRepositoryManager(ConfigHandler.Instance);
+			internal static readonly IUserRepositoryManager instance = new UserRepositoryManager(ConfigRepository.Instance);
 		}
 
 

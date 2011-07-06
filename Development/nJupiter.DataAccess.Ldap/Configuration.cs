@@ -84,7 +84,7 @@ namespace nJupiter.DataAccess.Ldap {
 				UsersConfig users = new UsersConfig();
 				GroupsConfig groups = new GroupsConfig();
 
-				IConfig config = ConfigHandler.Instance.GetConfig();
+				IConfig config = ConfigRepository.Instance.GetConfig();
 				IConfig configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 
