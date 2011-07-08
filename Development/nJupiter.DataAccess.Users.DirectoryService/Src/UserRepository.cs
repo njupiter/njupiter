@@ -35,7 +35,7 @@ using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users.DirectoryService {
 
-	public class UserRepository : UserRepositoryBase, IUserRepositoryFactory {
+	public class UserRepository : UserRepositoryBase {
 		#region Members
 		private ContextSchema defaultContextSchema;
 		private IList<IContext> contexts;
@@ -52,7 +52,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 		private DirectoryService CurrentDS {
 			get {
 				if(this.directoryService == null) {
-					this.directoryService = config.ContainsKey("directoryService") ? DirectoryService.GetInstance(config.GetValue("directoryService")) : DirectoryService.GetInstance();
+					this.directoryService = Config.ContainsKey("directoryService") ? DirectoryService.GetInstance(Config.GetValue("directoryService")) : DirectoryService.GetInstance();
 				}
 				return this.directoryService;
 			}
@@ -60,27 +60,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 		#endregion
 
 		#region Methods
-		public override string Name { get { return name; } }
-		public override IPredefinedNames PropertyNames { get { return predefinedNames; } }
-		public override IUserCache UserCache { get { return cache; } }
-
-		private readonly string name;
-		private readonly IConfig config;
-		private readonly IPredefinedNames predefinedNames;
-		private readonly IUserCache cache;
-
-		public IUserRepository Create(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
-			return new UserRepository(name, config, predefinedNames, cache);
-		}
-
-		public UserRepository() {}
-
-		public UserRepository(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
-			this.name = name;
-			this.config = config;
-			this.predefinedNames = predefinedNames;
-			this.cache = cache;
-		}
+		public UserRepository(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) : base(name, config, predefinedNames, cache) {}
 
 		public override IUser GetUserById(string userId) {
 			// Convert to .NET guid format if Id is of type octet string

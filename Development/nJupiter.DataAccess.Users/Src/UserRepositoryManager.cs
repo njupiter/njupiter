@@ -15,8 +15,7 @@ namespace nJupiter.DataAccess.Users {
 		private const string NameAttribute = "name";
 		private const string UsersRepositoryDefaultSection = UsersRepositorySection + "[@default='true']";
 		private const string UsersRepositorySectionFormat = UsersRepositorySection + "[@name='{0}']";
-		private const string UsersRepositoryFactoryElement = "userRepositoryFactory";
-		private const string CacheFactoryTypeElement = "cache/userCacheFactory";
+		private const string CacheTypeElement = "cache";
 		private const string QualifiedNameAttribute = "qualifiedTypeName";
 
 		private readonly object padlock = new object();
@@ -93,32 +92,29 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private IUserRepository CreateRepository(string name, string section) {
-			var config = this.Config;
-			var typeName = this.Config.GetAttribute(section, UsersRepositoryFactoryElement, QualifiedNameAttribute);
-			var settings = config.GetConfigSection(string.Format("{0}/settings", section));
-			var predifinedNames = PredefinedNamesFactory.Create(settings);
-			var cache = GetUserCache(settings);
+			var typeName = this.Config.GetAttribute(section, QualifiedNameAttribute);
+			var repositoryConfig = this.Config.GetConfigSection(string.Format("{0}/settings", section));
+			var predifinedNames = PredefinedNamesFactory.Create(repositoryConfig);
+			var cache = GetUserCache(repositoryConfig);
 
-			IUserRepositoryFactory userRepositoryFactory = CreateInstance(typeName) as IUserRepositoryFactory;
-			return userRepositoryFactory.Create(name, settings, predifinedNames, cache);
+			return CreateInstance(typeName, name, repositoryConfig, predifinedNames, cache) as IUserRepository;
 		}
 
 		private static IUserCache GetUserCache(IConfig settings) {
 			IUserCache cache = null;
-			if(settings.ContainsAttribute(CacheFactoryTypeElement, QualifiedNameAttribute)) {
-				var typeName = settings.GetAttribute(CacheFactoryTypeElement, QualifiedNameAttribute);
-				var cacheFactory = (IUserCacheFactory)CreateInstance(typeName);
-				cache = cacheFactory.Create(settings);
+			if(settings.ContainsAttribute(CacheTypeElement, QualifiedNameAttribute)) {
+				var typeName = settings.GetAttribute(CacheTypeElement, QualifiedNameAttribute);
+				cache = (IUserCache)CreateInstance(typeName, settings);
 			}
-			if(cache == null) {
-				cache = new GenericUserCache(settings);
-			}
-			return cache;
+			return cache ?? new GenericUserCache(settings);
 		}
 
-		private static object CreateInstance(string typeName) {
+		private static object CreateInstance(string typeName, params object[] constructorParameters) {
 			Type userReporistoryType = System.Type.GetType(typeName, true, true);
-			return Activator.CreateInstance(userReporistoryType);
+			if(userReporistoryType == null) {
+				throw new ApplicationException(string.Format("Type '{0}' not found", typeName));
+			}
+			return Activator.CreateInstance(userReporistoryType, constructorParameters);
 		}
 
 		// thread safe Singleton implementation with fully lazy instantiation and with full performance

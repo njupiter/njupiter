@@ -22,9 +22,11 @@
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using nJupiter.Configuration;
 using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
@@ -33,9 +35,30 @@ namespace nJupiter.DataAccess.Users {
 
 		protected readonly string DefaultDomain = string.Empty;
 
-		public abstract string Name { get;  }
-		public abstract IPredefinedNames PropertyNames { get; }
-		public abstract IUserCache UserCache { get; }
+		private readonly string name;
+		private readonly IConfig config;
+		private readonly IPredefinedNames predefinedNames;
+		private readonly IUserCache cache;
+
+		protected UserRepositoryBase() {}
+
+		protected UserRepositoryBase(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
+			if(name == null) {
+				throw new ArgumentNullException("name");
+			}
+			if(config == null) {
+				throw new ArgumentNullException("config");
+			}
+			this.name = name;
+			this.config = config;
+			this.predefinedNames = predefinedNames;
+			this.cache = cache;
+		}
+
+		public virtual string Name { get { return name; } }
+		public virtual IPredefinedNames PropertyNames { get { return predefinedNames; } }
+		public virtual IConfig Config { get { return config; } }
+		public virtual IUserCache UserCache { get { return cache; } }
 
 		public abstract IUser GetUserById(string userId);
 		public abstract IUser GetUserByUserName(string userName, string domain);

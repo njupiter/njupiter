@@ -31,25 +31,19 @@ using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users.Caching {
 
-	public class HttpRuntimeUserCache : IUserCache {
+	public class HttpRuntimeUserCache : UserCacheBase {
 
-		private readonly IConfig config;
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private bool? slidingExpiration;
 		private CacheItemPriority? cacheItemPriority;
 
-		public HttpRuntimeUserCache(IConfig config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-			this.config = config;
-		}
+		public HttpRuntimeUserCache(IConfig config) : base(config) {}
 
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
-					if(config.ContainsKey("cache", "minutesInCache")) {
-						this.minutesInCache = config.GetValue<int>("cache", "minutesInCache");
+					if(Config.ContainsKey("cache", "minutesInCache")) {
+						this.minutesInCache = Config.GetValue<int>("cache", "minutesInCache");
 					} else {
 						this.minutesInCache = 0;
 					}
@@ -61,8 +55,8 @@ namespace nJupiter.DataAccess.Users.Caching {
 		private bool SlidingExpiration {
 			get {
 				if(slidingExpiration == null) {
-					if(config.ContainsKey("cache", "slidingExpiration")) {
-						this.slidingExpiration = config.GetValue<bool>("cache", "slidingExpiration");
+					if(Config.ContainsKey("cache", "slidingExpiration")) {
+						this.slidingExpiration = Config.GetValue<bool>("cache", "slidingExpiration");
 					} else {
 						this.slidingExpiration = false;
 					}
@@ -74,8 +68,8 @@ namespace nJupiter.DataAccess.Users.Caching {
 		private CacheItemPriority CachePriority {
 			get {
 				if(cacheItemPriority == null) {
-					if(config.ContainsKey("cache", "cachePriority")) {
-						string configValue = config.GetValue("cache", "cachePriority");
+					if(Config.ContainsKey("cache", "cachePriority")) {
+						string configValue = Config.GetValue("cache", "cachePriority");
 						this.cacheItemPriority = (CacheItemPriority)Enum.Parse(typeof(CacheItemPriority), configValue, true);
 					} else {
 						this.cacheItemPriority = CacheItemPriority.Normal;
@@ -85,30 +79,30 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 		}
 
-		public IUser GetUserById(string userId) {
+		public override IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
-			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, userId);
+			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, userId);
 			return HttpRuntime.Cache[userIdCacheKey.CacheKey] as IUser;
 		}
 
-		public IUser GetUserByUserName(string userName, string domain) {
+		public override IUser GetUserByUserName(string userName, string domain) {
 			if(userName == null || this.MinutesInCache == 0)
 				return null;
-			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, userName, domain);
+			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, userName, domain);
 			return HttpRuntime.Cache[usernameCacheKey.CacheKey] as IUser;
 		}
 
-		public void RemoveUserFromCache(IUser user) {
+		public override void RemoveUserFromCache(IUser user) {
 			if(user != null) {
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, user.Id);
+				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, user.UserName, user.Domain);
+				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, user.Id);
 				HttpRuntime.Cache.Remove(usernameCacheKey.CacheKey);
 				HttpRuntime.Cache.Remove(userIdCacheKey.CacheKey);
 			}
 		}
 
-		public void RemoveUsersFromCache(IList<IUser> users) {
+		public override void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
 				foreach(IUser user in users) {
 					this.RemoveUserFromCache(user);
@@ -116,11 +110,11 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 		}
 
-		public void AddUserToCache(IUser user) {
+		public override void AddUserToCache(IUser user) {
 			if(user != null && this.MinutesInCache > 0) {
 				user.MakeReadOnly();
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(config.ConfigKey, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(config.ConfigKey, user.Id);
+				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, user.UserName, user.Domain);
+				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, user.Id);
 				if(this.SlidingExpiration) {
 					TimeSpan expirationTime = new TimeSpan(0, 0, this.MinutesInCache, 0);
 					HttpRuntime.Cache.Add(usernameCacheKey.CacheKey, user, null, Cache.NoAbsoluteExpiration, expirationTime, this.CachePriority, null);
@@ -133,7 +127,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 		}
 
-		public void AddUsersToCache(IList<IUser> users) {
+		public override void AddUsersToCache(IList<IUser> users) {
 			if(users != null && this.MinutesInCache > 0) {
 				foreach(IUser user in users) {
 					this.AddUserToCache(user);

@@ -68,7 +68,6 @@
     <Compile Include="Src\Property.cs" />
     <Compile Include="Src\SearchCriteria.cs" />
     <Compile Include="Src\UserRepository.cs" />
-    <Compile Include="Src\UserRepositoryFactory.cs" />
     <Compile Include="Web\DirectoryServiceWebService.asmx.cs">
       <DependentUpon>DirectoryServiceWebService.asmx</DependentUpon>
     </Compile>

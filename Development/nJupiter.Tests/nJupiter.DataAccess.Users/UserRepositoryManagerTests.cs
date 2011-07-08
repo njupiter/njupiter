@@ -103,15 +103,13 @@ namespace nJupiter.Tests.DataAccess.Users {
 		private const string testConfig =
 			@"<configuration>
 				<userRepositories>
-					<userRepository name=""SQLRepository"" default=""true"">
-						<userRepositoryFactory
-							qualifiedTypeName=""nJupiter.DataAccess.Users.Sql.UserRepositoryFactory, nJupiter.DataAccess.Users.Sql""/>
+					<userRepository name=""SQLRepository""
+									default=""true""
+									qualifiedTypeName=""nJupiter.DataAccess.Users.Sql.UserRepository, nJupiter.DataAccess.Users.Sql"">
 						<settings>
 							<dataSource value=""SQLAdapter"" />
 							<hashPassword value=""true"" />
-							<cache>
-								<userCacheFactory
-									qualifiedTypeName=""nJupiter.DataAccess.Users.Caching.HttpRuntimeUserCacheFactory, nJupiter.DataAccess.Users""/>
+							<cache qualifiedTypeName=""nJupiter.DataAccess.Users.Caching.HttpRuntimeUserCache, nJupiter.DataAccess.Users"">
 								<minutesInCache value=""60"" />
 							</cache>
 							<predefinedProperties>
@@ -120,21 +118,16 @@ namespace nJupiter.Tests.DataAccess.Users {
 							</predefinedProperties>
 						</settings>
 					</userRepository>
-					<userRepository name=""TestRepository"">
-						<userRepositoryFactory
-							qualifiedTypeName=""nJupiter.Tests.DataAccess.Users.UserRepositoryAdapter, nJupiter.Tests""/>
+					<userRepository name=""TestRepository""
+									qualifiedTypeName=""nJupiter.Tests.DataAccess.Users.UserRepositoryAdapter, nJupiter.Tests"">
 						<settings>
 							<someSettings value=""test"" />
 						</settings>
 					</userRepository>
-					<userRepository name=""RepositoryNonExistingCache"">
-						<userRepositoryFactory
-							qualifiedTypeName=""nJupiter.Tests.DataAccess.Users.UserRepositoryAdapter, nJupiter.Tests""/>
+					<userRepository name=""RepositoryNonExistingCache""
+									qualifiedTypeName=""nJupiter.Tests.DataAccess.Users.UserRepositoryAdapter, nJupiter.Tests"">
 						<settings>
-							<cache>
-								<userCacheFactory
-									qualifiedTypeName=""nJupiter.DataAccess.Users.Caching.NonExistingCache, nJupiter.DataAccess.Users""/>
-							</cache>
+							<cache qualifiedTypeName=""nJupiter.DataAccess.Users.Caching.NonExistingCache, nJupiter.DataAccess.Users""/>
 						</settings>
 					</userRepository>
 				</userRepositories>

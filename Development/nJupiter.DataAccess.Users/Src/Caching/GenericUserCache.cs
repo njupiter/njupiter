@@ -30,31 +30,25 @@ using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users.Caching {
 
-	public class GenericUserCache : IUserCache {
+	public class GenericUserCache : UserCacheBase {
 
 		private const int DefaultCacheSize = 1000;
 		private const int MinimumCacheSize = 100;
 		private const int CacheTruncateFactor = 10; // The precentage to truncate the cache when max users has been reched
 
-		private readonly IConfig config;
 		private readonly IList<IUser> cachedUsers = new List<IUser>();
 		private readonly Hashtable cachedMap = new Hashtable();
 		private readonly object padlock = new object();
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private int maxUsersInCache = -1; // If zero, then the cache can grow unrestrainedly
 
-		public GenericUserCache(IConfig config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-			this.config = config;
-		}
+		public GenericUserCache(IConfig config) : base(config){}
 
 		private int MinutesInCache {
 			get {
 				if(this.minutesInCache < 0) {
-					if(this.config.ContainsKey("cache", "minutesToCacheUser"))
-						this.minutesInCache = this.config.GetValue<int>("cache", "minutesToCacheUser");
+					if(this.Config.ContainsKey("cache", "minutesToCacheUser"))
+						this.minutesInCache = this.Config.GetValue<int>("cache", "minutesToCacheUser");
 					else
 						this.minutesInCache = 0;
 				}
@@ -65,8 +59,8 @@ namespace nJupiter.DataAccess.Users.Caching {
 		private int MaxUsersInCache {
 			get {
 				if(this.maxUsersInCache < 0) {
-					if(this.config.ContainsKey("cache", "maxUsersInCache")) {
-						this.maxUsersInCache = this.config.GetValue<int>("cache", "maxUsersInCache");
+					if(this.Config.ContainsKey("cache", "maxUsersInCache")) {
+						this.maxUsersInCache = this.Config.GetValue<int>("cache", "maxUsersInCache");
 						if(this.maxUsersInCache < MinimumCacheSize && this.maxUsersInCache != 0)
 							this.maxUsersInCache = MinimumCacheSize;
 					} else {
@@ -83,25 +77,25 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 		}
 
-		public IUser GetUserById(string userId) {
+		public override IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
 			return GetUserFromCacheMap(userId);
 		}
 
-		public IUser GetUserByUserName(string userName, string domain) {
+		public override IUser GetUserByUserName(string userName, string domain) {
 			if(userName == null || this.MinutesInCache == 0)
 				return null;
 			return GetUserFromCacheMap(userName, domain);
 		}
 
-		public void RemoveUserFromCache(IUser user) {
+		public override void RemoveUserFromCache(IUser user) {
 			if(user != null) {
 				RemoveUserFromCache(user, GetCacheMapId(user));
 			}
 		}
 
-		public void RemoveUsersFromCache(IList<IUser> users) {
+		public override void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
 				foreach(IUser user in users) {
 					this.RemoveUserFromCache(user);
@@ -109,7 +103,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 		}
 
-		public void AddUserToCache(IUser user) {
+		public override void AddUserToCache(IUser user) {
 			if(user != null && this.MinutesInCache > 0) {
 				lock(padlock) {
 					if(this.cachedUsers.Contains(user))
@@ -129,7 +123,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 		}
 
-		public void AddUsersToCache(IList<IUser> users) {
+		public override void AddUsersToCache(IList<IUser> users) {
 			if(users != null && this.MinutesInCache > 0) {
 				foreach(IUser user in users) {
 					this.AddUserToCache(user);

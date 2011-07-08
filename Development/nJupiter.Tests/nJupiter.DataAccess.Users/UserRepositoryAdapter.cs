@@ -5,20 +5,9 @@ using nJupiter.DataAccess.Users;
 using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.Tests.DataAccess.Users {
-	public class UserRepositoryAdapter : UserRepositoryBase, IUserRepositoryFactory {
+	public class UserRepositoryAdapter : UserRepositoryBase {
 
-		public override string Name { get { return name; } }
-		public override IPredefinedNames PropertyNames { get { return predefinedNames; } }
-		public override IUserCache UserCache { get { return cache; } }
-
-		private readonly string name;
-		private readonly IPredefinedNames predefinedNames;
-		private readonly IUserCache cache;
-
-		public UserRepositoryAdapter(string name, IPredefinedNames predefinedNames, IUserCache cache) {
-			this.name = name;
-			this.predefinedNames = predefinedNames;
-			this.cache = cache;
+		public UserRepositoryAdapter(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) : base(name, config, predefinedNames, cache){
 		}
 
 		private readonly IUserRepository repository;
@@ -110,8 +99,5 @@ namespace nJupiter.Tests.DataAccess.Users {
 			return this.repository.GetProperties(user, context);
 		}
 
-		public IUserRepository Create(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) {
-			return new UserRepositoryAdapter(name, predefinedNames, cache);
-		}
 	}
 }

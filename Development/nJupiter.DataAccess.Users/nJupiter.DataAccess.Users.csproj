@@ -72,14 +72,11 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\Caching\GenericUserCacheFactory.cs" />
-    <Compile Include="Src\Caching\HttpRuntimeUserCacheFactory.cs" />
-    <Compile Include="Src\Caching\IUserCacheFactory.cs" />
+    <Compile Include="Src\Caching\UserCacheBase.cs" />
     <Compile Include="Src\ContextSchema.cs" />
     <Compile Include="Src\CompareCondition.cs" />
     <Compile Include="Src\ILockable.cs" />
     <Compile Include="Src\IUserRepository.cs" />
-    <Compile Include="Src\IUserRepositoryFactory.cs" />
     <Compile Include="Src\IUserRepositoryManager.cs" />
     <Compile Include="Src\Properties\Property`T.cs" />
     <Compile Include="Src\Properties\IPredefinedProperties.cs" />
