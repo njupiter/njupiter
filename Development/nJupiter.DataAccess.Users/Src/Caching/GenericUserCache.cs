@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using nJupiter.Configuration;
 
@@ -97,7 +98,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		public override void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
-				foreach(IUser user in users) {
+				foreach(var user in users) {
 					this.RemoveUserFromCache(user);
 				}
 			}
@@ -115,8 +116,8 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 					user.MakeReadOnly();
 					
-					CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
-					CachedUser cachedUser = new CachedUser(user);
+					var cacheMapId = new CacheMapId(user.UserName, user.Domain);
+					var cachedUser = new CachedUser(user);
 					this.cachedMap.Add(cacheMapId, cachedUser);
 					this.cachedUsers.Add(user);
 				}
@@ -125,7 +126,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		public override void AddUsersToCache(IList<IUser> users) {
 			if(users != null && this.MinutesInCache > 0) {
-				foreach(IUser user in users) {
+				foreach(var user in users) {
 					this.AddUserToCache(user);
 				}
 			}
@@ -146,23 +147,18 @@ namespace nJupiter.DataAccess.Users.Caching {
 				if(user == null) {
 					return null;
 				}
-				CacheMapId cacheMapId = new CacheMapId(user.UserName, user.Domain);
+				var cacheMapId = new CacheMapId(user.UserName, user.Domain);
 				return GetUserFromCacheMap(cacheMapId);
 			}
 		}
 
 		private IUser GetUser(string userId) {
-			foreach(IUser u in cachedUsers) {
-				if(u.Id.Equals(userId)) {
-					return u;
-				}
-			}
-			return null;
+			return this.cachedUsers.FirstOrDefault(u => u.Id.Equals(userId));
 		}
 
 		private IUser GetUserFromCacheMap(string userName, string domain) {
 			lock(padlock) {
-				CacheMapId cacheMapId = new CacheMapId(userName, domain);
+				var cacheMapId = new CacheMapId(userName, domain);
 				return GetUserFromCacheMap(cacheMapId);
 			}
 		}
@@ -172,7 +168,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 				if(!this.cachedMap.Contains(cacheMapId))
 					return null;
 
-				CachedUser cachedUser = (CachedUser)this.cachedMap[cacheMapId];
+				var cachedUser = (CachedUser)this.cachedMap[cacheMapId];
 
 				// Remove user from cache if the cache time has expired
 				if(cachedUser.DateCreated > DateTime.Now.AddMinutes(this.MinutesInCache)) {
@@ -193,15 +189,15 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		private void TruncateCache() {
 
-			ArrayList truncateList = new ArrayList(this.cachedMap);
+			var truncateList = new ArrayList(this.cachedMap);
 			truncateList.Sort(CachedUserComparer.Instance);
 			int itemsToRemove = ((this.MaxUsersInCache * CacheTruncationFactor) / 100) + (truncateList.Count - this.MaxUsersInCache);
-			DateTime cacheTime = DateTime.Now.AddMinutes(this.MinutesInCache);
+			var cacheTime = DateTime.Now.AddMinutes(this.MinutesInCache);
 
 			// Remove users from cahce, remove atleast a factor of [CacheTruncationFactor] from the cache
 			// If not enough users has a cache time that has expired the oldest cached objects will be removed
 			foreach(DictionaryEntry dicEntry in truncateList) {
-				CachedUser cachedUser = (CachedUser)dicEntry.Value;
+				var cachedUser = (CachedUser)dicEntry.Value;
 				if(cachedUser.User != null) {
 					if(itemsToRemove <= 0 && cachedUser.DateCreated < cacheTime)
 						break;
@@ -232,14 +228,14 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 			#region IComparer Members
 			public int Compare(object x, object y) {
-				DictionaryEntry xEntry = (DictionaryEntry)x;
-				DictionaryEntry yEntry = (DictionaryEntry)y;
+				var xEntry = (DictionaryEntry)x;
+				var yEntry = (DictionaryEntry)y;
 
 				if(xEntry.Value == null || yEntry.Value == null)
 					return 0;
 
-				CachedUser xCachedUser = (CachedUser)xEntry.Value;
-				CachedUser yCachedUser = (CachedUser)yEntry.Value;
+				var xCachedUser = (CachedUser)xEntry.Value;
+				var yCachedUser = (CachedUser)yEntry.Value;
 
 				if(xCachedUser.User == null || yCachedUser.User == null)
 					return 0;
@@ -274,7 +270,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 
 			public override bool Equals(object obj) {
-				CacheMapId map = (CacheMapId)obj;
+				var map = (CacheMapId)obj;
 				if(map.userName == null)
 					return false;
 				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain);

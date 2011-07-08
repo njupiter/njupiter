@@ -21,12 +21,12 @@ namespace nJupiter.Configuration {
 		}
 
 		public static IConfig Create(string path) {
-			FileInfo file = new FileInfo(path);
+			var file = new FileInfo(path);
 			return Create(null, file, ConfigSourceFactory.CreateConfigSource(file, false));
 		}
 
 		public static IConfig Create(string configKey, string path) {
-			FileInfo file = new FileInfo(path);
+			var file = new FileInfo(path);
 			return Create(configKey, file, ConfigSourceFactory.CreateConfigSource(file, false));
 		}
 
@@ -39,7 +39,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public static IConfig Create(string configKey, string path, IConfigSource configSource) {
-			FileInfo file = new FileInfo(path);
+			var file = new FileInfo(path);
 			return Create(configKey, file, configSource);
 		}
 
@@ -57,12 +57,12 @@ namespace nJupiter.Configuration {
 		}
 
 		public static IConfig Create(string path, bool attachWatcher) {
-			FileInfo file = new FileInfo(path);
+			var file = new FileInfo(path);
 			return Create(null, file, ConfigSourceFactory.CreateConfigSource(file, attachWatcher));
 		}
 
 		public static IConfig Create(string configKey, string path, bool attachWatcher) {
-			FileInfo file = new FileInfo(path);
+			var file = new FileInfo(path);
 			return Create(configKey, file, ConfigSourceFactory.CreateConfigSource(file, attachWatcher));
 		}
 

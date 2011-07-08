@@ -98,7 +98,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual IUser GetUserById(string userId, bool loadAllContexts) {
-			IUser user = this.GetUserById(userId);
+			var user = this.GetUserById(userId);
 			if(loadAllContexts){
 				this.LoadAndAttachAllContextsForUser(user);
 			}
@@ -106,7 +106,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual IUser GetUserByUserName(string userName, string domain, bool loadAllContexts) {
-			IUser user = this.GetUserByUserName(userName, domain);
+			var user = this.GetUserByUserName(userName, domain);
 			if(loadAllContexts){
 				this.LoadAndAttachAllContextsForUser(user);
 			}
@@ -140,7 +140,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual IUser CreateUserInstance(string userName, string domain, bool loadAllContexts) {
-			IUser user = this.CreateUserInstance(userName, domain);
+			var user = this.CreateUserInstance(userName, domain);
 			if(loadAllContexts){
 				this.LoadAndAttachAllContextsForUser(user);
 			}
@@ -165,7 +165,7 @@ namespace nJupiter.DataAccess.Users {
 
 		protected void LoadAndAttachAllContextsForUser(IUser user) {
 			if(user != null){
-				foreach(IContext context in this.GetContexts()) {
+				foreach(var context in this.GetContexts()) {
 					if(!user.Properties.AttachedContexts.Contains(context)){
 						var properties = this.GetProperties(user, context);
 						user.Properties.AttachProperties(properties);
@@ -175,7 +175,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		protected void LoadAndAttachAllContextsForUsers(IList<IUser> users) {
-			foreach(IUser user in users) {
+			foreach(var user in users) {
 				this.LoadAndAttachAllContextsForUser(user);
 			}
 		}

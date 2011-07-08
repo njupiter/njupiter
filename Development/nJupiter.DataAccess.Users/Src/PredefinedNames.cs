@@ -38,7 +38,7 @@ namespace nJupiter.DataAccess.Users {
 
 		private readonly IPredefinedNames contextNames;
 
-		internal PredefinedNames(
+		public PredefinedNames(
 			string username,
 			string fullname,
 			string firstname,

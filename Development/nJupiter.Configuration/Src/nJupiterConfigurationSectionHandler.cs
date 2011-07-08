@@ -52,7 +52,7 @@ namespace nJupiter.Configuration {
 		}
 
 		private static IConfig GetConfigInternal() {
-			XmlElement configElement = System.Configuration.ConfigurationManager.GetSection(ConfigElement) as XmlElement;
+			var configElement = ConfigurationManager.GetSection(ConfigElement) as XmlElement;
 			if(configElement != null) {
 				return ConfigFactory.Create(ConfigElement, configElement);
 			}

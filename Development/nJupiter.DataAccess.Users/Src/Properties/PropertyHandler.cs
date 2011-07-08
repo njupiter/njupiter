@@ -75,7 +75,7 @@ namespace nJupiter.DataAccess.Users {
 				throw new ArgumentNullException("properties");
 			}
 
-			IContext context = GetContextFromPropertyCollection(properties);
+			var context = GetContextFromPropertyCollection(properties);
 			if(!ValidatePropertyCollection(properties, context)) {
 				throw new ArgumentException("The attached PropertyCollection does not match the attached Schema.");
 			}
@@ -87,12 +87,12 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public T GetValue<T>(string propertyName, IContext context) {
-			IProperty porperty = this.GetProperty(propertyName, context);
+			var porperty = this.GetProperty(propertyName, context);
 			return GetValue<T>(porperty);
 		}
 
 		public T GetValue<T>(string propertyName, string contextName) {
-			IProperty porperty = this.GetProperty(propertyName, contextName);
+			var porperty = this.GetProperty(propertyName, contextName);
 			return GetValue<T>(porperty);
 		}
 
@@ -101,7 +101,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public IProperty GetProperty(string propertyName, string contextName) {
-			IContext context = GetContext(contextName);
+			var context = GetContext(contextName);
 			return this.GetProperty(propertyName, context);
 		}
 
@@ -125,7 +125,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public void SetProperty(string propertyName, IContext context, object value) {
-			IProperty property = this.GetProperty(propertyName, context);
+			var property = this.GetProperty(propertyName, context);
 			if(property == null) {
 				string incontext = Context.DefaultContext.Equals(context) ? "default context" : string.Format("context '{0}'", context.Name);
 				throw new ArgumentException(string.Format("Property with name '{0}' in {1} is either not loader or does not exist.", propertyName, incontext));
@@ -267,7 +267,7 @@ namespace nJupiter.DataAccess.Users {
 			string propertyName = this.propertyNames.GetName(key);
 			string contextName = this.propertyNames.ContextNames.GetName(key);
 			if(propertyName != null) {
-				IProperty property = this.GetProperty(propertyName, contextName);
+				var property = this.GetProperty(propertyName, contextName);
 				if(property != null) {
 					property.Value = value;
 				}

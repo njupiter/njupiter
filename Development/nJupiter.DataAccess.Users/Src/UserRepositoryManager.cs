@@ -74,7 +74,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private IUserRepository GetRepositoryFromCacheOrCreate(string section, string name) {
-			IUserRepository userRepository = GetRepositoryFromCache(name);
+			var userRepository = GetRepositoryFromCache(name);
 			if(userRepository == null) {
 				lock(this.padlock) {
 					userRepository = GetRepositoryFromCache(name);
@@ -110,7 +110,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private static object CreateInstance(string typeName, params object[] constructorParameters) {
-			Type userReporistoryType = System.Type.GetType(typeName, true, true);
+			var userReporistoryType = Type.GetType(typeName, true, true);
 			if(userReporistoryType == null) {
 				throw new ApplicationException(string.Format("Type '{0}' not found", typeName));
 			}

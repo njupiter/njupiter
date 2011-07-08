@@ -41,7 +41,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual bool IsEmpty() {
-			return object.Equals(value, default(T)) || (value is string && value.ToString().Length == 0);
+			return Equals(value, default(T)) || (value is string && value.ToString().Length == 0);
 		}
 
 		public abstract string ToSerializedString();
@@ -85,7 +85,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private bool CheckIfDirty(T v) {
-			if(this.SetDirtyOnTouch || !object.Equals(v, value)) {
+			if(this.SetDirtyOnTouch || !Equals(v, value)) {
 				return true;
 			}
 			return false;

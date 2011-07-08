@@ -32,8 +32,7 @@ namespace nJupiter.DataAccess.Users {
 	[Serializable]
 	public class Context : IContext {
 
-		private static readonly IContext defaultContext = new Context();
-		public static IContext DefaultContext { get { return defaultContext; } }
+		public static readonly IContext DefaultContext = new Context();
 
 		private readonly string name;
 
@@ -55,7 +54,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override bool Equals(object obj) {
-			IContext context = obj as IContext;
+			var context = obj as IContext;
 			if(context == null) {
 				return false;
 			}

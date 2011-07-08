@@ -33,7 +33,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public static IConfigSource CreateConfigSource(object source, bool addWatcher) {
-			FileInfo fileInfo = source as FileInfo;
+			var fileInfo = source as FileInfo;
 			if(fileInfo != null) {
 				FileConfigSourceWatcher watcher = null;
 				if(addWatcher){
@@ -41,7 +41,7 @@ namespace nJupiter.Configuration {
 				}
 				return new FileConfigSource(fileInfo, watcher);
 			}
-			Uri uri = source as Uri;
+			var uri = source as Uri;
 			if(uri != null) {
 				return new UriConfigSource(uri);
 			}

@@ -62,14 +62,14 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public object Clone() {
-			var newUser = (User)this.MemberwiseClone();
+			var newUser = (User)MemberwiseClone();
 			newUser.isReadOnly = false;
 			newUser.properties = (IPropertyHandler)properties.Clone();
 			return newUser;
 		}
 
 		public override bool Equals(object obj) {
-			User objUser = obj as User;
+			var objUser = obj as User;
 			return objUser != null && objUser.Id.Equals(this.Id);
 		}
 

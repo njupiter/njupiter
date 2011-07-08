@@ -56,7 +56,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public override bool Equals(object obj) {
-			PropertyDefinition propertyDefinition = obj as PropertyDefinition;
+			var propertyDefinition = obj as PropertyDefinition;
 			return propertyDefinition != null &&
 					propertyDefinition.PropertyName.Equals(this.PropertyName) &&
 					propertyDefinition.PropertyType.Equals(this.PropertyType);

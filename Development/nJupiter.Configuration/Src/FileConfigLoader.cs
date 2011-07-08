@@ -74,18 +74,18 @@ namespace nJupiter.Configuration {
 
 		private void LoadConfigsIntoCollectionFromFiles(string pattern, ConfigCollection configs) {
 			if(pattern.IndexOfAny(IllegalPathCharacters) < 0) {
-				IEnumerable<FileInfo> files = GetFiles(pattern);
-				foreach(FileInfo file in files) {
-					IConfig config = FileConfigFactory.Create(file, addFileWatchers);
+				var files = GetFiles(pattern);
+				foreach(var file in files) {
+					var config = FileConfigFactory.Create(file, addFileWatchers);
 					configs.Add(config);
 				}
 			}
 		}
 
 		private IEnumerable<FileInfo> GetFiles(string pattern) {
-			List<FileInfo> files = new List<FileInfo>();
+			var files = new List<FileInfo>();
 			foreach(string path in this.configPaths) {
-				DirectoryInfo dir = GetDirectory(path);
+				var dir = GetDirectory(path);
 				if(dir.Exists) {
 					var fileArray = this.GetFiles(pattern, dir);
 					files.AddRange(fileArray);

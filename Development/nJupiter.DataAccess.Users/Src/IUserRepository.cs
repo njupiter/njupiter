@@ -153,7 +153,7 @@ namespace nJupiter.DataAccess.Users {
 		/// <param name="pageSize">The size of the page of results to return.</param>
 		/// <param name="totalRecords">The total number of matched users.</param>
 		/// <returns>
-		/// A <see cref="T:nJupiter.DataAccess.Users.UserCollection"/> collection that contains a page of <paramref name="pageSize"/><see cref="T:nJupiter.DataAccess.Users.User"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
+		/// A collection that contains a page of <paramref name="pageSize"/><see cref="T:nJupiter.DataAccess.Users.User"/> objects beginning at the page specified by <paramref name="pageIndex"/>.
 		/// </returns>
 		IList<IUser> GetAllUsers(int pageIndex, int pageSize, out int totalRecords);
 

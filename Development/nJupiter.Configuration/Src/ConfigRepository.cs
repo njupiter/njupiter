@@ -100,7 +100,7 @@ namespace nJupiter.Configuration {
 					if(this.configurations.Contains(configKey)){
 						return this.configurations[configKey];
 					}
-					IConfig config = this.configLoader.Load(configKey);
+					var config = this.configLoader.Load(configKey);
 					if(config == null) {
 						throw new ConfigurationException(string.Format("The config with the config key '{0}' was not found", configKey));
 					}

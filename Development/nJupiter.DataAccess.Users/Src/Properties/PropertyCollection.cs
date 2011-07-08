@@ -59,7 +59,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public void MakeReadOnly() {
 			isReadOnly = true;
-			foreach(IProperty property in innerList) {
+			foreach(var property in innerList) {
 				property.MakeReadOnly();
 			}
 		}

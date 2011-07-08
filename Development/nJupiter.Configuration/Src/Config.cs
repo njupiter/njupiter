@@ -84,7 +84,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public T GetAttribute<T>(string section, string key, string attribute) {
-			XmlNode node = this.GetKey(section, key);
+			var node = this.GetKey(section, key);
 			if(node != null && (attribute == null || AttributeExistsInNode(attribute, node))) {
 				return this.GetValueFromXmlNode<T>(section, key, attribute, node);
 			}
@@ -97,7 +97,7 @@ namespace nJupiter.Configuration {
 
 		public T[] GetAttributeArray<T>(string section, string key, string attribute) {
 			string xpath = GetXPath(section, key, attribute);
-			XmlNodeList nodeList = this.ConfigXml.SelectNodes(xpath);
+			var nodeList = this.ConfigXml.SelectNodes(xpath);
 			var result = new T[nodeList.Count];
 			for(int i = 0; i < nodeList.Count; i++) {
 				result[i] = this.GetValueFromXmlNode<T>(section, key, attribute, nodeList[i]);
@@ -140,8 +140,8 @@ namespace nJupiter.Configuration {
 				return this.innerConfigurations[key];
 			lock(padlock) {
 				if(!this.innerConfigurations.Contains(key)) {
-					XmlNode node = this.ConfigXml.SelectSingleNode(section);
-					XmlElement configElement = node as XmlElement;
+					var node = this.ConfigXml.SelectSingleNode(section);
+					var configElement = node as XmlElement;
 
 					if(configElement == null)
 						return null;
@@ -161,7 +161,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public bool ContainsAttribute(string section, string key, string attribute) {
-			XmlNode node = this.GetKey(section, key);
+			var node = this.GetKey(section, key);
 			if(node == null) {
 				return false;
 			}
@@ -176,7 +176,7 @@ namespace nJupiter.Configuration {
 			if(!this.configRepositories.ContainsKey(section)) {
 				lock(padlock) {
 					if(!this.configRepositories.ContainsKey(section)) {
-						object result = this.GetConfigurationSectionHandlerInternal(section, configurationSectionHandlerType);
+						var result = this.GetConfigurationSectionHandlerInternal(section, configurationSectionHandlerType);
 						this.configRepositories.Add(section, result);
 					}
 				}
@@ -185,9 +185,9 @@ namespace nJupiter.Configuration {
 		}
 
 		private object GetConfigurationSectionHandlerInternal(string section, Type configurationSectionHandlerType) {
-			object result = System.Configuration.ConfigurationManager.GetSection(section);
+			var result = System.Configuration.ConfigurationManager.GetSection(section);
 			if(result == null) {
-				XmlNode node = this.configXml.SelectSingleNode(section);
+				var node = this.configXml.SelectSingleNode(section);
 				if(node != null) {
 					result = CreateConfigurationSectionHandler(node, configurationSectionHandlerType);
 				}
@@ -196,7 +196,7 @@ namespace nJupiter.Configuration {
 		}
 
 		private static object CreateConfigurationSectionHandler(XmlNode node, Type configurationSectionHandlerType) {
-			System.Configuration.IConfigurationSectionHandler configurationSectionHandler = Activator.CreateInstance(configurationSectionHandlerType) as System.Configuration.IConfigurationSectionHandler;
+			var configurationSectionHandler = Activator.CreateInstance(configurationSectionHandlerType) as System.Configuration.IConfigurationSectionHandler;
 			if(configurationSectionHandler != null) {
 				return configurationSectionHandler.Create(null, null, node);
 			}
@@ -221,13 +221,13 @@ namespace nJupiter.Configuration {
 			if(value == null && DefaultAttribute.Equals(attribute)){
 				value = node.InnerText;
 			}
-			CultureInfo nodeCulture = GetCultureFromNode(node);
+			var nodeCulture = GetCultureFromNode(node);
 
 			return this.ParseValue<T>(section, key, attribute, value, nodeCulture);
 		}
 
 		private static CultureInfo GetCultureFromNode(XmlNode node) {
-			XmlNodeReader nodeReader = new XmlNodeReader(node);
+			var nodeReader = new XmlNodeReader(node);
 			nodeReader.Read();
 			string lang = nodeReader.XmlLang;
 			if(!string.IsNullOrEmpty(lang)) {

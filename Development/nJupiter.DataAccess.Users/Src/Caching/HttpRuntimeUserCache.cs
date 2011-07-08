@@ -82,21 +82,21 @@ namespace nJupiter.DataAccess.Users.Caching {
 		public override IUser GetUserById(string userId) {
 			if(userId == null || this.MinutesInCache == 0)
 				return null;
-			UserIdCacheKey userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, userId);
+			var userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, userId);
 			return HttpRuntime.Cache[userIdCacheKey.CacheKey] as IUser;
 		}
 
 		public override IUser GetUserByUserName(string userName, string domain) {
 			if(userName == null || this.MinutesInCache == 0)
 				return null;
-			UsernameCacheKey usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, userName, domain);
+			var usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, userName, domain);
 			return HttpRuntime.Cache[usernameCacheKey.CacheKey] as IUser;
 		}
 
 		public override void RemoveUserFromCache(IUser user) {
 			if(user != null) {
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, user.Id);
+				var usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, user.UserName, user.Domain);
+				var userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, user.Id);
 				HttpRuntime.Cache.Remove(usernameCacheKey.CacheKey);
 				HttpRuntime.Cache.Remove(userIdCacheKey.CacheKey);
 			}
@@ -104,7 +104,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		public override void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
-				foreach(IUser user in users) {
+				foreach(var user in users) {
 					this.RemoveUserFromCache(user);
 				}
 			}
@@ -113,14 +113,14 @@ namespace nJupiter.DataAccess.Users.Caching {
 		public override void AddUserToCache(IUser user) {
 			if(user != null && this.MinutesInCache > 0) {
 				user.MakeReadOnly();
-				UsernameCacheKey usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, user.UserName, user.Domain);
-				UserIdCacheKey userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, user.Id);
+				var usernameCacheKey = new UsernameCacheKey(Config.ConfigKey, user.UserName, user.Domain);
+				var userIdCacheKey = new UserIdCacheKey(Config.ConfigKey, user.Id);
 				if(this.SlidingExpiration) {
-					TimeSpan expirationTime = new TimeSpan(0, 0, this.MinutesInCache, 0);
+					var expirationTime = new TimeSpan(0, 0, this.MinutesInCache, 0);
 					HttpRuntime.Cache.Add(usernameCacheKey.CacheKey, user, null, Cache.NoAbsoluteExpiration, expirationTime, this.CachePriority, null);
 					HttpRuntime.Cache.Add(userIdCacheKey.CacheKey, user, null, Cache.NoAbsoluteExpiration, expirationTime, this.CachePriority, null);
 				} else {
-					DateTime expirationTime = DateTime.Now.AddMinutes(this.MinutesInCache);
+					var expirationTime = DateTime.Now.AddMinutes(this.MinutesInCache);
 					HttpRuntime.Cache.Add(usernameCacheKey.CacheKey, user, null, expirationTime, Cache.NoSlidingExpiration, this.CachePriority, null);
 					HttpRuntime.Cache.Add(userIdCacheKey.CacheKey, user, null, expirationTime, Cache.NoSlidingExpiration, this.CachePriority, null);
 				}
@@ -129,7 +129,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 
 		public override void AddUsersToCache(IList<IUser> users) {
 			if(users != null && this.MinutesInCache > 0) {
-				foreach(IUser user in users) {
+				foreach(var user in users) {
 					this.AddUserToCache(user);
 				}
 			}
@@ -152,7 +152,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 
 			public override bool Equals(object obj) {
-				UserIdCacheKey map = (UserIdCacheKey)obj;
+				var map = (UserIdCacheKey)obj;
 				if(map.userId == null)
 					return false;
 				return map.userId.Equals(this.userId) && map.userProvider.Equals(this.userProvider);
@@ -197,7 +197,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 			}
 
 			public override bool Equals(object obj) {
-				UsernameCacheKey map = (UsernameCacheKey)obj;
+				var map = (UsernameCacheKey)obj;
 				if(map.userName == null)
 					return false;
 				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain) && map.userProvider.Equals(this.userProvider);

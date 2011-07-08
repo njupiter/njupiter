@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace nJupiter.DataAccess.Users {
 
 	public class ContextSchema : IEnumerable<PropertyDefinition> {
-		public readonly IList<PropertyDefinition> innerList;
+		private readonly IList<PropertyDefinition> innerList;
 		
 		public ContextSchema(IList<PropertyDefinition> innerList) {
 			this.innerList = innerList;

@@ -40,9 +40,9 @@ namespace nJupiter.DataAccess.Users.Web {
 		private HybridMembershipUser GetHybridMembershipUser(System.Web.Security.MembershipUser membershipUser) {
 			if(membershipUser == null)
 				return null;
-			string name = GetUserNameFromMembershipUserName(membershipUser.UserName);
-			string domain = GetDomainFromMembershipUserName(membershipUser.UserName);
-			IUser user = this.UserRepository.GetUserByUserName(name, domain);
+			var name = GetUserNameFromMembershipUserName(membershipUser.UserName);
+			var domain = GetDomainFromMembershipUserName(membershipUser.UserName);
+			var user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user == null) {
 				lock(padLock) {
 					user = this.UserRepository.GetUserByUserName(name, domain);
@@ -62,14 +62,14 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		private HybridMembershipUser GetHybridMembershipUser(string username) {
-			System.Web.Security.MembershipUser membershipUser = this.PrimaryMembershipProvider.GetUser(username, false);
+			var membershipUser = this.PrimaryMembershipProvider.GetUser(username, false);
 			return GetHybridMembershipUser(membershipUser);
 		}
 
 		private MembershipUserCollection GetHybridMembershipUserCollection(MembershipUserCollection membershipUserCollection) {
 			if(membershipUserCollection == null)
 				return null;
-			MembershipUserCollection hybridMembershipUserCollection = new MembershipUserCollection();
+			var hybridMembershipUserCollection = new MembershipUserCollection();
 			foreach(System.Web.Security.MembershipUser membershipUser in membershipUserCollection) {
 				hybridMembershipUserCollection.Add(this.GetHybridMembershipUser(membershipUser));
 			}
@@ -95,8 +95,8 @@ namespace nJupiter.DataAccess.Users.Web {
 			}
 		}
 
-		public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config) {
-			primaryMembershipProviderName = HybridMembershipProvider.GetStringConfigValue(config, "primaryMembershipProvider", string.Empty);
+		public override void Initialize(string name, NameValueCollection config) {
+			primaryMembershipProviderName = GetStringConfigValue(config, "primaryMembershipProvider", string.Empty);
 			if(string.IsNullOrEmpty(primaryMembershipProviderName)) {
 				throw new ConfigurationErrorsException("No primaryMembershipProvider configured");
 			}
@@ -106,7 +106,7 @@ namespace nJupiter.DataAccess.Users.Web {
 		public override bool ChangePassword(string username, string oldPassword, string newPassword) {
 			bool result = this.PrimaryMembershipProvider.ChangePassword(username, oldPassword, newPassword);
 			if(result) {
-				HybridMembershipUser user = GetHybridMembershipUser(username);
+				var user = GetHybridMembershipUser(username);
 				if(user != null) {
 					base.ChangePassword(username, oldPassword, newPassword, false);
 				}
@@ -118,7 +118,7 @@ namespace nJupiter.DataAccess.Users.Web {
 		public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer) {
 			bool result = this.PrimaryMembershipProvider.ChangePasswordQuestionAndAnswer(username, password, newPasswordQuestion, newPasswordAnswer);
 			if(result) {
-				HybridMembershipUser user = GetHybridMembershipUser(username);
+				var user = GetHybridMembershipUser(username);
 				if(user != null) {
 					base.ChangePasswordQuestionAndAnswer(username, password, newPasswordQuestion, newPasswordAnswer, false);
 				}
@@ -127,20 +127,20 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		private static string HashToString(string text) {
-			MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-			byte[] hashArray = md5.ComputeHash(Encoding.Unicode.GetBytes(text));
+			var md5 = new MD5CryptoServiceProvider();
+			var hashArray = md5.ComputeHash(Encoding.Unicode.GetBytes(text));
 			return BitConverter.ToString(hashArray).Replace("-", string.Empty);
 		}
 
 		public override System.Web.Security.MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status) {
-			System.Web.Security.MembershipUser membershipUser = this.PrimaryMembershipProvider.CreateUser(username, password, email, passwordQuestion, passwordAnswer, isApproved, providerUserKey, out status);
+			var membershipUser = this.PrimaryMembershipProvider.CreateUser(username, password, email, passwordQuestion, passwordAnswer, isApproved, providerUserKey, out status);
 			if(membershipUser == null)
 				return null;
 			if(status.Equals(MembershipCreateStatus.Success)) {
 				string userId;
-				object providerId = membershipUser.ProviderUserKey ?? membershipUser.UserName;
+				var providerId = membershipUser.ProviderUserKey ?? membershipUser.UserName;
 				try {
-					Guid guid = new Guid(providerId.ToString());
+					var guid = new Guid(providerId.ToString());
 					userId = guid.ToString("N");
 				} catch(FormatException) {
 					userId = HashToString(providerId.ToString());
@@ -270,7 +270,7 @@ namespace nJupiter.DataAccess.Users.Web {
 		public override bool UnlockUser(string username) {
 			bool result = this.PrimaryMembershipProvider.UnlockUser(username);
 			if(result) {
-				HybridMembershipUser user = GetHybridMembershipUser(username);
+				var user = GetHybridMembershipUser(username);
 				if(user != null) {
 					base.UnlockUser(username);
 				}
@@ -279,7 +279,7 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		public override void UpdateUser(System.Web.Security.MembershipUser user) {
-			HybridMembershipUser hybridMembershipUser = user as HybridMembershipUser;
+			var hybridMembershipUser = user as HybridMembershipUser;
 			if(hybridMembershipUser == null) {
 				throw new ArgumentException(string.Format("User is not of type {0}", typeof(HybridMembershipUser).Name), "user");
 			}
