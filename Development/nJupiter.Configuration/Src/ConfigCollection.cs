@@ -66,7 +66,7 @@ namespace nJupiter.Configuration {
 		public void Remove(string configKey) {
 			lock(padLock){
 				if(this.Contains(configKey)){
-					IConfig config = this[configKey];
+					var config = this[configKey];
 					config.Discarded -= this.ConfigDiscard;
 				}
 				this.InnerDictionary.Remove(configKey);

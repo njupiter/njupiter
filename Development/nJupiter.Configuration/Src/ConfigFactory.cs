@@ -30,7 +30,7 @@ namespace nJupiter.Configuration {
 	public static class ConfigFactory {
 		
 		public static IConfig Create(string configKey, Stream stream, IConfigSource source) {
-			XmlElement xmlElement = GetConfigXmlElement(stream);
+			var xmlElement = GetConfigXmlElement(stream);
 			return new Config(configKey, xmlElement, source);
 		}
 
@@ -47,20 +47,20 @@ namespace nJupiter.Configuration {
 			if(configStream == null) {
 				throw new ArgumentNullException("configStream");
 			}
-			XmlElement xmlElement = GetDocumentElementFromStream(configStream);
+			var xmlElement = GetDocumentElementFromStream(configStream);
 			return GetXmlElementFromXmlNode(xmlElement);
 		}
 
 		private static XmlElement GetDocumentElementFromStream(Stream configStream) {
-			XmlDocument doc = new XmlDocument();
+			var doc = new XmlDocument();
 			var reader = CreateXmlReaderFromStream(configStream);
 			doc.Load(reader);
 			return doc.DocumentElement;
 		}
 
 		private static XmlReader CreateXmlReaderFromStream(Stream configStream) {
-			XmlReaderSettings readerSettings = new XmlReaderSettings();
-			XmlTextReader xtr = new XmlTextReader(configStream);
+			var readerSettings = new XmlReaderSettings();
+			var xtr = new XmlTextReader(configStream);
 			readerSettings.ValidationType = ValidationType.None;
 			xtr.EntityHandling = EntityHandling.ExpandEntities;
 			return XmlReader.Create(xtr, readerSettings);
@@ -71,8 +71,8 @@ namespace nJupiter.Configuration {
 				throw new ArgumentNullException("element");
 			// Copy the xml data into the root of a new document
 			// this isolates the xml config data from the rest of  the document
-			XmlDocument newDoc = new XmlDocument();
-			XmlElement newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
+			var newDoc = new XmlDocument();
+			var newElement = (XmlElement)newDoc.AppendChild(newDoc.ImportNode(element, true));
 			return newElement;
 		}
 	}

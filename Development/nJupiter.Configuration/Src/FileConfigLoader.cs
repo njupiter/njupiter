@@ -84,7 +84,7 @@ namespace nJupiter.Configuration {
 
 		private IEnumerable<FileInfo> GetFiles(string pattern) {
 			var files = new List<FileInfo>();
-			foreach(string path in this.configPaths) {
+			foreach(var path in this.configPaths) {
 				var dir = GetDirectory(path);
 				if(dir.Exists) {
 					var fileArray = this.GetFiles(pattern, dir);
