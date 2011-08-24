@@ -69,7 +69,10 @@ namespace nJupiter.Globalization {
 
 			cultureInfo = new CultureInfo(name);
 
-			IConfig config = ConfigRepository.Instance.GetSystemConfig();
+			var config = ConfigRepository.Instance.GetConfig(ConfigRepository.Instance.SystemConfigKey, true);
+			if(config == null) {
+				return cultureInfo;
+			}
 
 			string dateTimeFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/dateTimeFormat", name);
 			if(config.ContainsKey(dateTimeFormatConfigKey)) {
