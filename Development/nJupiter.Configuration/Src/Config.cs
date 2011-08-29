@@ -29,7 +29,7 @@ using System.Collections.Generic;
 
 namespace nJupiter.Configuration {
 
-	public class Config : IConfig {
+	public class Config : IConfig, IDisposable {
 
 		private readonly ConfigCollection innerConfigurations = new ConfigCollection();
 		private readonly Dictionary<string, object> configRepositories = new Dictionary<string, object>();
@@ -258,10 +258,14 @@ namespace nJupiter.Configuration {
 		}
 
 		public void Discard(object source, EventArgs e) {
-			this.Discard();
+			this.Dispose();
 		}
 
 		public void Discard() {
+			this.Dispose();
+		}
+
+		private void Dispose(bool disposing) {
 			if(!this.isDiscarded) {
 				lock(padlock){
 					if(!this.isDiscarded) {
@@ -269,16 +273,23 @@ namespace nJupiter.Configuration {
 						if(this.source != null && this.source.Watcher != null) {
 							this.source.Watcher.ConfigSourceUpdated -= this.Discard;
 						}
-						if(this.Discarded != null) {
+						if(disposing && this.Discarded != null) {
 							this.Discarded(this, EventArgs.Empty);
 						}
 					}
 				}
 			}
+			if(disposing){
+				GC.SuppressFinalize(this);
+			}
+		}
+
+		public void Dispose() {
+			Dispose(true);
 		}
 
 		~Config() {
-			this.Discard();
+			this.Dispose(false);
 		}
 	}
 }
