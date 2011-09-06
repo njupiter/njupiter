@@ -5,8 +5,7 @@ using NUnit.Framework;
 
 namespace nJupiter.Services.Forum {
 
-	[Ignore] //Old tests depending on db
-	[TestFixture]
+	[TestFixture, Ignore("Old tests depending on db")]
 	public class ForumTest {
 		private const string	Domain = "sv-SE";
 		private ForumDao		forumDao;
