@@ -77,7 +77,9 @@ namespace nJupiter.Configuration {
 				var files = GetFiles(pattern);
 				foreach(var file in files) {
 					var config = FileConfigFactory.Create(file, addFileWatchers);
-					configs.Add(config);
+					if(!configs.Contains(config.ConfigKey)) {
+						configs.Add(config);
+					}
 				}
 			}
 		}

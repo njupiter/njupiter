@@ -76,6 +76,10 @@
     <Content Include="Debug Tools\UserInformation.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\FakeItEasy-SL.dll" />
+    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\FakeItEasy.dll" />
+    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\FakeItEasy.xml" />
+    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\License.txt" />
     <Content Include="Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
     <Content Include="Libraries\Log4Net\Compile Version\readme.txt" />
     <Content Include="Libraries\Log4Net\V1.2.10.0\.NET 1.1\log4net.dll" />
@@ -84,8 +88,13 @@
     <Content Include="Libraries\Log4Net\V1.2.10.0\.NET 2.0\log4net.xml" />
     <Content Include="Libraries\Log4Net\V1.2.9.0\log4net.dll" />
     <Content Include="Libraries\Log4Net\V1.2.9.0\log4net.xml" />
-    <Content Include="Libraries\NUnit\V2.2.8\nunit.framework.dll" />
     <None Include="Snippets\Visual C#\AutoCode\rm.snippet" />
+    <Content Include="Libraries\NUnit\V2.5.10\license.txt" />
+    <Content Include="Libraries\NUnit\V2.5.10\nunit.framework.dll" />
+    <Content Include="Libraries\NUnit\V2.5.10\nunit.framework.xml" />
+    <Content Include="Libraries\NUnit\V2.5.10\nunit.mocks.dll" />
+    <Content Include="Libraries\NUnit\V2.5.10\pnunit.framework.dll" />
+    <Content Include="Libraries\NUnit\V2.5.10\url.txt" />
     <Content Include="ReadMe.txt" />
     <Content Include="Templates\nJupiter.VisualStudio.TemplateWizards.dll" />
     <Content Include="Templates\ReadMe.txt" />
