@@ -53,6 +53,9 @@ namespace nJupiter.Web.UI.Controls {
 
 	[ParseChildren(true), PersistChildren(false)]
 	public abstract class WebNavigation : Control {
+		#region Constants
+		private const string RenderIdKey = "v_RenderId";
+		#endregion
 
 		#region UI Members
 		private readonly WebHeading hedHeadline = new WebHeading();
@@ -74,6 +77,15 @@ namespace nJupiter.Web.UI.Controls {
 		#endregion
 
 		#region	Properties
+		public bool RenderId {
+			get {
+				if (this.ViewState[RenderIdKey] == null)
+					return false;
+				return (bool)this.ViewState[RenderIdKey];
+			}
+			set { this.ViewState[RenderIdKey] = value; }
+		}
+
 		public int VisibleChildren { get { return this.visibleChildren; } }
 		public int VisibleDescendants { get { return this.visibleDescendants; } }
 		public int VisibleLevels { get { return this.visibleLevels; } }
@@ -330,7 +342,7 @@ namespace nJupiter.Web.UI.Controls {
 		public override void DataBind() {
 
 			if(this.HeaderTemplate == null)
-				this.HeaderTemplate = new DefaultHeaderTemplate(this.CssClass);
+				this.HeaderTemplate = new DefaultHeaderTemplate(this.RenderId ? this.ID : null, this.CssClass);
 			if(this.ItemTemplate == null)
 				this.ItemTemplate = new DefaultItemTemplate();
 			if(this.FooterTemplate == null)
@@ -629,19 +641,23 @@ namespace nJupiter.Web.UI.Controls {
 		#region Inner Classes
 		private sealed class DefaultHeaderTemplate : ITemplate {
 
+			private readonly string id;
 			private readonly string cssClass;
 
-			public DefaultHeaderTemplate(string cssClass) {
+			public DefaultHeaderTemplate(string id, string cssClass) {
+				this.id = id;
 				this.cssClass = cssClass;
 			}
 
 			public void InstantiateIn(Control container) {
 				WebPlaceHolder ulBeginTag = new WebPlaceHolder();
-				string css = string.Empty;
+				string idAttribute = string.Empty;
+				if(!string.IsNullOrEmpty(this.id))
+					idAttribute = " id=\"" + this.id + "\"";
+				string cssAttribute = string.Empty;
 				if(!string.IsNullOrEmpty(this.cssClass))
-					css = " class=\"" + this.cssClass + "\"";
-
-				ulBeginTag.InnerHtml = "<ul" + css + ">";
+					cssAttribute = " class=\"" + this.cssClass + "\"";
+				ulBeginTag.InnerHtml = "<ul" + idAttribute + cssAttribute + ">";
 				container.Controls.Add(ulBeginTag);
 			}
 		}
