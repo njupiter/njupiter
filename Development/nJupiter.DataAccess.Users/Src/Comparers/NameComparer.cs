@@ -24,7 +24,7 @@
 
 using System.Collections;
 
-namespace nJupiter.DataAccess.Users.Comparers {
+namespace nJupiter.DataAccess.Users.Comparers.Users {
 
 	public class NameComparer : IComparer {
 
@@ -63,8 +63,8 @@ namespace nJupiter.DataAccess.Users.Comparers {
 
 		#region IComparer Members
 		public int Compare(object x, object y) {
-			IUser xUser = x as IUser;
-			IUser yUser = y as IUser;
+			User xUser = x as User;
+			User yUser = y as User;
 
 			if(xUser == null || yUser == null)
 				return 0;

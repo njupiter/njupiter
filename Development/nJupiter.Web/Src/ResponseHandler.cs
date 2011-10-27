@@ -26,54 +26,50 @@ using System;
 using System.Web;
 
 namespace nJupiter.Web {
-	public class ResponseHandler : IResponseHandler {
-		
-		private readonly HttpContextBase context;
-		private readonly IMimeTypeHandler mimeTypeHandler;
-		private readonly IMimeType htmlMimeType = new MimeType("text/html");
-		private readonly IMimeType xhtmlMimeType = new MimeType("application/xhtml+xml");
 
-		private HttpContextBase CurrentContext { get { return context ?? new HttpContextWrapper(HttpContext.Current); } }
+	public static class ResponseHandler {
+		#region Constants
+		private const string HtmlMimeType = "text/html";
+		private const string XhtmlMimeType = "application/xhtml+xml";
+		#endregion
 
-		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, HttpContextBase context) {
-			this.mimeTypeHandler = mimeTypeHandler;
-			this.context = context;
-		}
+		#region Constructors
+		#endregion
 
-		public void Redirect(string url) {
+		#region Static Methods
+		public static void Redirect(string url) {
 			Redirect(url, false);
 		}
-		
-		public void Redirect(string url, bool permanently) {
+		public static void Redirect(string url, bool permanently) {
 			Redirect(url, permanently, true);
 		}
-		
-		public void Redirect(string url, bool permanently, bool endResponse) {
+		public static void Redirect(string url, bool permanently, bool endResponse) {
 			if(url == null)
 				throw new ArgumentNullException("url");
-			if(CurrentContext != null) {
-				CurrentContext.Response.Redirect(url, false);
+			if(HttpContext.Current != null) {
+				HttpContext.Current.Response.Redirect(url, false);
 				if(permanently) {
 					// http://www.faqs.org/rfcs/rfc2616.html
-					CurrentContext.Response.StatusCode = 301;
-					CurrentContext.Response.StatusDescription = "Moved Permanently";
+					HttpContext.Current.Response.StatusCode = 301;
+					HttpContext.Current.Response.StatusDescription = "Moved Permanently";
 				}
 				if(endResponse) {
-					CurrentContext.Response.End();
+					HttpContext.Current.Response.End();
 				}
 			}
 		}
 
-		public void PerformXhtmlContentNegotiation() {
-			if(CurrentContext.Response.ContentType != this.xhtmlMimeType.ContentType) {
-				var xhtml = mimeTypeHandler.GetHighestQuality(this.xhtmlMimeType);
-				var html = mimeTypeHandler.GetHighestQuality(this.htmlMimeType);
+		public static void PerformXhtmlContentNegotiation() {
+			if(HttpContext.Current.Response.ContentType != XhtmlMimeType) {
+				MimeTypeCollection mtc = RequestHandler.GetAcceptedTypes();
+				MimeType xhtml = mtc.GetHighestQuality(XhtmlMimeType);
+				MimeType html = mtc.GetHighestQuality(HtmlMimeType);
 				if(xhtml != null && xhtml.Quality != 0 && (html == null || xhtml.Quality >= html.Quality)) {
-					CurrentContext.Response.ContentType = this.xhtmlMimeType.ContentType;
+					HttpContext.Current.Response.ContentType = XhtmlMimeType;
 				}
 			}
 		}
-
+		#endregion
 	}
 
 }

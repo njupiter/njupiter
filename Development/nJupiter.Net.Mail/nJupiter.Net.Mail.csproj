@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,13 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>nJupiter.Net.Mail</RootNamespace>
     <AssemblyName>nJupiter.Net.Mail</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +45,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -67,12 +63,19 @@
     <Compile Include="Src\MailCollection.cs" />
     <Compile Include="Src\MailSender.cs" />
     <Compile Include="Src\SmtpClient.cs" />
-    <Compile Include="Src\StringHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
       <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
       <Name>nJupiter.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.IO\nJupiter.IO.csproj">
+      <Project>{8C758019-57ED-441C-B6BF-8E5543D49F05}</Project>
+      <Name>nJupiter.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Text\nJupiter.Text.csproj">
+      <Project>{00A1BB7C-3D6A-4B30-8D40-5F910C8E4CAA}</Project>
+      <Name>nJupiter.Text</Name>
     </ProjectReference>
     <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
       <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>

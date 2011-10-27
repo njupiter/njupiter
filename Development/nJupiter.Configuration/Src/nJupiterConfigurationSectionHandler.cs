@@ -22,9 +22,7 @@
 */
 #endregion
 
-using System;
 using System.Configuration;
-using System.Reflection;
 using System.Xml;
 
 namespace nJupiter.Configuration {
@@ -33,32 +31,6 @@ namespace nJupiter.Configuration {
 	/// Configuration section handler for nJupiter.Configuration
 	/// </summary>
 	public class nJupiterConfigurationSectionHandler : IConfigurationSectionHandler {
-
-		private const string ConfigElement = "nJupiterConfiguration";
-
-		public static IConfig GetConfig() {
-			try {
-				return GetConfigInternal();
-			} catch(System.Configuration.ConfigurationException ex) {
-				string configFile = AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString();
-				if(ex.BareMessage.IndexOf("Unrecognized element") >= 0) {
-					// Looks like the XML file is not valid
-					throw new ConfiguratorException(string.Format("Failed to parse config file '{0}'. Check your .config file is well formed XML", configFile), ex);
-				}
-				// This exception is typically due to the assembly name not being correctly specified in the section type.
-				string configSectionStr = string.Format("<section name=\"{0}\" type=\"nJupiter.Configuration.nJupiterConfigurationSectionHandler,{1}\" />", ConfigElement, Assembly.GetExecutingAssembly().FullName);
-				throw new ConfiguratorException(string.Format("Failed to parse config file '{0}'. Is the <configSections> specified as: {1}", configFile, configSectionStr), ex);
-			}
-		}
-
-		private static IConfig GetConfigInternal() {
-			var configElement = ConfigurationManager.GetSection(ConfigElement) as XmlElement;
-			if(configElement != null) {
-				return ConfigFactory.Create(ConfigElement, configElement);
-			}
-			return null;			
-		}
-
 		#region Implementation of IConfigurationSectionHandler
 		/// <summary>
 		/// Creates a configuration section handler.

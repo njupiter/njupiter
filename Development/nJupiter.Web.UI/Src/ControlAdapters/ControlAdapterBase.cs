@@ -43,11 +43,11 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		private static void Configure(object sender, EventArgs e) {
 			lock(PadLock) {
 				Dictionary<string, List<string>> array = new Dictionary<string, List<string>>();
-				IConfig config = ConfigRepository.Instance.GetSystemConfig();
+				Config config = ConfigHandler.GetSystemConfig();
 				if(config != null) {
-					IConfig controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
+					Config controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
 					if(controlAdapterConfig != null) {
-						XmlNodeList adapters = controlAdapterConfig.ConfigXml.SelectNodes("controlAdapter");
+						XmlNodeList adapters = controlAdapterConfig.ConfigXML.SelectNodes("controlAdapter");
 						if(adapters != null) {
 							foreach(XmlNode adapter in adapters) {
 								XmlAttribute nameAttribute = adapter.Attributes["name"];
@@ -67,7 +67,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 							}
 						}
 					}
-					config.Discarded += ControlAdapterBase.Configure;
+					config.Disposed += ControlAdapterBase.Configure;
 				}
 				excludedPathArray = array;
 			}

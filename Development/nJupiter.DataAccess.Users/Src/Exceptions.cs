@@ -35,11 +35,27 @@ namespace nJupiter.DataAccess.Users {
 	}
 
 	[Serializable]
-	public class UserNameAlreadyExistsException : UsersException {
+	public class DuplicateUserException : UsersException {
+		public DuplicateUserException() { }
+		public DuplicateUserException(string message) : base(message) { }
+		public DuplicateUserException(string message, Exception inner) : base(message, inner) { }
+		protected DuplicateUserException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+	[Serializable]
+	public class UserNameAlreadyExistsException : DuplicateUserException {
 		public UserNameAlreadyExistsException() { }
 		public UserNameAlreadyExistsException(string message) : base(message) { }
 		public UserNameAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
 		protected UserNameAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+	[Serializable]
+	public class UserNameEmptyException : UsersException {
+		public UserNameEmptyException() { }
+		public UserNameEmptyException(string message) : base(message) { }
+		public UserNameEmptyException(string message, Exception inner) : base(message, inner) { }
+		protected UserNameEmptyException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 	[Serializable]
@@ -56,6 +72,30 @@ namespace nJupiter.DataAccess.Users {
 		public ContextAlreadyExistsException(string message) : base(message) { }
 		public ContextAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
 		protected ContextAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+	[Serializable]
+	public class TypeMismatchException : UsersException {
+		public TypeMismatchException() { }
+		public TypeMismatchException(string message) : base(message) { }
+		public TypeMismatchException(string message, Exception inner) : base(message, inner) { }
+		protected TypeMismatchException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+	[Serializable]
+	public class UnsupportedTypeException : UsersException {
+		public UnsupportedTypeException() { }
+		public UnsupportedTypeException(string message) : base(message) { }
+		public UnsupportedTypeException(string message, Exception inner) : base(message, inner) { }
+		protected UnsupportedTypeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+	[Serializable]
+	public class PropertyCollectionMismatchException : UsersException {
+		public PropertyCollectionMismatchException() { }
+		public PropertyCollectionMismatchException(string message) : base(message) { }
+		public PropertyCollectionMismatchException(string message, Exception inner) : base(message, inner) { }
+		protected PropertyCollectionMismatchException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
 
 }

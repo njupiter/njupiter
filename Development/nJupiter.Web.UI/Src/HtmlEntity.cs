@@ -24,11 +24,8 @@
 
 namespace nJupiter.Web.UI {
 	public class HtmlEntity {
-		public const string Amp		= "&amp;";
-		public const string Apos	= "&apos;";
 		public const string Gt		= "&gt;";
 		public const string Lt		= "&lt;";
 		public const string Nbsp	= "&nbsp;";
-		public const string Quot	= "&quot;";
 	}
 }

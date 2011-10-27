@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -17,10 +16,9 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <NoWarn>1699</NoWarn>
@@ -39,13 +37,14 @@
     <None Include="Config\nJupiter.Services.Forum.UI.config" />
     <None Include="Config\nJupiter.Text.SimpleTextParser.config" />
     <None Include="Config\nJupiter.Web.UI.config" />
+    <None Include="Config\nJupiter.DataAccess.config" />
     <None Include="Config\nJupiter.DataAccess.DirectoryService.config" />
     <None Include="Config\nJupiter.DataAccess.Users.config" />
+    <None Include="Config\nJupiter.Messaging.config" />
     <None Include="Config\nJupiter.Services.Forum.config" />
     <None Include="Config\nJupiter.Web.UI.CssCompressor.config" />
     <None Include="Config\log4net.config" />
     <None Include="Config\System.config" />
-    <None Include="Config\web.config" />
     <None Include="Snippets\Visual C#\AutoCode\rco.snippet" />
     <None Include="Snippets\Visual C#\AutoCode\re.snippet" />
     <None Include="Snippets\Visual C#\AutoCode\reh.snippet" />
@@ -73,13 +72,6 @@
     <Content Include="Debug Tools\SystemInformation.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Debug Tools\UserInformation.aspx">
-      <SubType>ASPXCodeBehind</SubType>
-    </Content>
-    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\FakeItEasy-SL.dll" />
-    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\FakeItEasy.dll" />
-    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\FakeItEasy.xml" />
-    <Content Include="Libraries\FakeItEasy\V1.7.4257.42-NET3.5\License.txt" />
     <Content Include="Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
     <Content Include="Libraries\Log4Net\Compile Version\readme.txt" />
     <Content Include="Libraries\Log4Net\V1.2.10.0\.NET 1.1\log4net.dll" />
@@ -88,14 +80,8 @@
     <Content Include="Libraries\Log4Net\V1.2.10.0\.NET 2.0\log4net.xml" />
     <Content Include="Libraries\Log4Net\V1.2.9.0\log4net.dll" />
     <Content Include="Libraries\Log4Net\V1.2.9.0\log4net.xml" />
+    <Content Include="Libraries\NUnit\V2.2.8\nunit.framework.dll" />
     <None Include="Snippets\Visual C#\AutoCode\rm.snippet" />
-    <Content Include="Libraries\NUnit\V2.5.10\license.txt" />
-    <Content Include="Libraries\NUnit\V2.5.10\nunit.framework.dll" />
-    <Content Include="Libraries\NUnit\V2.5.10\nunit.framework.xml" />
-    <Content Include="Libraries\NUnit\V2.5.10\nunit.mocks.dll" />
-    <Content Include="Libraries\NUnit\V2.5.10\pnunit.framework.dll" />
-    <Content Include="Libraries\NUnit\V2.5.10\url.txt" />
-    <Content Include="ReadMe.txt" />
     <Content Include="Templates\nJupiter.VisualStudio.TemplateWizards.dll" />
     <Content Include="Templates\ReadMe.txt" />
   </ItemGroup>

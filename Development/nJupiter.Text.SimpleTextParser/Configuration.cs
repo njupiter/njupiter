@@ -40,19 +40,19 @@ namespace nJupiter.Text.SimpleTextParser {
 
 		private void Configure(object sender, EventArgs e) {
 			lock(Padlock) {
-				IConfig config = ConfigRepository.Instance.GetConfig();
-				IConfig configSection = this.GetConfigSection(config);
+				Config config = ConfigHandler.GetConfig();
+				Config configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 					this.formatter = FormatterFactory.GetFormatter(configSection);
 				}
 				// Auto reconfigure all values when this config object is disposed (droped from the cache)
-				config.Discarded += this.Configure;
+				config.Disposed += this.Configure;
 			}
 
 		}
 
-		private IConfig GetConfigSection(IConfig config) {
-			IConfig configSection;
+		private Config GetConfigSection(Config config) {
+			Config configSection;
 			if(string.IsNullOrEmpty(this.ruleSet)) {
 				configSection = config.GetConfigSection("rules[@default='true']");
 				if(configSection == null) {

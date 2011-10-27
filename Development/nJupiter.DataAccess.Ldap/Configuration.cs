@@ -84,8 +84,8 @@ namespace nJupiter.DataAccess.Ldap {
 				UsersConfig users = new UsersConfig();
 				GroupsConfig groups = new GroupsConfig();
 
-				IConfig config = ConfigRepository.Instance.GetConfig();
-				IConfig configSection = this.GetConfigSection(config);
+				Config config = ConfigHandler.GetConfig();
+				Config configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 
 					server.Url = new Uri(configSection.GetValue("url"));
@@ -99,18 +99,18 @@ namespace nJupiter.DataAccess.Ldap {
 					}
 
 					if(configSection.ContainsKey("allowWildcardSearch")) {
-						server.AllowWildcardSearch = configSection.GetValue<bool>("allowWildcardSearch");
+						server.AllowWildcardSearch = configSection.GetBoolValue("allowWildcardSearch");
 					}
 
 					if(configSection.ContainsKey("timeLimit")) {
-						int timeLimit = configSection.GetValue<int>("timeLimit");
+						int timeLimit = configSection.GetIntValue("timeLimit");
 						server.TimeLimit = TimeSpan.FromSeconds(timeLimit);
 					} else {
 						server.TimeLimit = TimeSpan.FromSeconds(30);
 					}
 
 					if(configSection.ContainsKey("pageSize")) {
-						int pageSize = configSection.GetValue<int>("pageSize");
+						int pageSize = configSection.GetIntValue("pageSize");
 						server.PageSize = pageSize;
 					} else {
 						server.PageSize = 0;
@@ -149,7 +149,7 @@ namespace nJupiter.DataAccess.Ldap {
 							bool excludeFromNameSearch = false;
 							string attributeKey = string.Format("users/attributes/attribute[@value='{0}']", attribute);
 							if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
-								excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
+								excludeFromNameSearch = configSection.GetBoolAttribute(attributeKey, "excludeFromNameSearch");
 							}
 							AttributeDefinition attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
 							userAttributeDefinitionList.Add(attributeDefinition);
@@ -220,7 +220,7 @@ namespace nJupiter.DataAccess.Ldap {
 							bool excludeFromNameSearch = false;
 							string attributeKey = string.Format("groups/attributes/attribute[@value='{0}']", attribute);
 							if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
-								excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
+								excludeFromNameSearch = configSection.GetBoolAttribute(attributeKey, "excludeFromNameSearch");
 							}
 							AttributeDefinition attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
 							groupAttributeDefinitionList.Add(attributeDefinition);
@@ -245,13 +245,13 @@ namespace nJupiter.DataAccess.Ldap {
 					}
 
 					if(configSection.ContainsKey("rangeRetrievalSupport")) {
-						server.RangeRetrievalSupport = configSection.GetValue<bool>("rangeRetrievalSupport");
+						server.RangeRetrievalSupport = configSection.GetBoolValue("rangeRetrievalSupport");
 					} else {
 						server.RangeRetrievalSupport = true;
 					}
 
 					if(configSection.ContainsKey("propertySortingSupport")) {
-						server.PropertySortingSupport = configSection.GetValue<bool>("propertySortingSupport");
+						server.PropertySortingSupport = configSection.GetBoolValue("propertySortingSupport");
 					} else {
 						server.PropertySortingSupport = true;
 					}
@@ -277,13 +277,13 @@ namespace nJupiter.DataAccess.Ldap {
 					this.groupsConfig = groups;
 				}
 				// Auto reconfigure all values when this config object is disposed (droped from the cache)
-				config.Discarded += this.Configure;
+				config.Disposed += this.Configure;
 			}
 
 		}
 
-		private IConfig GetConfigSection(IConfig config) {
-			IConfig configSection;
+		private Config GetConfigSection(Config config) {
+			Config configSection;
 			if(string.IsNullOrEmpty(this.ldapServer)) {
 				configSection = config.GetConfigSection("ldapServers/ldapServer[@default='true']");
 				if(configSection == null) {
