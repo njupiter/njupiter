@@ -300,14 +300,20 @@ namespace nJupiter.Web.UI.Controls {
 
 			subNavigation.IncludeChildrenOfRemovedNodesMode = this.IncludeChildrenOfRemovedNodesMode;
 			subNavigation.NumberOfLevels = this.NumberOfLevels - 1;
+			subNavigation.RenderId = false;
 			if(subNavigation.RootPage == null)
 				subNavigation.RootPage = GetNavigationPage(navigationPage.ParentId);
 			if(subNavigation.NavPage == null)
 				subNavigation.NavPage = navigationPage;
 			if(subNavigation.SelectedNavigationPage == null)
 				subNavigation.SelectedNavigationPage = this.SelectedNavigationPage;
-			if(subNavigation.HeaderTemplate == null)
-				subNavigation.HeaderTemplate = this.HeaderTemplate;
+			if(subNavigation.HeaderTemplate == null) {
+				DefaultHeaderTemplate defaultHeaderTemplate = this.HeaderTemplate as DefaultHeaderTemplate;
+				if(defaultHeaderTemplate != null && (defaultHeaderTemplate.Id != null || defaultHeaderTemplate.CssClass != null))
+					subNavigation.HeaderTemplate = new DefaultHeaderTemplate(null, null);
+				else 
+					subNavigation.HeaderTemplate = this.HeaderTemplate;
+			}
 			if(subNavigation.ItemTemplate == null)
 				subNavigation.ItemTemplate = this.ItemTemplate;
 			if(subNavigation.FooterTemplate == null)
@@ -641,22 +647,22 @@ namespace nJupiter.Web.UI.Controls {
 		#region Inner Classes
 		private sealed class DefaultHeaderTemplate : ITemplate {
 
-			private readonly string id;
-			private readonly string cssClass;
+			public readonly string Id;
+			public readonly string CssClass;
 
 			public DefaultHeaderTemplate(string id, string cssClass) {
-				this.id = id;
-				this.cssClass = cssClass;
+				this.Id = id;
+				this.CssClass = cssClass;
 			}
 
 			public void InstantiateIn(Control container) {
 				WebPlaceHolder ulBeginTag = new WebPlaceHolder();
 				string idAttribute = string.Empty;
-				if(!string.IsNullOrEmpty(this.id))
-					idAttribute = " id=\"" + this.id + "\"";
+				if(!string.IsNullOrEmpty(this.Id))
+					idAttribute = " id=\"" + this.Id + "\"";
 				string cssAttribute = string.Empty;
-				if(!string.IsNullOrEmpty(this.cssClass))
-					cssAttribute = " class=\"" + this.cssClass + "\"";
+				if(!string.IsNullOrEmpty(this.CssClass))
+					cssAttribute = " class=\"" + this.CssClass + "\"";
 				ulBeginTag.InnerHtml = "<ul" + idAttribute + cssAttribute + ">";
 				container.Controls.Add(ulBeginTag);
 			}
