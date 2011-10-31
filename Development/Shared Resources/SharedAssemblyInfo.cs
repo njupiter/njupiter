@@ -17,13 +17,13 @@ using System.Security.Permissions;
 [assembly: AssemblyDelaySign(false)]
 #if DEBUG
 [assembly: AssemblyKeyFile("")]
-[assembly: AssemblyVersion("3.16.3.*")]
+[assembly: AssemblyVersion("3.16.4.*")]
 [assembly: AssemblyConfiguration("Debug")]
 #else
 // Increment AssemblyVersion only on major and minor releases
-[assembly: AssemblyVersion("3.16.3.0")]
+[assembly: AssemblyVersion("3.16.4.0")]
 // Increment AssemblyFileVersion on every release
-[assembly: AssemblyFileVersion("3.16.3.0")]
+[assembly: AssemblyFileVersion("3.16.4.0")]
 [assembly: AssemblyConfiguration("Release")]
 #if SIGN
 [assembly: AssemblyKeyFile(@"C:\Projects\nJupiter\Development\nJupiter.snk")]

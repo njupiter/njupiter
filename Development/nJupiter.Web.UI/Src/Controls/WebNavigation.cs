@@ -300,7 +300,6 @@ namespace nJupiter.Web.UI.Controls {
 
 			subNavigation.IncludeChildrenOfRemovedNodesMode = this.IncludeChildrenOfRemovedNodesMode;
 			subNavigation.NumberOfLevels = this.NumberOfLevels - 1;
-			subNavigation.RenderId = false;
 			if(subNavigation.RootPage == null)
 				subNavigation.RootPage = GetNavigationPage(navigationPage.ParentId);
 			if(subNavigation.NavPage == null)
@@ -314,6 +313,8 @@ namespace nJupiter.Web.UI.Controls {
 				else 
 					subNavigation.HeaderTemplate = this.HeaderTemplate;
 			}
+			subNavigation.RenderId = false;
+			subNavigation.CssClass = null;
 			if(subNavigation.ItemTemplate == null)
 				subNavigation.ItemTemplate = this.ItemTemplate;
 			if(subNavigation.FooterTemplate == null)
