@@ -277,7 +277,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.PreviousPageToolTipText)) {
 								buttonPrev.Attributes.Add(HtmlAttribute.Title, this.PreviousPageToolTipText);
 							}
-							if(this.currentPageNumber > 1 || this.WrapAround) {
+							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								string pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								buttonPrev.CommandArgument = pageNum;
 								buttonPrev.Disabled = false;
@@ -292,7 +292,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.PreviousPageToolTipText)) {
 								linkButtonPrev.ToolTip = this.PreviousPageToolTipText;
 							}
-							if(this.currentPageNumber > 1 || this.WrapAround) {
+							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								string pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonPrev.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonPrev.CommandArgument = pageNum;
@@ -308,7 +308,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.PreviousPageToolTipText)) {
 								ancPrev.ToolTip = this.PreviousPageToolTipText;
 							}
-							if(this.currentPageNumber > 1 || this.WrapAround) {
+							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								string pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								ancPrev.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancPrev.NoLink = false;
@@ -326,7 +326,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.PreviousIncrementToolTipText)) {
 								buttonPrevIncr.Attributes.Add(HtmlAttribute.Title, this.PreviousIncrementToolTipText);
 							}
-							if(this.index > 1 || this.WrapAround) {
+							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								string pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								buttonPrevIncr.CommandArgument = pageNum;
 								buttonPrevIncr.Visible = true;
@@ -339,7 +339,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.PreviousIncrementToolTipText)) {
 								linkButtonPrevIncr.ToolTip = this.PreviousIncrementToolTipText;
 							}
-							if(this.index > 1 || this.WrapAround) {
+							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								string pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonPrevIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonPrevIncr.CommandArgument = pageNum;
@@ -353,7 +353,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.PreviousIncrementToolTipText)) {
 								ancPrevIncr.ToolTip = this.PreviousIncrementToolTipText;
 							}
-							if(this.index > 1 || this.WrapAround) {
+							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								string pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								ancPrevIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancPrevIncr.Visible = true;
@@ -438,7 +438,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.NextPageToolTipText)) {
 								buttonNext.Attributes.Add(HtmlAttribute.Title, this.NextPageToolTipText);
 							}
-							if(this.currentPageNumber != totalPageCountFooter || this.WrapAround) {
+							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								string pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
 								buttonNext.CommandArgument = pageNum;
 								buttonNext.Disabled = false;
@@ -453,7 +453,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.NextPageToolTipText)) {
 								linkButtonNext.ToolTip = this.NextPageToolTipText;
 							}
-							if(this.currentPageNumber != totalPageCountFooter || this.WrapAround) {
+							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								string pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonNext.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonNext.CommandArgument = pageNum;
@@ -469,7 +469,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.NextPageToolTipText)) {
 								ancNext.ToolTip = this.NextPageToolTipText;
 							}
-							if(this.currentPageNumber != totalPageCountFooter || this.WrapAround) {
+							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								string pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
 								ancNext.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancNext.NoLink = false;
@@ -488,7 +488,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.NextIncrementToolTipText)) {
 								buttonNextIncr.Attributes.Add(HtmlAttribute.Title, this.NextIncrementToolTipText);
 							}
-							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || this.WrapAround) {
+							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								string pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
 								buttonNextIncr.CommandArgument = pageNum;
 								buttonNextIncr.Visible = true;
@@ -501,7 +501,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.NextIncrementToolTipText)) {
 								linkButtonNextIncr.ToolTip = this.NextIncrementToolTipText;
 							}
-							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || this.WrapAround) {
+							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								string pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonNextIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonNextIncr.CommandArgument = pageNum;
@@ -515,7 +515,7 @@ namespace nJupiter.Web.UI.Controls {
 							if(!string.IsNullOrEmpty(this.NextIncrementToolTipText)) {
 								ancNextIncr.ToolTip = this.NextIncrementToolTipText;
 							}
-							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || this.WrapAround) {
+							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								string pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
 								ancNextIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancNextIncr.Visible = true;
