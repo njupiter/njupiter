@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+
+using FakeItEasy;
+
 using nJupiter.Configuration;
 using NUnit.Framework;
 
@@ -11,7 +13,15 @@ namespace nJupiter.Tests.Configuration {
 		[Test]
 		public void Constructor_PassingNullObject_ThrowsArgumentNullException() {
 			Assert.Throws<ArgumentNullException>(() => new ConfigSource(null));
-		}		
+		}
+
+		[Test]
+		public void Constructor_PassingOnlyWatcher_ReturnConfigSourceWithBothSourceAndWatcherSetToInput() {
+			var watcher = A.Fake<IConfigSourceWatcher>();
+			var source = new ConfigSource(watcher);
+			Assert.AreEqual(watcher, source.Source);
+			Assert.AreEqual(watcher, source.Watcher);
+		}
 		
 		[Test]
 		public void ConfigSource_CreateWithOneFile_ReturnsCorrectFile() {

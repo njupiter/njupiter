@@ -36,6 +36,7 @@ namespace nJupiter.Configuration {
 
 		public ConfigSource() {}
 
+
 		public ConfigSource(object source, IConfigSourceWatcher watcher) {
 			if(source == null) {
 				throw new ArgumentNullException("source");
@@ -45,6 +46,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public ConfigSource(object source) : this(source, null) {}
+		public ConfigSource(IConfigSourceWatcher watcher) : this(watcher, watcher) {}
 
 	}
 
