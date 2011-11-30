@@ -61,7 +61,7 @@ namespace nJupiter.Configuration {
 			}
 			this.configKey = configKey;
 			this.configXml = element;
-			this.source = source ?? new ConfigSource();
+			this.source = source ?? new ConfigSource(element);
 			if(this.source.Watcher != null){
 				this.source.Watcher.ConfigSourceUpdated += this.Discard;
 			}

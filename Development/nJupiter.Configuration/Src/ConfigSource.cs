@@ -34,9 +34,6 @@ namespace nJupiter.Configuration {
 		public virtual object Source { get { return source; } }
 		public virtual IConfigSourceWatcher Watcher { get { return watcher; } }
 
-		public ConfigSource() {}
-
-
 		public ConfigSource(object source, IConfigSourceWatcher watcher) {
 			if(source == null) {
 				throw new ArgumentNullException("source");
