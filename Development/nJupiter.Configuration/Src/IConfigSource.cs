@@ -24,8 +24,7 @@
 
 namespace nJupiter.Configuration {
 	public interface IConfigSource {
-		T GetConfigSource<T>();
+		object Source  { get; }
 		IConfigSourceWatcher Watcher { get; }
-	
 	}
 }

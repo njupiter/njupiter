@@ -39,11 +39,7 @@ namespace nJupiter.Configuration {
 				if(addWatcher){
 					watcher = new FileConfigSourceWatcher(fileInfo);
 				}
-				return new FileConfigSource(fileInfo, watcher);
-			}
-			var uri = source as Uri;
-			if(uri != null) {
-				return new UriConfigSource(uri);
+				return new ConfigSource(fileInfo, watcher);
 			}
 			return new ConfigSource(source);
 		}

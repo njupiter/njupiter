@@ -13,25 +13,24 @@ namespace nJupiter.Tests.Configuration {
 		[Test]
 		public void CreateConfigSource_CreateInstanceFromFileInfo_ReturnsFileConfigSource() {
 			var file = new FileInfo("c:\\dummyfile.txt");
-			IConfigSource configSource = ConfigSourceFactory.CreateConfigSource(file);
-			Assert.IsTrue(configSource is FileConfigSource);
+			var configSource = ConfigSourceFactory.CreateConfigSource(file);
+			Assert.IsTrue(configSource.Source is FileInfo);
 		}
 
 		[Test]
-		public void CreateConfigSource_CreateInstanceFromUri_ReturnsUriConfigSource() {
-			var uri = new Uri("http://www.test.org/");
-			IConfigSource configSource = ConfigSourceFactory.CreateConfigSource(uri);
-			Assert.IsTrue(configSource is UriConfigSource);
+		public void CreateConfigSource_CreateInstanceFromFileInfoAndAddWatcher_ReturnsFileConfigSourceWithWatcher() {
+			var file = new FileInfo("c:\\dummyfile.txt");
+			var configSource = ConfigSourceFactory.CreateConfigSource(file, true);
+			Assert.IsTrue(configSource.Watcher is FileConfigSourceWatcher);
 		}
 
 		[Test]
 		public void CreateConfigSource_CreateInstanceFromCustomClass_ReturnsConfigSource() {
 			var dummyClass = new MyDummyClass();
-			IConfigSource configSource = ConfigSourceFactory.CreateConfigSource(dummyClass);
+			var configSource = ConfigSourceFactory.CreateConfigSource(dummyClass);
 			Assert.IsTrue(configSource is ConfigSource);
-			Assert.AreEqual(dummyClass, configSource.GetConfigSource<MyDummyClass>());
+			Assert.AreEqual(dummyClass, configSource.Source);
 		}
-
 
 		public class MyDummyClass{}
 

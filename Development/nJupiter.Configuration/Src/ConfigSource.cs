@@ -23,39 +23,29 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace nJupiter.Configuration {
+
 	public class ConfigSource : IConfigSource {
-		private readonly List<object> configSources;
 
-		public virtual IConfigSourceWatcher Watcher { get { return null; } }
+		private readonly object source;
+		private readonly IConfigSourceWatcher watcher;
 
-		public ConfigSource() {
-			configSources = new List<object>();
-		}
+		public virtual object Source { get { return source; } }
+		public virtual IConfigSourceWatcher Watcher { get { return watcher; } }
 
-		public ConfigSource(List<object> configSources) {
-			if(configSources == null) {
-				throw new ArgumentNullException("configSources");
+		public ConfigSource() {}
+
+		public ConfigSource(object source, IConfigSourceWatcher watcher) {
+			if(source == null) {
+				throw new ArgumentNullException("source");
 			}
-			this.configSources = configSources;
+			this.source = source; 
+			this.watcher = watcher;
 		}
 
-		public ConfigSource(object configSource) : this() {
-			this.Add(configSource);
-		}
-
-		protected void Add(object configSource) {
-			if(configSource == null) {
-				throw new ArgumentNullException("configSource");
-			}
-			configSources.Add(configSource);
-		}
-
-		public T GetConfigSource<T>() {
-			return (T)configSources.Find(s => s.GetType() == typeof(T));
-		}
+		public ConfigSource(object source) : this(source, null) {}
 
 	}
+
 }
