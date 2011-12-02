@@ -88,7 +88,7 @@ namespace nJupiter.Configuration {
 			if(node != null && (attribute == null || AttributeExistsInNode(attribute, node))) {
 				return this.GetValueFromXmlNode<T>(section, key, attribute, node);
 			}
-			throw new ConfigValueNotFoundException(string.Format("Value '{0}' was not found in the config with key '{1}'", GetXPath(section, key), this.ConfigKey));
+			throw new ConfigValueNotFoundException(string.Format("Value '{0}' was not found in the config with key '{1}'", GetXPath(section, key, attribute), this.ConfigKey));
 		}
 
 		public T[] GetValueArray<T>(string section, string key) {

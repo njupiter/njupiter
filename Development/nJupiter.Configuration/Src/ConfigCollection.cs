@@ -37,7 +37,7 @@ namespace nJupiter.Configuration {
 		private readonly Dictionary<String, IConfig> innerDictionary;
 		private readonly object padLock = new object();
 
-		internal ConfigCollection() {
+		public ConfigCollection() {
 			this.innerDictionary = new Dictionary<String, IConfig>(StringComparer.InvariantCultureIgnoreCase);
 		}
 
