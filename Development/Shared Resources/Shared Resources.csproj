@@ -42,7 +42,6 @@
     <None Include="Config\nJupiter.DataAccess.DirectoryService.config" />
     <None Include="Config\nJupiter.DataAccess.Users.config" />
     <None Include="Config\nJupiter.Services.Forum.config" />
-    <None Include="Config\nJupiter.Web.UI.CssCompressor.config" />
     <None Include="Config\log4net.config" />
     <None Include="Config\System.config" />
     <None Include="Config\web.config" />
