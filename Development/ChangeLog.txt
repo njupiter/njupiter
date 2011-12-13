@@ -9,7 +9,7 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for upcomming V4.0.0.0
+Changes for V4.0.0.0  - 2011-12-13
 ===============================================================================
 **** nJupiter
 BCH: Some of the components i nJupiter now require .NET 3.5

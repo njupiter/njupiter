@@ -34,7 +34,7 @@ using System.Security.Permissions;
 #endif
 [assembly: PermissionSet(SecurityAction.RequestMinimum, Name="Nothing")]
 
-[assembly: AssemblyTitle(""
+[assembly: AssemblyTitle("nJupiter "
 
 #if SIGN
 + "Signed "
@@ -46,6 +46,6 @@ using System.Security.Permissions;
 + "Release"
 #endif
 
-+ " Build for .NET 2.0"
++ " Build"
 
 )]
