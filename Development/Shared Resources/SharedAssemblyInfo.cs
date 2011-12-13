@@ -18,7 +18,8 @@ using System.Security.Permissions;
 #if DEBUG
 [assembly: AssemblyVersion("4.0.0.*")]
 [assembly: AssemblyConfiguration("Debug")]
-[assembly: InternalsVisibleTo("nJupiter.Tests")]
+[assembly: InternalsVisibleTo("nJupiter.Tests.UnitTests")]
+[assembly: InternalsVisibleTo("nJupiter.Tests.IntegrationTests")]
 #else
 // Increment AssemblyVersion only on major and minor releases
 [assembly: AssemblyVersion("4.0.0.0")]
@@ -29,8 +30,6 @@ using System.Security.Permissions;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile(@"C:\Projects\nJupiter\Development\nJupiter.snk")]
 [assembly: AssemblyKeyName("")]
-#else
-[assembly: InternalsVisibleTo("nJupiter.Tests")]
 #endif
 #endif
 [assembly: PermissionSet(SecurityAction.RequestMinimum, Name="Nothing")]
