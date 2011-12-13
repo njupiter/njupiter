@@ -21,14 +21,14 @@ BCH: This component has been totally refactored and now make use of
      config object also now has support for generics and can now parse all
      types that has a System.ComponentModel.TypeDescriptor-converter.
      The config handler is renamed to IConfigRepository and its default 
-	 instance is now accessed thru the .Instance property in ConfigRepository.
-	 You can now implement your own loaders and attache them in runtime thru
-	 the CompositeConfigLoader, that is the default loader for the default
-	 instance of IConfigRepository. The Add-method has also been changed to be
-	 public and you can now add your own Config objects to the
-	 ConfigCollection in runtime, they will automatically be removed from all
-	 ConfigCollections they are added to when the .Discard() method is executed
-	 on the Config-object.
+     instance is now accessed thru the .Instance property in ConfigRepository.
+     You can now implement your own loaders and attache them in runtime thru
+     the CompositeConfigLoader, that is the default loader for the default
+     instance of IConfigRepository. The Add-method has also been changed to be
+     public and you can now add your own Config objects to the
+     ConfigCollection in runtime, they will automatically be removed from all
+     ConfigCollections they are added to when the .Discard() method is executed
+     on the Config-object.
 
 **** nJupiter.DataAccess
 BCH: This componenet has been totally refactored and now make use of
@@ -47,21 +47,21 @@ BCH: This componenet has been totally refactored and now make use of
 BCH: This component has been totally refactored and now make use of
      interfaces rather than concrete types throughout the whole component
      and has thereby better support for unit testing and IoC-containers.
-	 UsersDAO is now renamed to IUserRepository and different instances are
-	 now loaded throug the UserRepositoryManager. Property handling has now
-	 support for generics and property collections and properties also support
-	 locking and cloining which make them more safe to use in threded
-	 aplications. The naming in the component has been reworked to has better
-	 and more intuitive names. The SQL implementation of the user repository is
-	 now moved to a separate assembly, nJupiter.DataAccess.Users.Sql.
+     UsersDAO is now renamed to IUserRepository and different instances are
+     now loaded throug the UserRepositoryManager. Property handling has now
+     support for generics and property collections and properties also support
+     locking and cloining which make them more safe to use in threded
+     aplications. The naming in the component has been reworked to has better
+     and more intuitive names. The SQL implementation of the user repository is
+     now moved to a separate assembly, nJupiter.DataAccess.Users.Sql.
 
 **** nJupiter.Globalization
 BCH: This component has been totally refactored and now make use of
      interfaces rather than concrete types throughout the whole component
      and has thereby better support for unit testing and IoC-containers.
-	 CultureHandler is now renamed to ICultureHandler and it's default
-	 instance is of type ConfigurableCultureHandler and can be accesst
-	 through CultureHandlerFactory.Instance.
+     CultureHandler is now renamed to ICultureHandler and it's default
+     instance is of type ConfigurableCultureHandler and can be accesst
+     through CultureHandlerFactory.Instance.
 
 **** nJupiter.DataAccess.DirectoryService
 BCH: All code for this assembly is now moved into the assemblyh
@@ -83,9 +83,9 @@ CHG: Some legacy code moved from nJupiter.Drawing into this assembly to be able
 **** nJupiter.Drawing
 BCH: nJupiter.Web.UI.GoogleAnalytics, nJupiter.Messagingn, Jupiter.Drawing,
      nJupiter.IO, nJupiter.Text and nJupiter.Web.UI.CssCompressor has been
-	 removed from project. These projects has not been updated and supported
-	 for years and therefor deprecated. If you still use them, reefer to code
-	 and release prior to 4.0
+     removed from project. These projects has not been updated and supported
+     for years and therefor deprecated. If you still use them, reefer to code
+     and release prior to 4.0
 
 ===============================================================================
 Changes for V3.16.1.0  - 2011-02-24
