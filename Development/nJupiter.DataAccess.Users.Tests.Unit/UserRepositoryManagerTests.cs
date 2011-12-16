@@ -4,12 +4,11 @@ using System.Xml;
 using FakeItEasy;
 
 using nJupiter.Configuration;
-using nJupiter.DataAccess.Users;
 using nJupiter.DataAccess.Users.Caching;
 
 using NUnit.Framework;
 
-namespace nJupiter.Tests.UnitTests.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Tests.Unit {
 	
 	[TestFixture]
 	public class UserRepositoryManagerTests {
@@ -119,13 +118,13 @@ namespace nJupiter.Tests.UnitTests.DataAccess.Users {
 						</settings>
 					</userRepository>
 					<userRepository name=""TestRepository""
-									qualifiedTypeName=""nJupiter.Tests.UnitTests.DataAccess.Users.UserRepositoryAdapter, nJupiter.Tests.UnitTests"">
+									qualifiedTypeName=""nJupiter.DataAccess.Users.Tests.Unit.UserRepositoryAdapter, nJupiter.DataAccess.Users.Tests.Unit"">
 						<settings>
 							<someSettings value=""test"" />
 						</settings>
 					</userRepository>
 					<userRepository name=""RepositoryNonExistingCache""
-									qualifiedTypeName=""nJupiter.Tests.UnitTests.DataAccess.Users.UserRepositoryAdapter, nJupiter.Tests.UnitTests"">
+									qualifiedTypeName=""nJupiter.DataAccess.Users.Tests.Unit.UserRepositoryAdapter, nJupiter.DataAccess.Users.Tests.Unit"">
 						<settings>
 							<cache qualifiedTypeName=""nJupiter.DataAccess.Users.Caching.NonExistingCache, nJupiter.DataAccess.Users""/>
 						</settings>

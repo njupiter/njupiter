@@ -50,28 +50,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\DataSourceFactory.cs" />
-    <Compile Include="Src\Command.cs">
+    <Compile Include="DataSourceFactory.cs" />
+    <Compile Include="Command.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\DataSource.cs">
+    <Compile Include="DataSource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\DbProviderAdapter.cs" />
-    <Compile Include="Src\ICommand.cs" />
-    <Compile Include="Src\IDataSource.cs" />
-    <Compile Include="Src\IProvider.cs" />
-    <Compile Include="Src\ITransaction.cs" />
-    <Compile Include="Src\Sql\Util\FullTextHandler.cs" />
-    <Compile Include="Src\Transaction.cs">
+    <Compile Include="DbProviderAdapter.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="IDataSource.cs" />
+    <Compile Include="IProvider.cs" />
+    <Compile Include="ITransaction.cs" />
+    <Compile Include="Sql\Util\FullTextHandler.cs" />
+    <Compile Include="Transaction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\TransactionFactory.cs" />
+    <Compile Include="TransactionFactory.cs" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

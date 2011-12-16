@@ -6,7 +6,7 @@ using System.Xml;
 using nJupiter.Configuration;
 using nJupiter.DataAccess.Users;
 
-namespace nJupiter.Tests.UnitTests.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Tests.Unit {
 	public class DummyFactory{
 		internal static IPropertyHandler GetPropertyHandler() {
 			return GetPropertyHandler("username");

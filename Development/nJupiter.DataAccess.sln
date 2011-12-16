@@ -1,24 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31C621CB-94F9-4CFA-B49C-4FCBF5BD148F}"
-	ProjectSection(SolutionItems) = preProject
-		ChangeLog.txt = ChangeLog.txt
-		nJupiter.BuildAll.bat = nJupiter.BuildAll.bat
-		nJupiter.BuildContinuously.bat = nJupiter.BuildContinuously.bat
-		nJupiter.BuildNightly.bat = nJupiter.BuildNightly.bat
-		nJupiter.CSharp.targets = nJupiter.CSharp.targets
-		nJupiter.Deployment.targets = nJupiter.Deployment.targets
-		nJupiter.FxCop = nJupiter.FxCop
-		nJupiter.snk = nJupiter.snk
-		nJupiter.vssettings = nJupiter.vssettings
-		ReadMe.txt = ReadMe.txt
-		Shared Resources\SharedAssemblyInfo.cs = Shared Resources\SharedAssemblyInfo.cs
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess", "nJupiter.DataAccess\nJupiter.DataAccess.csproj", "{DE3DFF9C-7B73-4DD6-AF8B-129D9E0D4569}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Tests.Unit", "nJupiter.DataAccess.Tests.Unit\nJupiter.DataAccess.Tests.Unit.csproj", "{F4F49752-479D-4FAF-A838-FBA981CCCCAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{172A4951-97F2-4274-BCE9-1DDA00AE77CB}"
+	ProjectSection(SolutionItems) = preProject
+		njupiter.dataaccess-changelog.txt = njupiter.dataaccess-changelog.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

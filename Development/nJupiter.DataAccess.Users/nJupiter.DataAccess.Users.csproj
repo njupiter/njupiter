@@ -63,10 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\Caching\UserCacheBase.cs" />
@@ -156,7 +156,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="Src\packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ChangeLog.txt" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

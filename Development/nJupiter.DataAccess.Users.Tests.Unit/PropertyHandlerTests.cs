@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 using PropertyCollection = nJupiter.DataAccess.Users.PropertyCollection;
 
-namespace nJupiter.Tests.UnitTests.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 	[TestFixture]
 	public class PropertyHandlerTests {

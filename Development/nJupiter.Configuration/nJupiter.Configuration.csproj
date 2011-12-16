@@ -45,38 +45,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\CompositeConfigLoader.cs" />
-    <Compile Include="Src\ConfigFactory.cs" />
-    <Compile Include="Src\ConfigRepository.cs" />
-    <Compile Include="Src\ConfigLoaderFactory.cs" />
-    <Compile Include="Src\FileConfigFactory.cs" />
-    <Compile Include="Src\FileConfigLoader.cs" />
-    <Compile Include="Src\ConfigSource.cs" />
-    <Compile Include="Src\ConfigSourceFactory.cs" />
-    <Compile Include="Src\IConfigRepository.cs" />
-    <Compile Include="Src\IConfigLoader.cs" />
-    <Compile Include="Src\IConfigSource.cs" />
-    <Compile Include="Src\IConfigSourceWatcher.cs" />
-    <Compile Include="Src\StringParser.cs" />
-    <Compile Include="Src\Config.cs">
+    <Compile Include="CompositeConfigLoader.cs" />
+    <Compile Include="ConfigFactory.cs" />
+    <Compile Include="ConfigRepository.cs" />
+    <Compile Include="ConfigLoaderFactory.cs" />
+    <Compile Include="FileConfigFactory.cs" />
+    <Compile Include="FileConfigLoader.cs" />
+    <Compile Include="ConfigSource.cs" />
+    <Compile Include="ConfigSourceFactory.cs" />
+    <Compile Include="IConfigRepository.cs" />
+    <Compile Include="IConfigLoader.cs" />
+    <Compile Include="IConfigSource.cs" />
+    <Compile Include="IConfigSourceWatcher.cs" />
+    <Compile Include="StringParser.cs" />
+    <Compile Include="Config.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\ConfigCollection.cs">
+    <Compile Include="ConfigCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\IConfig.cs" />
-    <Compile Include="Src\nJupiterConfigurationSectionHandler.cs">
+    <Compile Include="IConfig.cs" />
+    <Compile Include="nJupiterConfigurationSectionHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\Exceptions.cs">
+    <Compile Include="Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\FileConfigSourceWatcher.cs" />
+    <Compile Include="FileConfigSourceWatcher.cs" />
     <Content Include="Install\ReadMe.txt" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />

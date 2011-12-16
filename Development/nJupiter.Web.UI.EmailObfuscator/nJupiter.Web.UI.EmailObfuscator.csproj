@@ -51,9 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\EmailImage.cs" />
     <Compile Include="Src\EmailObfuscatorModule.cs" />
     <Compile Include="Src\FileHandler.cs" />

@@ -14,7 +14,7 @@ using NUnit.Framework;
 
 using ProfileProvider = nJupiter.DataAccess.Users.Web.ProfileProvider;
 
-namespace nJupiter.Tests.UnitTests.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Tests.Unit {
 	
 	[TestFixture]
 	public class ProfileProviderTests {

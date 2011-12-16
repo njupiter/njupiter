@@ -4,7 +4,7 @@ using nJupiter.Configuration;
 using nJupiter.DataAccess.Users;
 using nJupiter.DataAccess.Users.Caching;
 
-namespace nJupiter.Tests.UnitTests.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Tests.Unit {
 	public class UserRepositoryAdapter : UserRepositoryBase {
 
 		public UserRepositoryAdapter(string name, IConfig config, IPredefinedNames predefinedNames, IUserCache cache) : base(name, config, predefinedNames, cache){

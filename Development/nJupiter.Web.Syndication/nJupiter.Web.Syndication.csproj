@@ -50,19 +50,19 @@
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Feeds\AtomWriter.cs" />
-    <Compile Include="Feeds\Author.cs" />
-    <Compile Include="Feeds\Feed.cs" />
-    <Compile Include="Feeds\FeedImage.cs" />
-    <Compile Include="Feeds\FeedItem.cs" />
-    <Compile Include="Feeds\FeedReader.cs" />
-    <Compile Include="Feeds\FeedType.cs" />
-    <Compile Include="Feeds\FeedWriter.cs" />
-    <Compile Include="Feeds\IAuthor.cs" />
-    <Compile Include="Feeds\IFeed.cs" />
-    <Compile Include="Feeds\IFeedImage.cs" />
-    <Compile Include="Feeds\IFeedItem.cs" />
-    <Compile Include="Feeds\RssWriter.cs" />
+    <Compile Include="AtomWriter.cs" />
+    <Compile Include="Author.cs" />
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedImage.cs" />
+    <Compile Include="FeedItem.cs" />
+    <Compile Include="FeedReader.cs" />
+    <Compile Include="FeedType.cs" />
+    <Compile Include="FeedWriter.cs" />
+    <Compile Include="IAuthor.cs" />
+    <Compile Include="IFeed.cs" />
+    <Compile Include="IFeedImage.cs" />
+    <Compile Include="IFeedItem.cs" />
+    <Compile Include="RssWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />

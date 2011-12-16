@@ -4,7 +4,7 @@ using nJupiter.DataAccess.Users;
 
 using NUnit.Framework;
 
-namespace nJupiter.Tests.UnitTests.DataAccess.Users {
+namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 	[TestFixture]
 	public class ContextTests {

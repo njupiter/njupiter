@@ -42,19 +42,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Src\IMimeType.cs" />
-    <Compile Include="Src\IMimeTypeHandler.cs" />
-    <Compile Include="Src\IndenterModule.cs" />
-    <Compile Include="Src\IResponseHandler.cs" />
-    <Compile Include="Src\MimeType.cs" />
-    <Compile Include="Src\MimeTypeHandler.cs" />
-    <Compile Include="Src\ResponseHandler.cs" />
-    <Compile Include="Src\UrlHandler.cs" />
+    <Compile Include="IMimeType.cs" />
+    <Compile Include="IMimeTypeHandler.cs" />
+    <Compile Include="IndenterModule.cs" />
+    <Compile Include="IResponseHandler.cs" />
+    <Compile Include="MimeType.cs" />
+    <Compile Include="MimeTypeHandler.cs" />
+    <Compile Include="ResponseHandler.cs" />
+    <Compile Include="UrlHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

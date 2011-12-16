@@ -77,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\nJupiter.DataAccess.Users.Sql\nJupiter.DataAccess.Users.Sql.csproj">
+      <Project>{5FCDC341-D85E-4358-8B4B-00F285F02ECF}</Project>
+      <Name>nJupiter.DataAccess.Users.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\nJupiter.DataAccess.Users\nJupiter.DataAccess.Users.csproj">
       <Project>{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}</Project>
       <Name>nJupiter.DataAccess.Users</Name>

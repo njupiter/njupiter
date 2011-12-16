@@ -60,9 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Adapters\LdapDirectoryService.cs" />
     <Compile Include="Src\Adapters\WebService\DirectoryServiceWebService.cs" />
     <Compile Include="Src\Adapters\WSDirectoryService.cs" />
@@ -82,9 +82,7 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Web\DirectoryServiceWebService.asmx" />
   </ItemGroup>
