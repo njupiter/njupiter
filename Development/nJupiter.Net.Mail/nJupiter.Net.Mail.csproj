@@ -42,8 +42,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.1.309\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.Web, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Shared Resources\Libraries\Log4Net\Compile Version\log4net.dll</HintPath>
+      <HintPath>..\packages\nJupiter.WebTools.4.0.1.309\lib\nJupiter.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -70,14 +77,7 @@
     <Compile Include="Src\StringHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
-      <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
-      <Name>nJupiter.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
-      <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
-      <Name>nJupiter.Web</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

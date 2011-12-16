@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
@@ -16,15 +15,8 @@ using System.Security.Permissions;
 [assembly: SecurityTransparent]
 
 #if DEBUG
-[assembly: AssemblyVersion("4.0.1.*")]
 [assembly: AssemblyConfiguration("Debug")]
-[assembly: InternalsVisibleTo("nJupiter.Tests.UnitTests")]
-[assembly: InternalsVisibleTo("nJupiter.Tests.IntegrationTests")]
 #else
-// Increment AssemblyVersion only on major and minor releases
-[assembly: AssemblyVersion("4.0.1.0")]
-// Increment AssemblyFileVersion on every release
-[assembly: AssemblyFileVersion("4.0.1.0")]
 [assembly: AssemblyConfiguration("Release")]
 #if SIGN
 [assembly: AssemblyDelaySign(false)]

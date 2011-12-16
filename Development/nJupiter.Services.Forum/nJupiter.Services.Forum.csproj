@@ -32,6 +32,12 @@
     <NoWarn>1699</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.1.309\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.DataAccess, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.DataAccess.4.0.1.308\lib\nJupiter.DataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -39,17 +45,6 @@
       <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.XML" />
-    <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
-      <Name>nJupiter.Configuration</Name>
-      <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\nJupiter.DataAccess\nJupiter.DataAccess.csproj">
-      <Name>nJupiter.DataAccess</Name>
-      <Project>{DE3DFF9C-7B73-4DD6-AF8B-129D9E0D4569}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
@@ -129,6 +124,7 @@
     <None Include="Install\Database\3.DefaultDatabase.SPs.sql" />
     <None Include="Install\Database\4.DefaultDatabase.TableData.sql" />
     <None Include="Install\Database\2.DefaultDatabase.FullText.sql" />
+    <None Include="packages.config" />
     <None Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
