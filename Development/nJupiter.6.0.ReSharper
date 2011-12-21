@@ -10,18 +10,13 @@
     <CSharp>
       <FormatSettings>
         <ALIGN_MULTILINE_FOR_STMT>False</ALIGN_MULTILINE_FOR_STMT>
+        <ALLOW_COMMENT_AFTER_LBRACE>True</ALLOW_COMMENT_AFTER_LBRACE>
         <ANONYMOUS_METHOD_DECLARATION_BRACES>END_OF_LINE</ANONYMOUS_METHOD_DECLARATION_BRACES>
         <BLANK_LINES_AROUND_FIELD>0</BLANK_LINES_AROUND_FIELD>
         <BLANK_LINES_BETWEEN_USING_GROUPS>1</BLANK_LINES_BETWEEN_USING_GROUPS>
         <BLANK_LINES_INSIDE_REGION>0</BLANK_LINES_INSIDE_REGION>
         <CASE_BLOCK_BRACES>END_OF_LINE</CASE_BLOCK_BRACES>
         <EMPTY_BLOCK_STYLE>TOGETHER_SAME_LINE</EMPTY_BLOCK_STYLE>
-        <FORCE_FIXED_BRACES_STYLE>ALWAYS_ADD</FORCE_FIXED_BRACES_STYLE>
-        <FORCE_FOR_BRACES_STYLE>ALWAYS_ADD</FORCE_FOR_BRACES_STYLE>
-        <FORCE_FOREACH_BRACES_STYLE>ALWAYS_ADD</FORCE_FOREACH_BRACES_STYLE>
-        <FORCE_IFELSE_BRACES_STYLE>ALWAYS_ADD</FORCE_IFELSE_BRACES_STYLE>
-        <FORCE_USING_BRACES_STYLE>ALWAYS_ADD</FORCE_USING_BRACES_STYLE>
-        <FORCE_WHILE_BRACES_STYLE>ALWAYS_ADD</FORCE_WHILE_BRACES_STYLE>
         <INDENT_NESTED_FIXED_STMT>True</INDENT_NESTED_FIXED_STMT>
         <INDENT_NESTED_USINGS_STMT>True</INDENT_NESTED_USINGS_STMT>
         <INITIALIZER_BRACES>END_OF_LINE</INITIALIZER_BRACES>
@@ -47,8 +42,10 @@
         <OTHER_BRACES>END_OF_LINE</OTHER_BRACES>
         <PLACE_CATCH_ON_NEW_LINE>False</PLACE_CATCH_ON_NEW_LINE>
         <PLACE_ELSE_ON_NEW_LINE>False</PLACE_ELSE_ON_NEW_LINE>
+        <PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>False</PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>
         <PLACE_FINALLY_ON_NEW_LINE>False</PLACE_FINALLY_ON_NEW_LINE>
         <PLACE_SIMPLE_ACCESSORHOLDER_ON_SINGLE_LINE>True</PLACE_SIMPLE_ACCESSORHOLDER_ON_SINGLE_LINE>
+        <PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>False</PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>
         <REDUNDANT_THIS_QUALIFIER_STYLE>USE_FOR_THIS_CLASS</REDUNDANT_THIS_QUALIFIER_STYLE>
         <SPACE_AFTER_TYPECAST_PARENTHESES>False</SPACE_AFTER_TYPECAST_PARENTHESES>
         <SPACE_AROUND_ARROW_OP>True</SPACE_AROUND_ARROW_OP>
@@ -68,6 +65,7 @@
         <STICK_COMMENT>False</STICK_COMMENT>
         <TYPE_DECLARATION_BRACES>END_OF_LINE</TYPE_DECLARATION_BRACES>
         <WRAP_ARGUMENTS_STYLE>CHOP_IF_LONG</WRAP_ARGUMENTS_STYLE>
+        <WRAP_BEFORE_EXTENDS_COLON>True</WRAP_BEFORE_EXTENDS_COLON>
         <WRAP_EXTENDS_LIST_STYLE>CHOP_IF_LONG</WRAP_EXTENDS_LIST_STYLE>
         <WRAP_PARAMETERS_STYLE>CHOP_IF_LONG</WRAP_PARAMETERS_STYLE>
       </FormatSettings>
@@ -93,12 +91,6 @@
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
-        <Abbreviation Text="UI" />
-        <Abbreviation Text="DAO" />
-        <Abbreviation Text="EP" />
-        <Abbreviation Text="ID" />
-        <Abbreviation Text="DB" />
-        <Abbreviation Text="DS" />
       </Naming2>
     </CSharp>
     <HTML>
@@ -106,7 +98,15 @@
     </HTML>
     <JavaScript>
       <FormatSettings />
-      <Naming2 />
+      <Naming2>
+        <UserRule Name="JS_LOCAL_VARIABLE" Inspect="True" Prefix="" Suffix="" Style="aaBb" />
+        <UserRule Name="JS_FUNCTION" Inspect="True" Prefix="" Suffix="" Style="aaBb" />
+        <UserRule Name="JS_PARAMETER" Inspect="True" Prefix="" Suffix="" Style="aaBb" />
+        <UserRule Name="JS_LABEL" Inspect="True" Prefix="" Suffix="" Style="aaBb" />
+        <UserRule Name="JS_GLOBAL_VARIABLE" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="JS_OBJECT_PROPERTY_OF_FUNCTION" Inspect="True" Prefix="" Suffix="" Style="aaBb" />
+        <UserRule Name="JS_CONSTRUCTOR" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+      </Naming2>
     </JavaScript>
     <VB>
       <FormatSettings />
@@ -116,7 +116,6 @@
         <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
         <ExceptionName IsNull="False">
         </ExceptionName>
-        <OverrideDefaultSettings>True</OverrideDefaultSettings>
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
         <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
         <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
@@ -136,7 +135,12 @@
       </Naming2>
     </VB>
     <Web>
-      <Naming2 />
+      <Naming2>
+        <UserRule Name="ASP_TAG_NAME" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_TAG_PREFIX" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_FIELD" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_HTML_CONTROL" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+      </Naming2>
     </Web>
     <XML>
       <FormatSettings />
@@ -174,18 +178,8 @@
         </ElementKinds>
       </UserRule>
       <Abbreviation Text="UI" />
-      <Abbreviation Text="DAO" />
+      <Abbreviation Text="EP" />
       <Abbreviation Text="DB" />
-      <Abbreviation Text="DS" />
-      <Abbreviation Text="SP" />
-      <Abbreviation Text="WS" />
-      <Abbreviation Text="DA" />
-      <Abbreviation Text="SQL" />
-      <Abbreviation Text="MD" />
-      <Abbreviation Text="SMTP" />
-      <Abbreviation Text="SWF" />
-      <Abbreviation Text="UFO" />
-      <Abbreviation Text="XHTML" />
       <Abbreviation Text="IE" />
     </Naming2>
   </CodeStyleSettings>
