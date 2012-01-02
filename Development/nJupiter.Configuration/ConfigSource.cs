@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 // 
-// 	Copyright (c) 2005-2011 nJupiter
+// 	Copyright (c) 2005-2012 nJupiter
 // 
 // 	Permission is hereby granted, free of charge, to any person obtaining a copy
 // 	of this software and associated documentation files (the "Software"), to deal
@@ -19,18 +19,18 @@
 // 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // 	THE SOFTWARE.
+// 
 #endregion
 
 using System;
 
 namespace nJupiter.Configuration {
 	public class ConfigSource : IConfigSource {
-		private readonly object source;
 
+		private readonly object source;
 		private readonly IConfigSourceWatcher watcher;
 
 		public virtual object Source { get { return source; } }
-
 		public virtual IConfigSourceWatcher Watcher { get { return watcher; } }
 
 		public ConfigSource(object source, IConfigSourceWatcher watcher) {
@@ -42,7 +42,6 @@ namespace nJupiter.Configuration {
 		}
 
 		public ConfigSource(object source) : this(source, null) {}
-
 		public ConfigSource(IConfigSourceWatcher watcher) : this(watcher, watcher) {}
 	}
 }
