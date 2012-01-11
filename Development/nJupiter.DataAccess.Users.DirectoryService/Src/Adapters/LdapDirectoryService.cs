@@ -28,8 +28,6 @@ using System.DirectoryServices;
 using System.Collections;
 using System.Globalization;
 
-using log4net;
-
 namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 
 	public sealed class LdapDirectoryService : DirectoryService {
@@ -42,10 +40,6 @@ namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 
 		#region Constructors
 		internal LdapDirectoryService() { }
-		#endregion
-
-		#region Static Members
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Members
@@ -73,7 +67,6 @@ namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 			if(id == null) {
 				throw new ArgumentNullException("id");
 			}
-			if(Log.IsDebugEnabled) { Log.Debug("Getting Directory Object By Id [" + id + "]"); }
 			DirectoryObject directoryObject = null;
 			if(id.Length > 0) {
 				using(DirectoryEntry directoryEntry = this.GetDirectoryEntry()) {
@@ -88,12 +81,9 @@ namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 							directoryObject.Id = GetPropertyValue(searchResult, this.IdentifyingPropertyName);
 							foreach(string propertyName in searchResult.Properties.PropertyNames) {
 								if(directoryObject.Contains(propertyName)) {
-									if(Log.IsDebugEnabled) { Log.Debug(string.Format("Directory Object '{0}' contains property name '{1}'", id, propertyName)); }
 									directoryObject[propertyName] = GetPropertyValue(searchResult, propertyName);
 								}
 							}
-						} else {
-							if(Log.IsDebugEnabled) { Log.Debug(string.Format("Directory Object '{0}' not found.", id)); }
 						}
 					}
 				}
@@ -140,7 +130,6 @@ namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 							}
 						}
 						DirectoryObject[] result = (DirectoryObject[])directoryObjects.ToArray(typeof(DirectoryObject));
-						if(Log.IsDebugEnabled) { Log.Debug(string.Format("Getting directory objects by search criteria '{0}'. Objects found {1}", filter, result.Length)); }
 						return result;
 					}
 				}
@@ -166,23 +155,19 @@ namespace nJupiter.DataAccess.Users.DirectoryService.Adapters {
 							if(pvc.Value != null) {
 								if(!pvc.Value.ToString().Equals(newValue)) {
 									if(!string.IsNullOrEmpty(newValue)) {
-										if(Log.IsDebugEnabled) { Log.Debug(string.Format("Setting property '{0}' with value '{1}' on directory objects with filter '{2}'.", propertyName, newValue, filter)); }
 										pvc.Value = newValue;
 									} else {
-										if(Log.IsDebugEnabled) { Log.Debug(string.Format("Remove value for property '{0}' on directory objects with filter '{1}'.", propertyName, filter)); }
 										pvc.RemoveAt(0);
 									}
 									commitChanges = true;
 								}
 							} else if(!string.IsNullOrEmpty(newValue)) {
-								if(Log.IsDebugEnabled) { Log.Debug(string.Format("Add property '{0}' with value '{1}' on directory objects with filter '{2}'.", propertyName, newValue, filter)); }
 								pvc.Add(newValue);
 								commitChanges = true;
 							}
 						}
 						if(commitChanges) {
 							directoryEntryWrite.CommitChanges();
-							if(Log.IsDebugEnabled) { Log.Debug(string.Format("Commiting changes directory objects with filter '{0}'.", filter)); }
 						}
 					}
 				}

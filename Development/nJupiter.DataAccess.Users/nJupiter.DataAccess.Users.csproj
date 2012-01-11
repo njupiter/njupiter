@@ -158,8 +158,5 @@
   <ItemGroup>
     <None Include="Src\packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="ChangeLog.txt" />
-  </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

@@ -27,15 +27,11 @@ using System.Collections.Specialized;
 using System.DirectoryServices;
 using System.Web.Security;
 
-using log4net;
-
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapMembershipProvider : MembershipProvider {
-
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private string providerName;
 		private string appName;
@@ -135,8 +131,8 @@ namespace nJupiter.DataAccess.Ldap {
 							return result.Properties[configuration.Users.RdnAttribute].Count > 0;
 						}
 					}
-				} catch(Exception exeption) {
-					if(Log.IsDebugEnabled) { Log.Debug(string.Format("Failed to validate user {0}", username), exeption); }
+				} catch(Exception) {
+					// Failed to validate user
 				}
 			}
 			return false;

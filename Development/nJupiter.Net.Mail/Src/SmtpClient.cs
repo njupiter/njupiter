@@ -29,8 +29,6 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 
-using log4net;
-
 namespace nJupiter.Net.Mail {
 
 	/// <summary>
@@ -43,10 +41,6 @@ namespace nJupiter.Net.Mail {
 		private readonly string userName = string.Empty;
 		private readonly string password = string.Empty;
 		private readonly int timeout = 100;
-		#endregion
-
-		#region Static Members
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 		#endregion
 
 		#region Constructors
@@ -116,7 +110,6 @@ namespace nJupiter.Net.Mail {
 			IPEndPoint endPoint = new IPEndPoint(ipAddress, 25);
 
 			using(Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp)) {
-				if(Log.IsDebugEnabled) { Log.Debug(string.Format("Connecting to SMTP-server '{0}'", this.host)); }
 
 				socket.Connect(endPoint);
 				WaitForResponse(socket, SmtpReplyCode.ConnectSuccess);
@@ -141,7 +134,6 @@ namespace nJupiter.Net.Mail {
 		#region Helper Methods
 		private SmtpResponse SendData(Socket socket, string message, SmtpReplyCode expectedResponse) {
 			byte[] msg = Encoding.UTF8.GetBytes(message);
-			if(Log.IsDebugEnabled) { Log.Debug(string.Format("Sending data '{0}' to SMTP-server {1}", message, this.host)); }
 			socket.Send(msg, 0, msg.Length, SocketFlags.None);
 			if(!expectedResponse.Equals(SmtpReplyCode.QuitSuccess)) {
 				return this.WaitForResponse(socket, expectedResponse);

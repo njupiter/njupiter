@@ -28,8 +28,6 @@ using System.Threading;
 
 using nJupiter.Configuration;
 
-using log4net;
-
 namespace nJupiter.Net.Mail {
 
 	/// <summary>
@@ -64,10 +62,6 @@ namespace nJupiter.Net.Mail {
 	#region Default implementation of the MailSender interface
 
 	internal class MailSenderImpl : MailSender {
-
-		#region Static Members
-		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		#endregion
 
 		private readonly ArrayList mailList;
 
@@ -117,15 +111,13 @@ namespace nJupiter.Net.Mail {
 					// get Smtp server
 					try {
 						smtpClient.Send(mail);
-					} catch(Exception innerEx) {
-						if(Log.IsErrorEnabled) { Log.Error(string.Format("Error sending mail {0}{1} to SMTP-server {2}", (mail.Subject != null ? "[" + mail.Subject + "]" : string.Empty), (mail.To != null ? " to [" + mail.To + "]" : string.Empty), smtpServer), innerEx); }
+					} catch(Exception) {
 						if(synchronize) {
 							throw;
 						}
 					}
 				}
-			} catch(Exception ex) {
-				if(Log.IsErrorEnabled) { Log.Error("Error sending mails to SMTP-server " + smtpServer, ex); }
+			} catch(Exception) {
 				if(synchronize) {
 					throw;
 				}
