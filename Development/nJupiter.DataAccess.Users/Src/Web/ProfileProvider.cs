@@ -63,7 +63,7 @@ namespace nJupiter.DataAccess.Users.Web {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
-			string provider = GetStringConfigValue(config, "userRepository", string.Empty);
+			var provider = GetStringConfigValue(config, "userRepository", string.Empty);
 			this.userRepository = this.userRepositoryManager.GetRepository(provider);
 			this.providerName = !string.IsNullOrEmpty(name) ? name : this.userRepository.Name;
 			this.automaticallyCreateNonExistingUsers = bool.Parse(GetStringConfigValue(config, "automaticallyCreateNonExistingUsers", "true"));
@@ -88,7 +88,7 @@ namespace nJupiter.DataAccess.Users.Web {
 
 		public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext sc, SettingsPropertyCollection properties) {
 			var propertySettings = CreateSettingsCollectionFromPropertyCollection(properties);
-			string username = (string)sc["UserName"];
+			var username = (string)sc["UserName"];
 			if(!string.IsNullOrEmpty(username) && propertySettings.Count > 0) {
 				var user = GetExistingOrCreateNewUser(username);
 				PopulatePropertyCollectionFromUser(user, propertySettings);
@@ -97,8 +97,8 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		public override void SetPropertyValues(SettingsContext sc, SettingsPropertyValueCollection properties) {
-			string username = (string)sc["UserName"];
-			bool isIsAuthenticated = (bool)sc["IsAuthenticated"];
+			var username = (string)sc["UserName"];
+			var isIsAuthenticated = (bool)sc["IsAuthenticated"];
 			if(isIsAuthenticated && !string.IsNullOrEmpty(username) && properties.Count > 0) {
 				var user = GetUserFromUserNameWritable(username);
 				if(user != null) {
@@ -113,9 +113,9 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		public override int DeleteProfiles(string[] usernames) {
-			int count = 0;
+			var count = 0;
 			if(this.DeleteUsersOnProfileDeleting){
-				foreach(string username in usernames) {
+				foreach(var username in usernames) {
 					var user = GetUserFromUserName(username);
 					if(user != null) {
 						this.UserRepository.DeleteUser(user);
@@ -140,7 +140,7 @@ namespace nJupiter.DataAccess.Users.Web {
 			if(!authenticationOption.Equals(ProfileAuthenticationOption.Anonymous)) {
 				var uc = this.UserRepository.GetAllUsers(pageIndex, pageSize, out totalRecords);
 				foreach(var user in uc) {
-					string username = GetUsername(user);
+					var username = GetUsername(user);
 					profiles.Add(new ProfileInfo(username, user.Properties.IsAnonymous, user.Properties.LastActivityDate, user.Properties.LastUpdatedDate, 0));
 				}
 				totalRecords = profiles.Count;
@@ -160,7 +160,7 @@ namespace nJupiter.DataAccess.Users.Web {
 			var user = GetUserFromUserName(usernameToMatch);
 			totalRecords = 0;
 			if(user != null) {
-				string username = GetUsername(user);
+				var username = GetUsername(user);
 				pic.Add(new ProfileInfo(username, user.Properties.IsAnonymous, user.Properties.LastActivityDate, user.Properties.LastUpdatedDate, 0));
 				totalRecords = 1;
 			}
@@ -177,7 +177,7 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		private bool SetUserPropertyFromPropertyValue(IUser user, SettingsPropertyValue propertyValue) {
-			bool propertyChanged = false;
+			var propertyChanged = false;
 			var userProperty = this.GetProperty(user, propertyValue.Name);
 			if(userProperty != null) {
 				if(propertyValue.IsDirty) {
@@ -191,16 +191,16 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		private IProperty GetProperty(IUser user, string propertyName) {
-			string contextName = this.UserRepository.PropertyNames.GetContextName(propertyName);
+			var contextName = this.UserRepository.PropertyNames.GetContextName(propertyName);
 			var context = Context.DefaultContext;
-			if(!string.IsNullOrEmpty(contextName)) {
+			if(Context.DefaultContext.Name.Equals(contextName)) {
 				context = this.UserRepository.GetContext(contextName);
 			}
 			return user.Properties.GetProperty(propertyName, context);
 		}
 
 		private void PopulateUserPropertiesFromPropertyCollction(IUser user, SettingsPropertyValueCollection properties) {
-			bool userIsDirty = false;
+			var userIsDirty = false;
 			foreach(SettingsPropertyValue propertyValue in properties) {
 				userIsDirty |= this.SetUserPropertyFromPropertyValue(user, propertyValue);
 			}
@@ -246,8 +246,8 @@ namespace nJupiter.DataAccess.Users.Web {
 		}
 
 		private IUser CreateUserFromUserName(string username) {
-			string name = GetUserNameFromMembershipUserName(username);
-			string domain = GetDomainFromMembershipUserName(username);
+			var name = GetUserNameFromMembershipUserName(username);
+			var domain = GetDomainFromMembershipUserName(username);
 			var user = this.UserRepository.CreateUserInstance(name, domain);
 			this.UserRepository.SetPassword(user, Guid.NewGuid().ToString("N"));
 			this.UserRepository.SaveUser(user);
@@ -265,8 +265,8 @@ namespace nJupiter.DataAccess.Users.Web {
 
 
 		private IUser GetUserFromUserName(string username) {
-			string name = GetUserNameFromMembershipUserName(username);
-			string domain = GetDomainFromMembershipUserName(username);
+			var name = GetUserNameFromMembershipUserName(username);
+			var domain = GetDomainFromMembershipUserName(username);
 			return this.UserRepository.GetUserByUserName(name, domain);
 		}
 

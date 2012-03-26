@@ -157,7 +157,7 @@ namespace nJupiter.DataAccess.Users {
 
 		public string GetContextName(string name) {
 			if(this.ContextNames == null || name == null) {
-				return null;
+				return Context.DefaultContext.Name;
 			}
 			if(AreEqual(name, this.UserName)) {
 				return this.ContextNames.UserName;
