@@ -42,6 +42,14 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		public void ChangePassword_PasswordSet_SetPasswordAndSaveUserCalled() {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
+
+			var originalUser = A.Fake<IUser>();
+			var clonedUser = A.Fake<IUser>();
+
+			A.CallTo(() => userRepository.GetUserByUserName("modhelius", null)).Returns(originalUser);
+			A.CallTo(() => originalUser.IsReadOnly).Returns(true);
+			A.CallTo(() => originalUser.Clone()).Returns(clonedUser);
+
 			A.CallTo(() => userRepository.CheckPassword(A<IUser>.Ignored, "oldpassword")).Returns(true);
 			Assert.IsTrue(provider.ChangePassword("modhelius", "oldpassword", "password321;"));
 
@@ -79,12 +87,17 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
 			var user = A.Fake<IUser>();
+			var clonedUser = A.Fake<IUser>();
+
 			user.Properties.LastLoginDate = DateTime.MinValue;
 			A.CallTo(() => userRepository.GetUserByUserName("modhelius", "njupiter")).Returns(user);
+			A.CallTo(() => user.IsReadOnly).Returns(true);
+			A.CallTo(() => user.Clone()).Returns(clonedUser);
+
 			A.CallTo(() => userRepository.CheckPassword(user, "password")).Returns(true);
 			Assert.IsTrue(provider.ValidateUser("njupiter\\modhelius", "password"));
-			Assert.AreEqual(DateTime.UtcNow.DayOfYear, user.Properties.LastLoginDate.DayOfYear);
-			A.CallTo(() => userRepository.SaveUser(user)).MustHaveHappened(Repeated.Exactly.Once);
+			Assert.AreEqual(DateTime.UtcNow.DayOfYear, clonedUser.Properties.LastLoginDate.DayOfYear);
+			A.CallTo(() => userRepository.SaveUser(clonedUser)).MustHaveHappened(Repeated.Exactly.Once);
 		}
 
 		[Test]

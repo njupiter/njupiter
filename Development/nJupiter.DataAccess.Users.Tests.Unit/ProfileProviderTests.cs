@@ -8,8 +8,6 @@ using System.Web.Profile;
 
 using FakeItEasy;
 
-using nJupiter.DataAccess.Users;
-
 using NUnit.Framework;
 
 using ProfileProvider = nJupiter.DataAccess.Users.Web.ProfileProvider;

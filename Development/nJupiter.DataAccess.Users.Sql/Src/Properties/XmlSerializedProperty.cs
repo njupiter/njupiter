@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.Serialization;
+
+using nJupiter.DataAccess.Users.Sql.Serialization;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
@@ -35,7 +38,12 @@ namespace nJupiter.DataAccess.Users.Sql {
 			}
 			ValueWrapper valueWrapper;
 			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
-				valueWrapper = (new BinaryFormatter()).Deserialize(stream) as ValueWrapper;
+				BinaryFormatter formatter = new BinaryFormatter();
+				var surrogateSelector = new SurrogateSelector();
+				formatter.SurrogateSelector = surrogateSelector;
+				var deserializationBinder = new DeserializationBinder(surrogateSelector);
+				formatter.Binder = deserializationBinder;
+				valueWrapper = formatter.Deserialize(stream) as ValueWrapper;
 			}
 			if(valueWrapper == null || valueWrapper.Type == null || valueWrapper.Value == null)
 				return this.DefaultValue;
@@ -47,7 +55,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		}
 
 		[Serializable]
-		private sealed class ValueWrapper {
+		internal sealed class ValueWrapper {
 			private readonly Type type;
 			private readonly string value;
 			public ValueWrapper(Type type, string value) {

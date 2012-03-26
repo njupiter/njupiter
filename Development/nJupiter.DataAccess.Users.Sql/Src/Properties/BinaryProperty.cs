@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+
+using nJupiter.DataAccess.Users.Sql.Serialization;
 
 namespace nJupiter.DataAccess.Users.Sql {
 	[Serializable]
@@ -24,7 +27,12 @@ namespace nJupiter.DataAccess.Users.Sql {
 			if(value == null)
 				return this.DefaultValue;
 			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
-				return new BinaryFormatter().Deserialize(stream);
+				BinaryFormatter formatter = new BinaryFormatter();
+				var surrogateSelector = new SurrogateSelector();
+				formatter.SurrogateSelector = surrogateSelector;
+				var deserializationBinder = new DeserializationBinder(surrogateSelector);
+				formatter.Binder = deserializationBinder;
+				return formatter.Deserialize(stream);
 			}
 		}
 	}

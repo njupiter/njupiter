@@ -56,7 +56,6 @@ namespace nJupiter.DataAccess.Users {
 		public string Domain { get { return this.domain; } }
 		public IPropertyHandler Properties { get { return this.properties; } }
 
-
 		public override int GetHashCode() {
 			return this.Id.GetHashCode();
 		}

@@ -245,7 +245,7 @@ namespace nJupiter.DataAccess.Users {
 
 		private static IContext GetContextFromPropertyCollection(IEnumerable<IProperty> properties) {
 			var property = properties.FirstOrDefault();
-			return property != null ? property.Context : Context.DefaultContext;
+			return property != null && property.Context != null ? property.Context : Context.DefaultContext;
 		}
 
 		private T GetPropertyByKey<T>(string key) {

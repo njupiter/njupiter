@@ -151,107 +151,111 @@ namespace nJupiter.DataAccess.Users {
 			throw new NotSupportedException(string.Format("Property with name {0} is not supported.", name));
 		}
 
+		private bool AreEqual(string value1, string value2) {
+			return string.Equals(value1, value2, StringComparison.OrdinalIgnoreCase);
+		}
+
 		public string GetContextName(string name) {
 			if(this.ContextNames == null || name == null) {
 				return null;
 			}
-			if(name == this.UserName) {
+			if(AreEqual(name, this.UserName)) {
 				return this.ContextNames.UserName;
 			}
-			if(name == this.FullName) {
+			if(AreEqual(name, this.FullName)) {
 				return this.ContextNames.FullName;
 			}
-			if(name == this.FirstName) {
+			if(AreEqual(name, this.FirstName)) {
 				return this.ContextNames.FirstName;
 			}
-			if(name == this.LastName) {
+			if(AreEqual(name, this.LastName)) {
 				return this.ContextNames.LastName;
 			}
-			if(name == this.Description) {
+			if(AreEqual(name, this.Description)) {
 				return this.ContextNames.Description;
 			}
-			if(name == this.Email) {
+			if(AreEqual(name, this.Email)) {
 				return this.ContextNames.Email;
 			}
-			if(name == this.HomePage) {
+			if(AreEqual(name, this.HomePage)) {
 				return this.ContextNames.HomePage;
 			}
-			if(name == this.StreetAddress) {
+			if(AreEqual(name, this.StreetAddress)) {
 				return this.ContextNames.StreetAddress;
 			}
-			if(name == this.Company) {
+			if(AreEqual(name, this.Company)) {
 				return this.ContextNames.Company;
 			}
-			if(name == this.Department) {
+			if(AreEqual(name, this.Department)) {
 				return this.ContextNames.Department;
 			}
-			if(name == this.City) {
+			if(AreEqual(name, this.City)) {
 				return this.ContextNames.City;
 			}
-			if(name == this.Telephone) {
+			if(AreEqual(name, this.Telephone)) {
 				return this.ContextNames.Telephone;
 			}
-			if(name == this.Fax) {
+			if(AreEqual(name, this.Fax)) {
 				return this.ContextNames.Fax;
 			}
-			if(name == this.HomeTelephone) {
+			if(AreEqual(name, this.HomeTelephone)) {
 				return this.ContextNames.HomeTelephone;
 			}
-			if(name == this.MobileTelephone) {
+			if(AreEqual(name, this.MobileTelephone)) {
 				return this.ContextNames.MobileTelephone;
 			}
-			if(name == this.PostOfficeBox) {
+			if(AreEqual(name, this.PostOfficeBox)) {
 				return this.ContextNames.PostOfficeBox;
 			}
-			if(name == this.PostalCode) {
+			if(AreEqual(name, this.PostalCode)) {
 				return this.ContextNames.PostalCode;
 			}
-			if(name == this.Country) {
+			if(AreEqual(name, this.Country)) {
 				return this.ContextNames.Country;
 			}
-			if(name == this.Title) {
+			if(AreEqual(name, this.Title)) {
 				return this.ContextNames.Title;
 			}
-			if(name == this.Active) {
+			if(AreEqual(name, this.Active)) {
 				return this.ContextNames.Active;
 			}
-			if(name == this.PasswordQuestion) {
+			if(AreEqual(name, this.PasswordQuestion)) {
 				return this.ContextNames.PasswordQuestion;
 			}
-			if(name == this.PasswordAnswer) {
+			if(AreEqual(name, this.PasswordAnswer)) {
 				return this.ContextNames.PasswordAnswer;
 			}
-			if(name == this.LastActivityDate) {
+			if(AreEqual(name, this.LastActivityDate)) {
 				return this.ContextNames.LastActivityDate;
 			}
-			if(name == this.CreationDate) {
+			if(AreEqual(name, this.CreationDate)) {
 				return this.ContextNames.CreationDate;
 			}
-			if(name == this.LastLockoutDate) {
+			if(AreEqual(name, this.LastLockoutDate)) {
 				return this.ContextNames.LastLockoutDate;
 			}
-			if(name == this.LastLoginDate) {
+			if(AreEqual(name, this.LastLoginDate)) {
 				return this.ContextNames.LastLoginDate;
 			}
-			if(name == this.LastPasswordChangedDate) {
+			if(AreEqual(name, this.LastPasswordChangedDate)) {
 				return this.ContextNames.LastPasswordChangedDate;
 			}
-			if(name == this.Locked) {
+			if(AreEqual(name, this.Locked)) {
 				return this.ContextNames.Locked;
 			}
-			if(name == this.Password) {
+			if(AreEqual(name, this.Password)) {
 				return this.ContextNames.Password;
 			}
-			if(name == this.PasswordSalt) {
+			if(AreEqual(name, this.PasswordSalt)) {
 				return this.ContextNames.PasswordSalt;
 			}
-			if(name == this.LastUpdatedDate) {
+			if(AreEqual(name, this.LastUpdatedDate)) {
 				return this.ContextNames.LastUpdatedDate;
 			}
-			if(name == this.IsAnonymous) {
+			if(AreEqual(name, this.IsAnonymous)) {
 				return this.ContextNames.IsAnonymous;
 			}
-			throw new NotSupportedException(string.Format("Property with name {0} is not supported.", name));
+			return Context.DefaultContext.Name;
 		}
 	}
 }

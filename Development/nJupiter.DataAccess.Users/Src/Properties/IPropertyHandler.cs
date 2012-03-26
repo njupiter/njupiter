@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Users {
-	public interface IPropertyHandler : IPredefinedProperties, ILockable  {
+	public interface IPropertyHandler : IPredefinedProperties, ILockable {
 		IProperty this[string propertyName] { get; }
 		IProperty this[string propertyName, IContext context] { get; }
 		IPredefinedNames PropertyNames { get; }

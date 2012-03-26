@@ -1,11 +1,11 @@
 -- Insert default values
 
-INSERT USER_DataType(DataTypeID, TypeName) VALUES(0, 'nJupiter.DataAccess.Users.StringProperty')
-INSERT USER_DataType(DataTypeID, TypeName) VALUES(1, 'nJupiter.DataAccess.Users.IntProperty')
-INSERT USER_DataType(DataTypeID, TypeName) VALUES(2, 'nJupiter.DataAccess.Users.BoolProperty')
-INSERT USER_DataType(DataTypeID, TypeName) VALUES(3, 'nJupiter.DataAccess.Users.DateTimeProperty')
-INSERT USER_DataType(DataTypeID, TypeName) VALUES(4, 'nJupiter.DataAccess.Users.BinaryProperty')
-INSERT USER_DataType(DataTypeID, TypeName) VALUES(5, 'nJupiter.DataAccess.Users.XmlSerializedProperty')
+INSERT USER_DataType(DataTypeID, TypeName) VALUES(0, 'nJupiter.DataAccess.Users.Sql.StringProperty')
+INSERT USER_DataType(DataTypeID, TypeName) VALUES(1, 'nJupiter.DataAccess.Users.Sql.IntProperty')
+INSERT USER_DataType(DataTypeID, TypeName) VALUES(2, 'nJupiter.DataAccess.Users.Sql.BoolProperty')
+INSERT USER_DataType(DataTypeID, TypeName) VALUES(3, 'nJupiter.DataAccess.Users.Sql.DateTimeProperty')
+INSERT USER_DataType(DataTypeID, TypeName) VALUES(4, 'nJupiter.DataAccess.Users.Sql.BinaryProperty')
+INSERT USER_DataType(DataTypeID, TypeName) VALUES(5, 'nJupiter.DataAccess.Users.Sql.XmlSerializedProperty')
 
 INSERT USER_PropertySchema(PropertyID, PropertyName, DataTypeID) VALUES(1, 'password', 0)
 INSERT USER_PropertySchema(PropertyID, PropertyName, DataTypeID) VALUES(2, 'passwordSalt', 0)

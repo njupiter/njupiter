@@ -159,7 +159,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 
 				string parameterNameName = sqlParameter + parameterCount++;
 				string parameterNameValue = sqlParameter + parameterCount++;
-				bool contextIsSet = sc.Property.Context != null && sc.Property.Context.Name != null;
+				bool contextIsSet = sc.Property.Context != null && !string.IsNullOrEmpty(sc.Property.Context.Name);
 				bool domainIsSet = !string.IsNullOrEmpty(sc.Domain);
 
 				StringBuilder criteria = new StringBuilder(sqlBasicSubqueryStart);
@@ -488,7 +488,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		}
 
 		public override IContext CreateContext(string contextName, ContextSchema schema) {
-			if(contextName == null)
+			if(string.IsNullOrEmpty(contextName))
 				throw new ArgumentNullException("contextName");
 			if(schema == null)
 				throw new ArgumentNullException("schema");
@@ -624,13 +624,13 @@ namespace nJupiter.DataAccess.Users.Sql {
 			foreach(DataRow row in dsUser.Tables[0].Rows) {
 				string domain = (string)row["Domain"];
 				string userId = row["UserID"].ToString();
-
-				var user = new User(userId, (string)row["Username"], domain, GetPropertiesByUserId(userId), this.PropertyNames);
+				var properties = GetPropertiesByUserId(userId);
+				var user = new User(userId, (string)row["Username"], domain, properties, this.PropertyNames);
 				users.Add(user);
 			}
 			return users;
 		}
-		
+
 		protected virtual void SaveUser(IUser user, ITransaction transaction) {
 			SaveUserInstance(user, transaction);
 			SaveProperties(user, user.Properties.GetProperties(), transaction);
@@ -661,7 +661,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 
 			DataSet dsUser = CurrentDB.ExecuteDataSet("dbo.USER_GetProperties",
 				CurrentDB.CreateInputParameter("@guidUserID", DbType.Guid, new Guid(userId)),
-				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context == null ? null : context.Name));
+				CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, context == null || string.IsNullOrEmpty(context.Name) ? null : context.Name));
 			// translate dataset
 			if(dsUser.Tables.Count > 0) {
 				dsUser.Tables[0].PrimaryKey = new[] { dsUser.Tables[0].Columns["PropertyName"] };
@@ -672,7 +672,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		}
 
 		private IPropertyCollection GetPropertiesFromDataRows(DataRowCollection rows, IContext context, ITransaction transaction) {
-			var schema = (context == null ? this.GetDefaultContextSchema() : this.GetContextSchema(context.Name, transaction));
+			var schema = (context == null || string.IsNullOrEmpty(context.Name) ? this.GetDefaultContextSchema() : this.GetContextSchema(context.Name, transaction));
 			var propertyList = new List<IProperty>();
 
 			foreach(PropertyDefinition pd in schema) {
@@ -709,12 +709,12 @@ namespace nJupiter.DataAccess.Users.Sql {
 					CurrentDB.CreateStringInputParameter("@chvProperty", DbType.AnsiString, property.Name),
 					CurrentDB.CreateStringInputParameter("@chvnPropertyValue", DbType.String, propertyValue.Length <= 4000 ? propertyValue : null),
 					CurrentDB.CreateStringInputParameter("@txtnExtPropertyValue", DbType.String, propertyValue.Length > 4000 ? propertyValue : null),
-					CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, property.Context == null ? null : property.Context.Name));
+					CurrentDB.CreateStringInputParameter("@chvContext", DbType.AnsiString, property.Context == null || string.IsNullOrEmpty(property.Context.Name) ? null : property.Context.Name));
 			} else {
 				CurrentDB.ExecuteNonQuery("dbo.USER_DeleteProperty", transaction,
 					CurrentDB.CreateInputParameter("@guidUserId", DbType.Guid, new Guid(user.Id)),
 					CurrentDB.CreateStringInputParameter("@chvPropertyName", DbType.AnsiString, property.Name),
-					CurrentDB.CreateStringInputParameter("@chvContextName", DbType.AnsiString, property.Context == null ? null : property.Context.Name));
+					CurrentDB.CreateStringInputParameter("@chvContextName", DbType.AnsiString, property.Context == null || string.IsNullOrEmpty(property.Context.Name) ? null : property.Context.Name));
 			}
 
 			property.IsDirty = false;

@@ -2,6 +2,6 @@
 [assembly: AssemblyDescription("SQL Implementation of the nJupiter.DataAccess.Users.IUserRepository")]
 
 // Increment AssemblyVersion only on major and minor releases
-[assembly: AssemblyVersion("4.0.1.308")]
+[assembly: AssemblyVersion("4.0.3.330")]
 // Increment AssemblyFileVersion on every release
-[assembly: AssemblyFileVersion("4.0.1.308")]
+[assembly: AssemblyFileVersion("4.0.3.330")]
