@@ -1,0 +1,3918 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.36" Name="nJupiter">
+ <ProjectOptions>
+  <SharedProject>False</SharedProject>
+  <Stylesheet Apply="False">C:\Program Files\Microsoft FxCop 1.35\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>100</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>10</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <AssemblyReferenceDirectories>
+   <Directory>C:\Projects\nJupiter\Development\Shared Resources\Libraries\Log4Net\V1.2.10.0\.NET 2.0\</Directory>
+   <Directory>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\</Directory>
+  </AssemblyReferenceDirectories>
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Collections.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Configuration.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.DirectoryService.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.Users.DirectoryService.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.Users.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Drawing.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Globalization.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.IO.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Messaging.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Messaging.Server.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Messaging.Web.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Net.Mail.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Security.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Services.Forum.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Services.Forum.UI.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Text.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.Syndication.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.CssCompressor.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.EmailObfuscator.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.GoogleAnalytics.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AbstractTypesShouldNotHaveConstructors" Enabled="True" />
+    <Rule Name="AvoidEmptyInterfaces" Enabled="True" />
+    <Rule Name="AvoidExcessiveParametersOnGenericTypes" Enabled="True" />
+    <Rule Name="AvoidOutParameters" Enabled="True" />
+    <Rule Name="ConsiderPassingBaseTypesAsParameters" Enabled="True" />
+    <Rule Name="DeclareEventHandlersCorrectly" Enabled="True" />
+    <Rule Name="DeclareTypesInNamespaces" Enabled="True" />
+    <Rule Name="DefaultParametersShouldNotBeUsed" Enabled="True" />
+    <Rule Name="DefineAccessorsForAttributeArguments" Enabled="True" />
+    <Rule Name="DoNotCatchGeneralExceptionTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareProtectedMembersInSealedTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareStaticMembersOnGenericTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareVirtualMembersInSealedTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareVisibleInstanceFields" Enabled="True" />
+    <Rule Name="DoNotExposeGenericLists" Enabled="True" />
+    <Rule Name="DoNotHideBaseClassMethods" Enabled="True" />
+    <Rule Name="DoNotNestGenericTypesInMemberSignatures" Enabled="True" />
+    <Rule Name="DoNotOverloadOperatorEqualsOnReferenceTypes" Enabled="True" />
+    <Rule Name="DoNotPassTypesByReference" Enabled="True" />
+    <Rule Name="EnumeratorsShouldBeStronglyTyped" Enabled="True" />
+    <Rule Name="EnumsShouldHaveZeroValue" Enabled="True" />
+    <Rule Name="EnumStorageShouldBeInt32" Enabled="True" />
+    <Rule Name="ExceptionsShouldBePublic" Enabled="True" />
+    <Rule Name="GenericMethodsShouldProvideTypeParameter" Enabled="True" />
+    <Rule Name="ICollectionImplementationsHaveStronglyTypedMembers" Enabled="True" />
+    <Rule Name="ImplementIDisposableCorrectly" Enabled="True" />
+    <Rule Name="ImplementStandardExceptionConstructors" Enabled="True" />
+    <Rule Name="IndexersShouldNotBeMultidimensional" Enabled="True" />
+    <Rule Name="InterfaceMethodsShouldBeCallableByChildTypes" Enabled="True" />
+    <Rule Name="ListsAreStronglyTyped" Enabled="True" />
+    <Rule Name="MarkAssembliesWithAssemblyVersion" Enabled="True" />
+    <Rule Name="MarkAssembliesWithClsCompliant" Enabled="True" />
+    <Rule Name="MarkAssembliesWithComVisible" Enabled="True" />
+    <Rule Name="MarkAttributesWithAttributeUsage" Enabled="True" />
+    <Rule Name="MarkEnumsWithFlags" Enabled="True" />
+    <Rule Name="MembersShouldNotExposeCertainConcreteTypes" Enabled="True" />
+    <Rule Name="MovePInvokesToNativeMethodsClass" Enabled="True" />
+    <Rule Name="NestedTypesShouldNotBeVisible" Enabled="True" />
+    <Rule Name="OverloadOperatorEqualsOnOverloadingAddAndSubtract" Enabled="True" />
+    <Rule Name="OverrideMethodsOnComparableTypes" Enabled="True" />
+    <Rule Name="PropertiesShouldNotBeWriteOnly" Enabled="True" />
+    <Rule Name="ProvideObsoleteAttributeMessage" Enabled="True" />
+    <Rule Name="ReplaceRepetitiveArgumentsWithParamsArray" Enabled="True" />
+    <Rule Name="StaticHolderTypesShouldBeSealed" Enabled="True" />
+    <Rule Name="StaticHolderTypesShouldNotHaveConstructors" Enabled="True" />
+    <Rule Name="StringUriOverloadsCallSystemUriOverloads" Enabled="True" />
+    <Rule Name="TypesShouldNotExtendCertainBaseTypes" Enabled="True" />
+    <Rule Name="TypesThatOwnDisposableFieldsShouldBeDisposable" Enabled="True" />
+    <Rule Name="TypesThatOwnNativeResourcesShouldBeDisposable" Enabled="True" />
+    <Rule Name="UriParametersShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UriPropertiesShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UriReturnValuesShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UseEventsWhereAppropriate" Enabled="True" />
+    <Rule Name="UseGenericsWhereAppropriate" Enabled="True" />
+    <Rule Name="UsePropertiesWhereAppropriate" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AvoidDuplicateAccelerators" Enabled="True" />
+    <Rule Name="DoNotHardcodeLocaleSpecificStrings" Enabled="True" />
+    <Rule Name="SetLocaleForDataTypes" Enabled="True" />
+    <Rule Name="SpecifyCultureInfo" Enabled="True" />
+    <Rule Name="SpecifyIFormatProvider" Enabled="True" />
+    <Rule Name="SpecifyMessageBoxOptions" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="DoNotNameEnumValuesReserved" Enabled="True" />
+    <Rule Name="DoNotPrefixEnumValuesWithTypeName" Enabled="True" />
+    <Rule Name="EventsShouldNotHaveBeforeOrAfterPrefix" Enabled="True" />
+    <Rule Name="FlagsEnumsShouldHavePluralNames" Enabled="True" />
+    <Rule Name="IdentifiersShouldDifferByMoreThanCase" Enabled="True" />
+    <Rule Name="IdentifiersShouldHaveCorrectSuffix" Enabled="True" />
+    <Rule Name="IdentifiersShouldNotContainTypeNames" Enabled="True" />
+    <Rule Name="IdentifiersShouldNotHaveIncorrectPrefix" Enabled="True" />
+    <Rule Name="OnlyFlagsEnumsShouldHavePluralNames" Enabled="True" />
+    <Rule Name="ParameterNamesShouldMatchBaseDeclaration" Enabled="True" />
+    <Rule Name="ParameterNamesShouldNotMatchMemberNames" Enabled="True" />
+    <Rule Name="PropertyNamesShouldNotMatchGetMethods" Enabled="True" />
+    <Rule Name="ResourceStringCompoundWordsShouldBeCasedCorrectly" Enabled="True" />
+    <Rule Name="ResourceStringsShouldBeSpelledCorrectly" Enabled="True" />
+    <Rule Name="UsePreferredTerms" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AvoidExcessiveLocals" Enabled="True" />
+    <Rule Name="AvoidUncalledPrivateCode" Enabled="True" />
+    <Rule Name="AvoidUninstantiatedInternalClasses" Enabled="True" />
+    <Rule Name="AvoidUnsealedAttributes" Enabled="True" />
+    <Rule Name="AvoidUnusedPrivateFields" Enabled="True" />
+    <Rule Name="DoNotCastUnnecessarily" Enabled="True" />
+    <Rule Name="InitializeReferenceTypeStaticFieldsInline" Enabled="True" />
+    <Rule Name="MarkMembersAsStatic" Enabled="True" />
+    <Rule Name="OverrideEqualsAndOperatorEqualsOnValueTypes" Enabled="True" />
+    <Rule Name="PreferJaggedArraysOverMultidimensional" Enabled="True" />
+    <Rule Name="PropertiesShouldNotReturnArrays" Enabled="True" />
+    <Rule Name="RemoveEmptyFinalizers" Enabled="True" />
+    <Rule Name="RemoveUnusedLocals" Enabled="True" />
+    <Rule Name="TestForEmptyStringsUsingStringLength" Enabled="True" />
+    <Rule Name="UseLiteralsWhereAppropriate" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AttributeStringLiteralsShouldParseCorrectly" Enabled="True" />
+    <Rule Name="CallBaseClassMethodsOnISerializableTypes" Enabled="True" />
+    <Rule Name="CollectionPropertiesShouldBeReadOnly" Enabled="True" />
+    <Rule Name="DisposableFieldsShouldBeDisposed" Enabled="True" />
+    <Rule Name="DisposableTypesShouldDeclareFinalizer" Enabled="True" />
+    <Rule Name="DoNotCallOverridableMethodsInConstructors" Enabled="True" />
+    <Rule Name="DoNotDecreaseInheritedMemberVisibility" Enabled="True" />
+    <Rule Name="DoNotIgnoreMethodResults" Enabled="True" />
+    <Rule Name="DoNotMarkEnumsWithFlags" Enabled="True" />
+    <Rule Name="DoNotMarkServicedComponentsWithWebMethod" Enabled="True" />
+    <Rule Name="DoNotRaiseExceptionsInExceptionClauses" Enabled="True" />
+    <Rule Name="DoNotRaiseReservedExceptionTypes" Enabled="True" />
+    <Rule Name="DoNotShipUnreleasedResourceFormats" Enabled="True" />
+    <Rule Name="FinalizersShouldBeProtected" Enabled="True" />
+    <Rule Name="FinalizersShouldCallBaseClassFinalizer" Enabled="True" />
+    <Rule Name="ImplementISerializableCorrectly" Enabled="True" />
+    <Rule Name="ImplementSerializationConstructors" Enabled="True" />
+    <Rule Name="ImplementSerializationMethodsCorrectly" Enabled="True" />
+    <Rule Name="InitializeValueTypeStaticFieldsInline" Enabled="True" />
+    <Rule Name="InstantiateArgumentExceptionsCorrectly" Enabled="True" />
+    <Rule Name="MarkAllNonSerializableFields" Enabled="True" />
+    <Rule Name="MarkISerializableTypesWithSerializable" Enabled="True" />
+    <Rule Name="MarkWindowsFormsEntryPointsWithStaThread" Enabled="True" />
+    <Rule Name="MembersShouldDifferByMoreThanReturnType" Enabled="True" />
+    <Rule Name="NonConstantFieldsShouldNotBeVisible" Enabled="True" />
+    <Rule Name="OperationsShouldNotOverflow" Enabled="True" />
+    <Rule Name="OperatorOverloadsHaveNamedAlternates" Enabled="True" />
+    <Rule Name="OperatorsShouldHaveSymmetricalOverloads" Enabled="True" />
+    <Rule Name="OverloadOperatorEqualsOnOverridingValueTypeEquals" Enabled="True" />
+    <Rule Name="OverrideEqualsOnOverloadingOperatorEquals" Enabled="True" />
+    <Rule Name="OverrideGetHashCodeOnOverridingEquals" Enabled="True" />
+    <Rule Name="PassSystemUriObjectsInsteadOfStrings" Enabled="True" />
+    <Rule Name="ProvideDeserializationMethodsForOptionalFields" Enabled="True" />
+    <Rule Name="RethrowToPreserveStackDetails" Enabled="True" />
+    <Rule Name="ReviewUnusedParameters" Enabled="True" />
+    <Rule Name="TestForNaNCorrectly" Enabled="True" />
+    <Rule Name="UseManagedEquivalentsOfWin32Api" Enabled="True" />
+    <Rule Name="UseParamsForVariableArguments" Enabled="True" />
+   </RuleFile>
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.36">
+  <Targets>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Collections.dll">
+    <Modules>
+     <Module Name="njupiter.collections.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Collections.Generics">
+        <Types>
+         <Type Name="SortableCollection`1">
+          <Members>
+           <Member Name="#Insert(System.Int32,!0)">
+            <Messages>
+             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-02-12 15:18:08Z">
+              <Issue Name="NoArguments">
+               <Item>'ArgumentOutOfRangeException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Item[System.Int32]">
+            <Accessors>
+             <Accessor Name="#set_Item(System.Int32,!0)">
+              <Messages>
+               <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-02-12 15:18:08Z">
+                <Issue Name="NoArguments">
+                 <Item>'ArgumentOutOfRangeException'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#RemoveAt(System.Int32)">
+            <Messages>
+             <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Created="2010-02-12 15:18:08Z">
+              <Issue Name="NoArguments">
+               <Item>'ArgumentOutOfRangeException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#VerifyValueType(System.Object)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'SortableCollection&lt;T&gt;.VerifyValueType(object)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.Util.Collections">
+        <Types>
+         <Type Name="ReadOnlyHashtable">
+          <Messages>
+           <Message TypeName="ICollectionImplementationsHaveStronglyTypedMembers" Category="Microsoft.Design" CheckId="CA1035" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'ReadOnlyHashtable'</Item>
+            </Issue>
+           </Message>
+           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'ReadOnlyHashtable'</Item>
+             <Item>Dictionary</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Configuration.dll">
+    <Modules>
+     <Module Name="njupiter.configuration.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Configuration">
+        <Types>
+         <Type Name="Config">
+          <Members>
+           <Member Name="#.ctor(System.String,System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue Name="Xml">
+               <Item>'Config.Config(string, XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="6" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#.ctor(System.String,System.Xml.XmlElement,System.IO.FileInfo)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue Name="Xml">
+               <Item>'Config.Config(string, XmlElement, FileInfo)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#.ctor(System.String,System.Xml.XmlElement,System.Uri)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue Name="Xml">
+               <Item>'Config.Config(string, XmlElement, Uri)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="8" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#.ctor(System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2006-01-22 18:27:17Z">
+              <Issue Name="Xml">
+               <Item>'Config.Config(XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ConfigXML">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue Name="Xml">
+               <Item>'Config.ConfigXML'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetAttribute(System.String,System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'Config.GetAttribute(string, string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, params object[])'</Item>
+               <Item>'Config.GetAttribute(string, string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetBoolAttribute(System.String,System.String)">
+            <Messages>
+             <Message Id="bool" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Bool</Item>
+               <Item>'Config.GetBoolAttribute(string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetBoolAttribute(System.String,System.String,System.String)">
+            <Messages>
+             <Message Id="bool" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Bool</Item>
+               <Item>'Config.GetBoolAttribute(string, string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetBoolValue(System.String)">
+            <Messages>
+             <Message Id="bool" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Bool</Item>
+               <Item>'Config.GetBoolValue(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetBoolValue(System.String,System.String)">
+            <Messages>
+             <Message Id="bool" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Bool</Item>
+               <Item>'Config.GetBoolValue(string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetIntAttribute(System.String,System.String)">
+            <Messages>
+             <Message Id="int" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Int</Item>
+               <Item>'Config.GetIntAttribute(string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetIntAttribute(System.String,System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'Config.GetIntAttribute(string, string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="int" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Int</Item>
+               <Item>'Config.GetIntAttribute(string, string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetIntAttributeArray(System.String,System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'Config.GetIntAttributeArray(string, string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetIntValue(System.String)">
+            <Messages>
+             <Message Id="int" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Int</Item>
+               <Item>'Config.GetIntValue(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetIntValue(System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'Config.GetIntValue(string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="int" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue Name="LanguageSpecificMember">
+               <Item>Int</Item>
+               <Item>'Config.GetIntValue(string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetKey(System.String)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-10-06 09:26:46Z">
+              <Issue Name="Xml">
+               <Item>'Config.GetKey(string)'</Item>
+               <Item>'XmlNode'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetKey(System.String,System.String)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-10-06 09:26:46Z">
+              <Issue Name="Xml">
+               <Item>'Config.GetKey(string, string)'</Item>
+               <Item>'XmlNode'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetValue(System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'Config.GetValue(string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnRemovedFromCache(System.EventArgs)">
+            <Messages>
+             <Message Id="e" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2008-08-15 15:45:39Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'e'</Item>
+               <Item>'Config.OnRemovedFromCache(EventArgs)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Watcher">
+            <Accessors>
+             <Accessor Name="#get_Watcher()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-08-15 15:45:39Z">
+                <Issue>
+                 <Item>'Config.Watcher.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ConfigHandler">
+          <Members>
+           <Member Name="#Configure()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'ConfigHandler.Configure()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'ConfigHandler.Configure()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'ConfigHandler.Configure()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'ConfigHandler.Configure()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'ConfigHandler.Configure()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetConfig(System.Reflection.Assembly,System.Boolean)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'ConfigHandler.GetConfig(Assembly, bool)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetSystemConfig()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2005-10-06 09:26:46Z">
+              <Issue Certainty="50">
+               <Item>'ConfigHandler.GetSystemConfig()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="26" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadConfig(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'ConfigHandler.LoadConfig(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'ConfigHandler.LoadConfig(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'ConfigHandler.LoadConfig(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetConfig(nJupiter.Configuration.Config)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'ConfigHandler.SetConfig(Config)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'ConfigHandler.SetConfig(Config)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ConfigHandler+NestedSingleton">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 14:38:02Z">
+            <Issue>
+             <Item>'ConfigHandler.NestedSingleton'</Item>
+            </Issue>
+            <Notes>
+             <User Name="modhelius">
+              <Note Id="12" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue>
+               <Item>'ConfigHandler.NestedSingleton'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Configurator">
+          <Members>
+           <Member Name="#Configure(nJupiter.Configuration.Config,System.IO.Stream)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'Configurator.Configure(Config, Stream)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Configure(System.Reflection.Assembly,System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-06 16:45:45Z">
+              <Issue Name="Xml">
+               <Item>'Configurator.Configure(Assembly, XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="14" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Configure(System.String,System.IO.FileInfo)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'Configurator.Configure(string, FileInfo)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Configure(System.String,System.Uri)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'Configurator.Configure(string, Uri)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'Configurator.Configure(string, Uri)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue>
+               <Item>'Configurator.Configure(string, Uri)'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Configure(System.String,System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:38:02Z">
+              <Issue Name="Xml">
+               <Item>'Configurator.Configure(string, XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="15" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Configure(System.Xml.XmlElement)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-06 16:45:45Z">
+              <Issue Name="Xml">
+               <Item>'Configurator.Configure(XmlElement)'</Item>
+               <Item>'XmlElement'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="16" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WatchedConfigHandler">
+          <Members>
+           <Member Name="#OnWatchedFileChange()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'WatchedConfigHandler.OnWatchedFileChange()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.DirectoryService.dll">
+    <Modules>
+     <Module Name="njupiter.dataaccess.directoryservice.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.DataAccess.DirectoryService">
+        <Types>
+         <Type Name="DirectoryObject">
+          <Members>
+           <Member Name="#Properties">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Status="Excluded" Created="2006-01-22 19:09:38Z">
+              <Issue>
+               <Item>'DirectoryObject.Properties'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.DataAccess.DirectoryService.Adapters">
+        <Types>
+         <Type Name="LdapDirectoryService">
+          <Members>
+           <Member Name="#GetDirectoryObjectById(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'LdapDirectoryService.GetDirectoryObjectById(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'LdapDirectoryService.GetDirectoryObjectById(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetDirectoryObjectsBySearchCriteria(nJupiter.DataAccess.DirectoryService.SearchCriteria[])">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'LdapDirectoryService.GetDirectoryObjectsBySearchCriteria(SearchCriteria[])'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveDirectoryObject(nJupiter.DataAccess.DirectoryService.DirectoryObject)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'LdapDirectoryService.SaveDirectoryObject(DirectoryObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'LdapDirectoryService.SaveDirectoryObject(DirectoryObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'LdapDirectoryService.SaveDirectoryObject(DirectoryObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'LdapDirectoryService.SaveDirectoryObject(DirectoryObject)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.DataAccess.DirectoryService.Adapters.WebService">
+        <Types>
+         <Type Name="DirectoryObject">
+          <Members>
+           <Member Name="#Id">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'DirectoryObject.Id'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Properties">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'DirectoryObject.Properties'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DirectoryServiceWebService">
+          <Members>
+           <Member Name="#.ctor(System.String,System.Net.ICredentials)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'DirectoryServiceWebService.DirectoryServiceWebService(string, ICredentials)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Property">
+          <Members>
+           <Member Name="#Name">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'Property.Name'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Value">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'Property.Value'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SearchCriteria">
+          <Members>
+           <Member Name="#Required">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'SearchCriteria.Required'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.DataAccess.DirectoryService.Web">
+        <Types>
+         <Type Name="DirectoryServiceWebService">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2006-01-22 19:09:38Z">
+            <Issue>
+             <Item>'DirectoryServiceWebService'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.dll">
+    <Modules>
+     <Module Name="njupiter.dataaccess.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.DataAccess">
+        <Types>
+         <Type Name="DataSource">
+          <Members>
+           <Member Name="#GetConnection()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2006-02-16 18:08:04Z">
+              <Issue>
+               <Item>'DataSource.GetConnection()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="43" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetDataSourceFromSection(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'DataSource.GetDataSourceFromSection(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.DataAccess.Sql">
+        <Types>
+         <Type Name="SqlCommand">
+          <Members>
+           <Member Name="#.ctor(System.String,System.Data.CommandType)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'SqlCommand.SqlCommand(string, CommandType)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateParameter(System.String,System.Data.DbType,System.Int32,System.Data.ParameterDirection,System.Boolean,System.Byte,System.Byte,System.String,System.Data.DataRowVersion,System.Object)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'SqlCommand.CreateParameter(string, DbType, int, ParameterDirection, bool, byte, byte, string, DataRowVersion, object)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SqlDataSource">
+          <Members>
+           <Member Name="#CreateCommand(System.String,nJupiter.DataAccess.Transaction,System.Data.CommandType,System.Object[])">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'SqlDataSource.CreateCommand(string, Transaction, CommandType, params object[])'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateParameter(System.String,System.Data.DbType)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'SqlDataSource.CreateParameter(string, DbType)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.DataAccess.Sql.Util">
+        <Types>
+         <Type Name="FullTextHandler+FullTextSearchType">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'FullTextHandler.FullTextSearchType'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FullTextHandler+ImplicitOperator">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'FullTextHandler.ImplicitOperator'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.DataAccess.Users.dll">
+    <Modules>
+     <Module Name="njupiter.dataaccess.users.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.DataAccess.Users">
+        <Types>
+         <Type Name="AbstractProperty">
+          <Members>
+           <Member Name="#GetPropertyValueType()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2006-02-16 18:00:18Z">
+              <Issue Certainty="50">
+               <Item>'AbstractProperty.GetPropertyValueType()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="44" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CommonPropertyNames">
+          <Members>
+           <Member Name="#LastLoginDate">
+            <Messages>
+             <Message Id="Login" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="Member">
+               <Item>Login</Item>
+               <Item>'CommonPropertyNames.LastLoginDate'</Item>
+               <Item>LogOn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CommonPropertyNames+ContextNames">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2006-04-28 17:30:40Z">
+            <Issue>
+             <Item>'CommonPropertyNames.ContextNames'</Item>
+            </Issue>
+            <Notes>
+             <User Name="modhelius">
+              <Note Id="49" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#LastLoginDate">
+            <Messages>
+             <Message Id="Login" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="Member">
+               <Item>Login</Item>
+               <Item>'CommonPropertyNames.ContextNames.LastLoginDate'</Item>
+               <Item>LogOn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="GenericUserCache">
+          <Members>
+           <Member Name="#AddUserToCache(nJupiter.DataAccess.Users.User)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'GenericUserCache.AddUserToCache(User)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetUserFromCacheMap(nJupiter.DataAccess.Users.GenericUserCache+CacheMapId)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'GenericUserCache.GetUserFromCacheMap(GenericUserCache.CacheMapId)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RemoveUserFromCache(nJupiter.DataAccess.Users.User,nJupiter.DataAccess.Users.GenericUserCache+CacheMapId)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'GenericUserCache.RemoveUserFromCache(User, GenericUserCache.CacheMapId)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="GenericUserCache+CacheMapId">
+          <Members>
+           <Member Name="#Equals(System.Object)">
+            <Messages>
+             <Message TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'GenericUserCache.CacheMapId'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HttpRuntimeUserCache">
+          <Members>
+           <Member Name="#AddUserToCache(nJupiter.DataAccess.Users.User)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'HttpRuntimeUserCache.AddUserToCache(User)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RemoveUserFromCache(nJupiter.DataAccess.Users.User)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'HttpRuntimeUserCache.RemoveUserFromCache(User)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HttpRuntimeUserCache+UserIdCacheKey">
+          <Members>
+           <Member Name="#.ctor(nJupiter.DataAccess.Users.UsersDAO,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'HttpRuntimeUserCache.UserIdCacheKey.UserIdCacheKey(UsersDAO, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Equals(System.Object)">
+            <Messages>
+             <Message TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'HttpRuntimeUserCache.UserIdCacheKey'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HttpRuntimeUserCache+UsernameCacheKey">
+          <Members>
+           <Member Name="#.ctor(nJupiter.DataAccess.Users.UsersDAO,System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'HttpRuntimeUserCache.UsernameCacheKey.UsernameCacheKey(UsersDAO, string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Equals(System.Object)">
+            <Messages>
+             <Message TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'HttpRuntimeUserCache.UsernameCacheKey'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HybridMembershipProvider">
+          <Members>
+           <Member Name="#PrimaryMembershipProvider">
+            <Accessors>
+             <Accessor Name="#get_PrimaryMembershipProvider()">
+              <Messages>
+               <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+                <Issue>
+                 <Item>'string.Format(string, object)'</Item>
+                 <Item>'HybridMembershipProvider.PrimaryMembershipProvider.get()'</Item>
+                 <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#UpdateUser(System.Web.Security.MembershipUser)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'HybridMembershipProvider.UpdateUser(MembershipUser)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Properties">
+          <Members>
+           <Member Name="#DisplayName">
+            <Accessors>
+             <Accessor Name="#get_DisplayName()">
+              <Messages>
+               <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+                <Issue>
+                 <Item>'string.Format(string, object, object)'</Item>
+                 <Item>'Properties.DisplayName.get()'</Item>
+                 <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+                </Issue>
+                <Issue>
+                 <Item>'string.Format(string, object, object)'</Item>
+                 <Item>'Properties.DisplayName.get()'</Item>
+                 <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Item[System.String,nJupiter.DataAccess.Users.Context]">
+            <Messages>
+             <Message TypeName="IndexersShouldNotBeMultidimensional" Category="Microsoft.Design" CheckId="CA1023" Status="Excluded" Created="2006-03-23 09:55:41Z">
+              <Issue>
+               <Item>'Properties.this[string, Context]'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="25" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LastLoginDate">
+            <Messages>
+             <Message Id="Login" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="Member">
+               <Item>Login</Item>
+               <Item>'Properties.LastLoginDate'</Item>
+               <Item>LogOn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PropertySchemaTable">
+          <Messages>
+           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Status="Excluded" Created="2006-02-16 18:00:18Z">
+            <Issue>
+             <Item>'PropertySchemaTable'</Item>
+             <Item>Collection</Item>
+            </Issue>
+            <Notes>
+             <User Name="modhelius">
+              <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SearchCriteria+CompareCondition">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'SearchCriteria.CompareCondition'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="User">
+          <Members>
+           <Member Name="#Properties">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2010-02-12 15:18:08Z" FixCategory="NonBreaking">
+              <Issue Name="SameType">
+               <Item>'User.Properties'</Item>
+               <Item>'User.GetProperties()'</Item>
+              </Issue>
+              <Issue Name="SameType">
+               <Item>'User.Properties'</Item>
+               <Item>'User.GetProperties(Context)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UsersDAO">
+          <Members>
+           <Member Name="#GetAllUsers(System.Int32,System.Int32,System.Int32&amp;)">
+            <Messages>
+             <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'totalRecords'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetContexts()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2006-02-16 18:00:18Z">
+              <Issue Certainty="50">
+               <Item>'UsersDAO.GetContexts()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="23" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetProperties(nJupiter.DataAccess.Users.User)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2006-03-23 09:55:41Z" FixCategory="Breaking">
+              <Issue>
+               <Item>'UsersDAO.GetProperties(User)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetPropertySchemas()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2006-03-23 09:55:41Z">
+              <Issue Certainty="50">
+               <Item>'UsersDAO.GetPropertySchemas()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetUserDAOFromSection(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'UsersDAO.GetUserDAOFromSection(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UsersDAOImplSQL">
+          <Members>
+           <Member Name="#GetAllUsers(System.Int32,System.Int32,System.Int32&amp;)">
+            <Messages>
+             <Message Id="pageIndex+1" TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>pageIndex+1</Item>
+               <Item>'UsersDAOImplSQL.GetAllUsers(int, int, out int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UsersDAOMembershipProvider">
+          <Members>
+           <Member Name="#ChangePassword(System.String,System.String,System.String,System.Boolean)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.ChangePassword(string, string, string, bool)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ChangePasswordQuestionAndAnswer(System.String,System.String,System.String,System.String,System.Boolean)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.ChangePasswordQuestionAndAnswer(string, string, string, string, bool)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CheckParameter(System.String,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.CheckParameter(string, bool, bool, bool, int, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.CheckParameter(string, bool, bool, bool, int, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.CheckParameter(string, bool, bool, bool, int, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetBooleanConfigValue(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)">
+            <Messages>
+             <Message Id="System.Boolean.TryParse(System.String,System.Boolean@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2010-02-12 15:18:08Z">
+              <Issue Name="TryParse">
+               <Item>'UsersDAOMembershipProvider.GetBooleanConfigValue(NameValueCollection, string, bool)'</Item>
+               <Item>'bool.TryParse(string, out bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetPassword(System.String,System.String)">
+            <Messages>
+             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOMembershipProvider.GetPassword(string, string)'</Item>
+               <Item>'passwordAnswer'</Item>
+               <Item>'answer'</Item>
+               <Item>'MembershipProvider.GetPassword(string, string)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.GetPassword(string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetUserNameByEmail(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.GetUserNameByEmail(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ResetPassword(System.String,System.String)">
+            <Messages>
+             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOMembershipProvider.ResetPassword(string, string)'</Item>
+               <Item>'passwordAnswer'</Item>
+               <Item>'answer'</Item>
+               <Item>'MembershipProvider.ResetPassword(string, string)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.ResetPassword(string, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UnlockUser(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOMembershipProvider.UnlockUser(string)'</Item>
+               <Item>'username'</Item>
+               <Item>'userName'</Item>
+               <Item>'MembershipProvider.UnlockUser(string)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.UnlockUser(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UpdateUser(System.Web.Security.MembershipUser)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'UsersDAOMembershipProvider.UpdateUser(MembershipUser)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UsersDAOMembershipUser">
+          <Members>
+           <Member Name="#.ctor(nJupiter.DataAccess.Users.User,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'UsersDAOMembershipUser.UsersDAOMembershipUser(User, string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UsersDAOProfileProvider">
+          <Members>
+           <Member Name="#FindProfilesByUserName(System.Web.Profile.ProfileAuthenticationOption,System.String,System.Int32,System.Int32,System.Int32&amp;)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'UsersDAOProfileProvider.FindProfilesByUserName(ProfileAuthenticationOption, string, int, int, out int)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetAllProfiles(System.Web.Profile.ProfileAuthenticationOption,System.Int32,System.Int32,System.Int32&amp;)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'UsersDAOProfileProvider.GetAllProfiles(ProfileAuthenticationOption, int, int, out int)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetPropertyValues(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyCollection)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOProfileProvider.GetPropertyValues(SettingsContext, SettingsPropertyCollection)'</Item>
+               <Item>'sc'</Item>
+               <Item>'context'</Item>
+               <Item>'SettingsProvider.GetPropertyValues(SettingsContext, SettingsPropertyCollection)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOProfileProvider.GetPropertyValues(SettingsContext, SettingsPropertyCollection)'</Item>
+               <Item>'properties'</Item>
+               <Item>'collection'</Item>
+               <Item>'SettingsProvider.GetPropertyValues(SettingsContext, SettingsPropertyCollection)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetPropertyValues(System.Configuration.SettingsContext,System.Configuration.SettingsPropertyValueCollection)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOProfileProvider.SetPropertyValues(SettingsContext, SettingsPropertyValueCollection)'</Item>
+               <Item>'sc'</Item>
+               <Item>'context'</Item>
+               <Item>'SettingsProvider.SetPropertyValues(SettingsContext, SettingsPropertyValueCollection)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'UsersDAOProfileProvider.SetPropertyValues(SettingsContext, SettingsPropertyValueCollection)'</Item>
+               <Item>'properties'</Item>
+               <Item>'collection'</Item>
+               <Item>'SettingsProvider.SetPropertyValues(SettingsContext, SettingsPropertyValueCollection)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'UsersDAOProfileProvider.SetPropertyValues(SettingsContext, SettingsPropertyValueCollection)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Drawing.dll">
+    <Modules>
+     <Module Name="njupiter.drawing.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Drawing.Imaging">
+        <Types>
+         <Type Name="ImageScale">
+          <Members>
+           <Member Name="#Resize(System.Drawing.Image,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Image, int, int, ImageScale.ResizeFlags)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.Drawing.Image,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags,System.Drawing.Drawing2D.SmoothingMode,System.Drawing.Drawing2D.InterpolationMode,System.Drawing.Drawing2D.PixelOffsetMode)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Image, int, int, ImageScale.ResizeFlags, SmoothingMode, InterpolationMode, PixelOffsetMode)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.Drawing.Image,System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Image, Stream, int, int, ImageScale.ResizeFlags)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.Drawing.Image,System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags,System.Drawing.Drawing2D.SmoothingMode,System.Drawing.Drawing2D.InterpolationMode,System.Drawing.Drawing2D.PixelOffsetMode)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Image, Stream, int, int, ImageScale.ResizeFlags, SmoothingMode, InterpolationMode, PixelOffsetMode)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Stream, int, int, ImageScale.ResizeFlags)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags,System.Drawing.Drawing2D.SmoothingMode,System.Drawing.Drawing2D.InterpolationMode,System.Drawing.Drawing2D.PixelOffsetMode)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Stream, int, int, ImageScale.ResizeFlags, SmoothingMode, InterpolationMode, PixelOffsetMode)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.IO.Stream,System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Stream, Stream, int, int, ImageScale.ResizeFlags)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.IO.Stream,System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags,System.Drawing.Drawing2D.SmoothingMode,System.Drawing.Drawing2D.InterpolationMode,System.Drawing.Drawing2D.PixelOffsetMode)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(Stream, Stream, int, int, ImageScale.ResizeFlags, SmoothingMode, InterpolationMode, PixelOffsetMode)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.String,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(string, int, int, ImageScale.ResizeFlags)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.String,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags,System.Drawing.Drawing2D.SmoothingMode,System.Drawing.Drawing2D.InterpolationMode,System.Drawing.Drawing2D.PixelOffsetMode)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(string, int, int, ImageScale.ResizeFlags, SmoothingMode, InterpolationMode, PixelOffsetMode)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.String,System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(string, Stream, int, int, ImageScale.ResizeFlags)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Resize(System.String,System.IO.Stream,System.Int32,System.Int32,nJupiter.Drawing.Imaging.ImageScale+ResizeFlags,System.Drawing.Drawing2D.SmoothingMode,System.Drawing.Drawing2D.InterpolationMode,System.Drawing.Drawing2D.PixelOffsetMode)">
+            <Messages>
+             <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+              <Issue Name="MemberParameterNoAlternate">
+               <Item>'ImageScale.Resize(string, Stream, int, int, ImageScale.ResizeFlags, SmoothingMode, InterpolationMode, PixelOffsetMode)'</Item>
+               <Item>Flags</Item>
+               <Item>'resizeFlags'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ImageScale+ResizeFlags">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'ImageScale.ResizeFlags'</Item>
+            </Issue>
+           </Message>
+           <Message Id="Flags" TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726" Created="2010-02-12 15:18:08Z">
+            <Issue Name="TypeNoAlternate">
+             <Item>Flags</Item>
+             <Item>'ImageScale.ResizeFlags'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Globalization.dll">
+    <Modules>
+     <Module Name="njupiter.globalization.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Globalization">
+        <Types>
+         <Type Name="CultureHandler">
+          <Members>
+           <Member Name="#GetCultureInfo(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'CultureHandler.GetCultureInfo(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.IO.dll">
+    <Modules>
+     <Module Name="njupiter.io.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.IO">
+        <Types>
+         <Type Name="FileHandler">
+          <Members>
+           <Member Name="#GetMimeType(System.Byte[])">
+            <Messages>
+             <Message Id="bytes" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-02-12 15:18:08Z">
+              <Issue Name="LanguageIndependentMemberParameter">
+               <Item>'FileHandler.GetMimeType(byte[])'</Item>
+               <Item>bytes</Item>
+               <Item>'bytes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Messaging.dll">
+    <Modules>
+     <Module Name="njupiter.messaging.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Messaging">
+        <Types>
+         <Type Name="Message">
+          <Members>
+           <Member Name="#Deserialize(System.Xml.XmlDocument)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2008-08-15 15:45:39Z">
+              <Issue Name="Xml">
+               <Item>'Message.Deserialize(XmlDocument)'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Serialize()">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:40:09Z">
+              <Issue Name="Xml">
+               <Item>'Message.Serialize()'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MessageConsumer">
+          <Members>
+           <Member Name="#NotificationUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'MessageConsumer.NotificationUrl'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MessageDestination">
+          <Members>
+           <Member Name="#Deserialize(System.Xml.XmlDocument)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2008-08-15 15:45:39Z">
+              <Issue Name="Xml">
+               <Item>'MessageDestination.Deserialize(XmlDocument)'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Serialize()">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2005-08-16 14:40:09Z">
+              <Issue Name="Xml">
+               <Item>'MessageDestination.Serialize()'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="21" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MessageService">
+          <Members>
+           <Member Name="#CreateMessage(System.DateTime,System.DateTime,System.String,nJupiter.Messaging.MessageDestination)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-08-15 15:45:39Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'MessageService.CreateMessage(DateTime, DateTime, string, MessageDestination)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateMessageConsumer(nJupiter.Messaging.MessageDestination,System.Uri)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-08-15 15:45:39Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'MessageService.CreateMessageConsumer(MessageDestination, Uri)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateMessageDestination(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2008-08-15 15:45:39Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'MessageService.CreateMessageDestination(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetServiceFromSection(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'MessageService.GetServiceFromSection(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Messaging.Server.exe">
+    <Modules>
+     <Module Name="njupiter.messaging.server.exe">
+      <Namespaces>
+       <Namespace Name="nJupiter.Messaging.Server">
+        <Types>
+         <Type Name="MessageConsumerMap">
+          <Members>
+           <Member Name="#ProducerConsumerMap">
+            <Accessors>
+             <Accessor Name="#get_ProducerConsumerMap()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-08-15 15:45:39Z">
+                <Issue>
+                 <Item>'MessageConsumerMap.ProducerConsumerMap.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="#set_ProducerConsumerMap(System.Collections.Hashtable)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-08-15 15:45:39Z">
+                <Issue>
+                 <Item>'MessageConsumerMap.ProducerConsumerMap.set(Hashtable)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MessageQueue">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2008-08-15 15:45:39Z" FixCategory="NonBreaking">
+            <Issue Name="NonBreaking">
+             <Item>'MessageQueue'</Item>
+             <Item>'Timer'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Items">
+            <Accessors>
+             <Accessor Name="#get_Items()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-08-15 15:45:39Z">
+                <Issue>
+                 <Item>'MessageQueue.Items.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#NotifyCompleted(System.IAsyncResult)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.NotifyCompleted(IAsyncResult)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.NotifyCompleted(IAsyncResult)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'MessageQueue.NotifyCompleted(IAsyncResult)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'MessageQueue.NotifyCompleted(IAsyncResult)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveMessage(nJupiter.Messaging.Message)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.SaveMessage(Message)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SendMessage(nJupiter.Messaging.Message)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.SendMessage(Message)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.SendMessage(Message)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.SendMessage(Message)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'MessageQueue.SendMessage(Message)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'MessageQueue.SendMessage(Message)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="RemoteMessageService">
+          <Messages>
+           <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-08-15 15:45:39Z">
+            <Issue Name="ProvideDisposeBool">
+             <Item>'RemoteMessageService'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Dispose()">
+            <Messages>
+             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2008-08-15 15:45:39Z">
+              <Issue Name="DisposeImplementation">
+               <Item>'RemoteMessageService.Dispose()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#InitializeLifetimeService()">
+            <Messages>
+             <Message TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123" Created="2008-08-15 15:45:39Z">
+              <Issue Name="BaseOnly">
+               <Item>'RemoteMessageService.InitializeLifetimeService()'</Item>
+               <Item>'MarshalByRefObject.InitializeLifetimeService()'</Item>
+               <Item>[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.Infrastructure)]</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Net.Mail.dll">
+    <Modules>
+     <Module Name="njupiter.net.mail.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Net.Mail">
+        <Types>
+         <Type Name="Mail">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+            <Issue Name="DependsOnFix">
+             <Item>'Mail'</Item>
+             <Item>'AttachmentCollection'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MailSenderImpl">
+          <Members>
+           <Member Name="#Send(System.Boolean)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object, object)'</Item>
+               <Item>'MailSenderImpl.Send(bool)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Services.Forum.dll">
+    <Modules>
+     <Module Name="njupiter.services.forum.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Services.Forum">
+        <Types>
+         <Type Name="Category+Property">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'Category.Property'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ForumDao">
+          <Members>
+           <Member Name="#CategoryAttributes">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'ForumDao.CategoryAttributes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PostAttributes">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'ForumDao.PostAttributes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Post+DateProperty">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'Post.DateProperty'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Post+Property">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'Post.Property'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Services.Forum.UI.dll">
+    <Modules>
+     <Module Name="njupiter.services.forum.ui.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Services.Forum.UI.Web">
+        <Types>
+         <Type Name="AddPost">
+          <Members>
+           <Member Name="#btnSubmit_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'AddPost.btnSubmit_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CategorySelector">
+          <Members>
+           <Member Name="#CategoryCollection">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'CategorySelector.CategoryCollection'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RedirectUrlWithoutTrailingCategoryId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'CategorySelector.RedirectUrlWithoutTrailingCategoryId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FlatTabularPostList">
+          <Members>
+           <Member Name="#PostCollection">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostList.PostCollection'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingCategoryId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostList.UrlWithoutTrailingCategoryId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingPostId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostList.UrlWithoutTrailingPostId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingRootPostId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostList.UrlWithoutTrailingRootPostId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingUserIdentity">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostList.UrlWithoutTrailingUserIdentity'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FlatTabularPostListItem">
+          <Members>
+           <Member Name="#UrlWithoutTrailingCategoryId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostListItem.UrlWithoutTrailingCategoryId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingPostId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostListItem.UrlWithoutTrailingPostId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingRootPostId">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostListItem.UrlWithoutTrailingRootPostId'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingUserIdentity">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'FlatTabularPostListItem.UrlWithoutTrailingUserIdentity'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HierarchicalPostList">
+          <Members>
+           <Member Name="#listItem_ChangePostVisible(System.Object,nJupiter.Services.Forum.UI.PostEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'HierarchicalPostList.listItem_ChangePostVisible(object, PostEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PostCollection">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'HierarchicalPostList.PostCollection'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UrlWithoutTrailingUserIdentity">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'HierarchicalPostList.UrlWithoutTrailingUserIdentity'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HierarchicalPostListItem">
+          <Members>
+           <Member Name="#UrlWithoutTrailingUserIdentity">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'HierarchicalPostListItem.UrlWithoutTrailingUserIdentity'</Item>
+              </Issue>
+              <Notes>
+               <User Name="modhelius">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UpdatePost">
+          <Members>
+           <Member Name="#btnSubmit_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'UpdatePost.btnSubmit_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.dll">
+    <Modules>
+     <Module Name="njupiter.web.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Web">
+        <Types>
+         <Type Name="MimeType">
+          <Members>
+           <Member Name="#Type">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2010-02-12 15:18:08Z" FixCategory="NonBreaking">
+              <Issue Name="BaseType">
+               <Item>'MimeType.Type'</Item>
+               <Item>'object.GetType()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ResponseHandler">
+          <Members>
+           <Member Name="#Redirect(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'ResponseHandler.Redirect(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Redirect(System.String,System.Boolean)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'ResponseHandler.Redirect(string, bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Redirect(System.String,System.Boolean,System.Boolean)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'ResponseHandler.Redirect(string, bool, bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UrlHandler">
+          <Members>
+           <Member Name="#AddQueryKeyValue(System.String,System.String,System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.AddQueryKeyValue(string, string, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AddQueryKeyValue(System.String,System.String,System.String,System.Boolean)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.AddQueryKeyValue(string, string, string, bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AddQueryParams(System.String,System.Collections.Specialized.NameValueCollection)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.AddQueryParams(string, NameValueCollection)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AddQueryParams(System.String,System.Collections.Specialized.NameValueCollection,System.Boolean)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.AddQueryParams(string, NameValueCollection, bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AddQueryParams(System.String,System.String[])">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.AddQueryParams(string, params string[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetQueryString(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.GetQueryString(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetQueryString(System.String,System.Boolean,System.String[])">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.GetQueryString(string, bool, params string[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetQueryString(System.String,System.String[])">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.GetQueryString(string, params string[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RemoveQueryKey(System.String,System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.RemoveQueryKey(string, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RemoveQueryKeys(System.String,System.String[])">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.RemoveQueryKeys(string, params string[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReplaceQueryKeyValue(System.String,System.String,System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.ReplaceQueryKeyValue(string, string, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReplaceQueryKeyValue(System.String,System.String,System.String,System.Boolean)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'UrlHandler.ReplaceQueryKeyValue(string, string, string, bool)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.Syndication.dll">
+    <Modules>
+     <Module Name="njupiter.web.syndication.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Web.Syndication">
+        <Types>
+         <Type Name="FeedReader">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'FeedReader'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#GetContentFromAtomElement(System.Xml.XmlReader)">
+            <Messages>
+             <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.ToLower()'</Item>
+               <Item>'FeedReader.GetContentFromAtomElement(XmlReader)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.ToLower()'</Item>
+               <Item>'FeedReader.GetContentFromAtomElement(XmlReader)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetFeed(System.Uri,System.Xml.XmlReader)">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2010-02-12 15:18:08Z">
+              <Issue Name="TooGeneric">
+               <Item>'FeedReader.GetFeed(Uri, XmlReader)'</Item>
+               <Item>'ApplicationException'</Item>
+              </Issue>
+              <Issue Name="TooGeneric">
+               <Item>'FeedReader.GetFeed(Uri, XmlReader)'</Item>
+               <Item>'ApplicationException'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'FeedReader.GetFeed(Uri, XmlReader)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PopulateFeed(System.Uri,System.Xml.XmlReader,System.String,nJupiter.Web.Syndication.FeedType,System.String)">
+            <Messages>
+             <Message Id="System.DateTime.TryParse(System.String,System.DateTime@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2010-02-12 15:18:08Z">
+              <Issue Name="TryParse">
+               <Item>'FeedReader.PopulateFeed(Uri, XmlReader, string, FeedType, string)'</Item>
+               <Item>'DateTime.TryParse(string, out DateTime)'</Item>
+              </Issue>
+              <Issue Name="TryParse">
+               <Item>'FeedReader.PopulateFeed(Uri, XmlReader, string, FeedType, string)'</Item>
+               <Item>'DateTime.TryParse(string, out DateTime)'</Item>
+              </Issue>
+              <Issue Name="TryParse">
+               <Item>'FeedReader.PopulateFeed(Uri, XmlReader, string, FeedType, string)'</Item>
+               <Item>'DateTime.TryParse(string, out DateTime)'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2010-02-12 15:18:08Z">
+              <Issue Name="IsNullOrEmpty">
+               <Item>'string.Equals(string)'</Item>
+               <Item>'FeedReader.PopulateFeed(Uri, XmlReader, string, FeedType, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PopulateFeedItem(System.Xml.XmlReader,nJupiter.Web.Syndication.FeedType,System.Uri)">
+            <Messages>
+             <Message Id="System.DateTime.TryParse(System.String,System.DateTime@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2010-02-12 15:18:08Z">
+              <Issue Name="TryParse">
+               <Item>'FeedReader.PopulateFeedItem(XmlReader, FeedType, Uri)'</Item>
+               <Item>'DateTime.TryParse(string, out DateTime)'</Item>
+              </Issue>
+              <Issue Name="TryParse">
+               <Item>'FeedReader.PopulateFeedItem(XmlReader, FeedType, Uri)'</Item>
+               <Item>'DateTime.TryParse(string, out DateTime)'</Item>
+              </Issue>
+              <Issue Name="TryParse">
+               <Item>'FeedReader.PopulateFeedItem(XmlReader, FeedType, Uri)'</Item>
+               <Item>'DateTime.TryParse(string, out DateTime)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FeedType">
+          <Members>
+           <Member Name="#Atom">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'FeedType.Atom'</Item>
+               <Item>'FeedType'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Rdf">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'FeedType.Rdf'</Item>
+               <Item>'FeedType'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Rss">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'FeedType.Rss'</Item>
+               <Item>'FeedType'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FeedWriter">
+          <Members>
+           <Member Name="#Create(System.IO.Stream,nJupiter.Web.Syndication.FeedType)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'FeedWriter.Create(Stream, FeedType)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IFeed">
+          <Members>
+           <Member Name="#Items">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'IFeed.Items'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="RssWriter">
+          <Members>
+           <Member Name="#WriteFeedItem(nJupiter.Web.Syndication.IFeedItem)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object, object)'</Item>
+               <Item>'RssWriter.WriteFeedItem(IFeedItem)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.dll">
+    <Modules>
+     <Module Name="njupiter.web.ui.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Web.UI">
+        <Types>
+         <Type Name="ControlHandler">
+          <Members>
+           <Member Name="#RegisterClientScriptInclude(System.Type,System.String,System.String)">
+            <Messages>
+             <Message Id="2#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'ControlHandler.RegisterClientScriptInclude(Type, string, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegisterClientScriptInclude(System.Type,System.String,System.String,nJupiter.Web.UI.ControlHandler+RegisterTargetPreference)">
+            <Messages>
+             <Message Id="2#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'ControlHandler.RegisterClientScriptInclude(Type, string, string, ControlHandler.RegisterTargetPreference)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ControlHandler+RegisterTargetPreference">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'ControlHandler.RegisterTargetPreference'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="HtmlAttribute">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'HtmlAttribute'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="HtmlAttributeValue">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'HtmlAttributeValue'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="HtmlEntity">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'HtmlEntity'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="HtmlStyle">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'HtmlStyle'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="HtmlTag">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'HtmlTag'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="StreamImage+IFileToStream">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'StreamImage.IFileToStream'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.Web.UI.ControlAdapters">
+        <Types>
+         <Type Name="ControlAdapterBase">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'ControlAdapterBase'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.Web.UI.Controls">
+        <Types>
+         <Type Name="INavigationPageId">
+          <Messages>
+           <Message TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'INavigationPageId'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Paging">
+          <Members>
+           <Member Name="#Type">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2010-02-12 15:18:08Z" FixCategory="NonBreaking">
+              <Issue Name="BaseType">
+               <Item>'Paging.Type'</Item>
+               <Item>'object.GetType()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Paging+PagingType">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'Paging.PagingType'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="StrictHtmlTextWriter">
+          <Members>
+           <Member Name="#.ctor(System.IO.TextWriter,System.String)">
+            <Messages>
+             <Message Id="string" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-02-12 15:18:08Z">
+              <Issue Name="LanguageIndependentMemberParameter">
+               <Item>'StrictHtmlTextWriter.StrictHtmlTextWriter(TextWriter, string)'</Item>
+               <Item>String</Item>
+               <Item>'tabString'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebButton">
+          <Members>
+           <Member Name="#RaisePostDataChangedEvent()">
+            <Messages>
+             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebButton.RaisePostDataChangedEvent()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Type">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2010-02-12 15:18:08Z" FixCategory="NonBreaking">
+              <Issue Name="BaseType">
+               <Item>'WebButton.Type'</Item>
+               <Item>'object.GetType()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebCheckBoxList">
+          <Members>
+           <Member Name="#SelectedIndexes">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebCheckBoxList.SelectedIndexes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SelectedValues">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebCheckBoxList.SelectedValues'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebCheckListControl">
+          <Members>
+           <Member Name="#GetItemStyle(System.Web.UI.WebControls.ListItemType,System.Int32)">
+            <Messages>
+             <Message Id="itemType" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'itemType'</Item>
+               <Item>'WebCheckListControl.GetItemStyle(ListItemType, int)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="repeatIndex" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'repeatIndex'</Item>
+               <Item>'WebCheckListControl.GetItemStyle(ListItemType, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RaisePostDataChangedEvent()">
+            <Messages>
+             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebCheckListControl.RaisePostDataChangedEvent()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RenderItem(System.Web.UI.WebControls.ListItemType,System.Int32,System.Web.UI.WebControls.RepeatInfo,System.Web.UI.HtmlTextWriter)">
+            <Messages>
+             <Message Id="itemType" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'itemType'</Item>
+               <Item>'WebCheckListControl.RenderItem(ListItemType, int, RepeatInfo, HtmlTextWriter)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="repeatInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'repeatInfo'</Item>
+               <Item>'WebCheckListControl.RenderItem(ListItemType, int, RepeatInfo, HtmlTextWriter)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="writer" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'writer'</Item>
+               <Item>'WebCheckListControl.RenderItem(ListItemType, int, RepeatInfo, HtmlTextWriter)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebFlash">
+          <Members>
+           <Member Name="#.ctor(System.String)">
+            <Messages>
+             <Message Id="tag" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'tag'</Item>
+               <Item>'WebFlash.WebFlash(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#BuildSwfAttributesScript()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'WebFlash.BuildSwfAttributesScript()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#BuildSWFFixBeginTag()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'WebFlash.BuildSWFFixBeginTag()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'WebFlash.BuildSWFFixBeginTag()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'WebFlash.BuildSWFFixBeginTag()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FlashUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebFlash.FlashUrl'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebFlash+Mode">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'WebFlash.Mode'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="WebFlash+WindowMode">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2010-02-12 15:18:08Z">
+            <Issue>
+             <Item>'WebFlash.WindowMode'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="WebHeading">
+          <Members>
+           <Member Name="#.ctor(System.String)">
+            <Messages>
+             <Message Id="tag" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'tag'</Item>
+               <Item>'WebHeading.WebHeading(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebImage">
+          <Members>
+           <Member Name="#DescriptionUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebImage.DescriptionUrl'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ImageUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebImage.ImageUrl'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RenderImageUrl()">
+            <Messages>
+             <Message TypeName="UriReturnValuesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1055" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebImage.RenderImageUrl()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebLabel">
+          <Members>
+           <Member Name="#.ctor(System.String)">
+            <Messages>
+             <Message Id="tag" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'tag'</Item>
+               <Item>'WebLabel.WebLabel(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebLinkButton">
+          <Members>
+           <Member Name="#NavigateUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'WebLinkButton.NavigateUrl'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebParagraph">
+          <Members>
+           <Member Name="#.ctor(System.String)">
+            <Messages>
+             <Message Id="tag" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2010-02-12 15:18:08Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'tag'</Item>
+               <Item>'WebParagraph.WebParagraph(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.Web.UI.Controls.Listings">
+        <Types>
+         <Type Name="GeneralListing">
+          <Members>
+           <Member Name="#InnerListCollection">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'GeneralListing.InnerListCollection'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ListCollection">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'GeneralListing.ListCollection'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AfterDataBinding" Kind="Event">
+            <Messages>
+             <Message TypeName="EventsShouldNotHaveBeforeOrAfterPrefix" Category="Microsoft.Naming" CheckId="CA1713" Created="2010-02-12 15:18:08Z">
+              <Issue Name="After">
+               <Item>'GeneralListing.AfterDataBinding'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#BeforeDataBinding" Kind="Event">
+            <Messages>
+             <Message TypeName="EventsShouldNotHaveBeforeOrAfterPrefix" Category="Microsoft.Naming" CheckId="CA1713" Created="2010-02-12 15:18:08Z">
+              <Issue Name="Before">
+               <Item>'GeneralListing.BeforeDataBinding'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ItemCommand" Kind="Event">
+            <Messages>
+             <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Created="2010-02-12 15:18:08Z">
+              <Issue Name="First">
+               <Item>'RepeaterCommandEventHandler'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ListItemEventArgs">
+          <Members>
+           <Member Name="#.ctor(System.Object,nJupiter.Web.UI.Controls.Listings.GeneralListing,System.Web.UI.WebControls.RepeaterItem,System.Int32)">
+            <Messages>
+             <Message Id="object" TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720" Created="2010-02-12 15:18:08Z">
+              <Issue Name="LanguageIndependentMemberParameter">
+               <Item>'ListItemEventArgs.ListItemEventArgs(object, GeneralListing, RepeaterItem, int)'</Item>
+               <Item>Object</Item>
+               <Item>'listItemObject'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.EmailObfuscator.dll">
+    <Modules>
+     <Module Name="njupiter.web.ui.emailobfuscator.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Web.UI.EmailObfuscator">
+        <Types>
+         <Type Name="EmailImage">
+          <Members>
+           <Member Name="#Email">
+            <Accessors>
+             <Accessor Name="#get_Email()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2008-08-15 15:45:39Z">
+                <Issue>
+                 <Item>'EmailImage.Email.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="C:\Projects\nJupiter\Build\bin\Debug\nJupiter.Web.UI.GoogleAnalytics.dll">
+    <Modules>
+     <Module Name="njupiter.web.ui.googleanalytics.dll">
+      <Namespaces>
+       <Namespace Name="nJupiter.Web.UI.GoogleAnalytics">
+        <Types>
+         <Type Name="GoogleAnalyticsFactory">
+          <Messages>
+           <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Created="2008-08-15 15:45:39Z">
+            <Issue>
+             <Item>'GoogleAnalyticsFactory'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#GetCurrentHandler()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2008-08-15 15:45:39Z">
+              <Issue Certainty="50">
+               <Item>'GoogleAnalyticsFactory.GetCurrentHandler()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="GoogleAnalyticsHandler">
+          <Members>
+           <Member Name="#CurrentPagePreRender(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GoogleAnalyticsHandler.CurrentPagePreRender(object, EventArgs)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Item">
+          <Members>
+           <Member Name="#GetLine(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, params object[])'</Item>
+               <Item>'Item.GetLine(string)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Transaction">
+          <Members>
+           <Member Name="#GetLines()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, params object[])'</Item>
+               <Item>'Transaction.GetLines()'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Items">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'List&lt;Item&gt;'</Item>
+               <Item>'Transaction.Items'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="nJupiter.Web.UI.GoogleAnalytics.UI.WebControls">
+        <Types>
+         <Type Name="GAControl">
+          <Members>
+           <Member Name="#AddAlternativeUrl(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Created="2010-02-12 15:18:08Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'GAControl.AddAlternativeUrl(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Enc(System.String)">
+            <Messages>
+             <Message Id="System.Int32.Parse(System.String,System.Globalization.NumberStyles)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'int.Parse(string, NumberStyles)'</Item>
+               <Item>'GAControl.Enc(string)'</Item>
+               <Item>'int.Parse(string, NumberStyles, IFormatProvider)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Render(System.Web.UI.HtmlTextWriter)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+              <Issue>
+               <Item>'string.Format(string, object)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2008-08-15 15:45:39Z">
+              <Issue>
+               <Item>'string.Format(string, params object[])'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2008-08-15 15:45:39Z">
+              <Issue Name="IsNullOrEmpty">
+               <Item>'string.operator !=(string, string)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+              </Issue>
+              <Issue Name="IsNullOrEmpty">
+               <Item>'string.operator !=(string, string)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+              </Issue>
+              <Issue Name="IsNullOrEmpty">
+               <Item>'string.operator !=(string, string)'</Item>
+               <Item>'GAControl.Render(HtmlTextWriter)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="modhelius">
+    <Note Id="0" Modified="2005-08-16 15:44:08Z">Ignore non managed security exception.</Note>
+    <Note Id="3" Modified="2005-10-06 09:37:29Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="5" Modified="2005-10-06 09:37:33Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="6" Modified="2005-08-17 08:13:50Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="7" Modified="2005-08-17 08:13:53Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="8" Modified="2005-08-17 08:13:56Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="9" Modified="2005-08-17 08:14:00Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="10" Modified="2006-03-23 10:05:42Z">Design</Note>
+    <Note Id="12" Modified="2005-08-17 08:16:10Z">Wrong analysis of FXCop. Nestled Singleton implementation.</Note>
+    <Note Id="13" Modified="2005-08-17 08:16:15Z">Wrong analysis of FXCop. Nestled Singleton implementation.</Note>
+    <Note Id="14" Modified="2005-08-17 08:16:41Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="15" Modified="2005-08-17 08:16:44Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="16" Modified="2005-08-17 08:16:46Z">This is a general config handler so there is a reason why it exposes a concrete type.</Note>
+    <Note Id="17" Modified="2008-08-15 15:57:47Z">By desgin</Note>
+    <Note Id="18" Modified="2008-08-15 15:59:25Z">Tell that to Microsoft</Note>
+    <Note Id="20" Modified="2005-08-17 15:21:12Z">It is a xml serializer so...</Note>
+    <Note Id="21" Modified="2005-08-17 15:22:06Z">It is a xml serializer so...</Note>
+    <Note Id="23" Modified="2006-03-23 10:05:45Z">Design</Note>
+    <Note Id="25" Modified="2006-03-23 10:09:01Z">Design</Note>
+    <Note Id="26" Modified="2005-10-06 09:38:25Z">A method is used to follow a specifig pattern</Note>
+    <Note Id="43" Modified="2006-02-16 18:15:18Z">Interface design</Note>
+    <Note Id="44" Modified="2006-03-23 10:09:23Z">Design</Note>
+    <Note Id="45" Modified="2006-03-23 10:09:40Z">Design</Note>
+    <Note Id="48" Modified="2006-03-23 10:17:58Z">Design</Note>
+    <Note Id="49" Modified="2006-04-28 17:42:07Z">Design</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040">
+    <Resolution Name="Default">Define a custom attribute to replace {0}.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021">
+    <Resolution Name="Default">Consider a design that does not require that {0} be an out parameter.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
+    <Resolution Name="Default">{0} is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
+    <Resolution Name="Default">Change {0} to be read-only by removing the property setter.</Resolution>
+   </Rule>
+   <Rule TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009">
+    <Resolution Name="First">Declare the first parameter of {0} as an object named 'sender'.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104">
+    <Resolution Name="Default">Remove the read-only designation from {0} or change the field to one that is an immutable reference type. If the reference type {1} is, in fact, immutable, exclude this message.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051">
+    <Resolution Name="Default">Because field {0} is visible outside of its declaring type, change its accessibility to private and add a property, with the same accessibility as the field has currently, to provide access to it.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
+    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
+    <Resolution Name="TryParse">{0} calls {1} but does not explicitly check whether the conversion succeeded. Either use the return value in a conditional statement or verify that the call site expects that the out argument will be set to the default value when the conversion fails.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
+    <Resolution Name="TooGeneric">{0} creates an exception of type {1}, an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Resolution>
+   </Rule>
+   <Rule TypeName="EventsShouldNotHaveBeforeOrAfterPrefix" Category="Microsoft.Naming" CheckId="CA1713">
+    <Resolution Name="After">Replace {0} with a past tense version of the event name.</Resolution>
+    <Resolution Name="Before">Replace {0} with a present tense version of the event name.</Resolution>
+   </Rule>
+   <Rule TypeName="ICollectionImplementationsHaveStronglyTypedMembers" Category="Microsoft.Design" CheckId="CA1035">
+    <Resolution Name="Default">{0} should provide a strongly typed implementation of ICollection.CopyTo.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710">
+    <Resolution Name="Default">Rename {0} to end in '{1}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotContainTypeNames" Category="Microsoft.Naming" CheckId="CA1720">
+    <Resolution Name="LanguageIndependentMemberParameter">In member {0}, consider replacing the data type identifier '{1}' in parameter name {2} with a more generic term, such as 'value'.</Resolution>
+    <Resolution Name="LanguageSpecificMember">Consider replacing the language-specific data type identifier '{0}' in member name {1} with either a language-independent equivalent or a more generic term, such as 'value'.</Resolution>
+   </Rule>
+   <Rule TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063">
+    <Resolution Name="DisposeImplementation">Modify {0} so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Resolution>
+    <Resolution Name="ProvideDisposeBool">Provide an overridable implementation of Dispose(bool) on {0} or mark the type as sealed. A call to Dispose(false) should only clean up native resources. A call to Dispose(true) should clean up both managed and native resources.</Resolution>
+   </Rule>
+   <Rule TypeName="IndexersShouldNotBeMultidimensional" Category="Microsoft.Design" CheckId="CA1023">
+    <Resolution Name="Default">Redesign indexer {0} to use a single string or integer value as its index.</Resolution>
+   </Rule>
+   <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
+    <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208">
+    <Resolution Name="NoArguments">Call the {0} constructor that contains a message and/or paramName parameter.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
+   <Rule TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059">
+    <Resolution Name="Xml">Modify member {0} so that it no longer exposes the concrete type {1}. Use IXPathNavigable to represent XML data sources.</Resolution>
+   </Rule>
+   <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
+    <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
+   </Rule>
+   <Rule TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233">
+    <Resolution Name="Default">Correct the potential overflow in the operation '{0}' in {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="OverloadOperatorEqualsOnOverridingValueTypeEquals" Category="Microsoft.Usage" CheckId="CA2231">
+    <Resolution Name="Default">Because {0} is a value type that overrides ValueType.Equals, it should also overload the equality and inequality operators (== and !=).</Resolution>
+   </Rule>
+   <Rule TypeName="OverrideLinkDemandsShouldBeIdenticalToBase" Category="Microsoft.Security" CheckId="CA2123">
+    <Resolution Name="BaseOnly">Add the following security attribute to {0} in order to match a LinkDemand on base method {1}:  {2}.</Resolution>
+   </Rule>
+   <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
+    <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
+   </Rule>
+   <Rule TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819">
+    <Resolution Name="Default">Change {0} to return a collection or make it a method.</Resolution>
+   </Rule>
+   <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
+    <Resolution Name="BaseType">The property name {0} is confusing given the existence of inherited method {1}. Rename or remove this property.</Resolution>
+    <Resolution Name="SameType">The property name {0} is confusing given the existence of method {1}. Rename or remove one of these members.</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
+    <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053">
+    <Resolution Name="Default">Remove the public constructors from {0}.</Resolution>
+   </Rule>
+   <Rule TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820">
+    <Resolution Name="IsNullOrEmpty">Replace the call to {0} in {1} with a call to 'String.IsNullOrEmpty'.</Resolution>
+   </Rule>
+   <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
+    <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
+    <Resolution Name="NonBreaking">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054">
+    <Resolution Name="Default">Change the type of parameter {0} of method {1} from string to System.Uri, or provide an overload of {1}, that allows {0} to be passed as a System.Uri object.</Resolution>
+   </Rule>
+   <Rule TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056">
+    <Resolution Name="Default">Change the type of property {0} from string to System.Uri.</Resolution>
+   </Rule>
+   <Rule TypeName="UriReturnValuesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1055">
+    <Resolution Name="Default">Change the return type of {0} from string to System.Uri.</Resolution>
+   </Rule>
+   <Rule TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030">
+    <Resolution Name="Default">Consider making {0} an event.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726">
+    <Resolution Name="Member">Replace the term '{0}' in member name {1} with the preferred alternate '{2}'.</Resolution>
+    <Resolution Name="MemberParameterNoAlternate">In member {0}, replace the term '{1}' in parameter name {2} with an appropriate alternate or remove it entirely.</Resolution>
+    <Resolution Name="TypeNoAlternate">Replace the term '{0}' in type name {1} with an appropriate alternate or remove it entirely.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

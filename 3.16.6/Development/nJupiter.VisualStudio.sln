@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.MSBuild.Tasks", "nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.csproj", "{D1C4B310-47BE-446C-B64A-ACB21ECAB18A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.VisualStudio.TemplateWizards", "nJupiter.VisualStudio.TemplateWizards\nJupiter.VisualStudio.TemplateWizards.csproj", "{28B733D1-7E86-4849-B57C-1A09D54EBFCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1C4B310-47BE-446C-B64A-ACB21ECAB18A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1C4B310-47BE-446C-B64A-ACB21ECAB18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1C4B310-47BE-446C-B64A-ACB21ECAB18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1C4B310-47BE-446C-B64A-ACB21ECAB18A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28B733D1-7E86-4849-B57C-1A09D54EBFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28B733D1-7E86-4849-B57C-1A09D54EBFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28B733D1-7E86-4849-B57C-1A09D54EBFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28B733D1-7E86-4849-B57C-1A09D54EBFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

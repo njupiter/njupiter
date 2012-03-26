@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E606F9A-0A9A-405E-AA1D-663DB265D2D4}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>nJupiter.Services.Forum.UI</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nJupiter.Services.Forum.UI</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
+      <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
+      <Name>nJupiter.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Services.Forum\nJupiter.Services.Forum.csproj">
+      <Name>nJupiter.Services.Forum</Name>
+      <Project>{E4BACBF1-34A3-4836-A95B-8CA9EF8AF75F}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Web.UI\nJupiter.Web.UI.csproj">
+      <Name>nJupiter.Web.UI</Name>
+      <Project>{DB95442D-CB1A-4C20-9650-4FEC39E3314D}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
+      <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
+      <Name>nJupiter.Web</Name>
+    </ProjectReference>
+    <Reference Include="System.Web.Abstractions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\AuthorResolver.cs" />
+    <Compile Include="Src\PostQuoter.cs" />
+    <Compile Include="Src\WebTextFormatter.cs" />
+    <Compile Include="Src\PostLocation.cs" />
+    <Compile Include="Src\PostAdministrationVisibility.cs" />
+    <Compile Include="Src\DateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\EventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\FriendlyDateFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\HierarchicalPostListVisibility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Position.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\TextFormatter.cs" />
+    <Compile Include="Web\AddPost.ascx.cs">
+      <DependentUpon>AddPost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FlatTabularPostList.ascx.cs">
+      <DependentUpon>FlatTabularPostList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\FlatTabularPostListItem.ascx.cs">
+      <DependentUpon>FlatTabularPostListItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\ForumTest.aspx.cs">
+      <DependentUpon>ForumTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\HierarchicalPostList.ascx.cs">
+      <DependentUpon>HierarchicalPostList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\HierarchicalPostListItem.ascx.cs">
+      <DependentUpon>HierarchicalPostListItem.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\CategorySelector.ascx.cs">
+      <DependentUpon>CategorySelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\UpdatePost.ascx.cs">
+      <DependentUpon>UpdatePost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <None Include="TODO.txt" />
+    <Content Include="Web\AddPost.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\FlatTabularPostList.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\CategorySelector.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\FlatTabularPostListItem.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\ForumTest.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\HierarchicalPostList.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\HierarchicalPostListItem.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\UpdatePost.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>

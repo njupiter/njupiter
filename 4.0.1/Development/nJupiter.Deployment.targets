@@ -1,0 +1,31 @@
+<!--
+Written by Martin Odhelius
+
+Version 0.9, last revised 2006/03/18, 19:25 GMT
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- 
+	Sample to set depolyment path and use the ProjectsToExlude or Include list.
+	If ProjcetsToInclude and ProjcetsToExclude is used toghter ProjectsToInclude overrides ProjectsToExclude.
+	-->
+	<!-- 
+	<PropertyGroup>
+		<nJupiterDeploymentPath>C:\Projects\MyProjectRoot\MyProjectName\Development\MySite.Web</nJupiterDeploymentPath>
+
+		<ProjectsToInclude>
+			<MatchAny>
+				<Project>nJupiter.Net.Mail</Project>
+			</MatchAny>
+		</ProjectsToInclude>
+
+		<ProjectsToExclude>
+			<MatchAny>
+				<Project>Shared Resources</Project>
+			</MatchAny>
+		</ProjectsToExclude>
+
+	</PropertyGroup>
+	-->
+
+</Project>

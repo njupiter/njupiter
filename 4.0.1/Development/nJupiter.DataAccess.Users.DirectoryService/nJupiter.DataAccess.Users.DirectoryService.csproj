@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2327074-4BD3-42B8-915F-6100B804CBBD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nJupiter.DataAccess.Users.DirectoryService</RootNamespace>
+    <AssemblyName>nJupiter.DataAccess.Users.DirectoryService</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Shared Resources\Libraries\Log4Net\Compile Version\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Src\Adapters\LdapDirectoryService.cs" />
+    <Compile Include="Src\Adapters\WebService\DirectoryServiceWebService.cs" />
+    <Compile Include="Src\Adapters\WSDirectoryService.cs" />
+    <Compile Include="Src\DirectoryObject.cs" />
+    <Compile Include="Src\DirectoryService.cs" />
+    <Compile Include="Src\Property.cs" />
+    <Compile Include="Src\SearchCriteria.cs" />
+    <Compile Include="Src\UserRepository.cs" />
+    <Compile Include="Web\DirectoryServiceWebService.asmx.cs">
+      <DependentUpon>DirectoryServiceWebService.asmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
+      <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
+      <Name>nJupiter.Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.DataAccess.Users\nJupiter.DataAccess.Users.csproj">
+      <Project>{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}</Project>
+      <Name>nJupiter.DataAccess.Users</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.DataAccess\nJupiter.DataAccess.csproj">
+      <Project>{DE3DFF9C-7B73-4DD6-AF8B-129D9E0D4569}</Project>
+      <Name>nJupiter.DataAccess</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web\DirectoryServiceWebService.asmx" />
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>

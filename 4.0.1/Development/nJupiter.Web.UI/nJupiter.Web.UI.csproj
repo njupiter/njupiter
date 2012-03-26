@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DB95442D-CB1A-4C20-9650-4FEC39E3314D}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>nJupiter.Web.UI</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nJupiter.Web.UI</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\nJupiter.Configuration\nJupiter.Configuration.csproj">
+      <Project>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</Project>
+      <Name>nJupiter.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
+      <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
+      <Name>nJupiter.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>SharedAssemblyInfo.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\ControlAdapters\ControlAdapterBase.cs" />
+    <Compile Include="Src\ControlAdapters\HtmlControlAdapter.cs" />
+    <Compile Include="Src\ControlAdapters\HtmlFormAdapter.cs" />
+    <Compile Include="Src\ControlAdapters\HtmlGenericAdapter.cs" />
+    <Compile Include="Src\ControlAdapters\HtmlHeadAdapter.cs" />
+    <Compile Include="Src\ControlAdapters\HtmlTitleAdapter.cs" />
+    <Compile Include="Src\ControlHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\HtmlStyleUnit.cs" />
+    <Compile Include="Src\HtmlEntity.cs" />
+    <Compile Include="Src\HtmlLink.cs" />
+    <Compile Include="Src\HtmlStyle.cs" />
+    <Compile Include="Src\Controls\WebNavigation.cs" />
+    <Compile Include="Src\Controls\WebScriptHolder.cs" />
+    <Compile Include="Src\Events\PagingEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\HtmlAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\HtmlAttributeValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\HtmlHandler.cs" />
+    <Compile Include="Src\HtmlTag.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\Listings\GeneralListing.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\Listings\ListControls\NumberOfItemsSelector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\Listings\ListItems\ListItemBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\Listings\ListItems\ListItemEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\Listings\PagedListing.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebHead.cs" />
+    <Compile Include="Src\Controls\WebLinkButton.cs" />
+    <Compile Include="Src\Controls\Paging.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebAnchor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebCheckBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebCheckBoxList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebCheckListControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebDropDownList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebFlash.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebForm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebGenericControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebHeading.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebImage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebLabel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebParagraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebPlaceHolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebRadioButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Controls\WebRadioButtonList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Web\StreamImage.aspx.cs">
+      <DependentUpon>StreamImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Content Include="Web\Scripts\swfobject2.js" />
+    <Content Include="Web\Scripts\swfobject2.swf" />
+    <Content Include="Web\Scripts\SwfObject.js" />
+    <Content Include="Web\Scripts\SwfObject.swf" />
+    <Content Include="Web\Scripts\ufo.js" />
+    <Content Include="Web\Scripts\ufo.swf" />
+    <Content Include="Web\StreamImage.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>

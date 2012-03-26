@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5FCDC341-D85E-4358-8B4B-00F285F02ECF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nJupiter.DataAccess.Users.Sql</RootNamespace>
+    <AssemblyName>nJupiter.DataAccess.Users.Sql</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.1.309\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.DataAccess, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\nJupiter.DataAccess.4.0.1.308\lib\nJupiter.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Src\Properties\BinaryProperty.cs" />
+    <Compile Include="Src\Properties\BoolProperty.cs" />
+    <Compile Include="Src\Properties\DateTimeProperty.cs" />
+    <Compile Include="Src\Properties\IntProperty.cs" />
+    <Compile Include="Src\Properties\ISqlProperty.cs" />
+    <Compile Include="Src\Properties\PropertyFactory.cs" />
+    <Compile Include="Src\Properties\StringProperty.cs" />
+    <Compile Include="Src\Properties\XmlSerializedProperty.cs" />
+    <Compile Include="Src\UserRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nJupiter.DataAccess.Users\nJupiter.DataAccess.Users.csproj">
+      <Project>{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}</Project>
+      <Name>nJupiter.DataAccess.Users</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\1.DefaultDatabase.Tables.sql" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\2.DefaultDatabase.FullText.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\3.DefaultDatabase.SPs.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\4.DefaultDatabase.TableData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Old\DefaultDatabase.1.0.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Old\DefaultDatabase.1.1.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Old\DefaultDatabase.1.1.1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Old\DefaultDatabase.1.3.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Old\DefaultDatabase.2.0.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Old\DefaultDatabase.2.1.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Updates\Update.DefaultDatabase.1.0.0.to.1.1.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Updates\Update.DefaultDatabase.1.1.0.to.1.1.1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Updates\Update.DefaultDatabase.1.1.1.to.1.3.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Updates\Update.DefaultDatabase.1.3.0.to.2.0.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Install\Database\Updates\Update.DefaultDatabase.2.0.0.to.2.1.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Install\Database\Updates\Update.DefaultDatabase.2.1.0.to.3.0.0.sql" />
+    <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.0.0.to.3.10.0.sql" />
+    <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.10.0.to.Current.sql" />
+    <None Include="Install\ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>
