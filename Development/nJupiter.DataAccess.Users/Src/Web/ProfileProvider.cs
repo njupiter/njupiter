@@ -193,7 +193,7 @@ namespace nJupiter.DataAccess.Users.Web {
 		private IProperty GetProperty(IUser user, string propertyName) {
 			var contextName = this.UserRepository.PropertyNames.GetContextName(propertyName);
 			var context = Context.DefaultContext;
-			if(Context.DefaultContext.Name.Equals(contextName)) {
+			if(!string.IsNullOrEmpty(contextName)) {
 				context = this.UserRepository.GetContext(contextName);
 			}
 			return user.Properties.GetProperty(propertyName, context);

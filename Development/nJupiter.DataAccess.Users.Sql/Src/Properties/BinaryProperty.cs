@@ -17,7 +17,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		public override string ToSerializedString() {
 			if(this.IsEmpty())
 				return null;
-			using(MemoryStream stream = new MemoryStream()) {
+			using(var stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, this.ValueUntouched);
 				return Convert.ToBase64String(stream.ToArray());
 			}
@@ -26,8 +26,8 @@ namespace nJupiter.DataAccess.Users.Sql {
 		public override object DeserializePropertyValue(string value) {
 			if(value == null)
 				return this.DefaultValue;
-			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
-				BinaryFormatter formatter = new BinaryFormatter();
+			using(var stream = new MemoryStream(Convert.FromBase64String(value))) {
+				var formatter = new BinaryFormatter();
 				var surrogateSelector = new SurrogateSelector();
 				formatter.SurrogateSelector = surrogateSelector;
 				var deserializationBinder = new DeserializationBinder(surrogateSelector);
