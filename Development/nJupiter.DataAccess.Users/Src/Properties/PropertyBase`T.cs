@@ -99,7 +99,7 @@ namespace nJupiter.DataAccess.Users {
 			return this.DeserializePropertyValue(v);
 		}
 
-		public object Clone() {
+		public IProperty CreateWritable() {
 			var newProperty = (PropertyBase<T>)this.MemberwiseClone();
 			if(!this.Type.IsPrimitive){
 				newProperty.value = DeserializePropertyValue(this.ToSerializedString());
@@ -107,6 +107,10 @@ namespace nJupiter.DataAccess.Users {
 			newProperty.isReadOnly = false;
 			newProperty.isDirty = false;
 			return newProperty;
+		}
+
+		public object Clone() {
+			return CreateWritable();
 		}
 
 		public void MakeReadOnly() {

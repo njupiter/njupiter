@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace nJupiter.DataAccess.Users {
-	public interface IProperty: ILockable {
+	public interface IProperty: ILockable<IProperty> {
 		bool IsEmpty();
 		string Name { get; }
 		IContext Context { get; }

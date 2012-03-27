@@ -61,9 +61,13 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public object Clone() {
+			return this.CreateWritable();
+		}
+		
+		public IUser CreateWritable() {
 			var newUser = (User)MemberwiseClone();
 			newUser.isReadOnly = false;
-			newUser.properties = (IPropertyHandler)properties.Clone();
+			newUser.properties = properties.CreateWritable();
 			return newUser;
 		}
 

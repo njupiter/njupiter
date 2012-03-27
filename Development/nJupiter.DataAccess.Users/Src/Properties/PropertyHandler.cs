@@ -273,17 +273,20 @@ namespace nJupiter.DataAccess.Users {
 				}
 			}
 		}
-		
-		public object Clone() {
+
+		public IPropertyHandler CreateWritable() {
 			var newPropertyHandler = (PropertyHandler)this.MemberwiseClone();
 			var newPropertiesPerContext = new Dictionary<IContext, IPropertyCollection>();
 			foreach(var pair in propertiesPerContext) {
-				newPropertiesPerContext.Add(pair.Key, (IPropertyCollection)pair.Value.Clone());
+				newPropertiesPerContext.Add(pair.Key, pair.Value.CreateWritable());
 			}
 			newPropertyHandler.propertiesPerContext = newPropertiesPerContext;
 			newPropertyHandler.isReadOnly = false;
 			return newPropertyHandler;
-			
+		}
+
+		public object Clone() {
+			return CreateWritable();
 		}
 
 		public void MakeReadOnly() {

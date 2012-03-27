@@ -109,7 +109,28 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			Assert.AreEqual(newProperties, newUser.Properties.GetProperties());
 		}
 
+		[Test]
+		public void CreateWritable_MakeReadOnly_WritableUserIsNotReadonly() {
+			var properties = A.Fake<IPropertyCollection>();
+			var newProperties = A.Fake<IPropertyCollection>();
+			A.CallTo(() => properties.Clone()).Returns(newProperties);
+			var user = new User("userid", "username", "userdomain", properties, null);
+			user.MakeReadOnly();
+			var newUser = user.CreateWritable();
+			Assert.IsTrue(user.IsReadOnly);
+			Assert.IsFalse(newUser.IsReadOnly);
+		}
 
+
+		[Test]
+		public void CreateWritable_CreateWritableUser_WritableUserGetsClonedProperties() {
+			var properties = A.Fake<IPropertyCollection>();
+			var newProperties = A.Fake<IPropertyCollection>();
+			A.CallTo(() => properties.Clone()).Returns(newProperties);
+			var user = new User("userid", "username", "userdomain", properties, null);
+			var newUser = user.CreateWritable();
+			Assert.AreEqual(newProperties, newUser.Properties.GetProperties());
+		}
 
 	}
 }

@@ -290,10 +290,10 @@ namespace nJupiter.DataAccess.Users.Web {
 				if(!this.UserRepository.CheckPassword(user, oldPassword))
 					return false;
 			}
-			var clonedUser = (IUser)user.Clone();
-			this.UserRepository.SetPassword(clonedUser, newPassword);			
-			clonedUser.Properties.LastPasswordChangedDate = DateTime.UtcNow;
-			this.UpdateUserInRepository(clonedUser);
+			user = user.CreateWritable();
+			this.UserRepository.SetPassword(user, newPassword);			
+			user.Properties.LastPasswordChangedDate = DateTime.UtcNow;
+			this.UpdateUserInRepository(user);
 			return true;
 		}
 
@@ -326,10 +326,10 @@ namespace nJupiter.DataAccess.Users.Web {
 				CheckParameter(newPasswordQuestion, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, false, 256, "newPasswordQuestion");
 				CheckParameter(newPasswordAnswer, this.RequiresQuestionAndAnswer, this.RequiresQuestionAndAnswer, false, 256, "newPasswordAnswer");
 			}
-			var clonedUser = (IUser)user.Clone();
-			clonedUser.Properties.PasswordQuestion = newPasswordQuestion;
-			clonedUser.Properties.PasswordAnswer = newPasswordQuestion;
-			this.UpdateUserInRepository(clonedUser);
+			user = user.CreateWritable();
+			user.Properties.PasswordQuestion = newPasswordQuestion;
+			user.Properties.PasswordAnswer = newPasswordQuestion;
+			this.UpdateUserInRepository(user);
 			return true;
 		}
 
@@ -356,9 +356,9 @@ namespace nJupiter.DataAccess.Users.Web {
 				passwordCorrect = this.UserRepository.CheckPassword(user, password);
 			}
 			if(passwordCorrect) {
-				var clonedUser = (IUser)user.Clone();
-				clonedUser.Properties.LastLoginDate = DateTime.UtcNow;
-				this.UpdateUserInRepository(clonedUser);
+				user = user.CreateWritable();
+				user.Properties.LastLoginDate = DateTime.UtcNow;
+				this.UpdateUserInRepository(user);
 			}
 			return passwordCorrect;
 		}
@@ -535,10 +535,10 @@ namespace nJupiter.DataAccess.Users.Web {
 				throw new MembershipPasswordException();
 			}
 			string newPassword = Membership.GeneratePassword(this.MinRequiredPasswordLength < 6 ? 6 : this.MinRequiredPasswordLength, this.MinRequiredNonAlphanumericCharacters);
-			var clonedUser = (IUser)user.Clone();
-			this.UserRepository.SetPassword(clonedUser, newPassword);
-			clonedUser.Properties.LastPasswordChangedDate = DateTime.UtcNow;
-			this.UpdateUserInRepository(clonedUser);
+			user = user.CreateWritable();
+			this.UserRepository.SetPassword(user, newPassword);
+			user.Properties.LastPasswordChangedDate = DateTime.UtcNow;
+			this.UpdateUserInRepository(user);
 			return newPassword;
 		}
 
@@ -558,13 +558,13 @@ namespace nJupiter.DataAccess.Users.Web {
 				throw new ArgumentException(string.Format("User is not of type {0}", typeof(MembershipUser).Name), "user");
 			}
 			var userFromRepository = this.UserRepository.GetUserById(membershipUser.ProviderUserKey as string);
-			var clonedUser = (IUser)userFromRepository.Clone();
-			clonedUser.Properties.LastLoginDate = user.LastLoginDate;
-			clonedUser.Properties.Description = user.Comment;
-			clonedUser.Properties.Email = user.Email;
-			clonedUser.Properties.Active = user.IsApproved;
-			clonedUser.Properties.LastActivityDate = user.LastActivityDate;
-			this.UpdateUserInRepository(clonedUser);
+			userFromRepository = userFromRepository.CreateWritable();
+			userFromRepository.Properties.LastLoginDate = user.LastLoginDate;
+			userFromRepository.Properties.Description = user.Comment;
+			userFromRepository.Properties.Email = user.Email;
+			userFromRepository.Properties.Active = user.IsApproved;
+			userFromRepository.Properties.LastActivityDate = user.LastActivityDate;
+			this.UpdateUserInRepository(userFromRepository);
 		}
 
 		/// <summary>
@@ -596,9 +596,9 @@ namespace nJupiter.DataAccess.Users.Web {
 			if(user == null) {
 				throw new UserDoesNotExistException(string.Format("User with username {0} does not exist.", username));
 			}
-			var clonedUser = (IUser)user.Clone();
-			clonedUser.Properties.Locked = true;
-			this.UpdateUserInRepository(clonedUser);
+			user = user.CreateWritable();
+			user.Properties.Locked = true;
+			this.UpdateUserInRepository(user);
 			return true;
 		}
 
@@ -639,7 +639,7 @@ namespace nJupiter.DataAccess.Users.Web {
 			var user = this.UserRepository.GetUserById(providerUserKey.ToString());
 			if(user != null) {
 				if(userIsOnline) {
-					user = (IUser)user.Clone();
+					user = user.CreateWritable();
 					user.Properties.LastActivityDate = DateTime.UtcNow;
 					this.UpdateUserInRepository(user);
 				}
@@ -666,7 +666,7 @@ namespace nJupiter.DataAccess.Users.Web {
 			var user = this.UserRepository.GetUserByUserName(name, domain);
 			if(user != null) {
 				if(userIsOnline) {
-					user = (IUser)user.Clone();
+					user = user.CreateWritable();
 					user.Properties.LastUpdatedDate = DateTime.UtcNow;
 					this.UpdateUserInRepository(user);
 				}

@@ -257,12 +257,10 @@ namespace nJupiter.DataAccess.Users.Web {
 		private IUser GetUserFromUserNameWritable(string username) {
 			var user = GetUserFromUserName(username);
 			if(user != null && user.IsReadOnly) {
-				user = (IUser)user.Clone();
+				user = user.CreateWritable();
 			}
 			return user;
 		}
-
-
 
 		private IUser GetUserFromUserName(string username) {
 			var name = GetUserNameFromMembershipUserName(username);

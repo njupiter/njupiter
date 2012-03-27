@@ -52,9 +52,13 @@ namespace nJupiter.DataAccess.Users {
 			return innerList.GetEnumerator();
 		}
 
-		public object Clone() {
-			var newList = this.innerList.Select(property => (IProperty)property.Clone()).ToList();
+		public IPropertyCollection CreateWritable() {
+			var newList = this.innerList.Select(property => property.CreateWritable()).ToList();
 			return new PropertyCollection(newList, this.Schema) { isReadOnly = false };
+		}
+
+		public object Clone() {
+			return CreateWritable();
 		}
 
 		public void MakeReadOnly() {

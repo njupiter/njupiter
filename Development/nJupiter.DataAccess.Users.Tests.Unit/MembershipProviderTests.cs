@@ -48,7 +48,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 			A.CallTo(() => userRepository.GetUserByUserName("modhelius", null)).Returns(originalUser);
 			A.CallTo(() => originalUser.IsReadOnly).Returns(true);
-			A.CallTo(() => originalUser.Clone()).Returns(clonedUser);
+			A.CallTo(() => originalUser.CreateWritable()).Returns(clonedUser);
 
 			A.CallTo(() => userRepository.CheckPassword(A<IUser>.Ignored, "oldpassword")).Returns(true);
 			Assert.IsTrue(provider.ChangePassword("modhelius", "oldpassword", "password321;"));
@@ -92,7 +92,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			user.Properties.LastLoginDate = DateTime.MinValue;
 			A.CallTo(() => userRepository.GetUserByUserName("modhelius", "njupiter")).Returns(user);
 			A.CallTo(() => user.IsReadOnly).Returns(true);
-			A.CallTo(() => user.Clone()).Returns(clonedUser);
+			A.CallTo(() => user.CreateWritable()).Returns(clonedUser);
 
 			A.CallTo(() => userRepository.CheckPassword(user, "password")).Returns(true);
 			Assert.IsTrue(provider.ValidateUser("njupiter\\modhelius", "password"));

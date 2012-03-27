@@ -136,6 +136,17 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		}
 
 		[Test]
+		public void CreateWritable_CreateWritable_ReturnsNewWritableWithSameValue() {
+			var context = new Context("context");
+			var prop = new Property<MyDummyClass1>("propertyname", context, CultureInfo.InvariantCulture);
+			var dummyObject = new MyDummyClass1("my dummy object");
+			prop.Value = dummyObject;
+			var newProp = prop.CreateWritable();
+			Assert.AreNotSame(prop, newProp);
+			Assert.AreEqual("my dummy object", ((Property<MyDummyClass1>)newProp).Value.MyString);
+		}
+
+		[Test]
 		public void Constructor_PassingTypeWithoutTypeConverter_ThrowsNotSupportedException() {
 			var context = new Context("context");
 			Assert.Throws<NotSupportedException>(() => new Property<MyDummyClass2>("propertyname", context, CultureInfo.InvariantCulture));
