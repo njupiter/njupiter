@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>nJupiter.DataAccess.Users</AssemblyName>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>nJupiter.DataAccess.Users</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>http://localhost/nJupiter.DataAccess.Users/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.1.309\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Caching\UserCacheBase.cs" />
+    <Compile Include="Src\ContextSchema.cs" />
+    <Compile Include="Src\CompareCondition.cs" />
+    <Compile Include="Src\ILockable%27T.cs" />
+    <Compile Include="Src\ILockable.cs" />
+    <Compile Include="Src\IUserRepository.cs" />
+    <Compile Include="Src\IUserRepositoryManager.cs" />
+    <Compile Include="Src\Properties\Property`T.cs" />
+    <Compile Include="Src\Properties\IPredefinedProperties.cs" />
+    <Compile Include="Src\Properties\IPropertyCollection.cs" />
+    <Compile Include="Src\Properties\IPropertyHandler.cs" />
+    <Compile Include="Src\UserRepositoryManager.cs" />
+    <Compile Include="Src\Properties\IProperty.cs" />
+    <Compile Include="Src\PredefinedNamesFactory.cs" />
+    <Compile Include="Src\IPredefinedNames.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Comparers\NameComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\IContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\PredefinedNames.cs" />
+    <Compile Include="Src\Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Caching\GenericUserCache.cs" />
+    <Compile Include="Src\Web\HybridMembershipProvider.cs" />
+    <Compile Include="Src\Web\HybridMembershipUser.cs" />
+    <Compile Include="Src\IUser.cs" />
+    <Compile Include="Src\Caching\IUserCache.cs" />
+    <Compile Include="Src\Web\MembershipProvider.cs" />
+    <Compile Include="Src\Web\MembershipUser.cs" />
+    <Compile Include="Src\Properties\PropertyHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Properties\PropertyBase`T.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Properties\PropertyCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Properties\PropertyDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\SearchCriteria.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\UserRepositoryBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Web\ProfileProvider.cs" />
+    <Compile Include="Src\Caching\HttpRuntimeUserCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\packages.config" />
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>
