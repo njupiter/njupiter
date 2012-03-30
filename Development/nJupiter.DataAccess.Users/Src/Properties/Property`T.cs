@@ -19,7 +19,7 @@ namespace nJupiter.DataAccess.Users {
 
 		protected override bool SetDirtyOnTouch {
 			get {
-				return !this.Type.IsPrimitive && !this.Type.IsValueType && !this.Type.Equals(typeof(string));
+				return !this.Type.IsPrimitive && !this.Type.IsValueType && this.Type != typeof(string);
 			}
 		}
 

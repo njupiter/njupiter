@@ -41,7 +41,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual bool IsEmpty() {
-			return Equals(value, default(T)) || (value is string && value.ToString().Length == 0);
+			return Equals(value, this.DefaultValue) || (value is string && value == null);
 		}
 
 		public abstract string ToSerializedString();
@@ -51,9 +51,18 @@ namespace nJupiter.DataAccess.Users {
 		public string Name { get { return this.name; } }
 		public Type Type { get { return typeof(T); } }
 		public IContext Context { get { return this.context; } }
-		public T DefaultValue { get { return default(T); } }
 		protected virtual bool SetDirtyOnTouch { get { return false; } }
 		protected T ValueUntouched { get { return value; } }
+
+		public T DefaultValue {
+			get {
+				if(typeof(T) == typeof(string)) {
+					object emptyString = string.Empty;
+					return (T)emptyString;
+				}
+				return default(T);
+			}
+		}
 
 		public bool IsDirty {
 			get {

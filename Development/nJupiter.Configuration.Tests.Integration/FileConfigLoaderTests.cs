@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 using NUnit.Framework;
@@ -19,11 +20,8 @@ namespace nJupiter.Configuration.Tests.Unit {
 			var c = new Config("testconfig", GetConfigXmlDocument(configForConfigFolder));
 			var fileConfigLoader  = new FileConfigLoader(c);
 			var configs = fileConfigLoader.LoadOnInit();
-			int count = 0;
-			foreach(IConfig config in configs) {
-				count++;
-			}
-			int acctualCount = Directory.GetFiles(nJupiterConfigPath, "*.config").Length;
+			var count = configs.Count();
+			var acctualCount = Directory.GetFiles(nJupiterConfigPath, "*.config").Length;
 			Assert.AreEqual(acctualCount, count);
 		}
 
@@ -72,14 +70,8 @@ namespace nJupiter.Configuration.Tests.Unit {
 			Assert.IsNull(config);
 		}
 
-		[Test]
-		public void OpenFile_TryOpenNonExistingFile_ThrowsConfiguratorException() {
-			Assume.That(!File.Exists("NoExistingFile.config"));
-			Assert.Throws<ConfiguratorException>(() => FileConfigLoader.OpenFile(new FileInfo("NoExistingFile.config")));
-		}
-
 		private static XmlElement GetConfigXmlDocument(string xml) {
-			XmlDocument xmlDocument = new XmlDocument();
+			var xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(xml);
 			return xmlDocument.DocumentElement;
 		}

@@ -28,19 +28,31 @@ using System.IO;
 using System.Web;
 
 namespace nJupiter.Configuration {
-	internal class FileConfigLoader : IConfigLoader {
+	public class FileConfigLoader : IConfigLoader {
 		
 		private static readonly char[] IllegalPathCharacters = new[] { '\\', '/', '"', '?', '<', '>' };
-		private readonly string configSuffix;
-		private readonly bool addFileWatchers;
-		private readonly bool loadAllConfigFilesOnInit;
-		private readonly IEnumerable<string> configPaths;
+		private readonly IConfig config;
+		private readonly string defaultDirectory;
+		private readonly string defaultDirectorySearchPattern;
+		private readonly SearchOption defaultDirectorySearchOption;
+		private bool? addFileWatchers;
+		private bool? loadAllFilesOnInit;
+		private string configSuffix;
+		private IEnumerable<string> configPaths;
 
-		public FileConfigLoader(IConfig config) {
-			this.configPaths = GetConfigPaths(config);
-			this.configSuffix = GetConfigSuffix(config);
-			this.addFileWatchers = ShallAddFileWatchers(config);
-			this.loadAllConfigFilesOnInit = ShallLoadAllFilesOnInit(config);
+		public FileConfigLoader(string defaultDirectory, string defaultDirectorySearchPattern, SearchOption defaultDirectorySearchOption, string configSuffix) {
+			this.configSuffix = configSuffix;
+			this.defaultDirectory = defaultDirectory;
+			this.defaultDirectorySearchPattern = defaultDirectorySearchPattern;
+			this.defaultDirectorySearchOption = defaultDirectorySearchOption;
+		}
+
+		public FileConfigLoader(string defaultDirectory, string configSuffix) : this(defaultDirectory, "*", SearchOption.AllDirectories, configSuffix) {}
+		public FileConfigLoader(string defaultDirectory) : this(defaultDirectory, null) {}
+		public FileConfigLoader() : this(AppDomain.CurrentDomain.BaseDirectory) {}
+
+		public FileConfigLoader(IConfig config) : this() {
+			this.config = config;
 		}
 
 		public ConfigCollection LoadOnInit() {
@@ -50,7 +62,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public void InitializeCollection(ConfigCollection configs) {
-			if(loadAllConfigFilesOnInit) {
+			if(LoadAllFilesOnInit) {
 				this.LoadConfigsIntoCollection("*", configs);
 			}
 		}
@@ -76,9 +88,9 @@ namespace nJupiter.Configuration {
 			if(pattern.IndexOfAny(IllegalPathCharacters) < 0) {
 				var files = GetFiles(pattern);
 				foreach(var file in files) {
-					var config = FileConfigFactory.Create(file, addFileWatchers);
-					if(!configs.Contains(config.ConfigKey)) {
-						configs.Add(config);
+					var configFromFile = FileConfigFactory.Create(file, this.AddFileWatchers);
+					if(!configs.Contains(configFromFile.ConfigKey)) {
+						configs.Add(configFromFile);
 					}
 				}
 			}
@@ -86,7 +98,7 @@ namespace nJupiter.Configuration {
 
 		private IEnumerable<FileInfo> GetFiles(string pattern) {
 			var files = new List<FileInfo>();
-			foreach(var path in this.configPaths) {
+			foreach(var path in this.ConfigPaths) {
 				var dir = GetDirectory(path);
 				if(dir.Exists) {
 					var fileArray = this.GetFiles(pattern, dir);
@@ -98,25 +110,11 @@ namespace nJupiter.Configuration {
 
 		private IEnumerable<FileInfo> GetFiles(string pattern, DirectoryInfo dir) {
 			try {
-				return dir.GetFiles(string.Format("{0}{1}", pattern, this.configSuffix));
+				return dir.GetFiles(string.Format("{0}{1}", pattern, this.ConfigSuffix));
 			} catch(IOException) {
 				// Ignore IOException in case of incorrect syntax
 			}
 			return new FileInfo[0];
-		}
-
-		// Internal for test purposes
-		internal static Stream OpenFile(FileInfo configFile) {
-			Exception exception = null;
-			for(int retries = 5; retries >= 0; retries--) {
-				try {
-					return configFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
-				} catch(IOException ex) {
-					exception = ex;
-					System.Threading.Thread.Sleep(200);
-				}
-			}
-			throw new ConfiguratorException(string.Format("Failed to open XML config file '{0}'.", configFile.Name), exception);
 		}
 
 		private static DirectoryInfo GetDirectory(string path) {
@@ -126,38 +124,60 @@ namespace nJupiter.Configuration {
 			return new DirectoryInfo(path);
 		}
 
-		private static bool ShallAddFileWatchers(IConfig config) {
-			if(config != null && config.ContainsAttribute("configDirectories", "enableFileWatching")) {
-				return config.GetAttribute<bool>("configDirectories", "enableFileWatching");
+		protected virtual bool AddFileWatchers {
+			get {
+				if(addFileWatchers == null) {
+					addFileWatchers = true;
+					if(config != null && config.ContainsAttribute("configDirectories", "enableFileWatching")) {
+						addFileWatchers = config.GetAttribute<bool>("configDirectories", "enableFileWatching");
+					}
+				}
+				return (bool)addFileWatchers;
 			}
-			return true;
 		}
 
-		private static bool ShallLoadAllFilesOnInit(IConfig config) {
-			if(config != null && config.ContainsAttribute("configDirectories", "loadAllConfigFilesOnInit")) {
-				return config.GetAttribute<bool>("configDirectories", "loadAllConfigFilesOnInit");
+		protected virtual bool LoadAllFilesOnInit {
+			get {
+				if(loadAllFilesOnInit == null) {
+					loadAllFilesOnInit = false;
+					if(config != null && config.ContainsAttribute("configDirectories", "loadAllConfigFilesOnInit")) {
+						loadAllFilesOnInit = config.GetAttribute<bool>("configDirectories", "loadAllConfigFilesOnInit");
+					}
+				}
+				return (bool)loadAllFilesOnInit;
 			}
-			return false;
 		}
 
 
-		private static string GetConfigSuffix(IConfig config) {
-			if(config != null && config.ContainsAttribute("configDirectories", "configSuffix")) {
-				return config.GetAttribute("configDirectories", "configSuffix");
+		protected virtual string ConfigSuffix {
+			get {
+				if(configSuffix == null) {
+					configSuffix =  ".config";
+					if(config != null && config.ContainsAttribute("configDirectories", "configSuffix")) {
+						configSuffix = config.GetAttribute("configDirectories", "configSuffix");
+					}
+				}
+				return configSuffix;
 			}
-			return ".config";
 		}
 
-		private static IEnumerable<string> GetConfigPaths(IConfig config) {
-			string[] paths = config != null ? config.GetValueArray("configDirectories", "configDirectory") : null;
-			if(paths == null || paths.Length == 0) {
-				paths = Directory.GetDirectories(GetCurrentDirectory(), "*", SearchOption.AllDirectories);
+		
+		protected virtual IEnumerable<string> ConfigPaths {
+			get {
+				if(configPaths == null) {
+					var paths = config != null ? config.GetValueArray("configDirectories", "configDirectory") : null;
+					if(paths == null || paths.Length == 0) {
+						paths = Directory.GetDirectories(DefaultDirectory, DefaultDirectorySearchPattern, DefaultDirectorySearchOption);
+					}
+					configPaths = paths;
+				}
+				return configPaths;
+
 			}
-			return paths;
 		}
 
-		private static string GetCurrentDirectory() {
-			return AppDomain.CurrentDomain.BaseDirectory;
-		}
+		protected virtual string DefaultDirectory { get { return defaultDirectory; } }
+		protected virtual string DefaultDirectorySearchPattern { get { return defaultDirectorySearchPattern; } }
+		protected virtual SearchOption DefaultDirectorySearchOption { get { return defaultDirectorySearchOption; } }
 	}
 }

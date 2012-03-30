@@ -19,14 +19,14 @@ namespace nJupiter.DataAccess.Users.Sql {
 		public override string ToSerializedString() {
 			if(this.IsEmpty())
 				return null;
-			Type type = this.Value.GetType();
-			XmlSerializer serializer = new XmlSerializer(type);
-			StringWriter stringwriter = new StringWriter(CultureInfo.InvariantCulture);
-			XmlTextWriter xmlwriter = new XmlTextWriter(stringwriter);
+			var type = this.Value.GetType();
+			var serializer = new XmlSerializer(type);
+			var stringwriter = new StringWriter(CultureInfo.InvariantCulture);
+			var xmlwriter = new XmlTextWriter(stringwriter);
 			serializer.Serialize(xmlwriter, this.ValueUntouched);
-			string xmlSerializedData = stringwriter.ToString();
-			ValueWrapper valueWrapper = new ValueWrapper(type, xmlSerializedData);
-			using(MemoryStream stream = new MemoryStream()) {
+			var xmlSerializedData = stringwriter.ToString();
+			var valueWrapper = new ValueWrapper(type, xmlSerializedData);
+			using(var stream = new MemoryStream()) {
 				new BinaryFormatter().Serialize(stream, valueWrapper);
 				return Convert.ToBase64String(stream.ToArray());
 			}
@@ -37,8 +37,8 @@ namespace nJupiter.DataAccess.Users.Sql {
 				return this.DefaultValue;	
 			}
 			ValueWrapper valueWrapper;
-			using(MemoryStream stream = new MemoryStream(Convert.FromBase64String(value))) {
-				BinaryFormatter formatter = new BinaryFormatter();
+			using(var stream = new MemoryStream(Convert.FromBase64String(value))) {
+				var formatter = new BinaryFormatter();
 				var surrogateSelector = new SurrogateSelector();
 				formatter.SurrogateSelector = surrogateSelector;
 				var deserializationBinder = new DeserializationBinder(surrogateSelector);
@@ -48,9 +48,9 @@ namespace nJupiter.DataAccess.Users.Sql {
 			if(valueWrapper == null || valueWrapper.Type == null || valueWrapper.Value == null)
 				return this.DefaultValue;
 
-			XmlSerializer serializer = new XmlSerializer(valueWrapper.Type);
-			StringReader stringReader = new StringReader(valueWrapper.Value);
-			XmlTextReader xmlReader = new XmlTextReader(stringReader);
+			var serializer = new XmlSerializer(valueWrapper.Type);
+			var stringReader = new StringReader(valueWrapper.Value);
+			var xmlReader = new XmlTextReader(stringReader);
 			return serializer.Deserialize(xmlReader);
 		}
 
