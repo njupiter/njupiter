@@ -51,11 +51,14 @@ namespace nJupiter.DataAccess.Users.Sql {
 		#endregion
 
 		#region Properties
-		private IDataSource CurrentDB {
+		protected IDataSource CurrentDB {
 			get {
 				return DataSourceFactory.Create(Config.GetValue("dataSource"));
 			}
 		}
+
+		protected string PasswordPropertyName { get { return this.PropertyNames.Password ?? "password"; } }
+		protected string PasswordSaltPropertyName { get { return this.PropertyNames.Password ?? "passwordSalt"; } }
 		#endregion
 
 		#region Overridden Methods
@@ -536,32 +539,32 @@ namespace nJupiter.DataAccess.Users.Sql {
 		public override void SetPassword(IUser user, string password) {
 			if(user == null)
 				throw new ArgumentNullException("user");
-			if(user.Properties[this.PropertyNames.Password] == null)
+			if(user.Properties[PasswordPropertyName] == null)
 				throw new UsersException("Database does not contain a field for password.");
-			if(user.Properties[this.PropertyNames.PasswordSalt] == null)
+			if(user.Properties[PasswordSaltPropertyName] == null)
 				throw new UsersException("Database does not contain a field for password salt.");
 
 			if(this.Config.GetValue<bool>("hashPassword")) {
-				user.Properties[this.PropertyNames.PasswordSalt].Value = GenerateSalt(); // Generate new salt every time password is changed
-				user.Properties[this.PropertyNames.Password].Value = MD5Hash(user.Properties["passwordSalt"].Value + password);
+				user.Properties[PasswordSaltPropertyName].Value = GenerateSalt(); // Generate new salt every time password is changed
+				user.Properties[PasswordPropertyName].Value = MD5Hash(user.Properties["passwordSalt"].Value + password);
 			} else {
-				user.Properties[this.PropertyNames.PasswordSalt].Value = string.Empty;
-				user.Properties[this.PropertyNames.Password].Value = password;
+				user.Properties[PasswordSaltPropertyName].Value = string.Empty;
+				user.Properties[PasswordPropertyName].Value = password;
 			}
 		}
 
 		public override bool CheckPassword(IUser user, string password) {
 			if(user == null)
 				throw new ArgumentNullException("user");
-			if(user.Properties["password"] == null)
+			if(user.Properties[PasswordPropertyName] == null)
 				throw new UsersException("Database does not contain a field for password.");
-			if(user.Properties["passwordSalt"] == null)
+			if(user.Properties[PasswordSaltPropertyName] == null)
 				throw new UsersException("Database does not contain a field for password salt.");
 
 			if(this.Config.GetValue<bool>("hashPassword")) {
-				return user.Properties["password"].Value.Equals(MD5Hash(user.Properties["passwordSalt"].Value + password));
+				return user.Properties[PasswordPropertyName].Value.Equals(MD5Hash(user.Properties[PasswordSaltPropertyName].Value + password));
 			}
-			return user.Properties["password"].Value.Equals(password);
+			return user.Properties[PasswordPropertyName].Value.Equals(password);
 		}
 		#endregion
 
