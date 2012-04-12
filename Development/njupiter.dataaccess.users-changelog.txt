@@ -9,6 +9,14 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Upcomming version
+===============================================================================
+
+BUG: Hard coded property names removed from nJupiter.DataAccess.Users.Sql, and
+     default property names for password and passwordSalt added so the provider
+     will not crach if no values is defined in config when saving password. 
+
+===============================================================================
 Changes for V4.0.5.342 - 2012-03-30
 ===============================================================================
 
