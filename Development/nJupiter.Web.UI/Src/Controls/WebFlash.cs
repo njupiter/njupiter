@@ -136,7 +136,7 @@ namespace nJupiter.Web.UI.Controls {
 		private Mode renderMode = Mode.SWFObject2Embedded;
 		private WindowMode wMode = WindowMode.Transparent;
 
-		private ControlHandler.RegisterTargetPreference scriptRegisterTargetPreference = ControlHandler.RegisterTargetPreference.Head;
+		private RegisterTargetPreference scriptRegisterTargetPreference = RegisterTargetPreference.Head;
 
 		private readonly NameValueCollection flashParams;
 		#endregion
@@ -158,7 +158,9 @@ namespace nJupiter.Web.UI.Controls {
 		public string AutoInstallMovie { get { return this.autoInstallMovie; } set { this.autoInstallMovie = value; } }
 		public bool DisableScripts { get; set; }
 		public bool DisableMainScript { get; set; }
-		public ControlHandler.RegisterTargetPreference ScriptRegisterTargetPreference { get { return this.scriptRegisterTargetPreference; } set { this.scriptRegisterTargetPreference = value; } }
+		[Obsolete("Use TargetPreference instead")]
+		public ControlHandler.RegisterTargetPreference ScriptRegisterTargetPreference { get { return ControlHandler.GetOldTargetPreference(this.scriptRegisterTargetPreference); } set { this.scriptRegisterTargetPreference = ControlHandler.GetNewTargetPreference(value); } }
+		public RegisterTargetPreference TargetPreference { get { return this.scriptRegisterTargetPreference; } set { this.scriptRegisterTargetPreference = value; } }
 		#endregion
 
 		#region Constructors
@@ -184,28 +186,28 @@ namespace nJupiter.Web.UI.Controls {
 				switch(this.RenderMode) {
 					case Mode.SWFObject:
 					if(!this.DisableMainScript) {
-						ControlHandler.RegisterClientScriptBlock(this.GetType(), SwfObjectKey, SwfObjectInclude, this.ScriptRegisterTargetPreference);
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), SwfObjectKey, SwfObjectInclude, this.TargetPreference);
 					}
 					break;
 					case Mode.SWFObject2:
 					if(!this.DisableMainScript) {
-						ControlHandler.RegisterClientScriptBlock(this.GetType(), SwffixKey, SwffixInclude, this.ScriptRegisterTargetPreference);
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), SwffixKey, SwffixInclude, this.TargetPreference);
 					}
-					ControlHandler.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildSWFFixScript(), this.ScriptRegisterTargetPreference);
+					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildSWFFixScript(), this.TargetPreference);
 					break;
 					case Mode.SWFObject2Embedded:
 					if(!this.DisableMainScript) {
-						ControlHandler.RegisterClientScriptBlock(this.GetType(), SwffixKey, SwffixInclude, this.ScriptRegisterTargetPreference);
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), SwffixKey, SwffixInclude, this.TargetPreference);
 					}
-					ControlHandler.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildSWFFixEmbeddedScript(), this.ScriptRegisterTargetPreference);
+					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildSWFFixEmbeddedScript(), this.TargetPreference);
 					break;
 					default:
 					if(!this.DisableMainScript) {
-						ControlHandler.RegisterClientScriptBlock(this.GetType(), UfoKey, UfoInclude, this.ScriptRegisterTargetPreference);
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), UfoKey, UfoInclude, this.TargetPreference);
 					}
-					ControlHandler.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildUFOScript(), this.ScriptRegisterTargetPreference);
-					if(ControlHandler.IsIE) {
-						ControlHandler.RegisterClientScriptBlock(this.GetType(), this.ClientID + "css", this.BuildUFOCss(), this.ScriptRegisterTargetPreference);
+					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildUFOScript(), this.TargetPreference);
+					if(UserAgent.Instance.IsIE) {
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID + "css", this.BuildUFOCss(), this.TargetPreference);
 					}
 					break;
 				}
@@ -263,9 +265,9 @@ namespace nJupiter.Web.UI.Controls {
 				UrlHandler.GetQueryString(this.FlashParams, false),
 				(this.autoInstall ? "true" : "false"),
 				(string.IsNullOrEmpty(this.autoInstallMovie) ? UfoExpressinstall : this.autoInstallMovie),
-				(ControlHandler.IsIE ? ", setcontainercss:\"true\"" : string.Empty),
+				(UserAgent.Instance.IsIE ? ", setcontainercss:\"true\"" : string.Empty),
 				this.ClientID,
-				(ControlHandler.IsIE ? " defer=\"true\"" : string.Empty));
+				(UserAgent.Instance.IsIE ? " defer=\"true\"" : string.Empty));
 		}
 
 		private string BuildUFOCss() {

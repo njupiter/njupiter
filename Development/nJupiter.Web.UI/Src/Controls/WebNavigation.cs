@@ -535,14 +535,14 @@ namespace nJupiter.Web.UI.Controls {
 			if(args == null) {
 				throw new ArgumentNullException("args");
 			}
-			return ControlHandler.FindFirstControlOnType(args.NavigationItem, typeof(WebAnchor)) as WebAnchor;
+			return ControlFinder.Instance.FindFirstControlOnType(args.NavigationItem, typeof(WebAnchor)) as WebAnchor;
 		}
 
 		public static Control GetNavigationItem(RepeaterItemEventArgs args) {
 			if(args == null) {
 				throw new ArgumentNullException("args");
 			}
-			Control listControl = ControlHandler.FindFirstControlOnType(args.Item, typeof(WebGenericControl));
+			Control listControl = ControlFinder.Instance.FindFirstControlOnType(args.Item, typeof(WebGenericControl));
 			if(listControl != null)
 				return listControl;
 			return args.Item;

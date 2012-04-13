@@ -51,28 +51,28 @@ namespace nJupiter.Web.UI.Controls {
 		#region Events
 		new public event EventHandler ServerClick {
 			add {
-				base.Events.AddHandler(WebButton.EventServerClick, value);
+				base.Events.AddHandler(EventServerClick, value);
 			}
 			remove {
-				base.Events.RemoveHandler(WebButton.EventServerClick, value);
+				base.Events.RemoveHandler(EventServerClick, value);
 			}
 		}
 
 		public event EventHandler Click {
-			add { base.Events.AddHandler(WebButton.EventClick, value); }
-			remove { base.Events.RemoveHandler(WebButton.EventClick, value); }
+			add { base.Events.AddHandler(EventClick, value); }
+			remove { base.Events.RemoveHandler(EventClick, value); }
 		}
 
 		public event CommandEventHandler Command {
-			add { base.Events.AddHandler(WebButton.EventCommand, value); }
-			remove { base.Events.RemoveHandler(WebButton.EventCommand, value); }
+			add { base.Events.AddHandler(EventCommand, value); }
+			remove { base.Events.RemoveHandler(EventCommand, value); }
 		}
 		#endregion
 
 		#region Properties
 		public string Type {
 			get {
-				string result = this.ViewState[HtmlAttribute.Type] as string;
+				var result = this.ViewState[HtmlAttribute.Type] as string;
 				if(result != null) {
 					return result;
 				}
@@ -85,7 +85,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string CssClass {
 			get {
-				string result = this.ViewState[HtmlAttribute.Class] as string;
+				var result = this.ViewState[HtmlAttribute.Class] as string;
 				if(result != null) {
 					return result;
 				}
@@ -98,7 +98,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string OnClick {
 			get {
-				string result = this.ViewState[HtmlAttribute.Onclick] as string;
+				var result = this.ViewState[HtmlAttribute.Onclick] as string;
 				if(result != null) {
 					return result;
 				}
@@ -111,7 +111,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string CommandArgument {
 			get {
-				string commandArgument = (string)this.ViewState[CommandArgKey];
+				var commandArgument = (string)this.ViewState[CommandArgKey];
 				if(commandArgument != null) {
 					return commandArgument;
 				}
@@ -124,7 +124,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string CommandName {
 			get {
-				string commandName = (string)this.ViewState[CommandNameKey];
+				var commandName = (string)this.ViewState[CommandNameKey];
 				if(commandName != null) {
 					return commandName;
 				}
@@ -174,7 +174,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		public bool IsClicked {
 			get {
-				if(ControlHandler.IsPreIE7)
+				if(UserAgent.Instance.IsPreIE7)
 					return this.Page.Request.Form["__EVENTTARGET"] == this.UniqueID;
 				return this.Page.Request.Form[this.UniqueID] != null;
 			}
@@ -184,31 +184,31 @@ namespace nJupiter.Web.UI.Controls {
 		#region Event Handlers
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
-			if(ControlHandler.IsPreIE7) {
-				string onClick = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
-				string currentOnclick = this.OnClick;
-				if(currentOnclick.IndexOf(onClick) < 0)
+			if(UserAgent.Instance.IsPreIE7) {
+				var onClick = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
+				var currentOnclick = this.OnClick;
+				if(currentOnclick.IndexOf(onClick, StringComparison.Ordinal) < 0)
 					this.Attributes.Add(HtmlAttribute.Onclick, (currentOnclick.Length > 0 ? currentOnclick + ";" + onClick : onClick));
 			}
-			if(!ControlHandler.IsPreIE7 || this.Type != HtmlAttributeValue.Submit)
+			if(!UserAgent.Instance.IsPreIE7 || this.Type != HtmlAttributeValue.Submit)
 				this.Attributes.Add(HtmlAttribute.Type, this.Type);
 		}
 
 		protected virtual void OnClickEvent(EventArgs e) {
-			EventHandler handler = (EventHandler)base.Events[WebButton.EventClick];
+			var handler = (EventHandler)base.Events[EventClick];
 			if(handler != null)
 				handler(this, e);
 		}
 
 		protected virtual void OnCommandEvent(CommandEventArgs e) {
-			CommandEventHandler handler = (CommandEventHandler)base.Events[WebButton.EventCommand];
+			var handler = (CommandEventHandler)base.Events[EventCommand];
 			if(handler != null)
 				handler(this, e);
 			base.RaiseBubbleEvent(this, e);
 		}
 
 		protected override void OnServerClick(EventArgs e) {
-			EventHandler handler = (EventHandler)base.Events[WebButton.EventServerClick];
+			var handler = (EventHandler)base.Events[EventServerClick];
 			if(handler != null) {
 				handler(this, e);
 			}
@@ -224,9 +224,9 @@ namespace nJupiter.Web.UI.Controls {
 			base.Attributes.Remove(CommandArgKey);
 			base.Attributes.Remove(CommandNameKey);
 
-			bool eventServerClickExists = base.Events[WebButton.EventServerClick] != null;
+			var eventServerClickExists = base.Events[EventServerClick] != null;
 			if((this.Page != null) && eventServerClickExists) {
-				ControlHandler.WriteOnClickAttribute(writer, this, false, true, this.CausesValidation && (this.Page.GetValidators(this.ValidationGroup).Count > 0), this.ValidationGroup);
+				ControlHandler.Instance.WriteOnClickAttribute(writer, this, false, true, this.CausesValidation && (this.Page.GetValidators(this.ValidationGroup).Count > 0), this.ValidationGroup);
 			}
 
 			base.RenderAttributes(writer);
@@ -274,7 +274,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.Page.Validate(this.ValidationGroup);
 			}
 			this.OnServerClick(EventArgs.Empty);
-			if(!ControlHandler.IsPreIE7) {
+			if(!UserAgent.Instance.IsPreIE7) {
 				this.OnClickEvent(EventArgs.Empty);
 			}
 			this.OnCommandEvent(new CommandEventArgs(this.CommandName, this.CommandArgument));

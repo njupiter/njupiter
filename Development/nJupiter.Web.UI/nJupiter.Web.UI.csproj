@@ -46,6 +46,7 @@
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml" />
     <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
       <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
@@ -60,15 +61,19 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\ClientScriptRegistrator.cs" />
     <Compile Include="Src\ControlAdapters\ControlAdapterBase.cs" />
     <Compile Include="Src\ControlAdapters\HtmlControlAdapter.cs" />
     <Compile Include="Src\ControlAdapters\HtmlFormAdapter.cs" />
     <Compile Include="Src\ControlAdapters\HtmlGenericAdapter.cs" />
     <Compile Include="Src\ControlAdapters\HtmlHeadAdapter.cs" />
     <Compile Include="Src\ControlAdapters\HtmlTitleAdapter.cs" />
+    <Compile Include="Src\ControlFinder.cs" />
     <Compile Include="Src\ControlHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\ControlHandlerImpl.cs" />
+    <Compile Include="Src\ControlLoader.cs" />
     <Compile Include="Src\HtmlStyleUnit.cs" />
     <Compile Include="Src\HtmlEntity.cs" />
     <Compile Include="Src\HtmlLink.cs" />
@@ -156,6 +161,13 @@
     <Compile Include="Src\Controls\WebRadioButtonList.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\IClientScriptRegistrator.cs" />
+    <Compile Include="Src\IControlHandler.cs" />
+    <Compile Include="Src\IControlLoader.cs" />
+    <Compile Include="Src\IControlFinder.cs" />
+    <Compile Include="Src\IUserAgent.cs" />
+    <Compile Include="Src\RegisterTargetPreference.cs" />
+    <Compile Include="Src\UserAgent.cs" />
     <Compile Include="Web\StreamImage.aspx.cs">
       <DependentUpon>StreamImage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

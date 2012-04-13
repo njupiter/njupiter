@@ -270,7 +270,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 
 		protected virtual void OnItemCreated(RepeaterItemEventArgs e) {
 			if(e.Item.DataItem != null && (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)) {
-				ListItemBase listItem = (ListItemBase)ControlHandler.FindFirstControlOnType(e.Item, typeof(ListItemBase));
+				ListItemBase listItem = (ListItemBase)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(ListItemBase));
 				ListItemEventArgs eventArgs;
 				int itemIndex = this.visibleItems;
 				this.visibleItems++;
@@ -298,7 +298,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		protected virtual void OnItemDataBound(RepeaterItemEventArgs e) {
 			if(e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem) {
 
-				ListItemBase listItem = (ListItemBase)ControlHandler.FindFirstControlOnType(e.Item, typeof(ListItemBase));
+				ListItemBase listItem = (ListItemBase)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(ListItemBase));
 				ListItemEventArgs eventArgs = listItem != null ? new ListItemEventArgs(listItem) : new ListItemEventArgs(e.Item.DataItem, this, e.Item, this.visibleItems - 1);
 				ListItemEventHandler eventHandler = base.Events[GeneralListing.EventItemDataBound] as ListItemEventHandler;
 				if(eventHandler != null) {

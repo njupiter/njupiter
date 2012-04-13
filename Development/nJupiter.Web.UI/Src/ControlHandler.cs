@@ -23,218 +23,146 @@
 #endregion
 
 using System;
-using System.Web;
 using System.Web.UI;
-using System.Collections;
-using System.Globalization;
 using System.Web.UI.HtmlControls;
 
-using nJupiter.Web.UI.ControlAdapters;
-using nJupiter.Web.UI.Controls;
-
 namespace nJupiter.Web.UI {
+	public class ControlHandler {
 
-	public static class ControlHandler {
-		#region Enums
+		public static IControlHandler Instance = new ControlHandlerImpl();
+
+		#region Legacy
+		// This enum is nestled just because of legacy reasons to not break interface compatibility
+		[Obsolete("Use RegisterTargetPreference in nJupiter.Web.UI instead")]
 		public enum RegisterTargetPreference {
 			Auto,
 			Head,
 			ScriptHolder,
 			Page
 		}
-		#endregion
 
-		#region Constructors
-		#endregion
+		[Obsolete("Use the same property on the UserAgent.Instance instead")]
+		public static bool IsIE { get { return UserAgent.Instance.IsIE; } }
 
-		#region Properties
-		public static bool IsIE { get { return HttpContext.Current.Request.UserAgent != null && HttpContext.Current.Request.UserAgent.IndexOf("MSIE") > 0; } }
+		[Obsolete("Use the same property on the UserAgent.Instance instead")]
+		public static bool IsPreIE7 { get { return UserAgent.Instance.IsPreIE7; } }
 
-		public static bool IsPreIE7 {
-			get {
-				if(HttpContext.Current.Request.UserAgent != null) {
-					int i = HttpContext.Current.Request.UserAgent.IndexOf("MSIE");
-					if(i > 0) {
-						i = i + 5;
-						if(HttpContext.Current.Request.UserAgent.Length > i) {
-							string versionString = HttpContext.Current.Request.UserAgent.Substring(i, 1);
-							try {
-								int version = int.Parse(versionString, NumberFormatInfo.InvariantInfo);
-								if(version < 7) {
-									return true;
-								}
-							} catch(FormatException) { }
-						}
-					}
-				}
-				return false;
-			}
-		}
-		#endregion
-
-		#region Methods
+		[Obsolete("Use the same method on the ControlFinder.Instance instead")]
 		public static Control FindControl(Control rootControl, string uniqueId) {
-			return FindControl(rootControl, uniqueId, false);
+			return ControlFinder.Instance.FindControl(rootControl, uniqueId);
 		}
+
+		[Obsolete("Use the same method on the ControlFinder.Instance instead")]
 		public static Control FindControl(Control rootControl, string uniqueId, bool ensureChildControls) {
-			return FindControlsRecursive(rootControl, uniqueId, ensureChildControls);
+			return ControlFinder.Instance.FindControl(rootControl, uniqueId, ensureChildControls);
 		}
+		
+		[Obsolete("Use the same method on the ControlFinder.Instance instead")]
 		public static Control[] FindControlsOnType(Control rootControl, Type type) {
-			return FindControlsOnType(rootControl, type, false);
+			return ControlFinder.Instance.FindControlsOnType(rootControl, type);
 		}
+	
+		[Obsolete("Use the same method on the ControlFinder.Instance instead")]
 		public static Control[] FindControlsOnType(Control rootControl, Type type, bool ensureChildControls) {
-			ArrayList container = FindControlsOnTypeRecursive(rootControl, type, new ArrayList(), false, ensureChildControls);
-			return (Control[])container.ToArray(type);
+			return ControlFinder.Instance.FindControlsOnType(rootControl, type, ensureChildControls);
 		}
+
+		[Obsolete("Use the same method on the ControlFinder.Instance instead")]
 		public static Control FindFirstControlOnType(Control rootControl, Type type) {
-			return FindFirstControlOnType(rootControl, type, false);
+			return ControlFinder.Instance.FindFirstControlOnType(rootControl, type);
 		}
+
+		[Obsolete("Use the same method on the ControlFinder.Instance instead")]
 		public static Control FindFirstControlOnType(Control rootControl, Type type, bool ensureChildControls) {
-			ArrayList container = FindControlsOnTypeRecursive(rootControl, type, new ArrayList(), true, ensureChildControls);
-			if(container.Count > 0) {
-				return (Control)container[0];
-			}
-			return null;
+			return ControlFinder.Instance.FindFirstControlOnType(rootControl, type, ensureChildControls);
 		}
 
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
 		public static void RegisterClientScriptBlock(Type type, string key, string script, RegisterTargetPreference targetPreference) {
-			if(HttpContext.Current != null) {
-				switch(targetPreference) {
-					case RegisterTargetPreference.Auto:
-					case RegisterTargetPreference.ScriptHolder:
-					WebScriptHolder webScriptHolder = HttpContext.Current.Items[typeof(WebScriptHolder)] as WebScriptHolder;
-					if(webScriptHolder != null) {
-						webScriptHolder.RegisterClientScriptBlock(type, key, script);
-						break;
-					}
-					goto case RegisterTargetPreference.Head;
-					case RegisterTargetPreference.Head:
-					HtmlHeadAdapter htmlHeadAdapter = HttpContext.Current.Items[typeof(HtmlHeadAdapter)] as HtmlHeadAdapter;
-					if(htmlHeadAdapter != null) {
-						htmlHeadAdapter.RegisterClientScriptBlock(type, key, script);
-						break;
-					}
-					WebHead webHead = HttpContext.Current.Items[typeof(WebHead)] as WebHead;
-					if(webHead != null) {
-						webHead.RegisterClientScriptBlock(type, key, script);
-						break;
-					}
-					goto case RegisterTargetPreference.Page;
-					case RegisterTargetPreference.Page:
-					Page page = HttpContext.Current.CurrentHandler as Page;
-					if(page != null)
-						page.ClientScript.RegisterClientScriptBlock(type, key, script);
-					break;
-				}
-			}
+			ClientScriptRegistrator.Instance.RegisterClientScriptBlock(type, key, script, GetNewTargetPreference(targetPreference));
 		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
 		public static void RegisterClientScriptBlock(Type type, string key, string script) {
-			RegisterClientScriptBlock(type, key, script, RegisterTargetPreference.Auto);
+			ClientScriptRegistrator.Instance.RegisterClientScriptBlock(type, key, script);
 		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
 		public static void RegisterClientScriptInclude(Type type, string key, string url, RegisterTargetPreference targetPreference) {
-			RegisterClientScriptBlock(type, key, string.Format(CultureInfo.InvariantCulture, "<script type=\"text/javascript\" src=\"{0}\"></script>", HttpUtility.HtmlAttributeEncode(url)), targetPreference);
+			ClientScriptRegistrator.Instance.RegisterClientScriptBlock(type, key, url, GetNewTargetPreference(targetPreference));
 		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
 		public static void RegisterClientScriptInclude(Type type, string key, string url) {
-			RegisterClientScriptInclude(type, key, url, RegisterTargetPreference.Auto);
+			ClientScriptRegistrator.Instance.RegisterClientScriptInclude(type, key, url);
 		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
 		public static void RegisterClientScriptResource(Type type, string resourceName, RegisterTargetPreference targetPreference) {
-			Page page = HttpContext.Current.CurrentHandler as Page;
-			if(page != null) {
-				string url = page.ClientScript.GetWebResourceUrl(type, resourceName);
-				RegisterClientScriptInclude(type, resourceName, url, targetPreference);
-			}
+			ClientScriptRegistrator.Instance.RegisterClientScriptResource(type, resourceName, GetNewTargetPreference(targetPreference));
 		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
 		public static void RegisterClientScriptResource(Type type, string resourceName) {
-			RegisterClientScriptResource(type, resourceName, RegisterTargetPreference.Auto);
-		}
-		#endregion
-
-		#region Helper Methods
-		private static ArrayList FindControlsOnTypeRecursive(Control rootControl, Type type, ArrayList container, bool breakOnHit, bool ensureChildControls) {
-			if(ensureChildControls) {
-				rootControl.FindControl(string.Empty);
-				// The idiots at microsoft have made some vital metods protected so we have to do this miserable hack to ensure that child controls are built
-			}
-			foreach(Control control in rootControl.Controls) {
-				if(type.IsInstanceOfType(control)) {
-					container.Add(control);
-					if(breakOnHit) {
-						break;
-					}
-				}
-				if(control.Controls.Count > 0) {
-					container = FindControlsOnTypeRecursive(control, type, container, breakOnHit, ensureChildControls);
-				}
-			}
-			return container;
-		}
-		private static Control FindControlsRecursive(Control rootControl, string uniqueId, bool ensureChildControls) {
-			if(ensureChildControls) {
-				rootControl.FindControl(string.Empty);
-				// The idiots at microsoft have made some vital metods protected so we have to do this miserable hack to ensure that child controls are built
-			}
-			foreach(Control control in rootControl.Controls) {
-				if(control.UniqueID == uniqueId) {
-					return control;
-				}
-				if(control.Controls.Count > 0) {
-					Control innerControl = FindControlsRecursive(control, uniqueId, ensureChildControls);
-					if(innerControl != null) {
-						return innerControl;
-					}
-				}
-			}
-			return null;
+			ClientScriptRegistrator.Instance.RegisterClientScriptResource(type, resourceName);
 		}
 
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
+		public static void RegisterClientScriptBlock(Type type, string key, string script, UI.RegisterTargetPreference targetPreference) {
+			ClientScriptRegistrator.Instance.RegisterClientScriptBlock(type, key, script, targetPreference);
+		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
+		public static void RegisterClientScriptInclude(Type type, string key, string url, UI.RegisterTargetPreference targetPreference) {
+			ClientScriptRegistrator.Instance.RegisterClientScriptInclude(type, key, url, targetPreference);
+		}
+
+		[Obsolete("Use the same method on the ClientScriptRegistrator.Instance instead")]
+		public static void RegisterClientScriptResource(Type type, string resourceName, UI.RegisterTargetPreference targetPreference) {
+			ClientScriptRegistrator.Instance.RegisterClientScriptResource(type, resourceName, targetPreference);
+		}
+
+		[Obsolete("Use the same method on the ControlHandler.Instance instead")]
 		public static void WriteOnClickAttribute(HtmlTextWriter writer, HtmlControl control, bool submitsAutomatically, bool submitsProgramatically, bool causesValidation, string validationGroup) {
-			System.Web.UI.AttributeCollection attributes = control.Attributes;
-			string clientValidateEvent = null;
-			if(submitsAutomatically) {
-				if(causesValidation) {
-					clientValidateEvent = GetClientValidateEvent(validationGroup);
-				}
-				control.Page.ClientScript.RegisterForEventValidation(control.UniqueID);
-			} else if(submitsProgramatically) {
-				if(causesValidation) {
-					clientValidateEvent = GetClientValidatedPostback(control, validationGroup);
-				} else {
-					clientValidateEvent = control.Page.ClientScript.GetPostBackEventReference(control, string.Empty, true);
-				}
-			} else {
-				control.Page.ClientScript.RegisterForEventValidation(control.UniqueID);
-			}
-			if(clientValidateEvent != null) {
-				if(attributes["language"] != null) {
-					attributes.Remove("language");
-				}
-				writer.WriteAttribute("language", "javascript");
-				string onClick = attributes["onclick"];
-				if(onClick != null) {
-					attributes.Remove("onclick");
-					writer.WriteAttribute("onclick", onClick + " " + clientValidateEvent);
-				} else {
-					writer.WriteAttribute("onclick", clientValidateEvent);
-				}
-			}
+			Instance.WriteOnClickAttribute(writer, control, submitsAutomatically, submitsProgramatically, causesValidation, validationGroup);
 		}
 
+		[Obsolete("Use the same method on the ControlHandler.Instance instead")]
 		public static string GetClientValidateEvent(string validationGroup) {
-			if(validationGroup == null) {
-				validationGroup = string.Empty;
-			}
-			return ("if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate('" + validationGroup + "'); ");
+			return Instance.GetClientValidateEvent(validationGroup);
 		}
 
+		[Obsolete("Use the same method on the ControlHandler.Instance instead")]
 		public static string GetClientValidatedPostback(Control control, string validationGroup) {
-			return GetClientValidatedPostback(control, validationGroup, string.Empty);
+			return Instance.GetClientValidatedPostback(control, validationGroup);
 		}
 
-		public static string GetClientValidatedPostback(Control control, string validationGroup, string argument) {
-			string postBackEventReference = control.Page.ClientScript.GetPostBackEventReference(control, argument, true);
-			return (GetClientValidateEvent(validationGroup) + postBackEventReference);
+		internal static UI.RegisterTargetPreference GetNewTargetPreference(RegisterTargetPreference targetPreference) {
+			if(targetPreference == RegisterTargetPreference.Head) {
+				return UI.RegisterTargetPreference.Head;
+			}
+			if(targetPreference == RegisterTargetPreference.Page) {
+				return UI.RegisterTargetPreference.Page;
+			}
+			if(targetPreference == RegisterTargetPreference.ScriptHolder) {
+				return UI.RegisterTargetPreference.ScriptHolder;
+			}
+			return UI.RegisterTargetPreference.Auto;
+		}
+
+		internal static RegisterTargetPreference GetOldTargetPreference(UI.RegisterTargetPreference targetPreference) {
+			if(targetPreference == UI.RegisterTargetPreference.Head) {
+				return RegisterTargetPreference.Head;
+			}
+			if(targetPreference == UI.RegisterTargetPreference.Page) {
+				return RegisterTargetPreference.Page;
+			}
+			if(targetPreference == UI.RegisterTargetPreference.ScriptHolder) {
+				return RegisterTargetPreference.ScriptHolder;
+			}
+			return RegisterTargetPreference.Auto;
 		}
 		#endregion
+	
 	}
-
 }

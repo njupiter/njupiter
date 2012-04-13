@@ -365,9 +365,9 @@ namespace nJupiter.Web.UI.Controls {
 					break;
 				case ListItemType.Item:
 				case ListItemType.AlternatingItem:
-					WebButton button = (WebButton)ControlHandler.FindFirstControlOnType(e.Item, typeof(WebButton));
-					WebLinkButton linkButton = (WebLinkButton)ControlHandler.FindFirstControlOnType(e.Item, typeof(WebLinkButton));
-					WebAnchor anchor = (WebAnchor)ControlHandler.FindFirstControlOnType(e.Item, typeof(WebAnchor));
+					WebButton button = (WebButton)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebButton));
+					WebLinkButton linkButton = (WebLinkButton)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebLinkButton));
+					WebAnchor anchor = (WebAnchor)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebAnchor));
 
 					int pageNumber = (int)e.Item.DataItem;
 					bool isCurrentPage = false;

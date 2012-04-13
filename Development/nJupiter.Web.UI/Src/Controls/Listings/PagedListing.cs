@@ -135,7 +135,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		public WebDropDownList NumberOfItemsSelector {
 			get {
 				if(this.numberOfItemsSelector == null) {
-					NumberOfItemsSelector dropDownControl = (NumberOfItemsSelector)ControlHandler.FindFirstControlOnType(this.HeaderControl, typeof(NumberOfItemsSelector), true);
+					NumberOfItemsSelector dropDownControl = (NumberOfItemsSelector)ControlFinder.Instance.FindFirstControlOnType(this.HeaderControl, typeof(NumberOfItemsSelector), true);
 					if(dropDownControl != null) {
 						this.numberOfItemsSelector = dropDownControl;
 					}
@@ -153,14 +153,14 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				if(!string.IsNullOrEmpty(this.headerPagingId) && this.Parent != null) {
 					this.HeaderPaging = (Paging)this.Parent.FindControl(this.headerPagingId);
 				} else {
-					this.HeaderPaging = (Paging)ControlHandler.FindFirstControlOnType(this.HeaderControl, typeof(Paging), true);
+					this.HeaderPaging = (Paging)ControlFinder.Instance.FindFirstControlOnType(this.HeaderControl, typeof(Paging), true);
 				}
 			}
 			if(this.footerPaging == null) {
 				if(!string.IsNullOrEmpty(this.footerPagingId) && this.Parent != null) {
 					this.FooterPaging = (Paging)this.Parent.FindControl(this.footerPagingId);
 				} else {
-					this.FooterPaging = (Paging)ControlHandler.FindFirstControlOnType(this.FooterControl, typeof(Paging), true);
+					this.FooterPaging = (Paging)ControlFinder.Instance.FindFirstControlOnType(this.FooterControl, typeof(Paging), true);
 				}
 			}
 		}

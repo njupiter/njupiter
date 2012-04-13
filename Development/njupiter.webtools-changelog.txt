@@ -12,6 +12,14 @@ NEW - New feature
 Changes for upcoming version
 ===============================================================================
 
+NEW: ControlLoader is now added, that can load a web control that is not
+     catchable just by its virtual path, but by a custom string.
+
+ENH: The ControlHander is now split up into several different interfaces with
+     belonging classes so they can be used together with IoC-containers and
+	 also be easily mocked away. The static methods on ControlHander is still
+	 there though so the component is still interface compatible.
+
 BUG: WebNavigation now does not try to find removed nodes of the root page
      when IncludeRootLevelInList is true. Wrong behaviour before this fix can 
      be observed setting VisibleInMenu on the root page to false and setting
