@@ -22,21 +22,21 @@ namespace nJupiter.Web.UI {
     public class ControlLoader : IControlLoader {
         
 		private delegate Control LoadControlDelegate(TemplateControl templateControl, string virtualPath);
-        private readonly Dictionary<string, LoadControlDelegate> DelegateStore = new Dictionary<string, LoadControlDelegate>();
-        private readonly Type[] LoadControlDelegateParameterTypes = new[] { typeof(TemplateControl), typeof(string) };
-		private readonly MethodInfo Invoker = typeof(ControlLoader).GetMethod("LoadControlInvoker");
-    	private readonly object PadLock = new object();
+        private readonly Dictionary<string, LoadControlDelegate> delegateStore = new Dictionary<string, LoadControlDelegate>();
+        private readonly Type[] loadControlDelegateParameterTypes = new[] { typeof(TemplateControl), typeof(string) };
+		private readonly MethodInfo invoker = typeof(ControlLoader).GetMethod("LoadControlInvoker");
+    	private readonly object padLock = new object();
 
     	public Control LoadControl(TemplateControl templateControl, string virtualPath, string varyByCustom) {
 			var cacheKey = GetCacheKey(virtualPath, varyByCustom);
-            if (!DelegateStore.ContainsKey(cacheKey)) {
-				lock(PadLock) {
-					if(!DelegateStore.ContainsKey(cacheKey)) {
-						DelegateStore[cacheKey] = CreateLoadControlDelegate();
+            if (!delegateStore.ContainsKey(cacheKey)) {
+				lock(padLock) {
+					if(!delegateStore.ContainsKey(cacheKey)) {
+						delegateStore[cacheKey] = CreateLoadControlDelegate();
 					}
 				}
             }
-            return DelegateStore[cacheKey](templateControl, virtualPath);
+            return delegateStore[cacheKey](templateControl, virtualPath);
         }
 
     	private string GetCacheKey(string virtualPath, string varyByCustom) {
@@ -49,7 +49,7 @@ namespace nJupiter.Web.UI {
         }
 
         private DynamicMethod CreateDynamicMethod() {
-            var dynamicMethod = new DynamicMethod(string.Empty, typeof(Control), LoadControlDelegateParameterTypes);
+            var dynamicMethod = new DynamicMethod(string.Empty, typeof(Control), loadControlDelegateParameterTypes);
             GenerateMethodBody(dynamicMethod);
         	return dynamicMethod;
         }
@@ -58,7 +58,7 @@ namespace nJupiter.Web.UI {
     		var ilGenerator = dynamicMethod.GetILGenerator();
     		ilGenerator.Emit(OpCodes.Ldarg_0); // Load templateControl argument onto stack
     		ilGenerator.Emit(OpCodes.Ldarg_1); // Load virtualPath argument onto stack
-    		ilGenerator.Emit(OpCodes.Call, Invoker); // Invoke LoadControlInvoker with the loaded two arguments
+    		ilGenerator.Emit(OpCodes.Call, invoker); // Invoke LoadControlInvoker with the loaded two arguments
     		ilGenerator.Emit(OpCodes.Ret); // End method
     	}
 
