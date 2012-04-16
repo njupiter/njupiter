@@ -32,40 +32,26 @@ using System.Collections.Specialized;
 
 namespace nJupiter.Web.UI.Controls {
 
+	[Obsolete("Try using System.Web.UI.WebControls.CheckBoxList or System.Web.UI.WebControls.RadioButtonList instead if possible")]
 	public class WebCheckListControl : ListControl, IRepeatInfoUser, IPostBackDataHandler, INamingContainer {
 
-		#region Constants
 		private const string ListitemAttributes		= "v_ListItemAttributes";
-		#endregion
-		
-		#region Member Variables
+
 		private StringWriter			stringWriter;
 		private HtmlTextWriter			htmlTextWriter;
 		private bool					hasChanged;
 
 		private readonly CheckBox		controlToRepeat;
 		private readonly RadioButton	radioButton;
-		#endregion
 
-		#region Properties
 		private HtmlTextWriter HtmlTextWriter{
-			get {
-				if(this.htmlTextWriter == null)
-					this.htmlTextWriter = new HtmlTextWriter(this.StringWriter);
-				return this.htmlTextWriter;
-			}
+			get { return this.htmlTextWriter ?? (this.htmlTextWriter = new HtmlTextWriter(this.StringWriter)); }
 		}
 
 		private StringWriter StringWriter{
-			get {
-				if(this.stringWriter == null)
-					this.stringWriter = new StringWriter(CultureInfo.InvariantCulture);
-				return this.stringWriter;
-			}	
+			get { return this.stringWriter ?? (this.stringWriter = new StringWriter(CultureInfo.InvariantCulture)); }
 		}
-		#endregion
 
-		#region Constructor
 		public WebCheckListControl(CheckBox controlToRepeat) {
 			if(controlToRepeat == null)
 				throw new ArgumentNullException("controlToRepeat");
@@ -77,10 +63,8 @@ namespace nJupiter.Web.UI.Controls {
 			base.Controls.Add(this.controlToRepeat);
 			this.hasChanged							= false;
 		}
-		#endregion
 
-		#region Methods
-        /// <summary>Searches the current naming container for a server control with the specified ID and path offset. The method always returns the current WebCheckListControl object. </summary>
+		/// <summary>Searches the current naming container for a server control with the specified ID and path offset. The method always returns the current WebCheckListControl object. </summary>
         /// <returns>The current WebCheckListControl</returns>
         /// <param name="id">The identifier for the control to find.</param>
         /// <param name="pathOffset">The number of controls up the page control hierarchy needed to reach a naming container. </param>
@@ -92,7 +76,7 @@ namespace nJupiter.Web.UI.Controls {
 			base.OnPreRender(e);
 			this.controlToRepeat.AutoPostBack = this.AutoPostBack;
 			if (this.Page != null && !this.EnableViewState) {
-				for (int i = 0; i < this.Items.Count; i++){
+				for (var i = 0; i < this.Items.Count; i++){
 					if (this.radioButton == null || this.Items[i].Selected){
 						this.controlToRepeat.ID = i.ToString(NumberFormatInfo.InvariantInfo);
 						this.Page.RegisterRequiresPostBack(this.controlToRepeat);
@@ -105,13 +89,13 @@ namespace nJupiter.Web.UI.Controls {
 			base.LoadViewState (savedState);
 			// Put eventually viewstated attributes back in the ListItem
 			if(this.ViewState[ListitemAttributes] != null){
-				Hashtable viewStatedAttributes = (Hashtable)this.ViewState[ListitemAttributes];
+				var viewStatedAttributes = (Hashtable)this.ViewState[ListitemAttributes];
 				foreach(ListItem listItem in this.Items){
-					DictionaryEntry listItemEntry = new DictionaryEntry(listItem.Value, listItem.Text);
+					var listItemEntry = new DictionaryEntry(listItem.Value, listItem.Text);
 					if(viewStatedAttributes.Contains(listItemEntry)){
-						ArrayList attributes = (ArrayList)viewStatedAttributes[listItemEntry];
-						foreach(object o in attributes){
-							DictionaryEntry attribute = (DictionaryEntry)o;
+						var attributes = (ArrayList)viewStatedAttributes[listItemEntry];
+						foreach(var o in attributes){
+							var attribute = (DictionaryEntry)o;
 							listItem.Attributes.Add(attribute.Key.ToString(), attribute.Value.ToString());
 						}
 					}
@@ -121,7 +105,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected override object SaveViewState() {
 			if (this.Page != null && this.EnableViewState) {
-				for (int i = 0; i < this.Items.Count; i++){
+				for (var i = 0; i < this.Items.Count; i++){
 					if (this.radioButton == null || this.Items[i].Selected){
 						this.controlToRepeat.ID = i.ToString(NumberFormatInfo.InvariantInfo);
 						this.Page.RegisterRequiresPostBack(this.controlToRepeat);
@@ -129,15 +113,15 @@ namespace nJupiter.Web.UI.Controls {
 				}
 			}
 			// .NET does not viewstate the attributes in a ListItem so we have to do it ourselvs
-			Hashtable newAttributes = new Hashtable();
+			var newAttributes = new Hashtable();
 			foreach(ListItem listItem in this.Items){
-				ArrayList attributes = new ArrayList();
+				var attributes = new ArrayList();
 				foreach(string key in listItem.Attributes.Keys){
-					DictionaryEntry attribute = new DictionaryEntry(key, listItem.Attributes[key]);
+					var attribute = new DictionaryEntry(key, listItem.Attributes[key]);
 					attributes.Add(attribute);
 				}
 				if(attributes.Count > 0){
-					DictionaryEntry listItemEntry = new DictionaryEntry(listItem.Value, listItem.Text);
+					var listItemEntry = new DictionaryEntry(listItem.Value, listItem.Text);
 					newAttributes.Add(listItemEntry, attributes);
 				}
 			}
@@ -147,10 +131,10 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected override void Render(HtmlTextWriter writer) {
-			RepeatInfo repeatInfo = new RepeatInfo();
+			var repeatInfo = new RepeatInfo();
 			if (!this.ControlStyleCreated) {
-				short tabIndex = this.TabIndex;
-				bool flag = false;
+				var tabIndex = this.TabIndex;
+				var flag = false;
 
 				if(Convert.ToBoolean(tabIndex)) {
 					if (!this.ViewState.IsItemDirty("TabIndex"))
@@ -161,8 +145,8 @@ namespace nJupiter.Web.UI.Controls {
 
 				// Create dummy htmlTextWriter because repeatInfo generates an unwanted span-tag
 				// So we generate the items in the global private htmlTextWriter.
-				using(StringWriter sw = new StringWriter(CultureInfo.InvariantCulture)) {
-					using(HtmlTextWriter repWriter = new HtmlTextWriter(sw)) {
+				using(var sw = new StringWriter(CultureInfo.InvariantCulture)) {
+					using(var repWriter = new HtmlTextWriter(sw)) {
 						repeatInfo.RenderRepeater(repWriter, this, null, this);
 					}
 				}
@@ -175,9 +159,7 @@ namespace nJupiter.Web.UI.Controls {
 					this.ViewState.SetItemDirty("TabIndex", false);
 			}
 		}
-		#endregion
 
-		#region Implementation of IPostBackDataHandler
 		bool IPostBackDataHandler.LoadPostData(string postDataKey, NameValueCollection postCollection) {
 			return LoadPostData(postDataKey, postCollection);
 		}
@@ -188,14 +170,14 @@ namespace nJupiter.Web.UI.Controls {
 			if(postCollection == null)
 				throw new ArgumentNullException("postCollection");
 			if(base.IsEnabled) {
-				string postDataValue = postCollection[postDataKey];
-				bool selected = (postDataValue != null);
+				var postDataValue = postCollection[postDataKey];
+				var selected = (postDataValue != null);
 
 				this.EnsureDataBound();
 				
 				if(this.radioButton != null) {
-					int selectedIndex = this.SelectedIndex;
-					for(int i = 0; i < this.Items.Count; i++) {
+					var selectedIndex = this.SelectedIndex;
+					for(var i = 0; i < this.Items.Count; i++) {
 						if(postDataValue == this.Items[i].Value) {
 							if(i != selectedIndex) {
 								this.hasChanged = true;
@@ -205,8 +187,8 @@ namespace nJupiter.Web.UI.Controls {
 						}
 					}
 				} else {
-					string keyLength = postDataKey.Substring(this.UniqueID.Length + 1);
-					int intKey = int.Parse(keyLength, NumberFormatInfo.InvariantInfo);
+					var keyLength = postDataKey.Substring(this.UniqueID.Length + 1);
+					var intKey = int.Parse(keyLength, NumberFormatInfo.InvariantInfo);
 					if(intKey >= 0 && intKey < this.Items.Count) {
 						if(this.Items[intKey].Selected != selected) {
 							this.Items[intKey].Selected = selected;
@@ -230,9 +212,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.OnSelectedIndexChanged(EventArgs.Empty);
 
 		}
-		#endregion
 
-		#region Implementation of IRepeatInfoUser
 		protected static bool HasFooter { get { return false; } }
 
 		protected static bool HasHeader { get { return false; } }
@@ -247,7 +227,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected void RenderItem(ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo, HtmlTextWriter writer) {
 			
-			ListItem listItem = this.Items[repeatIndex];
+			var listItem = this.Items[repeatIndex];
 			
 			this.controlToRepeat.Attributes.Clear();
 			this.controlToRepeat.Attributes[HtmlAttribute.Value] = listItem.Value;
@@ -269,7 +249,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		protected virtual void RenderItemLabel(string text, string clientId, HtmlTextWriter writer) {
 			//Create a label control to show the text in
-			WebLabel lblText	= new WebLabel();
+			var lblText	= new WebLabel();
 			lblText.InnerText	= text;
 			lblText.For			= clientId;
 			//Render the label control right next to the checkbox
@@ -290,7 +270,6 @@ namespace nJupiter.Web.UI.Controls {
 		void IRepeatInfoUser.RenderItem(ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo, HtmlTextWriter writer) {
 			RenderItem(itemType, repeatIndex, repeatInfo, writer);
 		}
-		#endregion
 
 	}
 }

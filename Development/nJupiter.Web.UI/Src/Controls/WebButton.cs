@@ -33,22 +33,17 @@ namespace nJupiter.Web.UI.Controls {
 	[ToolboxItem(true), DefaultEvent("Click")]
 	public class WebButton : HtmlButton, IPostBackDataHandler, INamingContainer {
 
-		#region Constants
 		private const string BrTag = "<" + HtmlTag.Br + " />";
 		private const string InnerSpanKey = "v_InnerSpan";
 		private const string CommandNameKey = "v_CommandName";
 		private const string CommandArgKey = "v_CommandArgument";
 		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
 		private const string TrailingBreakKey = "v_TrailingBreak";
-		#endregion
 
-		#region Static Holders
 		private static readonly object EventCommand = new object();
 		private static readonly object EventClick = new object();
 		private static readonly object EventServerClick = new object();
-		#endregion
 
-		#region Events
 		new public event EventHandler ServerClick {
 			add {
 				base.Events.AddHandler(EventServerClick, value);
@@ -67,9 +62,7 @@ namespace nJupiter.Web.UI.Controls {
 			add { base.Events.AddHandler(EventCommand, value); }
 			remove { base.Events.RemoveHandler(EventCommand, value); }
 		}
-		#endregion
 
-		#region Properties
 		public string Type {
 			get {
 				var result = this.ViewState[HtmlAttribute.Type] as string;
@@ -179,9 +172,7 @@ namespace nJupiter.Web.UI.Controls {
 				return this.Page.Request.Form[this.UniqueID] != null;
 			}
 		}
-		#endregion
 
-		#region Event Handlers
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
 			if(UserAgent.Instance.IsPreIE7) {
@@ -213,9 +204,7 @@ namespace nJupiter.Web.UI.Controls {
 				handler(this, e);
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void RenderAttributes(HtmlTextWriter writer) {
 			if(this.CssClass.Length > 0)
 				this.Attributes.Add(HtmlAttribute.Class, this.CssClass);
@@ -247,9 +236,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(this.TrailingLinefeed)
 				writer.WriteLine();
 		}
-		#endregion
 
-		#region Implementation of IPostBackDataHandler
 		bool IPostBackDataHandler.LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection) {
 			return LoadPostData();
 		}
@@ -279,6 +266,6 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			this.OnCommandEvent(new CommandEventArgs(this.CommandName, this.CommandArgument));
 		}
-		#endregion
+
 	}
 }

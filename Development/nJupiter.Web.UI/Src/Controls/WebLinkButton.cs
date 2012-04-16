@@ -46,7 +46,6 @@ namespace nJupiter.Web.UI.Controls {
 		private const string TrailingBreakKey = "v_TrailingBreak";
 		#endregion
 
-		#region Properties
 		public bool DisableEncoding {
 			get {
 				if(this.ViewState[DisableEncodingKey] == null)
@@ -118,7 +117,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string NavigateUrl {
 			get {
-				string navigateUrl = (string)this.ViewState[NavigateUrlKey];
+				var navigateUrl = (string)this.ViewState[NavigateUrlKey];
 				if(navigateUrl != null)
 					return navigateUrl;
 				return string.Empty;
@@ -153,9 +152,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[TrailingLinefeedKey] = value;
 			}
 		}
-		#endregion
 
-		#region Method
 		protected override void AddParsedSubObject(object obj) {
 			if(!(obj is LiteralControl) && !(obj is Literal))
 				this.DisableEncoding = true;
@@ -185,7 +182,7 @@ namespace nJupiter.Web.UI.Controls {
 					writer.WriteEndTag(HtmlTag.Span);
 			} else {
 				if(!this.RenderOriginalId && this.NavigateUrl.Length > 0 && this.SuppressJavascriptPostBack) {
-					string originalId = this.ID;
+					var originalId = this.ID;
 					this.ID = null;
 					if(this.RenderId)
 						this.Attributes.Add(HtmlAttribute.Id, originalId);
@@ -215,9 +212,7 @@ namespace nJupiter.Web.UI.Controls {
 				writer.WriteEndTag(HtmlTag.Span);
 			base.RenderEndTag(writer);
 		}
-		#endregion
 
-		#region Inner Classes
 		private sealed class CustomHtmlTextWriter : HtmlTextWriter {
 
 			private readonly string href;
@@ -256,7 +251,6 @@ namespace nJupiter.Web.UI.Controls {
 				}
 			}
 		}
-		#endregion
 
 	}
 

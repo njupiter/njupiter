@@ -25,38 +25,28 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Collections;
 using System.ComponentModel;
 
 namespace nJupiter.Web.UI.Controls.Listings {
 
 	[ToolboxItem(true)]
+	[Obsolete("Try using System.Web.UI.WebControls.ListView instead if possible")]
 	public class ListItemBase : UserControl {
-		#region Constants
+
 		private const string CommandNameKey = "v_CommandName";
 		private const string CommandArgKey = "v_CommandArgument";
 		private const string EnableViewstateChangedKey = "v_EnableViewStateChanged";
 		private const string ViewstateDisabledByDefaultKey = "v_ViewStateDisabledByDefault";
-		#endregion
 
-		#region Members
-		private object listItem;
-		private GeneralListing listingObject;
-		private bool alternatingItem;
-		private int itemIndex;
-		private RepeaterItem repeaterItem;
-		#endregion
-
-		#region Properties
-		public object ListItem { get { return this.listItem; } set { this.listItem = value; } }
-		public GeneralListing ListingObject { get { return this.listingObject; } set { this.listingObject = value; } }
-		public bool AlternatingItem { get { return this.alternatingItem; } set { this.alternatingItem = value; } }
-		public int ItemIndex { get { return this.itemIndex; } set { this.itemIndex = value; } }
-		public RepeaterItem RepeaterItem { get { return this.repeaterItem; } set { this.repeaterItem = value; } }
+		public object ListItem { get; set; }
+		public GeneralListing ListingObject { get; set; }
+		public bool AlternatingItem { get; set; }
+		public int ItemIndex { get; set; }
+		public RepeaterItem RepeaterItem { get; set; }
 
 		public string CommandArgument {
 			get {
-				string commandArgument = (string)this.ViewState[CommandArgKey];
+				var commandArgument = (string)this.ViewState[CommandArgKey];
 				if(commandArgument != null) {
 					return commandArgument;
 				}
@@ -67,7 +57,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 
 		public string CommandName {
 			get {
-				string commandName = (string)this.ViewState[CommandNameKey];
+				var commandName = (string)this.ViewState[CommandNameKey];
 				if(commandName != null) {
 					return commandName;
 				}
@@ -103,9 +93,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 			set { this.ViewState[ViewstateDisabledByDefaultKey] = value; }
 		}
-		#endregion
 
-		#region Methods
 		protected override void OnInit(EventArgs e) {
 			if(!this.EnableViewStateChanged && this.ViewStateDisabledByDefault)
 				base.EnableViewState = false;
@@ -119,46 +107,5 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 			return false;
 		}
-		#endregion
 	}
-
-	#region ListItemCollection
-	public sealed class ListItemCollection : ICollection {
-		#region Members
-		private readonly ArrayList items;
-		#endregion
-
-		#region Constructors
-		public ListItemCollection() {
-			this.items = new ArrayList();
-		}
-		#endregion
-
-		#region Properties
-		public int Count { get { return this.items.Count; } }
-		public bool IsReadOnly { get { return this.items.IsReadOnly; } }
-		public bool IsSynchronized { get { return this.items.IsSynchronized; } }
-		public ListItemBase this[int index] { get { return (ListItemBase)this.items[index]; } }
-		public object SyncRoot { get { return this; } }
-		#endregion
-
-		#region Methods
-		internal void Add(ListItemBase item) {
-			this.items.Add(item);
-		}
-
-		public void CopyTo(ListItemBase[] listItems, int index) {
-			this.items.CopyTo(listItems, index);
-		}
-
-		void ICollection.CopyTo(Array array, int index) {
-			this.items.CopyTo(array, index);
-		}
-
-		public IEnumerator GetEnumerator() {
-			return this.items.GetEnumerator();
-		}
-		#endregion
-	}
-	#endregion
 }

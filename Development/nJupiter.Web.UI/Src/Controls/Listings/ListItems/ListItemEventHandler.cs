@@ -27,8 +27,10 @@ using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls.Listings {
 
+	[Obsolete("Try using System.Web.UI.WebControls.ListView instead if possible")]
 	public delegate void ListItemEventHandler(object sender, ListItemEventArgs e);
 
+	[Obsolete("Try using System.Web.UI.WebControls.ListView instead if possible")]
 	public sealed class ListItemEventArgs : EventArgs {
 
 		private readonly ListItemBase listItem;

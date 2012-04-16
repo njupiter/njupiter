@@ -26,24 +26,21 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.ComponentModel;
-using System.Collections;
 
 namespace nJupiter.Web.UI.Controls {
 
 
 	[ToolboxItem(true), ConstructorNeedsTag(false)]
+	[Obsolete("Try using System.Web.UI.HtmlControls.HtmlGenericControl together with nJupiter.Web.UI.ControlAdapters.HtmlGenericAdapter (or ASP.NET 4)")]
 	public class WebGenericControl : HtmlGenericControl {
 
-		#region Constants
 		private const string BrTag = "<" + HtmlTag.Br + " />";
 		private const string RenderIdKey = "v_RenderId";
 		private const string RenderOriginalIdKey = "v_RenderOriginalId";
 		private const string RenderContentOnlyKey = "v_RenderContentOnly";
 		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
 		private const string TrailingBreakKey = "v_TrailingBreak";
-		#endregion
 
-		#region Properties
 		public bool RenderId {
 			get {
 				if(this.ViewState[RenderIdKey] == null)
@@ -79,7 +76,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string CssClass {
 			get {
-				string result = this.ViewState[HtmlAttribute.Class] as string;
+				var result = this.ViewState[HtmlAttribute.Class] as string;
 				if(result != null)
 					return result;
 				return string.Empty;
@@ -138,12 +135,12 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected bool HasAttributes {
 			get {
-				IEnumerator enumerator = this.Attributes.Keys.GetEnumerator();
+				var enumerator = this.Attributes.Keys.GetEnumerator();
 
 				while(enumerator.MoveNext()) {
-					string attributeName = enumerator.Current as string;
+					var attributeName = enumerator.Current as string;
 					if(attributeName != null) {
-						bool isAttribute = IsAttribute(attributeName);
+						var isAttribute = IsAttribute(attributeName);
 						if(isAttribute) {
 							return true;
 						}
@@ -179,9 +176,7 @@ namespace nJupiter.Web.UI.Controls {
 					);
 			}
 		}
-		#endregion
 
-		#region Constructors
 		public WebGenericControl() {
 			this.TagName = HtmlTag.Div;
 		}
@@ -195,9 +190,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.TagName = tag;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
 			if(this.RenderElement) {
 				if(!this.RenderContentOnly) {
@@ -230,14 +223,13 @@ namespace nJupiter.Web.UI.Controls {
 			if(this.CssClass.Length > 0)
 				this.Attributes.Add(HtmlAttribute.Class, this.CssClass);
 			if(!this.RenderOriginalId) {
-				string originalId = this.ID;
+				var originalId = this.ID;
 				this.ID = null;
 				if(this.RenderId)
 					this.Attributes.Add(HtmlAttribute.Id, originalId);
 			}
 			base.RenderAttributes(writer);
 		}
-		#endregion
 
 	}
 }

@@ -22,17 +22,19 @@
 */
 #endregion
 
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Globalization;
 
 namespace nJupiter.Web.UI.Controls {
 
+	[Obsolete("Try using System.Web.UI.WebControls.CheckBox instead if possible")]
 	public class WebCheckBox : CheckBox {
-		#region Properties
+
 		public string Value {
 			get {
-				string result = this.ViewState[HtmlAttribute.Value] as string;
+				var result = this.ViewState[HtmlAttribute.Value] as string;
 				if(result != null) {
 					return result;
 				}
@@ -42,16 +44,14 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[HtmlAttribute.Value] = value;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
 			if(this.Page != null) {
 				this.Page.VerifyRenderingInServerForm(this);
 			}
 
-			string text = this.Text;
-			string clientId = this.ClientID;
+			var text = this.Text;
+			var clientId = this.ClientID;
 			if(text.Length != 0) {
 				if(this.TextAlign == TextAlign.Left) {
 					RenderLabel(writer, text, clientId);
@@ -68,8 +68,8 @@ namespace nJupiter.Web.UI.Controls {
 		private void RenderInputTag(HtmlTextWriter writer, string clientId) {
 			string onClick = null;
 			if(this.Attributes.Count > 0) {
-				AttributeCollection attributes = base.Attributes;
-				string attributeValue = attributes[HtmlAttribute.Value];
+				var attributes = base.Attributes;
+				var attributeValue = attributes[HtmlAttribute.Value];
 				if(attributeValue != null) {
 					attributes.Remove(HtmlAttribute.Value);
 				}
@@ -92,7 +92,7 @@ namespace nJupiter.Web.UI.Controls {
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, HtmlAttributeValue.Checkbox);
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
 
-			string toolTip = this.ToolTip;
+			var toolTip = this.ToolTip;
 			if(toolTip.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Title, toolTip);
 			}
@@ -116,7 +116,7 @@ namespace nJupiter.Web.UI.Controls {
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
 			}
 
-			string accessKey = this.AccessKey;
+			var accessKey = this.AccessKey;
 			if(accessKey.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey);
 			}
@@ -138,6 +138,6 @@ namespace nJupiter.Web.UI.Controls {
 			writer.Write(text);
 			writer.RenderEndTag();
 		}
-		#endregion
+
 	}
 }

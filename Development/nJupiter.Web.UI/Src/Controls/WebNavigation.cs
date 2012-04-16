@@ -30,14 +30,12 @@ using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls {
 
-	#region Delegates
 	public delegate void PopulateNavigationItem(WebNavigationItemArgs args);
 	public delegate string GetNavigationItemName(WebNavigationPageArgs args);
 	public delegate string GetNavigationItemLink(WebNavigationPageArgs args);
 	public delegate Control GetNavigationItem(RepeaterItemEventArgs args);
 	public delegate WebAnchor GetNavigationAnchor(WebNavigationItemArgs args);
 	public delegate WebNavigation CreateWebNavigationControl(WebNavigationItemArgs args);
-	#endregion
 
 	public interface INavigationPage {
 		INavigationPageId Id { get; }
@@ -53,17 +51,13 @@ namespace nJupiter.Web.UI.Controls {
 
 	[ParseChildren(true), PersistChildren(false)]
 	public abstract class WebNavigation : Control {
-		#region Constants
-		private const string RenderIdKey = "v_RenderId";
-		#endregion
 
-		#region UI Members
+		private const string RenderIdKey = "v_RenderId";
+
 		private readonly WebHeading hedHeadline = new WebHeading();
 		private readonly WebAnchor ancHeadline = new WebAnchor();
 		private readonly Repeater rptNavigation = new Repeater();
-		#endregion
 
-		#region Members
 		private int visibleChildren;
 		private int visibleDescendants;
 		private int visibleLevels;
@@ -74,9 +68,7 @@ namespace nJupiter.Web.UI.Controls {
 		private int startLevelFromRoot = -1;
 		private int fallbackStartLevel = -1;
 		private string cssClass = string.Empty;
-		#endregion
 
-		#region	Properties
 		public bool RenderId {
 			get {
 				if (this.ViewState[RenderIdKey] == null)
@@ -168,13 +160,9 @@ namespace nJupiter.Web.UI.Controls {
 				rptNavigation.FooterTemplate = value;
 			}
 		}
-		#endregion
 
-		#region Static Holders
 		private static readonly object EventDataBound = new object();
-		#endregion
 
-		#region Abstract Methods
 		protected INavigationPage GetNavigationPage(INavigationPage page) {
 			INavigationPage navigationPage = null;
 			if(page != null) {
@@ -191,16 +179,12 @@ namespace nJupiter.Web.UI.Controls {
 		public abstract WebNavigation CreateWebNavigationControl(WebNavigationItemArgs args);
 		protected abstract INavigationPage CurrentPage { get; }
 		protected abstract INavigationPage SiteRoot { get; }
-		#endregion
 
-		#region Events
 		public event EventHandler DataBound {
-			add { base.Events.AddHandler(WebNavigation.EventDataBound, value); }
-			remove { base.Events.RemoveHandler(WebNavigation.EventDataBound, value); }
+			add { base.Events.AddHandler(EventDataBound, value); }
+			remove { base.Events.RemoveHandler(EventDataBound, value); }
 		}
-		#endregion
 
-		#region Event Handlers
 		/// <summary>
 		/// Raises the <see cref="E:System.Web.UI.Control.Init"/> event.
 		/// </summary>
@@ -237,25 +221,25 @@ namespace nJupiter.Web.UI.Controls {
 		protected virtual void OnItemDataBound(RepeaterItemEventArgs e) {
 			if(e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem) {
 				// Cast dataitem
-				INavigationPage pageData = ((INavigationPage)e.Item.DataItem);
-				NavigationPageCollection navItems = ((NavigationPageCollection)rptNavigation.DataSource);
+				var pageData = ((INavigationPage)e.Item.DataItem);
+				var navItems = ((NavigationPageCollection)rptNavigation.DataSource);
 
 				// check if selected
-				bool isSelected = IsPageSelected(this.RootPage, pageData, this.SelectedNavigationPage);
-				bool isInSelectedPath = IsPageInSelectedPath(this.RootPage, pageData, this.SelectedNavigationPage);
-				bool isChildOfRemovedNode = this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never &&
+				var isSelected = IsPageSelected(this.RootPage, pageData, this.SelectedNavigationPage);
+				var isInSelectedPath = IsPageInSelectedPath(this.RootPage, pageData, this.SelectedNavigationPage);
+				var isChildOfRemovedNode = this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never &&
 					this.IsPageChildOfRemovedNode(this.RootPage, pageData);
-				Control liListItem = this.GetNavigationItemDelegate(e);
+				var liListItem = this.GetNavigationItemDelegate(e);
 
 				if((isSelected && this.hideSelectedPage) || (!isInSelectedPath && this.ShowOnlyPagesInPath)) {
 					liListItem.Visible = false;
 				} else {
-					bool expandingLevel = this.NumberOfLevels != 0 && (!pageData.Id.Equals(this.RootPage.Id) || this.IncludeRootLevelInList) && (this.ExpandAll || isInSelectedPath);
+					var expandingLevel = this.NumberOfLevels != 0 && (!pageData.Id.Equals(this.RootPage.Id) || this.IncludeRootLevelInList) && (this.ExpandAll || isInSelectedPath);
 
 					if(expandingLevel) {
-						PlaceHolder subNavigationPlaceHolder = new PlaceHolder();
+						var subNavigationPlaceHolder = new PlaceHolder();
 						liListItem.Controls.Add(subNavigationPlaceHolder);
-						WebNavigationItemArgs args = new WebNavigationItemArgs(liListItem,
+						var args = new WebNavigationItemArgs(liListItem,
 												  this,
 												  pageData,
 												  isSelected,
@@ -266,7 +250,7 @@ namespace nJupiter.Web.UI.Controls {
 												  expandingLevel,
 												  isChildOfRemovedNode,
 												  null);
-						WebNavigation subNavigation = this.CreateWebNavigationControlDelegate(args);
+						var subNavigation = this.CreateWebNavigationControlDelegate(args);
 						subNavigationPlaceHolder.Controls.Add(subNavigation);
 						args.SubNavigation = subNavigation;
 						this.PopulateSubNavigation(subNavigation, pageData);
@@ -307,7 +291,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(subNavigation.SelectedNavigationPage == null)
 				subNavigation.SelectedNavigationPage = this.SelectedNavigationPage;
 			if(subNavigation.HeaderTemplate == null) {
-				DefaultHeaderTemplate defaultHeaderTemplate = this.HeaderTemplate as DefaultHeaderTemplate;
+				var defaultHeaderTemplate = this.HeaderTemplate as DefaultHeaderTemplate;
 				if(defaultHeaderTemplate != null && (defaultHeaderTemplate.Id != null || defaultHeaderTemplate.CssClass != null))
 					subNavigation.HeaderTemplate = new DefaultHeaderTemplate(null, null);
 				else 
@@ -334,7 +318,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected virtual void OnDataBound(EventArgs e) {
-			EventHandler eventHandler = base.Events[WebNavigation.EventDataBound] as EventHandler;
+			var eventHandler = base.Events[EventDataBound] as EventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
@@ -343,9 +327,7 @@ namespace nJupiter.Web.UI.Controls {
 		private void ItemDataBound(object sender, RepeaterItemEventArgs e) {
 			this.OnItemDataBound(e);
 		}
-		#endregion
 
-		#region Methods
 		public override void DataBind() {
 
 			if(this.HeaderTemplate == null)
@@ -388,7 +370,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.NavPage = GetPageToExpand(this.RootPage, this.SelectedNavigationPage, this.FallbackStartLevel);
 
 			if(this.NavPage != null) {
-				WebNavigationPageArgs npa = new WebNavigationPageArgs(this.NavPage);
+				var npa = new WebNavigationPageArgs(this.NavPage);
 
 				ancHeadline.Text = this.GetNavigationItemNameDelegate(npa);
 				if(this.HeadingClickable) {
@@ -408,7 +390,7 @@ namespace nJupiter.Web.UI.Controls {
 				} else {
 					childNodes = new NavigationPageCollection();
 					if(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.OnlyInSelectedPath)) {
-						foreach(INavigationPage child in this.GetChildren(this.NavPage)) {
+						foreach(var child in this.GetChildren(this.NavPage)) {
 							if(this.IsPageInSelectedPath(this.RootPage, child, this.SelectedNavigationPage)) {
 								childNodes.Add(child);
 							}
@@ -416,16 +398,16 @@ namespace nJupiter.Web.UI.Controls {
 					}
 				}
 
-				NavigationPageCollection removedChildNodes = 
+				var removedChildNodes = 
 					!this.IncludeRootLevelInList && this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never ?
 					new NavigationPageCollection() : null;
 				childNodes = FilterNavigation(childNodes, removedChildNodes);
 
 				if(!this.IncludeRootLevelInList && 
 					this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never) {
-					NavigationPageCollection nonRemovedDescendants = GetNonRemovedDescendants(removedChildNodes);
+					var nonRemovedDescendants = GetNonRemovedDescendants(removedChildNodes);
 					if(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.OnlyInSelectedPath)) {
-						foreach(INavigationPage descendant in nonRemovedDescendants) {
+						foreach(var descendant in nonRemovedDescendants) {
 							if(this.IsPageInSelectedPath(this.RootPage, descendant, this.SelectedNavigationPage)) {
 								childNodes.Add(descendant);
 							}
@@ -452,8 +434,8 @@ namespace nJupiter.Web.UI.Controls {
 		public static void PopulateNavigationItem(WebNavigationItemArgs args) {
 			if(args == null)
 				throw new ArgumentNullException("args");
-			string liClass = string.Empty;
-			string aClass = string.Empty;
+			var liClass = string.Empty;
+			var aClass = string.Empty;
 
 			if(args.IsSelected || args.IsInSelectedPath) {
 				aClass = liClass = args.IsSelected ? "selected" : "selected-path";
@@ -467,15 +449,15 @@ namespace nJupiter.Web.UI.Controls {
 				liClass = liClass + (liClass.Length > 0 ? " " : string.Empty) + "child-of-removed-node";
 
 			if(args.ParentNavigation.IndicateIfNodeHasChildren) {
-				NavigationPageCollection children = args.ParentNavigation.GetChildren(args.NavigationPage);
-				NavigationPageCollection removedChildren = args.ParentNavigation.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never ?
+				var children = args.ParentNavigation.GetChildren(args.NavigationPage);
+				var removedChildren = args.ParentNavigation.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never ?
 					new NavigationPageCollection() : null;
 				children = args.ParentNavigation.FilterNavigation(children, removedChildren);
 
 				if(args.ParentNavigation.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never) {
-					NavigationPageCollection nonRemovedDescendants = args.ParentNavigation.GetNonRemovedDescendants(removedChildren);
+					var nonRemovedDescendants = args.ParentNavigation.GetNonRemovedDescendants(removedChildren);
 					if(args.ParentNavigation.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.OnlyInSelectedPath)) {
-						foreach(INavigationPage descendant in nonRemovedDescendants) {
+						foreach(var descendant in nonRemovedDescendants) {
 							if(args.ParentNavigation.IsPageInSelectedPath(args.ParentNavigation.RootPage, descendant, args.ParentNavigation.SelectedNavigationPage)) {
 								children.Add(descendant);
 							}
@@ -490,13 +472,13 @@ namespace nJupiter.Web.UI.Controls {
 				}
 			}
 
-			WebGenericControl li = args.NavigationItem as WebGenericControl;
+			var li = args.NavigationItem as WebGenericControl;
 			if(liClass.Trim().Length > 0 && li != null) {
 				li.CssClass = liClass;
 			}
 
 			// Find UI Control
-			WebAnchor ancNavigationItem = args.ParentNavigation.GetNavigationAnchorDelegate(args);
+			var ancNavigationItem = args.ParentNavigation.GetNavigationAnchorDelegate(args);
 			if(ancNavigationItem == null)
 				throw new HttpException("The default implementation of PopulateNavigationItem requires at least one WebAnchor inside the ItemTemplate.");
 			ancNavigationItem.Visible = true;
@@ -518,7 +500,7 @@ namespace nJupiter.Web.UI.Controls {
 					}
 				}
 				if(args.ParentNavigation.AlwaysPlaceSpanAroundNavItem) {
-					WebGenericControl gnrNavigationItem = new WebGenericControl("span");
+					var gnrNavigationItem = new WebGenericControl("span");
 					args.NavigationItem.Controls.AddAt(0, gnrNavigationItem);
 					gnrNavigationItem.Controls.Add(ancNavigationItem);
 				} else {
@@ -542,7 +524,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(args == null) {
 				throw new ArgumentNullException("args");
 			}
-			Control listControl = ControlFinder.Instance.FindFirstControlOnType(args.Item, typeof(WebGenericControl));
+			var listControl = ControlFinder.Instance.FindFirstControlOnType(args.Item, typeof(WebGenericControl));
 			if(listControl != null)
 				return listControl;
 			return args.Item;
@@ -553,7 +535,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(startLevel == 0)
 				return this.GetNavigationPage(navigationRoot);
 
-			NavigationPageCollection pagePathToRoot = GetSelectedPath(navigationRoot, currentPageReference, new NavigationPageCollection());
+			var pagePathToRoot = GetSelectedPath(navigationRoot, currentPageReference, new NavigationPageCollection());
 			if(pagePathToRoot.Count > startLevel) {
 				return pagePathToRoot[startLevel];
 			}
@@ -564,15 +546,15 @@ namespace nJupiter.Web.UI.Controls {
 			if(pageDataCollection == null)
 				throw new ArgumentNullException("pageDataCollection");
 
-			INavigationPage subPage = this.GetNavigationPage(currentPageReference);
+			var subPage = this.GetNavigationPage(currentPageReference);
 			if(subPage != null) {
-				int count = pageDataCollection.Count;
+				var count = pageDataCollection.Count;
 				pageDataCollection.Insert(0, subPage);
 				if(count == 0) { // Remove all non visible pages unitl if there already isn't a visible page in the path
 					pageDataCollection = this.FilterNavigation(pageDataCollection, null);
 				}
 			}
-			INavigationPage parent = subPage != null ? this.GetNavigationPage(subPage.ParentId) : null;
+			var parent = subPage != null ? this.GetNavigationPage(subPage.ParentId) : null;
 			if(subPage == null || subPage.Id.Equals(navigationRoot.Id) || parent == null) {
 				return pageDataCollection;
 			}
@@ -585,7 +567,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(this.IncludeRootLevelInList && currentPage.Id.Equals(navigationRoot.Id))
 				return true;
 			if(!this.VisibleInNavigation(currentPage)) {
-				INavigationPage parent = this.GetNavigationPage(currentPage.ParentId);
+				var parent = this.GetNavigationPage(currentPage.ParentId);
 				if(parent == null)
 					return false;
 				return this.IsPageSelected(navigationRoot, pageReference, parent);
@@ -597,8 +579,8 @@ namespace nJupiter.Web.UI.Controls {
 			if(currentPage == null) {
 				throw new ArgumentNullException("currentPage");
 			}
-			INavigationPage page = currentPage;
-			bool isVisibleFromNavigationRoot = true;
+			var page = currentPage;
+			var isVisibleFromNavigationRoot = true;
 			while(page != null && !page.Id.Equals(navigationRoot.Id)) {
 				isVisibleFromNavigationRoot = this.FilterNavigation(new NavigationPageCollection(new[] { page }), null).Count.Equals(1);
 				if(!isVisibleFromNavigationRoot) {
@@ -613,7 +595,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(page == null)
 				throw new ArgumentNullException("page");
 
-			NavigationPageCollection pdc = new NavigationPageCollection();
+			var pdc = new NavigationPageCollection();
 			pdc.Add(page);
 			pdc = this.FilterNavigation(pdc, null);
 			return pdc.Count > 0;
@@ -626,7 +608,7 @@ namespace nJupiter.Web.UI.Controls {
 				return false;
 			if(navigationItemReference.Id.Equals(treeReference.Id) || navigationItemReference.Id.Equals(navigationRoot.Id))
 				return true;
-			INavigationPage parent = this.GetNavigationPage(treeReference.ParentId);
+			var parent = this.GetNavigationPage(treeReference.ParentId);
 			if(parent != null && treeReference.Id.Equals(parent.Id))
 				return false;
 			return this.IsPageInSelectedPath(navigationRoot, navigationItemReference, parent);
@@ -636,9 +618,9 @@ namespace nJupiter.Web.UI.Controls {
 			if(removedNodes == null) {
 				throw new ArgumentNullException("removedNodes");
 			}
-			NavigationPageCollection nonRemovedDescendants = new NavigationPageCollection();
-			foreach(INavigationPage removedNode in removedNodes) {
-				NavigationPageCollection removedChildNodes = new NavigationPageCollection();
+			var nonRemovedDescendants = new NavigationPageCollection();
+			foreach(var removedNode in removedNodes) {
+				var removedChildNodes = new NavigationPageCollection();
 				nonRemovedDescendants.AddRange(this.GetChildren(removedNode));
 				nonRemovedDescendants = this.FilterNavigation(nonRemovedDescendants, removedChildNodes);
 
@@ -646,9 +628,7 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			return nonRemovedDescendants;
 		}
-		#endregion
 
-		#region Inner Classes
 		private sealed class DefaultHeaderTemplate : ITemplate {
 
 			public readonly string Id;
@@ -660,11 +640,11 @@ namespace nJupiter.Web.UI.Controls {
 			}
 
 			public void InstantiateIn(Control container) {
-				WebPlaceHolder ulBeginTag = new WebPlaceHolder();
-				string idAttribute = string.Empty;
+				var ulBeginTag = new WebPlaceHolder();
+				var idAttribute = string.Empty;
 				if(!string.IsNullOrEmpty(this.Id))
 					idAttribute = " id=\"" + this.Id + "\"";
-				string cssAttribute = string.Empty;
+				var cssAttribute = string.Empty;
 				if(!string.IsNullOrEmpty(this.CssClass))
 					cssAttribute = " class=\"" + this.CssClass + "\"";
 				ulBeginTag.InnerHtml = "<ul" + idAttribute + cssAttribute + ">";
@@ -674,7 +654,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		private sealed class DefaultFooterTemplate : ITemplate {
 			public void InstantiateIn(Control container) {
-				WebPlaceHolder ulEndTag = new WebPlaceHolder();
+				var ulEndTag = new WebPlaceHolder();
 				ulEndTag.InnerHtml = "</ul>";
 				container.Controls.Add(ulEndTag);
 			}
@@ -682,16 +662,14 @@ namespace nJupiter.Web.UI.Controls {
 
 		private sealed class DefaultItemTemplate : ITemplate {
 			public void InstantiateIn(Control container) {
-				WebGenericControl li = new WebGenericControl(HtmlTag.Li);
-				WebAnchor ancNavigationItem = new WebAnchor();
+				var li = new WebGenericControl(HtmlTag.Li);
+				var ancNavigationItem = new WebAnchor();
 				li.Controls.Add(ancNavigationItem);
 				container.Controls.Add(li);
 			}
 		}
-		#endregion
 	}
 
-	#region Event Args
 	public class WebNavigationPageArgs {
 
 		private readonly INavigationPage navigationPage;
@@ -740,14 +718,11 @@ namespace nJupiter.Web.UI.Controls {
 			this.ExpandingLevel = expandingLevel;
 		}
 	}
-	#endregion
 
-	#region Enums
 	public enum IncludeChildrenOfRemovedNodesMode {
 		Never,
 		Always,
 		OnlyInSelectedPath
 	}
-	#endregion
 
 }

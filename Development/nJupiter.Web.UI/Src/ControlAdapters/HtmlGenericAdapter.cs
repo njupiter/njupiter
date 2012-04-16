@@ -28,7 +28,6 @@ namespace nJupiter.Web.UI.ControlAdapters {
 
 	public class HtmlGenericAdapter : HtmlControlAdapter {
 
-		#region Properties
 		private HtmlGenericControl GenericControl {
 			get {
 				return this.HtmlControl as HtmlGenericControl;
@@ -49,7 +48,6 @@ namespace nJupiter.Web.UI.ControlAdapters {
 					);
 			}
 		}
-		#endregion
 
 	}
 }

@@ -30,7 +30,6 @@ namespace nJupiter.Web.UI.Controls {
 
 	public class WebImage : WebControl {
 
-		#region Constants
 		private const string BrTag = "<" + HtmlTag.Br + " />";
 		private const string RenderIdKey = "v_RenderId";
 		private const string RenderOriginalIdKey = "v_RenderOriginalId";
@@ -43,13 +42,9 @@ namespace nJupiter.Web.UI.Controls {
 		private const string TrailingBreakKey = "v_TrailingBreak";
 		private const string StreamPagePathKey = "v_StreamingPath";
 		private const string StreamPagePath = "/nJupiter/nJupiter.Web.UI/Web/StreamImage.aspx";
-		#endregion
 
-		#region Constructors
 		public WebImage() : base(HtmlTextWriterTag.Img) { }
-		#endregion
-
-		#region Properties
+	
 		public bool RenderId {
 			get {
 				if(this.ViewState[RenderIdKey] == null)
@@ -74,7 +69,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string AlternateText {
 			get {
-				string alternateText = (string)this.ViewState[HtmlAttribute.Alt];
+				var alternateText = (string)this.ViewState[HtmlAttribute.Alt];
 				if(alternateText != null) {
 					return alternateText;
 				}
@@ -87,7 +82,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string DescriptionUrl {
 			get {
-				string descriptionUrl = (string)this.ViewState[HtmlAttribute.Longdesc];
+				var descriptionUrl = (string)this.ViewState[HtmlAttribute.Longdesc];
 				if(descriptionUrl != null) {
 					return descriptionUrl;
 				}
@@ -100,7 +95,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string ImageUrl {
 			get {
-				string imageUrl = (string)this.ViewState[HtmlAttribute.Src];
+				var imageUrl = (string)this.ViewState[HtmlAttribute.Src];
 				if(imageUrl != null) {
 					return imageUrl;
 				}
@@ -146,7 +141,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string StreamingPath {
 			get {
-				string streamingPath = (string)this.ViewState[StreamPagePathKey];
+				var streamingPath = (string)this.ViewState[StreamPagePathKey];
 				if(streamingPath != null) {
 					return streamingPath;
 				}
@@ -204,11 +199,9 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[TrailingLinefeedKey] = value;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void AddAttributesToRender(HtmlTextWriter writer) {
-			string text = this.ImageUrl;
+			var text = this.ImageUrl;
 			if(text.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Src, this.RenderImageUrl());
 			}
@@ -216,7 +209,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(text.Length > 0) {
 				writer.AddAttribute(HtmlAttribute.Longdesc, text);
 			}
-			string toolTip = this.ToolTip;
+			var toolTip = this.ToolTip;
 			if(toolTip.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Title, toolTip);
 				this.ToolTip = string.Empty;
@@ -229,9 +222,9 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string RenderImageUrl() {
 			if(this.MaxWidth > 0 || this.MaxHeight > 0 || this.ForceStreaming) {
-				string streamingPath = nJupiter.Web.UrlHandler.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl));
+				var streamingPath = UrlHandler.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl));
 				if(this.MaxWidth > 0 || this.MaxHeight > 0) {
-					streamingPath = nJupiter.Web.UrlHandler.AddQueryParams(streamingPath, "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
+					streamingPath = UrlHandler.AddQueryParams(streamingPath, "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
 				}
 				return streamingPath;
 			}
@@ -242,7 +235,7 @@ namespace nJupiter.Web.UI.Controls {
 			if(this.ImageUrl.Length.Equals(0))
 				return;
 			if(!this.RenderOriginalId) {
-				string originalId = this.ID;
+				var originalId = this.ID;
 				this.ID = null;
 				if(this.RenderId)
 					this.Attributes.Add(HtmlAttribute.Id, originalId);
@@ -257,7 +250,6 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void RenderContents(HtmlTextWriter writer) {
 			// Supress content rendering.
 		}
-		#endregion
 
 	}
 }

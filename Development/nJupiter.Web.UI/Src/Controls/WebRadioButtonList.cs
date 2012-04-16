@@ -22,7 +22,10 @@
 */
 #endregion
 
+using System;
+
 namespace nJupiter.Web.UI.Controls {
+	[Obsolete("Try using System.Web.UI.WebControls.RadioButtonList instead if possible")]
 	public class WebRadioButtonList : WebCheckListControl {
 		public WebRadioButtonList() : base(new WebRadioButton()) { }
 	}

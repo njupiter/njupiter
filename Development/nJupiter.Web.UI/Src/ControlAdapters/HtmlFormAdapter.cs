@@ -63,8 +63,8 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		}
 
 		protected override void Render(HtmlTextWriter writer) {
-			if(this.FormControl != null && this.XhtmlStrictRendering && writer.GetType().Equals(typeof(HtmlTextWriter)) && this.AdapterEnabled) {
-				StrictHtmlTextWriter w = new StrictHtmlTextWriter(writer);
+			if(this.FormControl != null && this.XhtmlStrictRendering && writer.GetType() == typeof(HtmlTextWriter) && this.AdapterEnabled) {
+				var w = new StrictHtmlTextWriter(writer);
 				base.Render(w);
 			} else {
 				base.Render(writer);

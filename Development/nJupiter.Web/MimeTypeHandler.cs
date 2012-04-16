@@ -42,7 +42,7 @@ namespace nJupiter.Web  {
 		public IEnumerable<IMimeType> GetAcceptedTypes() {
 			var acceptedTypes = new List<IMimeType>();
 			if(CurrentContext != null && CurrentContext.Request.AcceptTypes != null) {
-				foreach(string acceptedType in CurrentContext.Request.AcceptTypes) {
+				foreach(var acceptedType in CurrentContext.Request.AcceptTypes) {
 					acceptedTypes.Add(new MimeType(acceptedType));
 				}
 			}
@@ -56,7 +56,7 @@ namespace nJupiter.Web  {
 		public IMimeType GetHighestQuality(IMimeType mimeType, bool exactType) {
 			var acceptedTypes = GetAcceptedTypes();
 			IMimeType result = null;
-			foreach(IMimeType m in acceptedTypes) {
+			foreach(var m in acceptedTypes) {
 				if(((exactType && m.EqualsExactType(mimeType)) || m.EqualsType(mimeType)) && (result == null || result.Quality < m.Quality)) {
 					result = m;
 				}
@@ -69,23 +69,23 @@ namespace nJupiter.Web  {
 				throw new ArgumentNullException("stream");
 			}
 
-			int maxContent = (int)stream.Length;
+			var maxContent = (int)stream.Length;
 
 			if(maxContent > 4096)
 				maxContent = 4096;
 
-			byte[] buf = new byte[maxContent];
+			var buf = new byte[maxContent];
 			stream.Read(buf, 0, maxContent);
 
 			string mime;
 
 			//note: the CLR frees the data automatically returned in ppwzMimeOut     
-			int result = NativeMethods.FindMimeFromData(IntPtr.Zero, null, buf, maxContent, null, 0, out mime, 0);
+			var result = NativeMethods.FindMimeFromData(IntPtr.Zero, null, buf, maxContent, null, 0, out mime, 0);
 
 			if(result != 0)
 				Marshal.ThrowExceptionForHR(result);
 
-			if(mime != null && mime.IndexOf("/") > 0)
+			if(mime != null && mime.IndexOf("/", StringComparison.Ordinal) > 0)
 				return new MimeType(mime);
 
 			return null;
@@ -99,7 +99,7 @@ namespace nJupiter.Web  {
 				throw new FileNotFoundException(file + " not found");
 			}
 
-			using(FileStream fs = file.OpenRead()) {
+			using(var fs = file.OpenRead()) {
 				return GetMimeType(fs);
 			}
 		}

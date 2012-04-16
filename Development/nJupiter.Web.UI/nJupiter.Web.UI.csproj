@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Src\ControlHandlerImpl.cs" />
     <Compile Include="Src\ControlLoader.cs" />
+    <Compile Include="Src\Controls\Listings\ListItems\ListItemCollection.cs" />
     <Compile Include="Src\HtmlStyleUnit.cs" />
     <Compile Include="Src\HtmlEntity.cs" />
     <Compile Include="Src\HtmlLink.cs" />

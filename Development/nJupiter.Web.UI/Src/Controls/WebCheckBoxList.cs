@@ -22,18 +22,21 @@
 */
 #endregion
 
+using System;
 using System.Collections;
 using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls {
+
+	[Obsolete("Try using System.Web.UI.WebControls.CheckBoxList instead if possible")]
 	public class WebCheckBoxList : WebCheckListControl {
 		public WebCheckBoxList() : base(new WebCheckBox()) { }
 
 		public int[] SelectedIndexes {
 			get {
-				ArrayList al = new ArrayList();
-				for(int i = 0; i < this.Items.Count; i++) {
-					ListItem li = this.Items[i];
+				var al = new ArrayList();
+				for(var i = 0; i < this.Items.Count; i++) {
+					var li = this.Items[i];
 					if(li != null && li.Selected)
 						al.Add(i);
 				}
@@ -43,9 +46,9 @@ namespace nJupiter.Web.UI.Controls {
 
 		public string[] SelectedValues {
 			get {
-				ArrayList al = new ArrayList();
-				for(int i = 0; i < this.Items.Count; i++) {
-					ListItem li = this.Items[i];
+				var al = new ArrayList();
+				for(var i = 0; i < this.Items.Count; i++) {
+					var li = this.Items[i];
 					if(li != null && li.Selected)
 						al.Add(li.Value);
 				}
@@ -56,9 +59,9 @@ namespace nJupiter.Web.UI.Controls {
 
 		public ListItemCollection SelectedItems {
 			get {
-				ListItemCollection lic = new ListItemCollection();
-				for(int i = 0; i < this.Items.Count; i++) {
-					ListItem li = this.Items[i];
+				var lic = new ListItemCollection();
+				for(var i = 0; i < this.Items.Count; i++) {
+					var li = this.Items[i];
 					if(li != null && li.Selected)
 						lic.Add(li);
 				}

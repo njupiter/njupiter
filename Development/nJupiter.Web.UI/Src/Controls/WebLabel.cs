@@ -28,10 +28,9 @@ namespace nJupiter.Web.UI.Controls {
 
 	public class WebLabel : WebGenericControl {
 
-		#region Properties
 		public string For {
 			get {
-				string result = this.ViewState[HtmlAttribute.For] as string;
+				var result = this.ViewState[HtmlAttribute.For] as string;
 				if(result != null) {
 					return result;
 				}
@@ -41,9 +40,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[HtmlAttribute.For] = value;
 			}
 		}
-		#endregion
 
-		#region Constructors
 		public WebLabel() {
 			this.TagName = HtmlTag.Label;
 		}
@@ -56,11 +53,9 @@ namespace nJupiter.Web.UI.Controls {
 		public WebLabel(string tag) : this() { }
 		// ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
-		#endregion
 
-		#region Methods
 		protected string GetControlRenderID(string name) {
-			Control control = this.FindControl(name);
+			var control = this.FindControl(name);
 			if(control == null) {
 				return name;
 			}
@@ -72,7 +67,6 @@ namespace nJupiter.Web.UI.Controls {
 				this.Attributes.Add(HtmlAttribute.For, GetControlRenderID(this.For));
 			base.RenderAttributes(writer);
 		}
-		#endregion
 
 	}
 }

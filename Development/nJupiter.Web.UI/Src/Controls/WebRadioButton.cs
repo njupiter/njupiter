@@ -22,20 +22,20 @@
 */
 #endregion
 
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Globalization;
 using System.Collections.Specialized;
 
 namespace nJupiter.Web.UI.Controls {
+
+	[Obsolete("Try using System.Web.UI.WebControls.RadioButton instead if possible")]
 	public class WebRadioButton : RadioButton {
 
-		#region Members
 		private string uniqueGroupName;
 		private bool idExplicitlySet;
-		#endregion
 
-		#region Properties
 		public override string ID {
 			get { return base.ID; }
 			set {
@@ -50,7 +50,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		private string ValueAttribute {
 			get {
-				string attributeValue = base.Attributes[HtmlAttribute.Value];
+				var attributeValue = base.Attributes[HtmlAttribute.Value];
 				if(attributeValue != null) {
 					return attributeValue;
 				}
@@ -60,18 +60,16 @@ namespace nJupiter.Web.UI.Controls {
 				return this.UniqueID;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
 			if(this.Page != null) {
 				this.Page.VerifyRenderingInServerForm(this);
 			}
 
-			string text = this.Text;
-			string clientId = this.ClientID;
+			var text = this.Text;
+			var clientId = this.ClientID;
 			if(text.Length != 0) {
-				if(this.TextAlign == System.Web.UI.WebControls.TextAlign.Left) {
+				if(this.TextAlign == TextAlign.Left) {
 					RenderLabel(writer, text, clientId);
 					RenderInputTag(writer, clientId);
 				} else {
@@ -87,8 +85,8 @@ namespace nJupiter.Web.UI.Controls {
 
 			string onClick = null;
 			if(this.Attributes.Count > 0) {
-				System.Web.UI.AttributeCollection attributes = base.Attributes;
-				string attributeValue = attributes[HtmlAttribute.Value];
+				var attributes = base.Attributes;
+				var attributeValue = attributes[HtmlAttribute.Value];
 				if(attributeValue != null) {
 					attributes.Remove(HtmlAttribute.Value);
 				}
@@ -109,7 +107,7 @@ namespace nJupiter.Web.UI.Controls {
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueGroupName);
 			writer.AddAttribute(HtmlTextWriterAttribute.Value, this.ValueAttribute);
 
-			string toolTip = this.ToolTip;
+			var toolTip = this.ToolTip;
 			if(toolTip.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Title, toolTip);
 			}
@@ -133,7 +131,7 @@ namespace nJupiter.Web.UI.Controls {
 				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
 			}
 
-			string accessKey = this.AccessKey;
+			var accessKey = this.AccessKey;
 			if(accessKey.Length > 0) {
 				writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey);
 			}
@@ -155,11 +153,11 @@ namespace nJupiter.Web.UI.Controls {
 		private string UniqueGroupName {
 			get {
 				if(this.uniqueGroupName == null) {
-					string groupName = this.GroupName;
-					string uniqueId = this.UniqueID;
+					var groupName = this.GroupName;
+					var uniqueId = this.UniqueID;
 					if(uniqueId != null) {
 						if(this.NamingContainer is WebRadioButtonList) {
-							int lastIndexOf = uniqueId.LastIndexOf(base.IdSeparator);
+							var lastIndexOf = uniqueId.LastIndexOf(base.IdSeparator);
 							groupName = uniqueId.Substring(0, lastIndexOf);
 						}
 						if(groupName.Length == 0) {
@@ -173,8 +171,8 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection) {
-			string uniqueId = postCollection[this.UniqueGroupName];
-			bool loadPostData = false;
+			var uniqueId = postCollection[this.UniqueGroupName];
+			var loadPostData = false;
 			if((uniqueId != null) && uniqueId.Equals(this.ValueAttribute)) {
 				if(!this.Checked) {
 					this.Checked = true;
@@ -185,9 +183,8 @@ namespace nJupiter.Web.UI.Controls {
 			if(this.Checked) {
 				this.Checked = false;
 			}
-			return loadPostData;
+			return false;
 		}
-		#endregion
 
 	}
 }

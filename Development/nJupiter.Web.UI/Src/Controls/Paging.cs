@@ -37,44 +37,32 @@ namespace nJupiter.Web.UI.Controls {
 	[ToolboxItem(true)]
 	[ParseChildren(true), PersistChildren(false)]
 	public class Paging : UserControl {
-		#region Constants
-		private const string ListCollectionKey = "v_ListCollection";
-		#endregion
 
-		#region Static Holders
+		private const string ListCollectionKey = "v_ListCollection";
+
 		private static readonly object EventPagingChanged = new object();
 
 		private readonly object padlock = new object();
-		#endregion
 
-		#region Events
 		public event PagingEventHandler PagingChanged {
-			add { base.Events.AddHandler(Paging.EventPagingChanged, value); }
-			remove { base.Events.RemoveHandler(Paging.EventPagingChanged, value); }
+			add { base.Events.AddHandler(EventPagingChanged, value); }
+			remove { base.Events.RemoveHandler(EventPagingChanged, value); }
 		}
-		#endregion
 
-		#region Enums
 		public enum PagingType {
 			Buttons = 0,
 			Links = 1,
 			Anchors = 2
 		}
-		#endregion
 
-		#region Constants
 #if DEBUG
 		private const string	DebugPrefix = "_";
 #else
 		private const string DebugPrefix = "";
 #endif
-		#endregion
 
-		#region UI Members
 		private readonly Repeater rptPaging = new Repeater();
-		#endregion
 
-		#region Members
 		private int itemsPerPage = 10;
 		private int numberOfPages = 5;
 		private int visiblePages = 5;
@@ -101,9 +89,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		private string pageUrl;
 		private string pageNumberQueryKey = "pageNumber";
-		#endregion
 
-		#region Properties
 		public int Count { get { return this.count; } set { this.count = value; } }
 		public int CurrentPageNumber { get { return this.currentPageNumber; } set { this.currentPageNumber = value; } }
 		public int ItemsPerPage { get { return this.itemsPerPage; } set { this.itemsPerPage = value; } }
@@ -151,14 +137,14 @@ namespace nJupiter.Web.UI.Controls {
 						if(this.Request.HttpMethod.Equals("GET") || this.Type == PagingType.Anchors) {
 							this.pageUrl = UrlHandler.AddQueryParams(UrlHandler.CurrentPath, UrlHandler.GetQueryString(UrlHandler.CurrentQueryString, true, this.PageNumberQueryKey));
 						} else {
-							ArrayList systemKeys = new ArrayList();
+							var systemKeys = new ArrayList();
 							foreach(string key in UrlHandler.CurrentForm.Keys) {
 								if(key.StartsWith("__") || key.IndexOf('$') > 0) {
 									systemKeys.Add(key);
 								}
 							}
 							this.pageUrl = UrlHandler.AddQueryParams(UrlHandler.CurrentPath, UrlHandler.GetQueryString(UrlHandler.CurrentForm, (string[])systemKeys.ToArray(typeof(string))));
-							string[] keysToRemove = new string[UrlHandler.CurrentForm.AllKeys.Length + 1];
+							var keysToRemove = new string[UrlHandler.CurrentForm.AllKeys.Length + 1];
 							UrlHandler.CurrentForm.AllKeys.CopyTo(keysToRemove, 0);
 							keysToRemove[UrlHandler.CurrentForm.AllKeys.Length] = this.PageNumberQueryKey;
 							this.pageUrl = UrlHandler.AddQueryParams(this.pageUrl, UrlHandler.GetQueryString(UrlHandler.CurrentQueryString, keysToRemove));
@@ -219,9 +205,6 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 
-		#endregion
-
-		#region Event Handlers
 		private void PagingItemCommand(object source, RepeaterCommandEventArgs e) {
 			OnPagingChanged(new PagingEventArgs(int.Parse(e.CommandArgument.ToString(), NumberFormatInfo.InvariantInfo)));
 		}
@@ -229,17 +212,17 @@ namespace nJupiter.Web.UI.Controls {
 		private void PagingItemDataBound(object sender, RepeaterItemEventArgs e) {
 			switch(e.Item.ItemType) {
 				case ListItemType.Header:
-					int from = ((this.currentPageNumber - 1) * this.itemsPerPage) + 1;
-					int to = Math.Min(this.count, from + this.itemsPerPage - 1);
-					int totalPageCountHeader = (int)Math.Ceiling(this.count / (double)ItemsPerPage);
+					var from = ((this.currentPageNumber - 1) * this.itemsPerPage) + 1;
+					var to = Math.Min(this.count, from + this.itemsPerPage - 1);
+					var totalPageCountHeader = (int)Math.Ceiling(this.count / (double)ItemsPerPage);
 
-					WebParagraph resultTextParagraph = e.Item.FindControl("resultText") as WebParagraph;
+					var resultTextParagraph = e.Item.FindControl("resultText") as WebParagraph;
 					if(resultTextParagraph != null) {
 						if(this.HideResult) {
 							resultTextParagraph.Visible = false;
 						} else {
 							if(this.WrapPlaceHoldersInTags) {
-								string tagFormat = "<" + this.WrapPlaceHoldersTag + " " + HtmlAttribute.Class + "=\"{0}\">{1}</" + this.WrapPlaceHoldersTag + ">";
+								var tagFormat = string.Format("<{0} {1}=\"{{0}}\">{{1}}</{0}>", this.WrapPlaceHoldersTag, HtmlAttribute.Class);
 								resultTextParagraph.InnerHtml = string.Format(CultureInfo.CurrentCulture, this.Server.HtmlEncode(this.ResultText),
 									string.Format(CultureInfo.CurrentCulture, tagFormat, this.FromCssClass, from),
 									string.Format(CultureInfo.CurrentCulture, tagFormat, this.ToCssClass, to),
@@ -250,13 +233,13 @@ namespace nJupiter.Web.UI.Controls {
 						}
 					}
 
-					WebParagraph numberOfPagesTextParagraph = e.Item.FindControl("numberOfPagesText") as WebParagraph;
+					var numberOfPagesTextParagraph = e.Item.FindControl("numberOfPagesText") as WebParagraph;
 					if(numberOfPagesTextParagraph != null) {
 						if(this.HideResult) {
 							numberOfPagesTextParagraph.Visible = false;
 						} else {
 							if(this.WrapPlaceHoldersInTags) {
-								string tagFormat = "<" + this.WrapPlaceHoldersTag + " " + HtmlAttribute.Class + "=\"{0}\">{1}</" + this.WrapPlaceHoldersTag + ">";
+								var tagFormat = string.Format("<{0} {1}=\"{{0}}\">{{1}}</{0}>", this.WrapPlaceHoldersTag, HtmlAttribute.Class);
 								numberOfPagesTextParagraph.InnerHtml = string.Format(CultureInfo.CurrentCulture, this.Server.HtmlEncode(this.NumberOfPagesText),
 									string.Format(CultureInfo.CurrentCulture, tagFormat, this.NumberOfPagesCssClass, totalPageCountHeader));
 							} else {
@@ -264,13 +247,13 @@ namespace nJupiter.Web.UI.Controls {
 							}
 						}
 					}
-					Control prev = e.Item.FindControl("previousPage");
-					Control prevIncr = e.Item.FindControl("previousIncrement");
+					var prev = e.Item.FindControl("previousPage");
+					var prevIncr = e.Item.FindControl("previousIncrement");
 
 					if(this.currentPageNumber > 0) {
-						WebButton buttonPrev = prev as WebButton;
-						WebLinkButton linkButtonPrev = prev as WebLinkButton;
-						WebAnchor ancPrev = prev as WebAnchor;
+						var buttonPrev = prev as WebButton;
+						var linkButtonPrev = prev as WebLinkButton;
+						var ancPrev = prev as WebAnchor;
 
 						if(buttonPrev != null) {
 							buttonPrev.InnerText = this.PreviousPageText;
@@ -278,7 +261,7 @@ namespace nJupiter.Web.UI.Controls {
 								buttonPrev.Attributes.Add(HtmlAttribute.Title, this.PreviousPageToolTipText);
 							}
 							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
-								string pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								buttonPrev.CommandArgument = pageNum;
 								buttonPrev.Disabled = false;
 							} else if(this.HideDisabledButtons) {
@@ -293,7 +276,7 @@ namespace nJupiter.Web.UI.Controls {
 								linkButtonPrev.ToolTip = this.PreviousPageToolTipText;
 							}
 							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
-								string pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonPrev.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonPrev.CommandArgument = pageNum;
 								linkButtonPrev.NoLink = false;
@@ -309,7 +292,7 @@ namespace nJupiter.Web.UI.Controls {
 								ancPrev.ToolTip = this.PreviousPageToolTipText;
 							}
 							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
-								string pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								ancPrev.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancPrev.NoLink = false;
 							} else if(this.HideDisabledButtons) {
@@ -318,16 +301,16 @@ namespace nJupiter.Web.UI.Controls {
 								ancPrev.NoLink = true;
 							}
 						}
-						WebButton buttonPrevIncr = prevIncr as WebButton;
-						WebLinkButton linkButtonPrevIncr = prevIncr as WebLinkButton;
-						WebAnchor ancPrevIncr = prevIncr as WebAnchor;
+						var buttonPrevIncr = prevIncr as WebButton;
+						var linkButtonPrevIncr = prevIncr as WebLinkButton;
+						var ancPrevIncr = prevIncr as WebAnchor;
 						if(buttonPrevIncr != null) {
 							buttonPrevIncr.InnerText = this.PreviousIncrementText;
 							if(!string.IsNullOrEmpty(this.PreviousIncrementToolTipText)) {
 								buttonPrevIncr.Attributes.Add(HtmlAttribute.Title, this.PreviousIncrementToolTipText);
 							}
 							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
-								string pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								buttonPrevIncr.CommandArgument = pageNum;
 								buttonPrevIncr.Visible = true;
 							} else {
@@ -340,7 +323,7 @@ namespace nJupiter.Web.UI.Controls {
 								linkButtonPrevIncr.ToolTip = this.PreviousIncrementToolTipText;
 							}
 							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
-								string pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonPrevIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonPrevIncr.CommandArgument = pageNum;
 								linkButtonPrevIncr.Visible = true;
@@ -354,7 +337,7 @@ namespace nJupiter.Web.UI.Controls {
 								ancPrevIncr.ToolTip = this.PreviousIncrementToolTipText;
 							}
 							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
-								string pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
 								ancPrevIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancPrevIncr.Visible = true;
 							} else {
@@ -365,13 +348,13 @@ namespace nJupiter.Web.UI.Controls {
 					break;
 				case ListItemType.Item:
 				case ListItemType.AlternatingItem:
-					WebButton button = (WebButton)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebButton));
-					WebLinkButton linkButton = (WebLinkButton)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebLinkButton));
-					WebAnchor anchor = (WebAnchor)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebAnchor));
+					var button = (WebButton)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebButton));
+					var linkButton = (WebLinkButton)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebLinkButton));
+					var anchor = (WebAnchor)ControlFinder.Instance.FindFirstControlOnType(e.Item, typeof(WebAnchor));
 
-					int pageNumber = (int)e.Item.DataItem;
-					bool isCurrentPage = false;
-					bool visible = true;
+					var pageNumber = (int)e.Item.DataItem;
+					var isCurrentPage = false;
+					var visible = true;
 					string buttonText = null;
 					string buttonCssClass = null;
 					string navigateUrl;
@@ -425,21 +408,21 @@ namespace nJupiter.Web.UI.Controls {
 					}
 					break;
 				case ListItemType.Footer:
-					int totalPageCountFooter = (int)Math.Ceiling(this.count / (double)ItemsPerPage);
-					Control next = e.Item.FindControl("nextPage");
-					Control nextIncr = e.Item.FindControl("nextIncrement");
+					var totalPageCountFooter = (int)Math.Ceiling(this.count / (double)ItemsPerPage);
+					var next = e.Item.FindControl("nextPage");
+					var nextIncr = e.Item.FindControl("nextIncrement");
 
 					if(this.currentPageNumber > 0) {
-						WebButton buttonNext = next as WebButton;
-						WebLinkButton linkButtonNext = next as WebLinkButton;
-						WebAnchor ancNext = next as WebAnchor;
+						var buttonNext = next as WebButton;
+						var linkButtonNext = next as WebLinkButton;
+						var ancNext = next as WebAnchor;
 						if(buttonNext != null) {
 							buttonNext.InnerText = this.NextPageText;
 							if(!string.IsNullOrEmpty(this.NextPageToolTipText)) {
 								buttonNext.Attributes.Add(HtmlAttribute.Title, this.NextPageToolTipText);
 							}
 							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
-								string pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
 								buttonNext.CommandArgument = pageNum;
 								buttonNext.Disabled = false;
 							} else if(this.HideDisabledButtons) {
@@ -454,7 +437,7 @@ namespace nJupiter.Web.UI.Controls {
 								linkButtonNext.ToolTip = this.NextPageToolTipText;
 							}
 							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
-								string pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonNext.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonNext.CommandArgument = pageNum;
 								linkButtonNext.NoLink = false;
@@ -470,7 +453,7 @@ namespace nJupiter.Web.UI.Controls {
 								ancNext.ToolTip = this.NextPageToolTipText;
 							}
 							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
-								string pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
 								ancNext.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancNext.NoLink = false;
 							} else if(this.HideDisabledButtons) {
@@ -480,16 +463,16 @@ namespace nJupiter.Web.UI.Controls {
 							}
 						}
 
-						WebButton buttonNextIncr = nextIncr as WebButton;
-						WebLinkButton linkButtonNextIncr = nextIncr as WebLinkButton;
-						WebAnchor ancNextIncr = nextIncr as WebAnchor;
+						var buttonNextIncr = nextIncr as WebButton;
+						var linkButtonNextIncr = nextIncr as WebLinkButton;
+						var ancNextIncr = nextIncr as WebAnchor;
 						if(buttonNextIncr != null) {
 							buttonNextIncr.InnerText = this.NextIncrementText;
 							if(!string.IsNullOrEmpty(this.NextIncrementToolTipText)) {
 								buttonNextIncr.Attributes.Add(HtmlAttribute.Title, this.NextIncrementToolTipText);
 							}
 							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
-								string pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
 								buttonNextIncr.CommandArgument = pageNum;
 								buttonNextIncr.Visible = true;
 							} else {
@@ -502,7 +485,7 @@ namespace nJupiter.Web.UI.Controls {
 								linkButtonNextIncr.ToolTip = this.NextIncrementToolTipText;
 							}
 							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
-								string pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
 								linkButtonNextIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonNextIncr.CommandArgument = pageNum;
 								linkButtonNextIncr.Visible = true;
@@ -516,7 +499,7 @@ namespace nJupiter.Web.UI.Controls {
 								ancNextIncr.ToolTip = this.NextIncrementToolTipText;
 							}
 							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
-								string pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
+								var pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
 								ancNextIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancNextIncr.Visible = true;
 							} else {
@@ -527,13 +510,11 @@ namespace nJupiter.Web.UI.Controls {
 					break;
 			}
 		}
-		#endregion
 
-		#region Event Activators
 		protected override void LoadViewState(object savedState) {
 			base.LoadViewState(savedState);
 			if(IsPostBack && rptPaging != null && this.ViewState[ListCollectionKey] != null) {
-				int[] viewStatedList = (int[])this.ViewState[ListCollectionKey];
+				var viewStatedList = (int[])this.ViewState[ListCollectionKey];
 				rptPaging.DataSource = viewStatedList;
 				rptPaging.DataBind();
 			}
@@ -590,7 +571,7 @@ namespace nJupiter.Web.UI.Controls {
 			base.OnLoad(e);
 			if(!this.IsPostBack && this.Request[this.PageNumberQueryKey] != null) {
 				try {
-					int pageNumber = int.Parse(this.Request[this.PageNumberQueryKey], NumberFormatInfo.InvariantInfo);
+					var pageNumber = int.Parse(this.Request[this.PageNumberQueryKey], NumberFormatInfo.InvariantInfo);
 					this.OnPagingChanged(new PagingEventArgs(pageNumber));
 				} catch(FormatException ex) {
 					//We do not want the original exception to be logged as fatal, therefore we wrap the exception in an http exception
@@ -600,36 +581,32 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected virtual void OnPagingChanged(PagingEventArgs e) {
-			PagingEventHandler eventHandler = base.Events[Paging.EventPagingChanged] as PagingEventHandler;
+			var eventHandler = base.Events[EventPagingChanged] as PagingEventHandler;
 			if(eventHandler != null) {
 				eventHandler(this, e);
 			}
 		}
-		#endregion
 
-		#region Overridden Methods
 		public override void DataBind() {
 			if(!this.visibleSet) {
 				this.Visible = this.count > 0;
 			}
 
 			this.index = this.currentPageNumber - ((this.currentPageNumber - 1) % this.VisiblePages);
-			int totalPageCount = (int)Math.Ceiling(this.count / (double)ItemsPerPage);
-			int howMany = Math.Min(totalPageCount - this.index + 1, this.VisiblePages);
-			int[] pageNumbers = new int[howMany];
-			for(int i = 0; i < howMany; i++) {
+			var totalPageCount = (int)Math.Ceiling(this.count / (double)ItemsPerPage);
+			var howMany = Math.Min(totalPageCount - this.index + 1, this.VisiblePages);
+			var pageNumbers = new int[howMany];
+			for(var i = 0; i < howMany; i++) {
 				pageNumbers[i] = this.index + i;
 			}
 
 			rptPaging.DataSource = this.ViewState[ListCollectionKey] = pageNumbers;
 			rptPaging.DataBind();
 		}
-		#endregion
 
-		#region Inner Classes
 		private sealed class DefaultButtonItemTemplate : ITemplate {
 			public void InstantiateIn(Control container) {
-				WebButton button = new WebButton();
+				var button = new WebButton();
 				button.CssClass = "page-number";
 				button.InnerSpan = true;
 				button.TrailingLinefeed = true;
@@ -638,7 +615,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultLinkItemTemplate : ITemplate {
 			public void InstantiateIn(Control container) {
-				WebLinkButton link = new WebLinkButton();
+				var link = new WebLinkButton();
 				link.CssClass = "page-number";
 				link.InnerSpan = true;
 				link.TrailingLinefeed = true;
@@ -647,7 +624,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultAnchorItemTemplate : ITemplate {
 			public void InstantiateIn(Control container) {
-				WebAnchor anchor = new WebAnchor();
+				var anchor = new WebAnchor();
 				anchor.CssClass = "page-number";
 				anchor.InnerSpan = true;
 				anchor.TrailingLinefeed = true;
@@ -657,21 +634,21 @@ namespace nJupiter.Web.UI.Controls {
 
 		private abstract class DefaultHeaderTemplateBase : ITemplate {
 			public void InstantiateIn(Control container) {
-				WebPlaceHolder wrapperBeginning = new WebPlaceHolder();
+				var wrapperBeginning = new WebPlaceHolder();
 				wrapperBeginning.InnerHtml = @"<div class=""paging"">";
 				container.Controls.Add(wrapperBeginning);
 
-				WebParagraph resultText = new WebParagraph();
+				var resultText = new WebParagraph();
 				resultText.ID = "resultText";
 				resultText.CssClass = "paging-result";
 				container.Controls.Add(resultText);
 
-				WebParagraph numberOfPagesText = new WebParagraph();
+				var numberOfPagesText = new WebParagraph();
 				numberOfPagesText.ID = "numberOfPagesText";
 				numberOfPagesText.CssClass = "paging-pages";
 				container.Controls.Add(numberOfPagesText);
 
-				WebPlaceHolder buttonWrapperBeginning = new WebPlaceHolder();
+				var buttonWrapperBeginning = new WebPlaceHolder();
 				buttonWrapperBeginning.InnerHtml = @"<p class=""paging-buttons"">";
 				container.Controls.Add(buttonWrapperBeginning);
 
@@ -681,14 +658,14 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultButtonHeaderTemplate : DefaultHeaderTemplateBase {
 			public override void InstantiateInputControls(Control container) {
-				WebButton previousPage = new WebButton();
+				var previousPage = new WebButton();
 				previousPage.InnerSpan = true;
 				previousPage.TrailingLinefeed = true;
 				previousPage.CssClass = "prev";
 				previousPage.ID = "previousPage";
 				container.Controls.Add(previousPage);
 
-				WebButton previousIncrement = new WebButton();
+				var previousIncrement = new WebButton();
 				previousIncrement.InnerSpan = true;
 				previousIncrement.TrailingLinefeed = true;
 				previousIncrement.CssClass = "prev-incr";
@@ -698,14 +675,14 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultLinkHeaderTemplate : DefaultHeaderTemplateBase {
 			public override void InstantiateInputControls(Control container) {
-				WebLinkButton previousPage = new WebLinkButton();
+				var previousPage = new WebLinkButton();
 				previousPage.InnerSpan = true;
 				previousPage.TrailingLinefeed = true;
 				previousPage.CssClass = "prev";
 				previousPage.ID = "previousPage";
 				container.Controls.Add(previousPage);
 
-				WebLinkButton previousIncrement = new WebLinkButton();
+				var previousIncrement = new WebLinkButton();
 				previousIncrement.InnerSpan = true;
 				previousIncrement.TrailingLinefeed = true;
 				previousIncrement.CssClass = "prev-incr";
@@ -715,14 +692,14 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultAnchorHeaderTemplate : DefaultHeaderTemplateBase {
 			public override void InstantiateInputControls(Control container) {
-				WebAnchor previousPage = new WebAnchor();
+				var previousPage = new WebAnchor();
 				previousPage.InnerSpan = true;
 				previousPage.TrailingLinefeed = true;
 				previousPage.CssClass = "prev";
 				previousPage.ID = "previousPage";
 				container.Controls.Add(previousPage);
 
-				WebAnchor previousIncrement = new WebAnchor();
+				var previousIncrement = new WebAnchor();
 				previousIncrement.InnerSpan = true;
 				previousIncrement.TrailingLinefeed = true;
 				previousIncrement.CssClass = "prev-incr";
@@ -735,15 +712,15 @@ namespace nJupiter.Web.UI.Controls {
 			public void InstantiateIn(Control container) {
 				this.InstantiateInputControls(container);
 
-				WebPlaceHolder buttonWrapperEnd = new WebPlaceHolder();
+				var buttonWrapperEnd = new WebPlaceHolder();
 				buttonWrapperEnd.InnerHtml = @"</p>";
 				container.Controls.Add(buttonWrapperEnd);
 
-				WebPlaceHolder wrapperEnd = new WebPlaceHolder();
+				var wrapperEnd = new WebPlaceHolder();
 				wrapperEnd.InnerHtml = "</div>";
 				container.Controls.Add(wrapperEnd);
 
-				WebGenericControl clearer = new WebGenericControl(HtmlTag.Div);
+				var clearer = new WebGenericControl(HtmlTag.Div);
 				clearer.CssClass = "clearer";
 				clearer.InnerHtml = "&nbsp;";
 				container.Controls.Add(clearer);
@@ -753,14 +730,14 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultButtonFooterTemplate : DefaultFooterTemplateBase {
 			protected override void InstantiateInputControls(Control container) {
-				WebButton nextIncrement = new WebButton();
+				var nextIncrement = new WebButton();
 				nextIncrement.InnerSpan = true;
 				nextIncrement.TrailingLinefeed = true;
 				nextIncrement.CssClass = "next-incr";
 				nextIncrement.ID = "nextIncrement";
 				container.Controls.Add(nextIncrement);
 
-				WebButton nextPage = new WebButton();
+				var nextPage = new WebButton();
 				nextPage.InnerSpan = true;
 				nextPage.TrailingLinefeed = true;
 				nextPage.CssClass = "next";
@@ -770,14 +747,14 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultLinkFooterTemplate : DefaultFooterTemplateBase {
 			protected override void InstantiateInputControls(Control container) {
-				WebLinkButton nextIncrement = new WebLinkButton();
+				var nextIncrement = new WebLinkButton();
 				nextIncrement.InnerSpan = true;
 				nextIncrement.TrailingLinefeed = true;
 				nextIncrement.CssClass = "next-incr";
 				nextIncrement.ID = "nextIncrement";
 				container.Controls.Add(nextIncrement);
 
-				WebLinkButton nextPage = new WebLinkButton();
+				var nextPage = new WebLinkButton();
 				nextPage.InnerSpan = true;
 				nextPage.TrailingLinefeed = true;
 				nextPage.CssClass = "next";
@@ -787,14 +764,14 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		private sealed class DefaultAnchorFooterTemplate : DefaultFooterTemplateBase {
 			protected override void InstantiateInputControls(Control container) {
-				WebAnchor nextIncrement = new WebAnchor();
+				var nextIncrement = new WebAnchor();
 				nextIncrement.InnerSpan = true;
 				nextIncrement.TrailingLinefeed = true;
 				nextIncrement.CssClass = "next-incr";
 				nextIncrement.ID = "nextIncrement";
 				container.Controls.Add(nextIncrement);
 
-				WebAnchor nextPage = new WebAnchor();
+				var nextPage = new WebAnchor();
 				nextPage.InnerSpan = true;
 				nextPage.TrailingLinefeed = true;
 				nextPage.CssClass = "next";
@@ -802,6 +779,5 @@ namespace nJupiter.Web.UI.Controls {
 				container.Controls.Add(nextPage);
 			}
 		}
-		#endregion
 	}
 }

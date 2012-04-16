@@ -22,9 +22,11 @@
 */
 #endregion
 
+using System;
 using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls {
 
+	[Obsolete("Try using System.Web.UI.WebControls.DropDownList instead")]
 	public class WebDropDownList : DropDownList { }
 }

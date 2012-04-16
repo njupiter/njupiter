@@ -30,8 +30,9 @@ using nJupiter.Web.UI.Events;
 
 namespace nJupiter.Web.UI.Controls.Listings {
 
+	[Obsolete("Try using System.Web.UI.WebControls.ListView instead if possible")]
 	public class PagedListing : GeneralListing {
-		#region Constants
+
 #if DEBUG
 		private const string	DebugPrefix = "_";
 #else
@@ -44,9 +45,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		private const string DefaultPagingpreviouspagetext = DebugPrefix + "Previous page";
 		private const string DefaultPagingnextincrementtext = DebugPrefix + "...";
 		private const string DefaultPagingpreviousincrementtext = DebugPrefix + "...";
-		#endregion
 
-		#region Members
 		private int itemsPerPage = 10;
 		private int currentPageNumber = 1;
 		private int pagingNumberOfPages = 5;
@@ -66,9 +65,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		private Paging footerPaging;
 		private string footerPagingId;
 		private WebDropDownList numberOfItemsSelector;
-		#endregion
 
-		#region Properties
 		public string PagingResultText { get { return this.pagingResultText; } set { this.pagingResultText = value; } }
 		public string PagingNumberOfPagesText { get { return this.pagingNumberOfPagesText; } set { this.pagingNumberOfPagesText = value; } }
 		public string PagingPreviousPageText { get { return this.pagingPreviousPageText; } set { this.pagingPreviousPageText = value; } }
@@ -135,7 +132,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		public WebDropDownList NumberOfItemsSelector {
 			get {
 				if(this.numberOfItemsSelector == null) {
-					NumberOfItemsSelector dropDownControl = (NumberOfItemsSelector)ControlFinder.Instance.FindFirstControlOnType(this.HeaderControl, typeof(NumberOfItemsSelector), true);
+					var dropDownControl = (NumberOfItemsSelector)ControlFinder.Instance.FindFirstControlOnType(this.HeaderControl, typeof(NumberOfItemsSelector), true);
 					if(dropDownControl != null) {
 						this.numberOfItemsSelector = dropDownControl;
 					}
@@ -144,9 +141,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 			set { this.numberOfItemsSelector = value; }
 		}
-		#endregion
 
-		#region Event Activators
 		protected override void OnInit(EventArgs e) {
 			base.OnInit(e);
 			if(this.headerPaging == null) {
@@ -164,15 +159,11 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				}
 			}
 		}
-		#endregion
 
-		#region Event Handlers
 		protected void PagingChanged(object sender, PagingEventArgs e) {
 			this.CurrentPageNumber = e.PageNumber;
 		}
-		#endregion
 
-		#region Overridden Methods
 		protected override void PopulateList() {
 			this.DoFiltering();
 			this.DoSorting();
@@ -181,7 +172,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			}
 			//protect from getting out of bounds of list (choosing ItemsPerPage and clicking next and 
 			//next page being outside of bounds)
-			int maxNumberOfPages = (int)Math.Ceiling(this.TotalNumberOfItems / (double)this.ItemsPerPage);
+			var maxNumberOfPages = (int)Math.Ceiling(this.TotalNumberOfItems / (double)this.ItemsPerPage);
 			if(this.CurrentPageNumber > maxNumberOfPages && this.CurrentPageNumber > 1) {
 				this.CurrentPageNumber = maxNumberOfPages;
 			}
@@ -199,9 +190,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				this.PagingNumberOfPagesText = this.FooterPaging.NumberOfPagesText;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected virtual void PopulatePaging() {
 			if(!this.DisablePaging) {
 				this.ListCollection = GetPagedCollection(this.InnerListCollection);
@@ -215,9 +204,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				this.FooterPaging.DataBind();
 			}
 		}
-		#endregion
 
-		#region Helper Methods
 		private void InitPaging(Paging paging) {
 			if(paging != null) {
 				paging.ItemsPerPage = this.ItemsPerPage;
@@ -235,6 +222,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 				paging.NextIncrementToolTipText = this.PagingNextIncrementToolTipText;
 			}
 		}
+
 		private ArrayList GetPagedCollection(ArrayList list) {
 			try {
 				if(this.currentPageNumber == 1) {
@@ -243,7 +231,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 					}
 				} else {
 					// tail
-					int index = this.currentPageNumber * this.ItemsPerPage;
+					var index = this.currentPageNumber * this.ItemsPerPage;
 					if(index < list.Count) {
 						list.RemoveRange(index, list.Count - index);
 					}
@@ -252,6 +240,6 @@ namespace nJupiter.Web.UI.Controls.Listings {
 			} catch(ArgumentException) { }
 			return list;
 		}
-		#endregion
+
 	}
 }

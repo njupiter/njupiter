@@ -33,7 +33,7 @@ namespace nJupiter.Web {
 	public sealed class IndenterModule : IHttpModule {
 
 		static void ReleaseRequestState(object sender, EventArgs e) {
-			HttpResponse response = HttpContext.Current.Response;
+			var response = HttpContext.Current.Response;
 			if(response.ContentType.Contains("html")) {
 				response.Filter = new IndenterFilter(response.Filter);
 			}
@@ -58,7 +58,6 @@ namespace nJupiter.Web {
 			this.responseStream = inputStream;
 		}
 
-		#region Overrides
 		public override bool CanRead { get { return this.responseStream.CanRead; } }
 		public override bool CanSeek { get { return this.responseStream.CanSeek; } }
 		public override bool CanWrite { get { return this.responseStream.CanWrite; } }
@@ -82,7 +81,7 @@ namespace nJupiter.Web {
 		public override void Write(byte[] buffer, int offset, int count) {
 			if(this.content == null)
 				this.content = new StringBuilder();
-			this.content.Append(System.Text.Encoding.UTF8.GetString(buffer, offset, count));
+			this.content.Append(Encoding.UTF8.GetString(buffer, offset, count));
 		}
 
 		public override void Flush() {
@@ -91,15 +90,15 @@ namespace nJupiter.Web {
 				return;
 			}
 
-			string contentString = this.content.ToString();
+			var contentString = this.content.ToString();
 
-			XmlDocument doc = new XmlDocument();
+			var doc = new XmlDocument();
 			doc.LoadXml(contentString);
-			XmlWriterSettings settings = new XmlWriterSettings();
+			var settings = new XmlWriterSettings();
 			settings.OmitXmlDeclaration = true;
 			settings.Indent = true;
 			settings.IndentChars = "\t";
-			XmlWriter writer = XmlWriter.Create(this.responseStream, settings);
+			var writer = XmlWriter.Create(this.responseStream, settings);
 			if(writer != null) {
 				doc.Save(writer);
 			}
@@ -107,6 +106,5 @@ namespace nJupiter.Web {
 			this.content = null;
 			this.responseStream.Flush();
 		}
-		#endregion
 	}
 }

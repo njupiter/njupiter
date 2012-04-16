@@ -31,7 +31,7 @@ using System.ComponentModel;
 namespace nJupiter.Web.UI.Controls {
 
 	public class WebAnchor : HyperLink {
-		#region Constants
+
 		private const string HashChar = "#";
 		private const string BrTag = "<" + HtmlTag.Br + " />";
 		private const string InnerSpanKey = "v_InnerSpan";
@@ -42,9 +42,7 @@ namespace nJupiter.Web.UI.Controls {
 		private const string HasControlsKey = "v_HasControls";
 		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
 		private const string TrailingBreakKey = "v_TrailingBreak";
-		#endregion
 
-		#region Properties
 		public bool RenderId {
 			get {
 				if(this.ViewState[RenderIdKey] == null)
@@ -131,9 +129,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[TrailingLinefeedKey] = value;
 			}
 		}
-		#endregion
 
-		#region Method
 		protected override void AddParsedSubObject(object obj) {
 			if(!(obj is LiteralControl) && !(obj is Literal))
 				this.DisableEncoding = true;
@@ -149,7 +145,7 @@ namespace nJupiter.Web.UI.Controls {
 						writer.WriteAttribute(HtmlAttribute.Class, this.CssClass);
 						this.Attributes.Render(writer);
 						if(!this.RenderOriginalId) {
-							string originalId = this.ID;
+							var originalId = this.ID;
 							this.ID = null;
 							if(this.RenderId)
 								writer.WriteAttribute(HtmlAttribute.Id, originalId);
@@ -165,7 +161,7 @@ namespace nJupiter.Web.UI.Controls {
 
 			} else {
 				if(!this.RenderOriginalId) {
-					string originalId = this.ID;
+					var originalId = this.ID;
 					this.ID = null;
 					if(this.RenderId)
 						this.Attributes.Add(HtmlAttribute.Id, originalId);
@@ -197,9 +193,9 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected override void RenderContents(HtmlTextWriter writer) {
-			string text = this.ImageUrl;
+			var text = this.ImageUrl;
 			if(text.Length > 0) {
-				WebImage image = new WebImage();
+				var image = new WebImage();
 				image.ImageUrl = text;
 				text = this.ToolTip;
 				if(text.Length != 0) {
@@ -219,7 +215,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected override void AddAttributesToRender(HtmlTextWriter writer) {
 			if(this.NavigateUrl.StartsWith(HashChar)) {
-				string origUrl = this.NavigateUrl;
+				var origUrl = this.NavigateUrl;
 				this.NavigateUrl = string.Empty;
 				base.AddAttributesToRender(writer);
 				if(origUrl.Length > 0 && this.Enabled) {
@@ -229,6 +225,5 @@ namespace nJupiter.Web.UI.Controls {
 				base.AddAttributesToRender(writer);
 			}
 		}
-		#endregion
 	}
 }

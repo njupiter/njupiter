@@ -53,10 +53,10 @@ namespace nJupiter.Web {
 		// and that the parameters collection can and should be able to change on the fly
 		public string ContentType {
 			get {
-				StringBuilder contentType = new StringBuilder(this.type);
-				foreach(string paramKey in this.parameters.AllKeys) {
-					string[] paramValues = this.parameters[paramKey].Split(',');
-					foreach(string paramValue in paramValues) {
+				var contentType = new StringBuilder(this.type);
+				foreach(var paramKey in this.parameters.AllKeys) {
+					var paramValues = this.parameters[paramKey].Split(',');
+					foreach(var paramValue in paramValues) {
 						contentType.Append("; ");
 						contentType.Append(paramKey);
 						contentType.Append("=");
@@ -71,7 +71,7 @@ namespace nJupiter.Web {
 			get {
 				if(this.parameters["q"] != null) {
 					double q;
-					string paramValue = this.parameters["q"].Split(',')[0]; // According to RFC2616 the first q is always the quality. Other counts as usual parameters
+					var paramValue = this.parameters["q"].Split(',')[0]; // According to RFC2616 the first q is always the quality. Other counts as usual parameters
 					if(double.TryParse(paramValue, NumberStyles.Number, CultureInfo.InvariantCulture.NumberFormat, out q)) {
 						return new decimal(q);
 					}
@@ -83,7 +83,7 @@ namespace nJupiter.Web {
 		public Encoding CharSet {
 			get {
 				if(this.parameters["charset"] != null) {
-					string paramValue = this.parameters["charset"].Split(',')[0];
+					var paramValue = this.parameters["charset"].Split(',')[0];
 					return Encoding.GetEncoding(paramValue);
 				}
 				return Encoding.UTF8;
@@ -100,13 +100,13 @@ namespace nJupiter.Web {
 			if(mimeType == null)
 				throw new ArgumentNullException("mimeType");
 
-			string[] types = mimeType.Split(';', ':');
+			var types = mimeType.Split(';', ':');
 
 			this.parameters = new NameValueCollection();
 
 			this.type = types[0].Trim();
 
-			string[] mime = this.type.Split('/');
+			var mime = this.type.Split('/');
 
 			if(mime.Length != 2)
 				throw new ArgumentException("Parameter value [" + mimeType + "] is not a mime-type.", "mimeType");
@@ -115,12 +115,12 @@ namespace nJupiter.Web {
 			this.compositeType = mime[1].Trim();
 
 			if(types.Length > 1) {
-				for(int i = 1; i < types.Length; i++) {
-					string acceptParam = types[i];
-					string[] aParam = acceptParam.Split('=');
+				for(var i = 1; i < types.Length; i++) {
+					var acceptParam = types[i];
+					var aParam = acceptParam.Split('=');
 					if(aParam.Length == 2) {
-						string paramKey = aParam[0].Trim();
-						string paramValue = aParam[1].Trim();
+						var paramKey = aParam[0].Trim();
+						var paramValue = aParam[1].Trim();
 						this.parameters.Add(paramKey, paramValue);
 					}
 				}
@@ -137,7 +137,7 @@ namespace nJupiter.Web {
 		}
 
 		public override int GetHashCode() {
-			int result = 17;
+			var result = 17;
 			result = (37 * result) + this.ContentType.GetHashCode();
 			return result;
 		}

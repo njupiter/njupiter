@@ -37,26 +37,26 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		private static Dictionary<string, List<string>> excludedPathArray;
 
 		static ControlAdapterBase() {
-			ControlAdapterBase.Configure(null, EventArgs.Empty);
+			Configure(null, EventArgs.Empty);
 		}
 
 		private static void Configure(object sender, EventArgs e) {
 			lock(PadLock) {
-				Dictionary<string, List<string>> array = new Dictionary<string, List<string>>();
-				IConfig config = ConfigRepository.Instance.GetSystemConfig();
+				var array = new Dictionary<string, List<string>>();
+				var config = ConfigRepository.Instance.GetSystemConfig();
 				if(config != null) {
-					IConfig controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
+					var controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
 					if(controlAdapterConfig != null) {
-						XmlNodeList adapters = controlAdapterConfig.ConfigXml.SelectNodes("controlAdapter");
+						var adapters = controlAdapterConfig.ConfigXml.SelectNodes("controlAdapter");
 						if(adapters != null) {
 							foreach(XmlNode adapter in adapters) {
-								XmlAttribute nameAttribute = adapter.Attributes["name"];
+								var nameAttribute = adapter.Attributes["name"];
 								if(nameAttribute != null && nameAttribute.Value != null) {
-									XmlNodeList excludedPaths = adapter.SelectNodes("excludedPaths/path");
-									List<string> excludedPathList = new List<string>();
+									var excludedPaths = adapter.SelectNodes("excludedPaths/path");
+									var excludedPathList = new List<string>();
 									if(excludedPaths != null) {
 										foreach(XmlNode excludedPath in excludedPaths) {
-											XmlAttribute excludedPathAttribute = excludedPath.Attributes["value"];
+											var excludedPathAttribute = excludedPath.Attributes["value"];
 											if(excludedPathAttribute != null && excludedPathAttribute.Value != null) {
 												excludedPathList.Add(excludedPathAttribute.Value);
 											}
@@ -67,7 +67,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 							}
 						}
 					}
-					config.Discarded += ControlAdapterBase.Configure;
+					config.Discarded += Configure;
 				}
 				excludedPathArray = array;
 			}
@@ -80,10 +80,10 @@ namespace nJupiter.Web.UI.ControlAdapters {
 					return false;
 				}
 				string[] adapters = { "*", this.GetType().FullName };
-				foreach(string adapter in adapters) {
+				foreach(var adapter in adapters) {
 					if(excludedPathArray.ContainsKey(adapter)) {
-						List<string> excludedPaths = excludedPathArray["*"];
-						foreach(string excludedPath in excludedPaths) {
+						var excludedPaths = excludedPathArray["*"];
+						foreach(var excludedPath in excludedPaths) {
 							if(this.Page.Request.Path.StartsWith(excludedPath, StringComparison.OrdinalIgnoreCase)) {
 								return false;
 							}

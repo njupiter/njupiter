@@ -31,13 +31,10 @@ namespace nJupiter.Web.UI.Controls {
 	[ControlBuilder(typeof(PlaceHolderControlBuilder))]
 	public class WebPlaceHolder : Control {
 
-		#region Constants
 		private const string BrTag = "<" + HtmlTag.Br + " />";
 		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
 		private const string TrailingBreakKey = "v_TrailingBreak";
-		#endregion
 
-		#region Properties
 		public string SurroundingTag {
 			get {
 				if(this.ViewState["v_SurroundingTag"] == null)
@@ -79,7 +76,7 @@ namespace nJupiter.Web.UI.Controls {
 		protected override void LoadViewState(object savedState) {
 			if(savedState != null) {
 				base.LoadViewState(savedState);
-				string text = (string)this.ViewState["innerhtml"];
+				var text = (string)this.ViewState["innerhtml"];
 				if(text != null) {
 					this.InnerHtml = text;
 				}
@@ -111,9 +108,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[TrailingLinefeedKey] = value;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
 			if(!string.IsNullOrEmpty(this.SurroundingTag))
 				writer.WriteFullBeginTag(this.SurroundingTag);
@@ -129,6 +124,6 @@ namespace nJupiter.Web.UI.Controls {
 		new public void EnsureChildControls() {
 			base.EnsureChildControls();
 		}
-		#endregion
+
 	}
 }

@@ -69,14 +69,14 @@ namespace nJupiter.Web {
 
 			if(parameters.Length > 0) {
 				var queryString = new StringBuilder(url);
-				int hashPos = url.IndexOf("#");
-				int hashPosFromEnd = hashPos >= 0 ? url.Length - hashPos : hashPos;
+				var hashPos = url.IndexOf("#", StringComparison.Ordinal);
+				var hashPosFromEnd = hashPos >= 0 ? url.Length - hashPos : hashPos;
 				if(hashPosFromEnd >= 0) {
-					queryString.Insert(queryString.Length - hashPosFromEnd, url.IndexOf("?") > 0 ? "&" : "?");
+					queryString.Insert(queryString.Length - hashPosFromEnd, url.IndexOf("?", StringComparison.Ordinal) > 0 ? "&" : "?");
 				} else {
-					queryString.Append(url.IndexOf("?") > 0 ? "&" : "?");
+					queryString.Append(url.IndexOf("?", StringComparison.Ordinal) > 0 ? "&" : "?");
 				}
-				for(int i = 0; i < parameters.Length; i++) {
+				for(var i = 0; i < parameters.Length; i++) {
 					if(parameters[i].Length > 0) {
 						if(hashPosFromEnd >= 0) {
 							queryString.Insert(queryString.Length - hashPosFromEnd, parameters[i]);
@@ -102,7 +102,7 @@ namespace nJupiter.Web {
 				throw new ArgumentNullException("queryStringCollection");
 			}
 			var parameters = new string[queryStringCollection.Count];
-			int i = 0;
+			var i = 0;
 			foreach(string name in queryStringCollection) {
 				parameters[i++] = string.Format(CultureInfo.InvariantCulture, "{0}={1}", name, (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]));
 			}
@@ -119,10 +119,10 @@ namespace nJupiter.Web {
 			var nvc = new NameValueCollection();
 			if(url.IndexOf('?') > 0)
 				url = url.Substring(url.IndexOf('?') + 1);
-			string[] queryParams = url.Split('&');
-			foreach(string queryParam in queryParams) {
+			var queryParams = url.Split('&');
+			foreach(var queryParam in queryParams) {
 				if(queryParam.IndexOf('=') > 0) {
-					string[] q = queryParam.Split('=');
+					var q = queryParam.Split('=');
 					if(q.Length == 2)
 						nvc.Add(q[0], q[1]);
 					else if(q.Length == 1)
@@ -157,7 +157,7 @@ namespace nJupiter.Web {
 			}
 			var sb = new StringBuilder();
 			foreach(string name in queryStringCollection) {
-				string value = (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]);
+				var value = (encodeValues ? HttpUtility.UrlEncode(queryStringCollection[name]) : queryStringCollection[name]);
 				sb.AppendFormat("{0}={1}&", name, value);
 			}
 			if(sb.Length == 0)
@@ -173,31 +173,31 @@ namespace nJupiter.Web {
 				throw new ArgumentNullException("parametersToRemove");
 			}
 			queryStringCollection = new NameValueCollection(queryStringCollection);
-			for(int i = 0; i < parametersToRemove.Length; i++) {
-				queryStringCollection.Remove(parametersToRemove[i]);
+			foreach(var t in parametersToRemove) {
+				queryStringCollection.Remove(t);
 			}
 			return queryStringCollection;
 		}
 
 		public static string RemoveQueryKeys(string url, params string[] keys) {
-			string path = url;
-			foreach(string key in keys) {
+			var path = url;
+			foreach(var key in keys) {
 				path = RemoveQueryKey(path, key);
 			}
 			return path;
 		}
 		public static string RemoveQueryKey(string url, string key) {
 			ValidateArguments(url, key);
-			int queryStringSeparatorPos = url.IndexOf("?");
-			int hashSeparatorPos = url.IndexOf("#");
-			string path = url;
+			var queryStringSeparatorPos = url.IndexOf("?", StringComparison.Ordinal);
+			var hashSeparatorPos = url.IndexOf("#", StringComparison.Ordinal);
+			var path = url;
 			if(queryStringSeparatorPos > -1) {
 				if(hashSeparatorPos > -1)
 					path = path.Substring(0, queryStringSeparatorPos) + path.Substring(hashSeparatorPos);
 				else
 					path = path.Substring(0, queryStringSeparatorPos);
 			}
-			return AddQueryParams(path, UrlHandler.GetQueryString(url, key));
+			return AddQueryParams(path, GetQueryString(url, key));
 		}
 
 		private static void ValidateArguments(string url, string key) {
@@ -230,7 +230,7 @@ namespace nJupiter.Web {
 			get {
 				if(HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentQueryString"] == null) {
 					if(HttpContext.Current.Items["FriendlyUrlModule.CurrentFriendlyUrl"] != null) {
-						HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentQueryString"] = UrlHandler.RemoveQueryParams(HttpContext.Current.Request.QueryString, "id", "epslanguage");
+						HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentQueryString"] = RemoveQueryParams(HttpContext.Current.Request.QueryString, "id", "epslanguage");
 					} else {
 						return HttpContext.Current.Request.QueryString;
 					}
@@ -242,7 +242,7 @@ namespace nJupiter.Web {
 		[Obsolete("Originaly used to get around an Friendly Url Rewriter in an old CMS. System.Web.HttpContext.Current.Request.Url.PathAndQuery instead")]
 		public static string CurrentPathAndQuery {
 			get {
-				NameValueCollection queryString = CurrentQueryString;
+				var queryString = CurrentQueryString;
 				if(queryString != null && queryString.Count > 0)
 					return AddQueryParams(CurrentPath, GetQueryString(CurrentQueryString));
 				return CurrentPath;
@@ -254,7 +254,7 @@ namespace nJupiter.Web {
 			get {
 				if(HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentForm"] == null) {
 					if(HttpContext.Current.Items["FriendlyUrlModule.CurrentFriendlyUrl"] != null) {
-						HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentForm"] = UrlHandler.RemoveQueryParams(HttpContext.Current.Request.Form, "id", "epslanguage");
+						HttpContext.Current.Items["nJupiter.Web.UrlHandler.CurrentForm"] = RemoveQueryParams(HttpContext.Current.Request.Form, "id", "epslanguage");
 					} else {
 						return HttpContext.Current.Request.Form;
 					}

@@ -28,7 +28,6 @@ namespace nJupiter.Web.UI.ControlAdapters {
 
 	public class HtmlTitleAdapter : HtmlControlAdapter {
 
-		#region Properties
 		private HtmlTitle TitleControl {
 			get {
 				return this.HtmlControl as HtmlTitle;
@@ -71,7 +70,6 @@ namespace nJupiter.Web.UI.ControlAdapters {
 				base.Render(writer);
 			}
 		}
-		#endregion
 	}
 
 }

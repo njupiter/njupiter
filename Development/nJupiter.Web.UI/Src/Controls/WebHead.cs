@@ -29,6 +29,7 @@ using System.Collections.Specialized;
 
 namespace nJupiter.Web.UI.Controls {
 
+	[Obsolete("Try using System.Web.UI.HtmlControls.Head together with nJupiter.Web.UI.ControlAdapters.HtmlHeadAdapter (or ASP.NET 4)")]
 	public class WebHead : WebGenericControl {
 
 		private ListDictionary scriptBlocks;
@@ -56,7 +57,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		public void RegisterClientScriptBlock(Type type, string key, string script) {
-			ScriptKey scriptKey = new ScriptKey(type, key);
+			var scriptKey = new ScriptKey(type, key);
 			if(this.ScriptBlocks[scriptKey] == null) {
 				this.ScriptBlocks.Add(scriptKey, script);
 			}
@@ -84,12 +85,12 @@ namespace nJupiter.Web.UI.Controls {
 			}
 
 			public override bool Equals(object obj) {
-				ScriptKey scriptKey = (ScriptKey)obj;
+				var scriptKey = (ScriptKey)obj;
 				return ((scriptKey.type == this.type) && (scriptKey.key == this.key));
 			}
 
 			public override int GetHashCode() {
-				int result = 17;
+				var result = 17;
 				result = (37 * result) + this.type.GetHashCode();
 				result = (37 * result) + this.key.GetHashCode();
 				return result;

@@ -22,11 +22,13 @@
 */
 #endregion
 
+using System;
+
 namespace nJupiter.Web.UI.Controls {
 
+	[Obsolete("Try using System.Web.UI.HtmlControls.HtmlGenericControl together with nJupiter.Web.UI.ControlAdapters.HtmlGenericAdapter (or ASP.NET 4)")]
 	public class WebParagraph : WebGenericControl {
 		
-		#region Constructors
 		public WebParagraph() {
 			this.TagName = HtmlTag.P;
 		}
@@ -39,7 +41,6 @@ namespace nJupiter.Web.UI.Controls {
 		public WebParagraph(string tag) : this(){}
 		// ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
-		#endregion
 
 	}
 }

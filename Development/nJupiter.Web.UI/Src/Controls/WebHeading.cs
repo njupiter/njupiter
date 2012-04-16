@@ -27,15 +27,13 @@ using System.Web.UI;
 
 namespace nJupiter.Web.UI.Controls {
 
+	[Obsolete("Try using System.Web.UI.HtmlControls.HtmlGenericControl together with nJupiter.Web.UI.ControlAdapters.HtmlGenericAdapter (or ASP.NET 4)")]
 	public class WebHeading : WebGenericControl {
-
-		#region Constants
+		
 		private const string Tag = "h";
 		private const string InnerSpanKey = "v_InnerSpan";
 		private const string HeadingLevelKey = "v_HeadingLevel";
-		#endregion
 
-		#region Properties
 		public int Level {
 			get {
 				if(this.ViewState[HeadingLevelKey] == null)
@@ -58,9 +56,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[InnerSpanKey] = value;
 			}
 		}
-		#endregion
 
-		#region Constructors
 		public WebHeading() { }
 
 #pragma warning disable 168
@@ -70,9 +66,7 @@ namespace nJupiter.Web.UI.Controls {
 		public WebHeading(string tag) : this() { }
 		// ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
-		#endregion
 
-		#region Event Handlers
 		protected override void OnPreRender(EventArgs e) {
 			this.TagName = Tag + this.Level;
 			base.OnPreRender(e);
@@ -97,7 +91,6 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			return base.IsAttribute(name);
 		}
-		#endregion
 
 	}
 }

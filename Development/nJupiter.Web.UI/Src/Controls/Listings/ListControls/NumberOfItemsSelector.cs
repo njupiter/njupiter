@@ -28,8 +28,9 @@ using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls.Listings {
 
+	[Obsolete("Try using System.Web.UI.WebControls.ListView instead if possible")]
+
 	public class NumberOfItemsSelector : WebDropDownList {
-		#region Constants
 #if DEBUG
 		private const string	DebugPrefix		= "_";
 #else
@@ -38,18 +39,12 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		private const string DefaultAllitemtext = DebugPrefix + "All";
 
 		private const int AllitemValue = int.MaxValue;
-		#endregion
 
-		#region Members
 		private string allItemText = DefaultAllitemtext;
-		#endregion
 
-		#region Properties
 		public bool IncludeAllItem { get; set; }
 		public string AllItemText { get { return this.allItemText; } set { this.allItemText = value; } }
-		#endregion
 
-		#region Overridden Methods
 		protected override void OnInit(EventArgs e) {
 			this.Items.Add(10.ToString(NumberFormatInfo.CurrentInfo));
 			this.Items.Add(25.ToString(NumberFormatInfo.CurrentInfo));
@@ -59,7 +54,7 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		}
 		protected override void OnPreRender(EventArgs e) {
 			base.OnPreRender(e);
-			ListItem allItem = this.Items.FindByValue(AllitemValue.ToString(NumberFormatInfo.CurrentInfo));
+			var allItem = this.Items.FindByValue(AllitemValue.ToString(NumberFormatInfo.CurrentInfo));
 			if(allItem != null) {
 				if(this.IncludeAllItem) {
 					allItem.Text = this.AllItemText;
@@ -74,6 +69,5 @@ namespace nJupiter.Web.UI.Controls.Listings {
 		private void AddAllItem() {
 			this.Items.Add(new ListItem(this.AllItemText, AllitemValue.ToString(NumberFormatInfo.CurrentInfo)));
 		}
-		#endregion
 	}
 }

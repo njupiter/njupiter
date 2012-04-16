@@ -29,20 +29,16 @@ using System.Collections.Specialized;
 
 namespace nJupiter.Web.UI.Controls {
 	public class WebScriptHolder : Control {
-		#region Members
+
 		private ListDictionary scriptBlocks;
 		private readonly object padlock = new object();
-		#endregion
 
-		#region Constructors
 		public WebScriptHolder() {
 			if(HttpContext.Current != null) {
 				HttpContext.Current.Items[typeof(WebScriptHolder)] = this;
 			}
 		}
-		#endregion
 
-		#region Properties
 		private ListDictionary ScriptBlocks {
 			get {
 				if(this.scriptBlocks != null)
@@ -55,9 +51,7 @@ namespace nJupiter.Web.UI.Controls {
 				return this.scriptBlocks;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void Render(HtmlTextWriter writer) {
 			base.Render(writer);
 			if(this.scriptBlocks != null) {
@@ -68,14 +62,12 @@ namespace nJupiter.Web.UI.Controls {
 			}
 		}
 		public void RegisterClientScriptBlock(Type type, string key, string script) {
-			ScriptKey scriptKey = new ScriptKey(type, key);
+			var scriptKey = new ScriptKey(type, key);
 			if(this.ScriptBlocks[scriptKey] == null) {
 				this.ScriptBlocks.Add(scriptKey, script);
 			}
 		}
-		#endregion
 
-		#region Helper Classes
 		private sealed class ScriptKey {
 			private readonly string key;
 			private readonly Type type;
@@ -89,17 +81,16 @@ namespace nJupiter.Web.UI.Controls {
 			}
 
 			public override bool Equals(object obj) {
-				ScriptKey scriptKey = (ScriptKey)obj;
+				var scriptKey = (ScriptKey)obj;
 				return ((scriptKey.type == this.type) && (scriptKey.key == this.key));
 			}
 
 			public override int GetHashCode() {
-				int result = 17;
+				var result = 17;
 				result = (37 * result) + this.type.GetHashCode();
 				result = (37 * result) + this.key.GetHashCode();
 				return result;
 			}
 		}
-		#endregion
 	}
 }

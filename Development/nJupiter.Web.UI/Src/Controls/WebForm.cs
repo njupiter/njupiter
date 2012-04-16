@@ -33,13 +33,11 @@ using System.ComponentModel;
 namespace nJupiter.Web.UI.Controls {
 
 	[ToolboxItem(true)]
+	[Obsolete("Try using System.Web.UI.HtmlControls.HtmlForm together with nJupiter.Web.UI.ControlAdapters.HtmlFormAdapter (or ASP.NET 4)")]
 	public class WebForm : HtmlForm {
 
-		#region Constants
 		private const string XhtmlStrictRendering = "v_XHTMLStrictRendering";
-		#endregion
 
-		#region Properties
 		public bool XHTMLStrictRendering {
 			get {
 				if(this.ViewState[XhtmlStrictRendering] == null)
@@ -52,7 +50,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 		public string CssClass {
 			get {
-				string result = this.ViewState[HtmlAttribute.Class] as string;
+				var result = this.ViewState[HtmlAttribute.Class] as string;
 				if(result != null)
 					return result;
 				return string.Empty;
@@ -61,9 +59,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.ViewState[HtmlAttribute.Class] = value;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void RenderAttributes(HtmlTextWriter writer) {
 			if(this.CssClass.Length > 0)
 				this.Attributes.Add(HtmlAttribute.Class, this.CssClass);
@@ -71,8 +67,8 @@ namespace nJupiter.Web.UI.Controls {
 			base.RenderAttributes(writer);
 		}
 		protected override void Render(HtmlTextWriter writer) {
-			if(this.XHTMLStrictRendering && writer.GetType().Equals(typeof(HtmlTextWriter))) {
-				StrictHtmlTextWriter w = new StrictHtmlTextWriter(writer);
+			if(this.XHTMLStrictRendering && writer.GetType() == typeof(HtmlTextWriter)) {
+				var w = new StrictHtmlTextWriter(writer);
 				base.Render(w);
 			} else {
 				base.Render(writer);
@@ -84,7 +80,6 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			return base.ResolveAdapter();
 		}
-		#endregion
 	}
 
 	public class StrictHtmlTextWriter : HtmlTextWriter {
@@ -103,12 +98,7 @@ namespace nJupiter.Web.UI.Controls {
 		private IdnMapping idnMapping;
 
 		private IdnMapping IdnMapping {
-			get {
-				if(this.idnMapping == null) {
-					this.idnMapping = new IdnMapping();
-				}
-				return this.idnMapping;
-			}
+			get { return this.idnMapping ?? (this.idnMapping = new IdnMapping()); }
 		}
 
 		public override bool IsValidFormAttribute(string attribute) {
@@ -124,17 +114,17 @@ namespace nJupiter.Web.UI.Controls {
 			switch(key) {
 				case HtmlTextWriterAttribute.Href:
 				case HtmlTextWriterAttribute.Src:
-				Uri uri;
-				try {
+					try {
+					Uri uri;
 					if(Uri.TryCreate(value, UriKind.Absolute, out uri)) {
 						//if an absolute valid uri, then convert to ascii (renders navigatable international domain names)
 						if(!string.IsNullOrEmpty(uri.Host)) {
-							UriBuilder newUri = new UriBuilder(uri);
+							var newUri = new UriBuilder(uri);
 							newUri.Host = this.IdnMapping.GetAscii(uri.Host);
 							value = newUri.Uri.AbsoluteUri;
 						}
 					}
-				} catch(System.UriFormatException) { }
+				} catch(UriFormatException) { }
 				break;
 			}
 			base.AddAttribute(key, value);

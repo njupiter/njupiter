@@ -24,7 +24,6 @@
 
 
 using System;
-using System.Collections;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
@@ -93,12 +92,12 @@ namespace nJupiter.Web.UI.ControlAdapters {
 
 		protected bool HasAttributes {
 			get {
-				IEnumerator enumerator = this.htmlControl.Attributes.Keys.GetEnumerator();
+				var enumerator = this.htmlControl.Attributes.Keys.GetEnumerator();
 
 				while(enumerator.MoveNext()) {
-					string attributeName = enumerator.Current as string;
+					var attributeName = enumerator.Current as string;
 					if(attributeName != null) {
-						bool isAttribute = IsAttribute(attributeName);
+						var isAttribute = IsAttribute(attributeName);
 						if(isAttribute) {
 							return true;
 						}
@@ -187,7 +186,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 			if(!string.IsNullOrEmpty(this.CssClass))
 				this.HtmlControl.Attributes.Add(HtmlAttribute.Class, this.CssClass);
 			if(!this.RenderOriginalId) {
-				string originalId = this.Control.ID;
+				var originalId = this.Control.ID;
 				this.Control.ID = null;
 				if(this.RenderId)
 					this.HtmlControl.Attributes.Add(HtmlAttribute.Id, originalId);
