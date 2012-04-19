@@ -29,7 +29,6 @@ using System.Globalization;
 
 namespace nJupiter.Web.UI.Controls {
 
-	[Obsolete("Try using System.Web.UI.WebControls.CheckBox instead if possible")]
 	public class WebCheckBox : CheckBox {
 
 		public string Value {

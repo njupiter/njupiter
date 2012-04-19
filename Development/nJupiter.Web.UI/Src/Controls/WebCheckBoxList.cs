@@ -28,7 +28,6 @@ using System.Web.UI.WebControls;
 
 namespace nJupiter.Web.UI.Controls {
 
-	[Obsolete("Try using System.Web.UI.WebControls.CheckBoxList instead if possible")]
 	public class WebCheckBoxList : WebCheckListControl {
 		public WebCheckBoxList() : base(new WebCheckBox()) { }
 

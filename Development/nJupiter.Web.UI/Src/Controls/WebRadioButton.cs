@@ -30,7 +30,6 @@ using System.Collections.Specialized;
 
 namespace nJupiter.Web.UI.Controls {
 
-	[Obsolete("Try using System.Web.UI.WebControls.RadioButton instead if possible")]
 	public class WebRadioButton : RadioButton {
 
 		private string uniqueGroupName;

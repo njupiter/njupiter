@@ -32,7 +32,6 @@ using System.Collections.Specialized;
 
 namespace nJupiter.Web.UI.Controls {
 
-	[Obsolete("Try using System.Web.UI.WebControls.CheckBoxList or System.Web.UI.WebControls.RadioButtonList instead if possible")]
 	public class WebCheckListControl : ListControl, IRepeatInfoUser, IPostBackDataHandler, INamingContainer {
 
 		private const string ListitemAttributes		= "v_ListItemAttributes";
