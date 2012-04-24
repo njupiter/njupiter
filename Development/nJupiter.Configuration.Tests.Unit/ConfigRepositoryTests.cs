@@ -11,14 +11,6 @@ namespace nJupiter.Configuration.Tests.Unit {
 	public class ConfigRepositoryTests {
 
 		[Test]
-		public void GetAppConfig_CreateConfigRepositoryWithDefaultValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
-			var configLoader = new FakeLoader();
-			var configRepository = new ConfigRepository(configLoader);
-			IConfig config = configRepository.GetAppConfig();
-			Assert.AreEqual("nJupiter.Configuration.Tests.Unit.dll", config.ConfigKey);
-		}
-
-		[Test]
 		public void GetSystemConfig_CreateConfigRepositoryWithDefaultValuesAndLoadSystemConfig_ReturnsConfigWithCorrectSystemConfigKey() {
 			var configLoader = new FakeLoader();
 			var configRepository = new ConfigRepository(configLoader);

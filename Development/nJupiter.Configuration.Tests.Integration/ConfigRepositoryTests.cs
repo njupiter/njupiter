@@ -11,6 +11,14 @@ namespace nJupiter.Configuration.Tests.Integration {
 	public class ConfigRepositoryTests {
 
 		[Test]
+		public void GetAppConfig_CreateConfigRepositoryWithDefaultValuesAndLoadAppConfig_ReturnsConfigWithCorrectAppConfigKey() {
+			var configLoader = new FakeLoader(false);
+			var configRepository = new ConfigRepository(configLoader);
+			IConfig config = configRepository.GetAppConfig();
+			Assert.AreEqual("nJupiter.Configuration.Tests.Integration.dll", config.ConfigKey);
+		}
+
+		[Test]
 		public void GetConfig_CanLoadConfigsFromMultipleThreads() {
 
 			const string configKey = "MyCustomConfig";

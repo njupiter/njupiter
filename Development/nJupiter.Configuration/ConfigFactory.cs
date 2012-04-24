@@ -67,8 +67,9 @@ namespace nJupiter.Configuration {
 		}
 
 		private static XmlElement GetXmlElementFromXmlNode(XmlNode element) {
-			if(element == null)
+			if(element == null) {
 				throw new ArgumentNullException("element");
+			}
 			// Copy the xml data into the root of a new document
 			// this isolates the xml config data from the rest of  the document
 			var newDoc = new XmlDocument();

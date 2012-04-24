@@ -55,6 +55,7 @@ namespace nJupiter.Configuration {
 		private void WatchedConfigOnChanged(object source, FileSystemEventArgs e) {
 			this.OnWatchedFileChange();
 		}
+		
 		private void WatchedConfigOnRenamed(object source, RenamedEventArgs e) {
 			this.OnWatchedFileChange();
 		}

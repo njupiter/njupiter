@@ -2,11 +2,11 @@
 
 	<!-- Map task references  -->
 	<UsingTask TaskName="RegExMatch"
-			AssemblyFile="Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
+			AssemblyFile="$(MSBuildProjectDirectory)\..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
 	<UsingTask TaskName="AddCompilerConstants"
-			AssemblyFile="Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
+			AssemblyFile="$(MSBuildProjectDirectory)\..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
 	<UsingTask TaskName="GetReferenceInfo"
-			AssemblyFile="Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
+			AssemblyFile="$(MSBuildProjectDirectory)\..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
 
 	<!-- Import custom configuration -->
 	<Import Project="nJupiter.Deployment.targets" />
@@ -24,7 +24,7 @@
 	<Choose>
 		<When Condition="'$(nJupiterDeploymentPath)' == ''">
 			<PropertyGroup>
-				<nJupiterBuildPath>C:\Projects\nJupiter\Build</nJupiterBuildPath>
+				<nJupiterBuildPath>$(MSBuildProjectDirectory)\..\..\Build</nJupiterBuildPath>
 				<OutputPath>$(nJupiterBuildPath)\$(nJupiterBinPath)\$(Configuration)</OutputPath>
 			</PropertyGroup>
 		</When>
