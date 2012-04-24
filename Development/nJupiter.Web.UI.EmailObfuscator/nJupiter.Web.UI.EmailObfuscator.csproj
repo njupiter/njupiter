@@ -59,6 +59,9 @@
     <Compile Include="Src\FileHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
     <Content Include="Install\ReadMe.txt" />
     <Content Include="Web\Scripts\EmailObfuscator.js" />
   </ItemGroup>

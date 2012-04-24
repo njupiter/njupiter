@@ -173,6 +173,9 @@
       <DependentUpon>StreamImage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
     <Content Include="Web\Scripts\swfobject2.js" />
     <Content Include="Web\Scripts\swfobject2.swf" />
     <Content Include="Web\Scripts\SwfObject.js" />

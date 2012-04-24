@@ -48,9 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
-      <Link>SharedAssemblyInfo.cs</Link>
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Src\Attribute.cs">
@@ -147,6 +147,9 @@
     <None Include="Install\Database\Updates\Update.DefaultDatabase.2.0.to.2.1.sql" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
     <Content Include="Install\Database\Old\DefaultDatabase.3.1.sql" />
     <Content Include="Install\Database\Old\DefaultDatabase.3.0.sql" />
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.1.to.Current.sql" />

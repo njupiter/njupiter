@@ -119,6 +119,9 @@
     <None Include="Install\Database\Updates\Update.DefaultDatabase.2.0.0.to.2.1.0.sql" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.2.1.0.to.3.0.0.sql" />
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.0.0.to.3.10.0.sql" />
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.10.0.to.Current.sql" />

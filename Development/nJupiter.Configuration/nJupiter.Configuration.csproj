@@ -77,6 +77,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FileConfigSourceWatcher.cs" />
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
     <Content Include="Install\ReadMe.txt" />
   </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />

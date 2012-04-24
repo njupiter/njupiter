@@ -80,6 +80,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
     <Content Include="Web\DirectoryServiceWebService.asmx" />
   </ItemGroup>
   <ItemGroup>

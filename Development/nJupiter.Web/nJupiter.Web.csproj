@@ -62,5 +62,10 @@
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.XML" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
+  </ItemGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>
