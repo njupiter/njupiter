@@ -9,6 +9,15 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V4.2.0.360 - 2012-04-27
+===============================================================================
+
+NEW: A HttpContextHandler added that contains a property named "Current" that
+     will return the same instance of HttpContextBase over a http request.
+
+ENH: Some old web controls set to obsolete.
+
+===============================================================================
 Changes for V4.1.0.350 - 2012-04-13
 ===============================================================================
 

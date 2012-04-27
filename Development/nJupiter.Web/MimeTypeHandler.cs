@@ -33,7 +33,7 @@ namespace nJupiter.Web  {
 
 		private readonly HttpContextBase context;
 
-		private HttpContextBase CurrentContext { get { return context ?? new HttpContextWrapper(HttpContext.Current); } }
+		private HttpContextBase CurrentContext { get { return context ?? HttpContextHandler.Instance.Current; } }
 
 		public MimeTypeHandler(HttpContextBase context) {
 			this.context = context;

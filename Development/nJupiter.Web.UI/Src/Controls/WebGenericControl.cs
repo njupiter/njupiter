@@ -31,7 +31,6 @@ namespace nJupiter.Web.UI.Controls {
 
 
 	[ToolboxItem(true), ConstructorNeedsTag(false)]
-	[Obsolete("Try using System.Web.UI.HtmlControls.HtmlGenericControl together with nJupiter.Web.UI.ControlAdapters.HtmlGenericAdapter (or ASP.NET 4)")]
 	public class WebGenericControl : HtmlGenericControl {
 
 		private const string BrTag = "<" + HtmlTag.Br + " />";

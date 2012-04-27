@@ -27,7 +27,6 @@ using System.Web.UI;
 
 namespace nJupiter.Web.UI.Controls {
 
-	[Obsolete("Try using System.Web.UI.HtmlControls.HtmlGenericControl together with nJupiter.Web.UI.ControlAdapters.HtmlGenericAdapter (or ASP.NET 4)")]
 	public class WebHeading : WebGenericControl {
 		
 		private const string Tag = "h";

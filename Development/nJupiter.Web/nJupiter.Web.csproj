@@ -44,6 +44,8 @@
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="HttpContextHandler.cs" />
+    <Compile Include="IHttpContextHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

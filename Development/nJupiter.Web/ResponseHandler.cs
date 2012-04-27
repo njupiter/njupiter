@@ -33,7 +33,7 @@ namespace nJupiter.Web {
 		private readonly IMimeType htmlMimeType = new MimeType("text/html");
 		private readonly IMimeType xhtmlMimeType = new MimeType("application/xhtml+xml");
 
-		private HttpContextBase CurrentContext { get { return context ?? new HttpContextWrapper(HttpContext.Current); } }
+		private HttpContextBase CurrentContext { get { return context ?? HttpContextHandler.Instance.Current; } }
 
 		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, HttpContextBase context) {
 			this.mimeTypeHandler = mimeTypeHandler;

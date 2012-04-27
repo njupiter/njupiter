@@ -8,7 +8,7 @@ namespace nJupiter.Web.UI {
 		private readonly HttpContextBase httpContext;
 
 		private readonly string currentUserAgent;
-		private HttpContextBase HttpContext { get { return httpContext ?? new HttpContextWrapper(System.Web.HttpContext.Current); } }
+		private HttpContextBase HttpContext { get { return httpContext ?? HttpContextHandler.Instance.Current; } }
 
 		public UserAgent() {}
 

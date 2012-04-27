@@ -10,7 +10,7 @@ namespace nJupiter.Web.UI {
 	public class ClientScriptRegistrator : IClientScriptRegistrator {
 		private readonly HttpContextBase httpContext;
 
-		private HttpContextBase HttpContext { get { return httpContext ?? new HttpContextWrapper(System.Web.HttpContext.Current); } }
+		private HttpContextBase HttpContext { get { return httpContext ?? HttpContextHandler.Instance.Current; } }
 
 		public ClientScriptRegistrator() {}
 
