@@ -1,0 +1,351 @@
+ChangeLog nJupiter
+===============================================================================
+
+Definitions
+BUG - Fixed bug
+CHG - Minor not breaking change
+BCH - Non interface compatible breaking change
+ENH - Enhanced feature
+NEW - New feature
+
+===============================================================================
+Changes for V4.2.0.360 - 2012-04-27
+===============================================================================
+
+NEW: A HttpContextHandler added that contains a property named "Current" that
+     will return the same instance of HttpContextBase over a http request.
+
+ENH: Some old web controls set to obsolete.
+
+===============================================================================
+Changes for V4.1.0.350 - 2012-04-13
+===============================================================================
+
+NEW: ControlLoader is now added, that can load a web control that is not
+     catchable just by its virtual path, but by a custom string.
+
+ENH: The ControlHander is now split up into several different interfaces with
+     belonging classes so they can be used together with IoC-containers and
+     also be easily mocked away. The static methods on ControlHander is still
+     there though so the component is still interface compatible.
+
+BUG: WebNavigation now does not try to find removed nodes of the root page
+     when IncludeRootLevelInList is true. Wrong behaviour before this fix can 
+     be observed setting VisibleInMenu on the root page to false and setting
+     IncludeNodesOfRemovedNodesMode to Always or OnlyInSelectedPath on the
+     navigation control.
+
+===============================================================================
+Changes for V4.0.1.308 - 2011-12-14
+===============================================================================
+
+ENH: nJupiter is now on NuGet and after this release all projects will be
+     splitted up in separate solutions to more easly handle separate releases
+     of the packages. All components will be released in separate packages in
+     the future so every project will get its own changelog.
+
+===============================================================================
+Changes for V4.0.0.0 - 2011-12-13
+===============================================================================
+
+**** nJupiter.Globalization
+BCH: This component has been totally refactored and now make use of
+     interfaces rather than concrete types throughout the whole component
+     and has thereby better support for unit testing and IoC-containers.
+     CultureHandler is now renamed to ICultureHandler and it's default
+     instance is of type ConfigurableCultureHandler and can be accesst
+     through CultureHandlerFactory.Instance.
+
+**** nJupiter.Web.UI
+CHG: Some legacy code moved from nJupiter.Drawing into this assembly to be able
+     to remove nJupiter.Drawing completely.
+
+===============================================================================
+Changes for V3.16.1.0  - 2011-02-24
+===============================================================================
+
+**** nJupiter.Web.UI
+BUG: Backed out the patch for StreamImage.aspx in 3.16.0.0 because it was
+     wrong.
+
+===============================================================================
+Changes for V3.16.0.0  - 2011-01-27
+===============================================================================
+
+**** nJupiter.Web.UI
+BUG: Fixed a bug in HtmlHandler and its AutoHyperlinkText and AutoHyperlinkHtml
+     methods, where an email address containing two consecutive dots (..) was
+     not recognized as an email address.
+BUG: Fixed a bug in StreamImage.aspx where the path parameter was double url
+     decoded, and therefore paths with + in them didn't work as they got
+     decoded to a space on the second url decode.
+ENH: Added the possibility to evaluate the HTML link in AutoHyperlinkText, and 
+     thereby makes it possible to change the url or the text of the link and
+     add custom attributes
+ENH: Added the AutoHyperlinkHtml method, that does the same thing as 
+     AutoHyperlinkText but ignores URLs within tags (<a href="[url]">) and URLs
+     between the start and end tags for the anchor tag (<a>[url]</a>).
+BUG: HtmlHandler.AutoHyperlinkText made an end parenthesis trailing the url 
+     part of the url. This should not be included in the url unless the 
+     character after the parenthesis is a character part of a normal url. If it
+     is a space for instance we should end the url before the parenthesis.
+ENH: In Paging, added the CurrentPageForceInnerSpan property to be able to 
+     force an inner span on the control for the current page (anchor, 
+     linkbutton or button) and the CurrentPageCssClass to be able to set a CSS 
+     class on the HTML element of the current page. CurrentPageForceInnerSpan 
+     is needed to render an HTML element for the current page in anchor and 
+     linkbutton modes when InnerSpan is set to false because otherwise it
+     would just be a text node there. CurrentPageCssClass will not be rendered
+     in the anchor and linkbutton modes unless InnerSpan is set to true or 
+     CurrentPageForceInnerSpan is set to true.
+BUG: WebCheckBox did not render the attributes in the InputAttributes 
+     collection.
+BUG: WebCheckListControl did not clear the controlToRepeat.Attributes 
+     collection on each rendering of a list item.
+BUG: WebAnchor did not render Controls added to it runtime by the method 
+     WebAnchor.Controls.Add.
+BUG: WebButton's OnClickEvent was fired both in RaisePostBackDataChangedEvent
+     and RaisePostBackEvent when using IE6 , thus the event handler was called
+     twice. When using IE6, OnClickEvent is now only fired in 
+     RaisePostBackDataChangedEvent.
+     
+===============================================================================
+Changes for V3.15.1.0  - 2010-06-15
+===============================================================================
+
+**** nJupiter.Web.UI
+BUG: Fixed a bug in WebNavigation that caused IncludeChildrenOfRemovedNodesMode
+     to not be honoured when StartLevelFromRoot > 0.
+
+===============================================================================
+Changes for V3.15.0.0  - 2010-05-05
+===============================================================================
+
+**** nJupiter.Web.UI
+ENH: Add possibility to force going through StreamingPath in WebImage even 
+     though we have not set MaxWidth or MaxHeight. This is done by setting the
+     ForceStreaming property on WebImage to true.
+BUG: Fixed a bug in HtmlControlAdapter that caused that the InnerSpan
+     attribute was ignored on HtmlControls.
+CHG: NavigationPageCollection in WebNavigation is now inheriting directly from
+     List<INavigationPage> instead of SortableList<INavigationPage>
+	 
+===============================================================================
+Changes for V3.14.0.0  - 2010-02-10
+===============================================================================
+
+**** nJupiter.Web.UI
+BUG: Made InnerSpan of WebAnchor with NoLink=true write out the ID if RenderId 
+     is true
+BUG: Made InnerSpan of WebAnchor with NoLink=true write out attributes added
+     to the WebAnchor
+ENH: Implemented VisibleLevels in WebNavigation, returns the number of visible
+     levels in the navigation tree
+
+===============================================================================
+Changes for V3.13.0.0  - 2009-09-30
+===============================================================================
+
+**** nJupiter.Web.UI
+ENH: In the pageing control it is now possible to change the number of pages
+     shown, it was hard coded to 5 before.
+BUG: Made checklist controls care about the Enabled property of ListItem.
+ENH: Made it possible to override the rendering of  the label in checklist 
+     controls.
+
+===============================================================================
+Changes for V3.11.0.0  - 2009-04-17
+===============================================================================
+
+**** nJupiter.Web.UI
+BCH: Old legacy-ascx-files removed for Paging, GeneralListing and PagedListing
+
+===============================================================================
+Changes for V3.10.0.0  - 2009-03-18
+===============================================================================
+
+**** nJupiter.Web.UI
+NEW: Several control adapters added
+ENH: In PagedListing it is now possible to set paging controls externaly
+CHG: Removed implementation for page validation from WebButton. It didn't work
+     anyway since Microsoft has make it impossible to fully implement this in
+     custom controls by closing down their own interface and make it private :(
+
+===============================================================================	 
+Changes for V3.9.0.0  - 2009-01-23
+===============================================================================
+
+**** nJupiter.Web
+BUG: Fixed a bug in UrlHandler, namely that no UrlHandler method took care of 
+     the case where a URL contained fragment information, #.
+
+===============================================================================
+Changes for V3.8.0.0  - 2008-10-21
+===============================================================================
+
+**** nJupiter.Web
+NEW: IndenterModule, experimental HTTP Module added, adds an http-filter to 
+     all html requests that will indent all well formed XHTML. Use with care.
+
+===============================================================================
+Changes for V3.7.0.0  - 2008-09-11
+===============================================================================
+
+**** nJupiter.Web.UI
+NEW: New abstract base class for navigation controls calles
+     nJupiter.Web.UI.Controls.WebNavigation, which makes it possible to make
+     more generic navigations and to mix different implementations in the same
+     navigation.
+     A new delegate is added named CreateWebNavigationControl that returns the
+     current implementation.
+
+===============================================================================
+Changes for V3.5.0.0  - 2008-07-01
+===============================================================================
+
+**** nJupiter.Web.UI
+BUG: Fixed bug i Paging where url got cut in browser due to incorrect encoding
+     of the query string
+
+===============================================================================
+Changes for V3.4.0.0  - 2008-06-10
+===============================================================================
+
+**** nJupiter.Web.UI
+NEW: New class WebScriptHolder makes it possible to place scripts outside head.
+     If such an object exists on the page
+     ControlHandler.RegisterClientScriptBlock places the script there,
+     otherwise the WebHead, and lastly it resorts to ASP.NET default behaviour.
+
+===============================================================================
+Changes for V3.3.0.0  - 2008-05-02
+===============================================================================
+
+**** nJupiter.Web.UI
+NEW: New class HtmlHandler that can let you automatically hyperlink informal
+     urls, strip all HTML tags from a string or convert line breaks to <br/>.
+NEW: WebButton now has a property IsClicked, than can be checked before the
+     actual Click event occurs.
+ENH: Now uses SwfObject2Emebeded as default. SwfObject2 is now updated to
+     v1.0 sharp
+ 
+=============================================================================== 
+Changes for V3.2.0.0  - 2008-02-18
+===============================================================================
+
+**** nJupiter.Globalization
+ENH: nJupiter.Globalization.CultureHandler does now have shortcuts for 
+     CurrentCulture and CurrentUICulture
+
+**** nJupiter.Web.UI
+BUG: Fixed bug in WebLinkButton where NoLink=true resulted in an unencoded
+     string
+ENH: Paging is now a templated control, so you can make HTML of your own choice
+     now, or just use the builting defaults.
+NEW: Paging now has an additional paging mode: Anchors.
+ENH: StrictHtmlTextWriter now fixes IDN encoded URLs.
+ENH: StreamImage now works with Virtual Path Providers
+BUG: WebForm fixed to work correctly even with .NET 2.0 SP1
+BUG: WebRadioButton does now works correctly again, no ugly spans or other
+     Microsoftish HTML-rubbish
+
+===============================================================================
+Changes for V3.1.0.0  - 2007-11-15
+===============================================================================
+
+**** nJupiter.Globalization
+BCH: DateHandler is moved from the namespace nJupiter.Date to
+     nJupiter.Globalization
+
+**** nJupiter.Web.UI
+ENH: WebGenericControl and all its inheritors does no longer render if they are
+     completely empty.
+ENH: SWFObject in WebFlash is now updated to version 1.5 and does now support
+     custom express install movies.
+ENH: WebFlash has now support for SWFObject2 http://www.swffix.org/
+     Both normal and embeded method are supported.
+     Normal method will probably be default render mode when out of alpha
+     stage.
+
+
+Changes for V3.0.0.0  - 2007-09-13
+===============================================================================
+
+**** nJupiter.DataAccess.Users
+ENH: Now it is also possible to do range searches with GreatherThan, 
+     GreatherThanOrEqual, LessThan and LessThanOrEqual also for BoolProperty, 
+     IntProperty and DateTimeProperty as the serialized form of those preserves
+     order, which was needed for this to work.
+NEW: New property on AbstractProperty: SerializationPreservesOrder. Set to
+     false if an implementation does not preserve order in its serialized form.
+BUG: Fixed a bug where we never searched in specific contexts
+BCH: Took away the Context property on SearchCriteria, as it exists on 
+     SearchCriteria.Property already.
+
+**** nJupiter.Services.Forum
+ENH: Sorting is now using a secondary sort, TimePosted, when the sort key is
+     not unique. Makes sorting on for instance Visible more predictable
+NEW: New method, GetNumberOfPosts, retrieves number of posts. Optionally one
+     can specify a time interval and include or not include hidden posts in
+     the count.
+
+**** nJupiter.Services.Forum.UI:
+ENH: Now possible to put an "All" item in the NumberOfItemsSelector
+ENH: Now possible to limit the length of title in FlatTabularPostList.
+CHG: Now odd rows have the css class "odd" and even rows have the css class 
+     "even". It was the other way around before.
+ENH: FlatTabularPostList now exposes a MaximumTitleLength property.
+
+===============================================================================
+Changes for V2.1.0.0  - 2007-05-18
+===============================================================================
+  
+**** nJupiter.Web.UI
+BUG: Bug fix in WebRadioButtonList concerning the name attribute. In .NET 2.0
+     Microsoft does not add the UniqueId to the radiobutton name attribute.
+     This is needed for WebRadioButtonList to work
+ENH: Added WMode property on WebFlash. The Transparent property is now
+     obsolete. It will still work as before, but please update your code.
+ENH: TrailingBreak and TrailingLinefeed is now implemented in all relevant
+     controls.
+
+===============================================================================
+Changes for V2.0.0.0  - 2007-02-21
+===============================================================================
+  
+**** nJupiter.Web.UI
+BCH: Changed name on property SuppressAutoDatabinding to
+     SuppressAutoDataBinding
+  
+**** nJupiter.Web.UI
+BUG: Bug fix for Paging component where "..." links were shown even though
+     buttons were active
+BUG: Bug fix in WebFlash.cs. It now inherits from WebGenericControl instead of
+     HtmlGenericControl. This makes sure it renders a div tag.
+BCH: GeneralListing and PagedListing are now pure webcontrols, please remove
+     the reference to the ascx's in your project and refer to the namespace
+     instead. The lists are no longer put to viewstate by default. If you need
+     to have the datasource viewstated, then set ViewStateList to true. This is
+     almost only needed when you have form controls inside your list.
+ENH: Paging is now a pure webcontrol, please remove the reference to the ascx
+     in your project and refer to the namespace instead.
+ENH: PagedListing now automatically adjusts CurrentPageNumber to the highest
+     possible page number given the total count if we get out of bound (by
+     setting ItemsPerPage and pressing next and getting out of bound). This
+     happens regardless of how DisablePaging is set.
+ENH: WebFlash has now support for UFO which is default instead of SWF object.
+BCH: ControlUtils are renamed to ControlHandler
+BCH: IsWorthlessBrowser in ControlHandler is renamed to IsIE
+NEW: A new property is added to detect PreIE7-browsers
+NEW: A new class called WebHead has been added. Use this instead of the head
+     element to be able to add scripts and styles to the head with the new
+     function ControlHandler.RegisterClientScriptBlock
+ENH: Paging has now full support for accessable linked paging (Use Links insted
+     of Buttons)
+NEW: A new more accessible WebLinkButton has been added
+ENH: WebButton does no longer make use of scripts in IE7 or above (?. we hope
+     it will never be any above)
+CHG: WebDropDownList does now inherit directly from DropDownList in .NET2.0 and
+     above
+ENH: WebForm does now add application/xhtml+xml compliant comments to all
+     script tags
