@@ -66,14 +66,6 @@ ENH: nJupiter is now on NuGet and after this release all projects will be
 Changes for V4.0.0.0 - 2011-12-13
 ===============================================================================
 
-**** nJupiter.Globalization
-BCH: This component has been totally refactored and now make use of
-     interfaces rather than concrete types throughout the whole component
-     and has thereby better support for unit testing and IoC-containers.
-     CultureHandler is now renamed to ICultureHandler and it's default
-     instance is of type ConfigurableCultureHandler and can be accesst
-     through CultureHandlerFactory.Instance.
-
 **** nJupiter.Web.UI
 CHG: Some legacy code moved from nJupiter.Drawing into this assembly to be able
      to remove nJupiter.Drawing completely.
@@ -251,10 +243,6 @@ ENH: Now uses SwfObject2Emebeded as default. SwfObject2 is now updated to
 Changes for V3.2.0.0  - 2008-02-18
 ===============================================================================
 
-**** nJupiter.Globalization
-ENH: nJupiter.Globalization.CultureHandler does now have shortcuts for 
-     CurrentCulture and CurrentUICulture
-
 **** nJupiter.Web.UI
 BUG: Fixed bug in WebLinkButton where NoLink=true resulted in an unencoded
      string
@@ -271,10 +259,6 @@ BUG: WebRadioButton does now works correctly again, no ugly spans or other
 Changes for V3.1.0.0  - 2007-11-15
 ===============================================================================
 
-**** nJupiter.Globalization
-BCH: DateHandler is moved from the namespace nJupiter.Date to
-     nJupiter.Globalization
-
 **** nJupiter.Web.UI
 ENH: WebGenericControl and all its inheritors does no longer render if they are
      completely empty.
@@ -284,35 +268,6 @@ ENH: WebFlash has now support for SWFObject2 http://www.swffix.org/
      Both normal and embeded method are supported.
      Normal method will probably be default render mode when out of alpha
      stage.
-
-
-Changes for V3.0.0.0  - 2007-09-13
-===============================================================================
-
-**** nJupiter.DataAccess.Users
-ENH: Now it is also possible to do range searches with GreatherThan, 
-     GreatherThanOrEqual, LessThan and LessThanOrEqual also for BoolProperty, 
-     IntProperty and DateTimeProperty as the serialized form of those preserves
-     order, which was needed for this to work.
-NEW: New property on AbstractProperty: SerializationPreservesOrder. Set to
-     false if an implementation does not preserve order in its serialized form.
-BUG: Fixed a bug where we never searched in specific contexts
-BCH: Took away the Context property on SearchCriteria, as it exists on 
-     SearchCriteria.Property already.
-
-**** nJupiter.Services.Forum
-ENH: Sorting is now using a secondary sort, TimePosted, when the sort key is
-     not unique. Makes sorting on for instance Visible more predictable
-NEW: New method, GetNumberOfPosts, retrieves number of posts. Optionally one
-     can specify a time interval and include or not include hidden posts in
-     the count.
-
-**** nJupiter.Services.Forum.UI:
-ENH: Now possible to put an "All" item in the NumberOfItemsSelector
-ENH: Now possible to limit the length of title in FlatTabularPostList.
-CHG: Now odd rows have the css class "odd" and even rows have the css class 
-     "even". It was the other way around before.
-ENH: FlatTabularPostList now exposes a MaximumTitleLength property.
 
 ===============================================================================
 Changes for V2.1.0.0  - 2007-05-18
