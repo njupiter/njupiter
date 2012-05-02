@@ -53,7 +53,7 @@ namespace nJupiter.Web.UI {
 				var onClick = attributes["onclick"];
 				if(onClick != null) {
 					attributes.Remove("onclick");
-					writer.WriteAttribute("onclick", onClick + " " + clientValidateEvent);
+					writer.WriteAttribute("onclick", string.Format("{0} {1}", onClick, clientValidateEvent));
 				} else {
 					writer.WriteAttribute("onclick", clientValidateEvent);
 				}
@@ -61,10 +61,7 @@ namespace nJupiter.Web.UI {
 		}
 
 		public string GetClientValidateEvent(string validationGroup) {
-			if(validationGroup == null) {
-				validationGroup = string.Empty;
-			}
-			return ("if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate('" + validationGroup + "'); ");
+			return string.Format("if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate('{0}'); ", validationGroup);
 		}
 
 		public string GetClientValidatedPostback(Control control, string validationGroup) {

@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="HttpContextHandler.cs" />
     <Compile Include="IHttpContextHandler.cs" />
+    <Compile Include="IUrlHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -56,10 +57,25 @@
     <Compile Include="MimeType.cs" />
     <Compile Include="MimeTypeHandler.cs" />
     <Compile Include="ResponseHandler.cs" />
+    <Compile Include="Security\AuthenticationConfiguration.cs" />
+    <Compile Include="Security\AuthenticationConfigurationLoader.cs" />
+    <Compile Include="Security\FormsAuthenticationConfigurationWrapper.cs" />
+    <Compile Include="Security\FormsAuthenticationUnauthorizedStrategy.cs" />
+    <Compile Include="Security\FormsAuthenticationWrapper.cs" />
+    <Compile Include="Security\GenericUnauthorizedStrategy.cs" />
+    <Compile Include="Security\IAuthenticationConfiguration.cs" />
+    <Compile Include="Security\IAuthenticationConfigurationLoader.cs" />
+    <Compile Include="Security\IFormsAuthentication.cs" />
+    <Compile Include="Security\IFormsAuthenticationConfiguration.cs" />
+    <Compile Include="Security\IUnauthorizedStrategy.cs" />
+    <Compile Include="Security\IUnauthorizedStrategyFactory.cs" />
+    <Compile Include="Security\UnauthorizedStrategyFactory.cs" />
     <Compile Include="UrlHandler.cs" />
+    <Compile Include="UrlHandlerImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.XML" />

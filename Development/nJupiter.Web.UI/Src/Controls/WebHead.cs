@@ -51,8 +51,8 @@ namespace nJupiter.Web.UI.Controls {
 
 		public WebHead()
 			: base(HtmlTag.Head) {
-			if(HttpContext.Current != null) {
-				HttpContext.Current.Items[typeof(WebHead)] = this;
+			if(HttpContextHandler.Instance.Current != null) {
+				HttpContextHandler.Instance.Current.Items[typeof(WebHead)] = this;
 			}
 		}
 

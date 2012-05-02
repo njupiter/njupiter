@@ -81,7 +81,7 @@ namespace nJupiter.Web.UI {
 			#region Constructors
 			public FileToStreamImpl(string path) {
 				path = HttpUtility.UrlDecode(path);
-				string filePath = HttpContext.Current.Server.MapPath(path);
+				string filePath = HttpContextHandler.Instance.Current.Server.MapPath(path);
 				if(File.Exists(filePath)) {
 					this.fileInfo = new FileInfo(filePath);
 				} else if(HostingEnvironment.VirtualPathProvider.FileExists(path)) {

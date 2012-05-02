@@ -27,17 +27,27 @@ using System.Web;
 
 namespace nJupiter.Web {
 	public class ResponseHandler : IResponseHandler {
-		
 		private readonly HttpContextBase context;
+		private readonly IHttpContextHandler contextHandler;
 		private readonly IMimeTypeHandler mimeTypeHandler;
 		private readonly IMimeType htmlMimeType = new MimeType("text/html");
 		private readonly IMimeType xhtmlMimeType = new MimeType("application/xhtml+xml");
 
-		private HttpContextBase CurrentContext { get { return context ?? HttpContextHandler.Instance.Current; } }
+		private HttpContextBase CurrentContext { get { return context ?? contextHandler.Current; } }
 
-		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, HttpContextBase context) {
-			this.mimeTypeHandler = mimeTypeHandler;
+		public ResponseHandler() : this(null, null, null) {}
+		public ResponseHandler(HttpContextBase context) : this(null, null, context) {}
+		public ResponseHandler(IMimeTypeHandler mimeTypeHandler) : this(mimeTypeHandler, null, null) {}
+		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, HttpContextBase context) : this(mimeTypeHandler, null, context) {}
+		public ResponseHandler(IHttpContextHandler contextHandler) : this(null, contextHandler, null) {}
+		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, IHttpContextHandler contextHandler) : this(mimeTypeHandler, contextHandler, null) {}
+		public ResponseHandler(Func<HttpContextBase> httpContextFactoryMethod) : this(null, httpContextFactoryMethod) {}
+		public ResponseHandler(IMimeTypeHandler mimeTypeHandler, Func<HttpContextBase> httpContextFactoryMethod) : this(mimeTypeHandler, new HttpContextHandler(httpContextFactoryMethod), null) {}
+	
+		private ResponseHandler(IMimeTypeHandler mimeTypeHandler, IHttpContextHandler contextHandler, HttpContextBase context) {
+			this.contextHandler = contextHandler ?? HttpContextHandler.Instance;
 			this.context = context;
+			this.mimeTypeHandler = mimeTypeHandler ?? (context != null ? new MimeTypeHandler(context) : new MimeTypeHandler(contextHandler));
 		}
 
 		public void Redirect(string url) {
@@ -72,6 +82,16 @@ namespace nJupiter.Web {
 					CurrentContext.Response.ContentType = this.xhtmlMimeType.ContentType;
 				}
 			}
+		}
+
+		public static IResponseHandler Instance { get { return NestedSingleton.instance; } }
+
+		// thread safe Singleton implementation with fully lazy instantiation and with full performance
+		private sealed class NestedSingleton {
+			// ReSharper disable EmptyConstructor
+			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+			// ReSharper restore EmptyConstructor
+			internal static readonly IResponseHandler instance = new ResponseHandler();
 		}
 
 	}

@@ -129,31 +129,31 @@ namespace nJupiter.Web.UI {
 		public static bool IsBlockElement(string tagName){
 			if(tagName == null)
 				return false;
-			if(	tagName.Equals(HtmlTag.Address) ||
-				tagName.Equals(HtmlTag.Blockquote) ||
-				tagName.Equals(HtmlTag.Center) ||
-				tagName.Equals(HtmlTag.Dir) ||
-				tagName.Equals(HtmlTag.Div) ||
-				tagName.Equals(HtmlTag.Dl) ||
-				tagName.Equals(HtmlTag.Fieldset) ||
-				tagName.Equals(HtmlTag.Form) ||
-				tagName.Equals(HtmlTag.Footer) ||
-				tagName.Equals(HtmlTag.H1) ||
-				tagName.Equals(HtmlTag.H2) ||
-				tagName.Equals(HtmlTag.H3) ||
-				tagName.Equals(HtmlTag.H4) ||
-				tagName.Equals(HtmlTag.H5) ||
-				tagName.Equals(HtmlTag.H6) ||
-				tagName.Equals(HtmlTag.Hr) ||
-				tagName.Equals(HtmlTag.Isindex) ||
-				tagName.Equals(HtmlTag.Menu) ||
-				tagName.Equals(HtmlTag.Noframes) ||
-				tagName.Equals(HtmlTag.Noscript) ||
-				tagName.Equals(HtmlTag.Ol) ||
-				tagName.Equals(HtmlTag.P) ||
-				tagName.Equals(HtmlTag.Pre) ||
-				tagName.Equals(HtmlTag.Table) ||
-				tagName.Equals(HtmlTag.Ul)){
+			if(	tagName.Equals(Address) ||
+				tagName.Equals(Blockquote) ||
+				tagName.Equals(Center) ||
+				tagName.Equals(Dir) ||
+				tagName.Equals(Div) ||
+				tagName.Equals(Dl) ||
+				tagName.Equals(Fieldset) ||
+				tagName.Equals(Form) ||
+				tagName.Equals(Footer) ||
+				tagName.Equals(H1) ||
+				tagName.Equals(H2) ||
+				tagName.Equals(H3) ||
+				tagName.Equals(H4) ||
+				tagName.Equals(H5) ||
+				tagName.Equals(H6) ||
+				tagName.Equals(Hr) ||
+				tagName.Equals(Isindex) ||
+				tagName.Equals(Menu) ||
+				tagName.Equals(Noframes) ||
+				tagName.Equals(Noscript) ||
+				tagName.Equals(Ol) ||
+				tagName.Equals(P) ||
+				tagName.Equals(Pre) ||
+				tagName.Equals(Table) ||
+				tagName.Equals(Ul)){
 				return true;
 			}
 			return false;
@@ -162,17 +162,17 @@ namespace nJupiter.Web.UI {
 		public static bool RequiresEndTag(string tagName){
 			if(tagName == null)
 				return false;
-			if(	tagName.Equals(HtmlTag.Base) ||
-				tagName.Equals(HtmlTag.Basefont) ||
-				tagName.Equals(HtmlTag.Meta) ||
-				tagName.Equals(HtmlTag.Link) ||
-				tagName.Equals(HtmlTag.Hr) ||
-				tagName.Equals(HtmlTag.Br) ||
-				tagName.Equals(HtmlTag.Param) ||
-				tagName.Equals(HtmlTag.Img) ||
-				tagName.Equals(HtmlTag.Area) ||
-				tagName.Equals(HtmlTag.Input) ||
-				tagName.Equals(HtmlTag.Col)){
+			if(	tagName.Equals(Base) ||
+				tagName.Equals(Basefont) ||
+				tagName.Equals(Meta) ||
+				tagName.Equals(Link) ||
+				tagName.Equals(Hr) ||
+				tagName.Equals(Br) ||
+				tagName.Equals(Param) ||
+				tagName.Equals(Img) ||
+				tagName.Equals(Area) ||
+				tagName.Equals(Input) ||
+				tagName.Equals(Col)){
 				return false;
 			}
 			return true;

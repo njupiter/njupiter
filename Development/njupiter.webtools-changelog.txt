@@ -9,6 +9,24 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V4.3.0.362 - 2012-05-02
+===============================================================================
+
+NEW: Wrappers for some objects under System.Web.Security added so they can be
+     used in unit tests.
+
+NEW: And UnauthorizedStrategyFactory that will return implementations of
+     IUnauthorizedStrategy added. One generic implementation added plus an
+     implementation for Forms Authentication. These strategies can be used to
+     force an login prompt in for example an MVP presenter.
+
+ENH: UrlHander now implements an Interface and can be accessed via an instance.
+     All static methods and properties are marked as obsolete.
+
+ENH: nJupiter.Globalization now has it's own NuGet package and is no longer
+     bundled with WebTools.
+
+===============================================================================
 Changes for V4.2.0.360 - 2012-04-27
 ===============================================================================
 

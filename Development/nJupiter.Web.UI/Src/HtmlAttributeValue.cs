@@ -24,7 +24,6 @@
 
 namespace nJupiter.Web.UI {
 	public class HtmlAttributeValue {
-		//TODO: Add all
 		public const string Autofocus		= "autofocus";
 		public const string Button			= "button";
 		public const string Checkbox		= "checkbox";

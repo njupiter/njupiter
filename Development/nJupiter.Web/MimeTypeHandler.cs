@@ -32,13 +32,20 @@ namespace nJupiter.Web  {
 	public class MimeTypeHandler : IMimeTypeHandler {
 
 		private readonly HttpContextBase context;
+		private readonly IHttpContextHandler contextHandler;
 
-		private HttpContextBase CurrentContext { get { return context ?? HttpContextHandler.Instance.Current; } }
+		private HttpContextBase CurrentContext { get { return context ?? contextHandler.Current; } }
 
-		public MimeTypeHandler(HttpContextBase context) {
+		public MimeTypeHandler() : this(null, null) {}
+		public MimeTypeHandler(HttpContextBase context) : this(null, context) {}
+		public MimeTypeHandler(Func<HttpContextBase> httpContextFactoryMethod) : this(new HttpContextHandler(httpContextFactoryMethod)) {}
+		public MimeTypeHandler(IHttpContextHandler contextHandler) : this(contextHandler, null) {}
+
+		private MimeTypeHandler(IHttpContextHandler contextHandler, HttpContextBase context) {
+			this.contextHandler = contextHandler ?? HttpContextHandler.Instance;
 			this.context = context;
 		}
-
+	
 		public IEnumerable<IMimeType> GetAcceptedTypes() {
 			var acceptedTypes = new List<IMimeType>();
 			if(CurrentContext != null && CurrentContext.Request.AcceptTypes != null) {
@@ -96,7 +103,7 @@ namespace nJupiter.Web  {
 				throw new ArgumentNullException("file");
 			}
 			if(!file.Exists) {
-				throw new FileNotFoundException(file + " not found");
+				throw new FileNotFoundException(string.Format("{0} not found", file));
 			}
 
 			using(var fs = file.OpenRead()) {

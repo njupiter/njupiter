@@ -222,9 +222,9 @@ namespace nJupiter.Web.UI.Controls {
 
 		public virtual string RenderImageUrl() {
 			if(this.MaxWidth > 0 || this.MaxHeight > 0 || this.ForceStreaming) {
-				var streamingPath = UrlHandler.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl));
+				var streamingPath = UrlHandler.Instance.AddQueryParams(this.StreamingPath, "path=" + System.Web.HttpUtility.UrlEncode(this.ImageUrl));
 				if(this.MaxWidth > 0 || this.MaxHeight > 0) {
-					streamingPath = UrlHandler.AddQueryParams(streamingPath, "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
+					streamingPath = UrlHandler.Instance.AddQueryParams(streamingPath, "width=" + this.MaxWidth, "height=" + this.MaxHeight, "allowEnlarging=" + this.AllowEnlarging, "allowStretching=" + this.AllowStretching);
 				}
 				return streamingPath;
 			}

@@ -135,19 +135,19 @@ namespace nJupiter.Web.UI.Controls {
 				lock(this.padlock) {
 					if(this.pageUrl == null) {
 						if(this.Request.HttpMethod.Equals("GET") || this.Type == PagingType.Anchors) {
-							this.pageUrl = UrlHandler.AddQueryParams(UrlHandler.CurrentPath, UrlHandler.GetQueryString(UrlHandler.CurrentQueryString, true, this.PageNumberQueryKey));
+							this.pageUrl = UrlHandler.Instance.AddQueryParams(HttpContextHandler.Instance.Current.Request.Path, UrlHandler.Instance.GetQueryString(HttpContextHandler.Instance.Current.Request.QueryString, true, this.PageNumberQueryKey));
 						} else {
 							var systemKeys = new ArrayList();
-							foreach(string key in UrlHandler.CurrentForm.Keys) {
+							foreach(string key in HttpContextHandler.Instance.Current.Request.Form.Keys) {
 								if(key.StartsWith("__") || key.IndexOf('$') > 0) {
 									systemKeys.Add(key);
 								}
 							}
-							this.pageUrl = UrlHandler.AddQueryParams(UrlHandler.CurrentPath, UrlHandler.GetQueryString(UrlHandler.CurrentForm, (string[])systemKeys.ToArray(typeof(string))));
-							var keysToRemove = new string[UrlHandler.CurrentForm.AllKeys.Length + 1];
-							UrlHandler.CurrentForm.AllKeys.CopyTo(keysToRemove, 0);
-							keysToRemove[UrlHandler.CurrentForm.AllKeys.Length] = this.PageNumberQueryKey;
-							this.pageUrl = UrlHandler.AddQueryParams(this.pageUrl, UrlHandler.GetQueryString(UrlHandler.CurrentQueryString, keysToRemove));
+							this.pageUrl = UrlHandler.Instance.AddQueryParams(HttpContextHandler.Instance.Current.Request.Path, UrlHandler.Instance.GetQueryString(HttpContextHandler.Instance.Current.Request.Form, (string[])systemKeys.ToArray(typeof(string))));
+							var keysToRemove = new string[HttpContextHandler.Instance.Current.Request.Form.AllKeys.Length + 1];
+							HttpContextHandler.Instance.Current.Request.Form.AllKeys.CopyTo(keysToRemove, 0);
+							keysToRemove[HttpContextHandler.Instance.Current.Request.Form.AllKeys.Length] = this.PageNumberQueryKey;
+							this.pageUrl = UrlHandler.Instance.AddQueryParams(this.pageUrl, UrlHandler.Instance.GetQueryString(HttpContextHandler.Instance.Current.Request.QueryString, keysToRemove));
 						}
 					}
 				}
@@ -277,7 +277,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								var pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
-								linkButtonPrev.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								linkButtonPrev.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonPrev.CommandArgument = pageNum;
 								linkButtonPrev.NoLink = false;
 							} else if(this.HideDisabledButtons) {
@@ -293,7 +293,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.currentPageNumber > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								var pageNum = (this.currentPageNumber > 1 ? this.currentPageNumber - 1 : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
-								ancPrev.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								ancPrev.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancPrev.NoLink = false;
 							} else if(this.HideDisabledButtons) {
 								ancPrev.Visible = false;
@@ -324,7 +324,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								var pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
-								linkButtonPrevIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								linkButtonPrevIncr.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonPrevIncr.CommandArgument = pageNum;
 								linkButtonPrevIncr.Visible = true;
 							} else {
@@ -338,7 +338,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.index > 1 || (this.WrapAround && !totalPageCountHeader.Equals(1))) {
 								var pageNum = (this.index > 1 ? this.index - this.VisiblePages : totalPageCountHeader).ToString(NumberFormatInfo.InvariantInfo);
-								ancPrevIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								ancPrevIncr.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancPrevIncr.Visible = true;
 							} else {
 								ancPrevIncr.Visible = false;
@@ -379,9 +379,9 @@ namespace nJupiter.Web.UI.Controls {
 						}
 					}
 					if(this.PageUrl.Contains(this.PageNumberQueryKey)) {
-						navigateUrl = UrlHandler.ReplaceQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNumber.ToString(NumberFormatInfo.InvariantInfo));
+						navigateUrl = UrlHandler.Instance.ReplaceQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNumber.ToString(NumberFormatInfo.InvariantInfo));
 					} else {
-						navigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNumber.ToString(NumberFormatInfo.InvariantInfo));
+						navigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNumber.ToString(NumberFormatInfo.InvariantInfo));
 					}
 					if(linkButton != null && (linkButton.Visible = visible)) {
 						linkButton.NavigateUrl = navigateUrl;
@@ -438,7 +438,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								var pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
-								linkButtonNext.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								linkButtonNext.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonNext.CommandArgument = pageNum;
 								linkButtonNext.NoLink = false;
 							} else if(this.HideDisabledButtons) {
@@ -454,7 +454,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.currentPageNumber != totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								var pageNum = (this.currentPageNumber != totalPageCountFooter ? this.currentPageNumber + 1 : 1).ToString(NumberFormatInfo.InvariantInfo);
-								ancNext.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								ancNext.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancNext.NoLink = false;
 							} else if(this.HideDisabledButtons) {
 								ancNext.Visible = false;
@@ -486,7 +486,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								var pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
-								linkButtonNextIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								linkButtonNextIncr.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								linkButtonNextIncr.CommandArgument = pageNum;
 								linkButtonNextIncr.Visible = true;
 							} else {
@@ -500,7 +500,7 @@ namespace nJupiter.Web.UI.Controls {
 							}
 							if(this.index + this.VisiblePages - 1 < totalPageCountFooter || (this.WrapAround && !totalPageCountFooter.Equals(1))) {
 								var pageNum = (this.index + this.VisiblePages - 1 < totalPageCountFooter ? this.index + this.VisiblePages : 1).ToString(NumberFormatInfo.InvariantInfo);
-								ancNextIncr.NavigateUrl = UrlHandler.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
+								ancNextIncr.NavigateUrl = UrlHandler.Instance.AddQueryKeyValue(this.PageUrl, this.PageNumberQueryKey, pageNum);
 								ancNextIncr.Visible = true;
 							} else {
 								ancNextIncr.Visible = false;

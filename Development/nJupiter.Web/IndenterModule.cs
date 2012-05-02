@@ -33,7 +33,7 @@ namespace nJupiter.Web {
 	public sealed class IndenterModule : IHttpModule {
 
 		static void ReleaseRequestState(object sender, EventArgs e) {
-			var response = HttpContext.Current.Response;
+			var response = HttpContextHandler.Instance.Current.Response;
 			if(response.ContentType.Contains("html")) {
 				response.Filter = new IndenterFilter(response.Filter);
 			}

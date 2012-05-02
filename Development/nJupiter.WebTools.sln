@@ -6,11 +6,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		njupiter.webtools-changelog.txt = njupiter.webtools-changelog.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Globalization", "nJupiter.Globalization\nJupiter.Globalization.csproj", "{37BF44F7-41D3-4343-B217-B98034DB1F2D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Web", "nJupiter.Web\nJupiter.Web.csproj", "{093D4A00-567A-4FCC-A0EE-76D00AE86335}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Web.UI", "nJupiter.Web.UI\nJupiter.Web.UI.csproj", "{DB95442D-CB1A-4C20-9650-4FEC39E3314D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Web.Tests.Unit", "nJupiter.Web.Tests.Unit\nJupiter.Web.Tests.Unit.csproj", "{6ED94A79-B7A1-422D-8843-24A348D43D99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,12 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release Signed|Any CPU.ActiveCfg = Release Signed|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{093D4A00-567A-4FCC-A0EE-76D00AE86335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{093D4A00-567A-4FCC-A0EE-76D00AE86335}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{093D4A00-567A-4FCC-A0EE-76D00AE86335}.Release Signed|Any CPU.ActiveCfg = Release Signed|Any CPU
@@ -37,6 +31,10 @@ Global
 		{DB95442D-CB1A-4C20-9650-4FEC39E3314D}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
 		{DB95442D-CB1A-4C20-9650-4FEC39E3314D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB95442D-CB1A-4C20-9650-4FEC39E3314D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED94A79-B7A1-422D-8843-24A348D43D99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED94A79-B7A1-422D-8843-24A348D43D99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED94A79-B7A1-422D-8843-24A348D43D99}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED94A79-B7A1-422D-8843-24A348D43D99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -34,8 +34,8 @@ namespace nJupiter.Web.UI.Controls {
 		private readonly object padlock = new object();
 
 		public WebScriptHolder() {
-			if(HttpContext.Current != null) {
-				HttpContext.Current.Items[typeof(WebScriptHolder)] = this;
+			if(HttpContextHandler.Instance.Current != null) {
+				HttpContextHandler.Instance.Current.Items[typeof(WebScriptHolder)] = this;
 			}
 		}
 

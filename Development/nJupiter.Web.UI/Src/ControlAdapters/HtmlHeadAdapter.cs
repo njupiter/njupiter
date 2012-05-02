@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Specialized;
-using System.Web;
 using System.Web.UI;
 
 namespace nJupiter.Web.UI.ControlAdapters {
@@ -47,8 +46,8 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		}
 
 		public HtmlHeadAdapter() {
-			if(HttpContext.Current != null) {
-				HttpContext.Current.Items[typeof(HtmlHeadAdapter)] = this;
+			if(HttpContextHandler.Instance.Current != null) {
+				HttpContextHandler.Instance.Current.Items[typeof(HtmlHeadAdapter)] = this;
 			}
 		}
 

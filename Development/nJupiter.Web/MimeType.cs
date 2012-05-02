@@ -35,20 +35,16 @@ namespace nJupiter.Web {
 	/// <seealso cref="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html"/>
 	public class MimeType : IMimeType {
 
-		#region Members
 		private readonly string type;
 		private readonly string discreteType;
 		private readonly string compositeType;
 		private readonly NameValueCollection parameters;
-		#endregion
 
-		#region Properties
 		public string Type { get { return this.type; } }
 		public string DiscreteType { get { return this.discreteType; } }
 		public string CompositeType { get { return this.compositeType; } }
 		public NameValueCollection Parameters { get { return this.parameters; } }
 
-		#region Auto Generated Properties
 		//This properties are generated on the fly because the object isn't fully imutable
 		// and that the parameters collection can and should be able to change on the fly
 		public string ContentType {
@@ -89,10 +85,7 @@ namespace nJupiter.Web {
 				return Encoding.UTF8;
 			}
 		}
-		#endregion
-		#endregion
 
-		#region Constructors
 		public MimeType(string mimeType, decimal quality) : this(mimeType + "; q=" + quality.ToString("0.###", NumberFormatInfo.InvariantInfo)) { }
 		public MimeType(string mimeType, Encoding charSet) : this(mimeType + (charSet == null ? string.Empty : "; charset=" + charSet.BodyName)) { }
 
@@ -109,7 +102,7 @@ namespace nJupiter.Web {
 			var mime = this.type.Split('/');
 
 			if(mime.Length != 2)
-				throw new ArgumentException("Parameter value [" + mimeType + "] is not a mime-type.", "mimeType");
+				throw new ArgumentException(string.Format("Parameter value [{0}] is not a mime-type.", mimeType), "mimeType");
 
 			this.discreteType = mime[0].Trim();
 			this.compositeType = mime[1].Trim();
@@ -126,9 +119,7 @@ namespace nJupiter.Web {
 				}
 			}
 		}
-		#endregion
 
-		#region Methods
 		public override bool Equals(object obj) {
 			var mimeType = obj as IMimeType;
 			if(mimeType == null)
@@ -157,7 +148,6 @@ namespace nJupiter.Web {
 		public override string ToString() {
 			return this.ContentType;
 		}
-		#endregion
 
 	}
 }

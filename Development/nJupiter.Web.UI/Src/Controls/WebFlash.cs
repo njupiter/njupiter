@@ -262,7 +262,7 @@ namespace nJupiter.Web.UI.Controls {
 				(this.scale ?? string.Empty),
 				(this.sAlign ?? string.Empty),
 				this.GetWModeString(),
-				UrlHandler.GetQueryString(this.FlashParams, false),
+				UrlHandler.Instance.GetQueryString(this.FlashParams, false),
 				(this.autoInstall ? "true" : "false"),
 				(string.IsNullOrEmpty(this.autoInstallMovie) ? UfoExpressinstall : this.autoInstallMovie),
 				(UserAgent.Instance.IsIE ? ", setcontainercss:\"true\"" : string.Empty),
@@ -295,7 +295,7 @@ namespace nJupiter.Web.UI.Controls {
 				this.width, GetUnitString(this.unit),
 				this.height, GetUnitString(this.unit),
 				this.flashUrl,
-				HttpUtility.HtmlEncode(UrlHandler.GetQueryString(this.FlashParams, false)),
+				HttpUtility.HtmlEncode(UrlHandler.Instance.GetQueryString(this.FlashParams, false)),
 				(!string.IsNullOrEmpty(this.scale) ? string.Format(@"<param name=""scale"" value=""{0}"" />", this.scale) : string.Empty),
 				(!string.IsNullOrEmpty(this.sAlign) ? string.Format(@"<param name=""sAlign"" value=""{0}"" />", this.sAlign) : string.Empty),
 				(!string.IsNullOrEmpty(wmode) ? string.Format(@"<param name=""wmode"" value=""{0}"" />", wmode) : string.Empty));
@@ -305,7 +305,7 @@ namespace nJupiter.Web.UI.Controls {
 			return string.Format(
 				CultureInfo.InvariantCulture,
 				SwffixEmbeddedScriptTag,
-				UrlHandler.GetQueryString(this.FlashParams, false),
+				UrlHandler.Instance.GetQueryString(this.FlashParams, false),
 				(this.scale ?? string.Empty),
 				(this.sAlign ?? string.Empty),
 				this.GetWModeString(),
