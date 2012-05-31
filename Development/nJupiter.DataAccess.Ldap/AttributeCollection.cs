@@ -10,8 +10,8 @@ namespace nJupiter.DataAccess.Ldap {
 		internal AttributeCollection(ResultPropertyCollection resultPropertyCollection) {
 			attributeCollection = new Dictionary<string, AttributeValueCollection>(StringComparer.InvariantCultureIgnoreCase);
 			foreach(string key in resultPropertyCollection.PropertyNames) {
-				ResultPropertyValueCollection values = resultPropertyCollection[key];
-				AttributeValueCollection attributeValueCollection = new AttributeValueCollection(values);
+				var values = resultPropertyCollection[key];
+				var attributeValueCollection = new AttributeValueCollection(values);
 				attributeCollection.Add(key, attributeValueCollection);
 			}
 		}
@@ -57,11 +57,11 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override bool Equals(object obj) {
-			AttributeCollection collection = obj as AttributeCollection;
+			var collection = obj as AttributeCollection;
 			if(collection == null) {
 				return false;
 			}
-			return this.attributeCollection.Equals(collection.attributeCollection);
+			return attributeCollection.Equals(collection.attributeCollection);
 		}
 
 	}

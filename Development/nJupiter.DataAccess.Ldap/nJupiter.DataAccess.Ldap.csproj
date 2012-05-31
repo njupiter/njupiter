@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>nJupiter.DataAccess.Ldap</RootNamespace>
     <AssemblyName>nJupiter.DataAccess.Ldap</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,12 +51,43 @@
     <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Abstractions\DirectoryEntryExtensions.cs" />
+    <Compile Include="Abstractions\DirectoryEntryFactory.cs" />
+    <Compile Include="Abstractions\DirectoryEntryWrapper.cs" />
+    <Compile Include="Abstractions\DirectorySearcherWrapper.cs" />
+    <Compile Include="Abstractions\IDirectoryEntry.cs" />
+    <Compile Include="Abstractions\IDirectoryEntryFactory.cs" />
+    <Compile Include="Abstractions\IDirectorySearcher.cs" />
+    <Compile Include="Abstractions\ISearchResult.cs" />
+    <Compile Include="Abstractions\SearchResultExtensions.cs" />
+    <Compile Include="Abstractions\SearchResultWrapper.cs" />
     <Compile Include="AttributeCollection.cs" />
     <Compile Include="AttributeDefinition.cs" />
     <Compile Include="AttributeValueCollection.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Configuration\IGroupConfigFactory.cs" />
+    <Compile Include="Configuration\IGroupsConfig.cs" />
+    <Compile Include="Configuration\ILdapConfig.cs" />
+    <Compile Include="Configuration\IServerConfig.cs" />
+    <Compile Include="Configuration\IServerConfigFactory.cs" />
+    <Compile Include="Configuration\IUsersConfig.cs" />
+    <Compile Include="Configuration\IUsersConfigFactory.cs" />
+    <Compile Include="Configuration\LdapConfig.cs" />
+    <Compile Include="Configuration\LdapConfigFactory.cs" />
+    <Compile Include="Configuration\GroupsConfig.cs" />
+    <Compile Include="Configuration\GroupsConfigFactory.cs" />
+    <Compile Include="Configuration\ServerConfig.cs" />
+    <Compile Include="Configuration\ServerConfigFactory.cs" />
+    <Compile Include="Configuration\UsersConfig.cs" />
+    <Compile Include="Configuration\UsersConfigFactory.cs" />
     <Compile Include="DirectoryEntryAdapter.cs" />
+    <Compile Include="DirectoryEntryAdapterFactory.cs" />
+    <Compile Include="FilterBuilderFactory.cs" />
+    <Compile Include="IDirectoryEntryAdapter.cs" />
+    <Compile Include="IFilterBuilder.cs" />
+    <Compile Include="ILdapNameHandler.cs" />
+    <Compile Include="ISearcher.cs" />
     <Compile Include="LdapMembershipUser.cs" />
+    <Compile Include="LdapNameHandlerFactory.cs" />
     <Compile Include="LdapPathHandler.cs" />
     <Compile Include="NameParser\DnParser.cs" />
     <Compile Include="Searcher.cs" />
@@ -81,5 +113,6 @@
       <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\nJupiter.CSharp.targets" />
 </Project>

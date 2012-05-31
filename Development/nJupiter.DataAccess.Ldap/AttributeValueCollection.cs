@@ -8,7 +8,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		internal AttributeValueCollection(ResultPropertyValueCollection resultPropertyValueCollection) {
 			attributeValueCollection = new List<object>();
-			foreach(object propertyValue in resultPropertyValueCollection) {
+			foreach(var propertyValue in resultPropertyValueCollection) {
 				attributeValueCollection.Add(propertyValue);
 			}
 
@@ -39,11 +39,11 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override bool Equals(object obj) {
-			AttributeValueCollection collection = obj as AttributeValueCollection;
+			var collection = obj as AttributeValueCollection;
 			if(collection == null) {
 				return false;
 			}
-			return this.attributeValueCollection.Equals(collection.attributeValueCollection);
+			return attributeValueCollection.Equals(collection.attributeValueCollection);
 		}
 
 	}

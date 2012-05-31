@@ -23,16 +23,19 @@
 #endregion
 
 using System;
-using System.DirectoryServices;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Security;
+
+using nJupiter.DataAccess.Ldap.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 
 	internal class LdapMembershipUserFactory {
 
-		private readonly Configuration config;
+		private readonly Configuration.ILdapConfig config;
 
-		public static LdapMembershipUserFactory GetInstance(Configuration config) {
+		public static LdapMembershipUserFactory GetInstance(Configuration.ILdapConfig config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
@@ -40,26 +43,26 @@ namespace nJupiter.DataAccess.Ldap {
 			return new LdapMembershipUserFactory(config);
 		}
 
-		private LdapMembershipUserFactory(Configuration config) {
+		private LdapMembershipUserFactory(Configuration.ILdapConfig config) {
 			this.config = config;
 		}
 
-		public MembershipUser CreateUserFromSearcher(string providerName, DirectorySearcher searcher) {
-			SearchResult result = searcher.FindOne();
+		public MembershipUser CreateUserFromSearcher(string providerName, IDirectorySearcher searcher) {
+			var result = searcher.FindOne();
 			return CreateUserFromResult(providerName, result);
 		}
 
-		public MembershipUserCollection CreateUsersFromSearcher(string providerName, DirectorySearcher searcher) {
-			SearchResultCollection results = searcher.FindAll();
+		public MembershipUserCollection CreateUsersFromSearcher(string providerName, IDirectorySearcher searcher) {
+			var results = searcher.FindAll();
 			return CreateUsersFromResult(results, providerName);
 		}
 
-		private MembershipUserCollection CreateUsersFromResult(SearchResultCollection results, string providerName) {
+		private MembershipUserCollection CreateUsersFromResult(IEnumerable<ISearchResult> results, string providerName) {
 
-			MembershipUserCollection users = new MembershipUserCollection();
-			if((results.Count > 0)) {
-				foreach(SearchResult result in results) {
-					MembershipUser user = CreateUserFromResult(providerName, result);
+			var users = new MembershipUserCollection();
+			if((results.Any())) {
+				foreach(var result in results) {
+					var user = CreateUserFromResult(providerName, result);
 					if(user != null) {
 						users.Add(user);
 					}
@@ -68,32 +71,32 @@ namespace nJupiter.DataAccess.Ldap {
 			return users;
 		}
 
-		private MembershipUser CreateUserFromResult(string providerName, SearchResult result) {
+		private MembershipUser CreateUserFromResult(string providerName, ISearchResult result) {
 			if(result == null) {
 				return null;
 			}
-			string name = GetStringAttributeFromSearchResult(config.Users.RdnAttribute, result);
-			string id = name;
-			string email = GetStringAttributeFromSearchResult(config.Users.EmailAttribute, result);
-			string description = GetStringAttributeFromSearchResult(config.Users.DescriptionAttribute, result);
+			var name = GetStringAttributeFromSearchResult(config.Users.RdnAttribute, result);
+			var id = name;
+			var email = GetStringAttributeFromSearchResult(config.Users.EmailAttribute, result);
+			var description = GetStringAttributeFromSearchResult(config.Users.DescriptionAttribute, result);
 
-			DateTime creationDate = GetDateTimeAttributeFromSearchResult(config.Users.CreationDateAttribute, result);
-			DateTime lastLoginDate = GetDateTimeAttributeFromSearchResult(config.Users.LastLoginDateAttribute, result);
-			DateTime lastPasswordChangedDate = GetDateTimeAttributeFromSearchResult(config.Users.LastPasswordChangedDateAttribute, result);
-			DateTime lastLockoutDate = creationDate;
-			DateTime lastActivitiyDate = DateTime.Now;
+			var creationDate = GetDateTimeAttributeFromSearchResult(config.Users.CreationDateAttribute, result);
+			var lastLoginDate = GetDateTimeAttributeFromSearchResult(config.Users.LastLoginDateAttribute, result);
+			var lastPasswordChangedDate = GetDateTimeAttributeFromSearchResult(config.Users.LastPasswordChangedDateAttribute, result);
+			var lastLockoutDate = creationDate;
+			var lastActivitiyDate = DateTime.Now;
 
 			return new LdapMembershipUser(providerName, name, id, email, String.Empty, description, true, false, creationDate, lastLoginDate, lastActivitiyDate, lastPasswordChangedDate, lastLockoutDate, result.Properties, result.Path);
 		}
 
-		private static string GetStringAttributeFromSearchResult(string attribute, SearchResult result) {
-			object value = GetAttributeFromSearchResult(attribute, result);
-			string stringValue = value as string;
+		private static string GetStringAttributeFromSearchResult(string attribute, ISearchResult result) {
+			var value = GetAttributeFromSearchResult(attribute, result);
+			var stringValue = value as string;
 			return stringValue ?? string.Empty;
 		}
 
-		private static DateTime GetDateTimeAttributeFromSearchResult(string attribute, SearchResult result) {
-			object value = GetAttributeFromSearchResult(attribute, result);
+		private static DateTime GetDateTimeAttributeFromSearchResult(string attribute, ISearchResult result) {
+			var value = GetAttributeFromSearchResult(attribute, result);
 			if(value == null) {
 				return DateTime.MinValue;
 			}
@@ -104,13 +107,13 @@ namespace nJupiter.DataAccess.Ldap {
 			return (DateTime)value;
 		}
 
-		private static object GetAttributeFromSearchResult(string attribute, SearchResult result) {
+		private static object GetAttributeFromSearchResult(string attribute, ISearchResult result) {
 			if(string.IsNullOrEmpty(attribute)) {
 				return null;
 			}
 			if(result.Properties.Contains(attribute)) {
-				ResultPropertyValueCollection values = result.Properties[attribute];
-				foreach(object value in values) {
+				var values = result.Properties[attribute];
+				foreach(var value in values) {
 					return value;
 				}
 			}

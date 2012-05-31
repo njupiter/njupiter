@@ -27,7 +27,11 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.DirectoryServices;
+using System.Linq;
 using System.Web.Security;
+
+using nJupiter.DataAccess.Ldap.Configuration;
+
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapRoleProvider : RoleProvider {
@@ -35,17 +39,17 @@ namespace nJupiter.DataAccess.Ldap {
 		private string providerName;
 		private string appName;
 		private string ldapServer;
-		private Configuration configuration;
-		private Searcher userSearcher;
-		private Searcher groupSearcher;
-		private FilterBuilder filterBuilder;
-		private DirectoryEntryAdapter directoryEntryAdapter;
-		private LdapNameHandler ldapNameHandler;
+		private ILdapConfig configuration;
+		private ISearcher userSearcher;
+		private ISearcher groupSearcher;
+		private IFilterBuilder filterBuilder;
+		private IDirectoryEntryAdapter directoryEntryAdapter;
+		private ILdapNameHandler ldapNameHandler;
 
-		public override string ApplicationName { get { return this.appName; } set { this.appName = value; } }
+		public override string ApplicationName { get { return appName; } set { appName = value; } }
 		public override string Name {
 			get {
-				return string.IsNullOrEmpty(this.providerName) ? this.GetType().Name : this.providerName;
+				return string.IsNullOrEmpty(providerName) ? GetType().Name : providerName;
 			}
 		}
 
@@ -53,19 +57,19 @@ namespace nJupiter.DataAccess.Ldap {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
-			this.appName = LdapRoleProvider.GetStringConfigValue(config, "applicationName", typeof(LdapRoleProvider).GetType().Name);
-			this.providerName = !string.IsNullOrEmpty(name) ? name : this.appName;
+			appName = GetStringConfigValue(config, "applicationName", typeof(LdapRoleProvider).Name);
+			providerName = !string.IsNullOrEmpty(name) ? name : appName;
 
-			this.ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
+			ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
-			this.configuration = Configuration.GetConfig(this.ldapServer);
-			this.userSearcher = SearcherFactory.GetSearcher("user", configuration);
-			this.groupSearcher = SearcherFactory.GetSearcher("group", configuration);
-			this.filterBuilder = FilterBuilder.GetInstance(this.configuration);
-			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSearcher, this.groupSearcher, this.filterBuilder);
-			this.ldapNameHandler = LdapNameHandler.GetInstance(configuration);
+			configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
+			userSearcher = SearcherFactory.GetSearcher("user", configuration);
+			groupSearcher = SearcherFactory.GetSearcher("group", configuration);
+			filterBuilder = FilterBuilderFactory.GetInstance(configuration);
+			ldapNameHandler = LdapNameHandlerFactory.GetInstance(configuration);
+			directoryEntryAdapter = DirectoryEntryAdapterFactory.GetInstance(configuration, userSearcher, groupSearcher, filterBuilder);
 
-			base.Initialize(this.providerName, config);
+			base.Initialize(providerName, config);
 		}
 
 		private static string GetStringConfigValue(NameValueCollection config, string configKey, string defaultValue) {
@@ -82,24 +86,24 @@ namespace nJupiter.DataAccess.Ldap {
 			if(roleName == null) {
 				throw new ArgumentNullException("roleName");
 			}
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUserEntry(username)) {
+			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return false;
 				}
 				if(entry.Properties.Contains(configuration.Users.MembershipAttribute)) {
-					foreach(object groupObject in entry.Properties[configuration.Users.MembershipAttribute]) {
-						string group = GetPropertyValue(groupObject);
+					foreach(var groupObject in entry.Properties[configuration.Users.MembershipAttribute]) {
+						var group = GetPropertyValue(groupObject);
 						if(ldapNameHandler.GroupsEqual(group, roleName)) {
 							return true;
 						}
 					}
 				} else {
-					DirectorySearcher searcher = this.userSearcher.Create(entry, SearchScope.Base);
+					var searcher = userSearcher.Create(entry, SearchScope.Base);
 					searcher.Filter = filterBuilder.CreateUserFilter();
-					SearchResult result = searcher.FindOne();
+					var result = searcher.FindOne();
 					if((result != null) && result.Properties.Contains(configuration.Users.MembershipAttribute)) {
-						foreach(object groupObject in result.Properties[configuration.Users.MembershipAttribute]) {
-							string group = GetPropertyValue(groupObject);
+						foreach(var groupObject in result.Properties[configuration.Users.MembershipAttribute]) {
+							var group = GetPropertyValue(groupObject);
 							if(ldapNameHandler.GroupsEqual(group, roleName)) {
 								return true;
 							}
@@ -114,25 +118,25 @@ namespace nJupiter.DataAccess.Ldap {
 			if(username == null) {
 				throw new ArgumentNullException("username");
 			}
-			using(DirectoryEntry userEntry = directoryEntryAdapter.GetUserEntry(username)) {
+			using(var userEntry = directoryEntryAdapter.GetUserEntry(username)) {
 				if(!DirectoryEntryAdapter.IsBound(userEntry)) {
 					return new string[0];
 				}
-				List<string> builder = new List<string>();
+				var builder = new List<string>();
 				if(userEntry.Properties.Contains(configuration.Users.MembershipAttribute)) {
-					foreach(object groupObject in userEntry.Properties[configuration.Users.MembershipAttribute]) {
-						string group = GetPropertyValue(groupObject);
-						string name = ldapNameHandler.GetGroupName(group);
+					foreach(var groupObject in userEntry.Properties[configuration.Users.MembershipAttribute]) {
+						var group = GetPropertyValue(groupObject);
+						var name = ldapNameHandler.GetGroupName(group);
 						builder.Add(name);
 					}
 				} else {
-					DirectorySearcher searcher = this.userSearcher.Create(userEntry, SearchScope.Base);
+					var searcher = userSearcher.Create(userEntry, SearchScope.Base);
 					searcher.Filter = filterBuilder.CreateUserFilter();
-					SearchResult result = searcher.FindOne();
+					var result = searcher.FindOne();
 					if(result.Properties.Contains(configuration.Users.MembershipAttribute)) {
-						foreach(object groupObject in result.Properties[configuration.Users.MembershipAttribute]) {
-							string group = GetPropertyValue(groupObject);
-							string name = ldapNameHandler.GetGroupName(group);
+						foreach(var groupObject in result.Properties[configuration.Users.MembershipAttribute]) {
+							var group = GetPropertyValue(groupObject);
+							var name = ldapNameHandler.GetGroupName(group);
 							builder.Add(name);
 						}
 					}
@@ -157,7 +161,7 @@ namespace nJupiter.DataAccess.Ldap {
 			if(roleName == null) {
 				throw new ArgumentNullException("roleName");
 			}
-			using(DirectoryEntry entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
+			using(var entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
 				if(DirectoryEntryAdapter.IsBound(entry) && entry.Properties.Contains(configuration.Groups.RdnAttribute)) {
 					return true;
 				}
@@ -177,30 +181,30 @@ namespace nJupiter.DataAccess.Ldap {
 			if(roleName == null) {
 				throw new ArgumentNullException("roleName");
 			}
-			List<string> builder = new List<string>();
-			using(DirectoryEntry entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
+			var builder = new List<string>();
+			using(var entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return new string[0];
 				}
-				DirectorySearcher searcher = this.groupSearcher.CreateSearcher(entry, SearchScope.Base);
+				var searcher = groupSearcher.CreateSearcher(entry, SearchScope.Base);
 				searcher.Filter = filterBuilder.CreateGroupFilter();
 
 				if(configuration.Server.RangeRetrievalSupport) {
 					// Inspired by http://www.netid.washington.edu/documentation/enumeratingLargeGroups.aspx
 					// Shall be cleaned up later
 					uint rangeLow = 0;
-					uint rangeHigh = rangeLow;
-					bool isLastQuery = false;
-					bool endOfRange = false;
+					var rangeHigh = rangeLow;
+					var isLastQuery = false;
+					var endOfRange = false;
 					do {
-						string userMembershipRangeFilter = filterBuilder.CreateGroupMembershipRangeFilter(rangeLow, isLastQuery ? uint.MaxValue : rangeHigh);
+						var userMembershipRangeFilter = filterBuilder.CreateGroupMembershipRangeFilter(rangeLow, isLastQuery ? uint.MaxValue : rangeHigh);
 						searcher.PropertiesToLoad.Clear();
 						searcher.PropertiesToLoad.Add(userMembershipRangeFilter);
-						SearchResult result = searcher.FindOne();
+						var result = searcher.FindOne();
 						if(result != null && result.Properties.Contains(userMembershipRangeFilter)) {
-							foreach(object userObject in result.Properties[userMembershipRangeFilter]) {
-								string user = GetPropertyValue(userObject);
-								string name = ldapNameHandler.GetUserName(user);
+							foreach(var userObject in result.Properties[userMembershipRangeFilter]) {
+								var user = GetPropertyValue(userObject);
+								var name = ldapNameHandler.GetUserName(user);
 								builder.Add(name);
 							}
 							if(isLastQuery) {
@@ -218,10 +222,10 @@ namespace nJupiter.DataAccess.Ldap {
 				} else {
 					searcher.PropertiesToLoad.Clear();
 					searcher.PropertiesToLoad.Add(configuration.Groups.MembershipAttribute);
-					SearchResult result = searcher.FindOne();
+					var result = searcher.FindOne();
 					if((result != null) && result.Properties.Contains(configuration.Groups.MembershipAttribute)) {
 						foreach(string user in result.Properties[configuration.Groups.MembershipAttribute]) {
-							string name = ldapNameHandler.GetUserName(user);
+							var name = ldapNameHandler.GetUserName(user);
 							builder.Add(name);
 						}
 					}
@@ -235,18 +239,18 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override string[] GetAllRoles() {
-			using(DirectoryEntry entry = directoryEntryAdapter.GetGroupsEntry()) {
+			using(var entry = directoryEntryAdapter.GetGroupsEntry()) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					throw new ProviderException("Could not load role list.");
 				}
-				DirectorySearcher searcher = this.groupSearcher.Create(entry);
+				var searcher = groupSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateGroupFilter();
-				SearchResultCollection results = searcher.FindAll();
-				List<string> builder = new List<string>();
-				if(results.Count > 0) {
-					foreach(SearchResult result in results) {
-						DirectoryEntry directoryEntry = result.GetDirectoryEntry();
-						string name = ldapNameHandler.GetGroupNameFromEntry(directoryEntry);
+				var results = searcher.FindAll();
+				var builder = new List<string>();
+				if(results.Any()) {
+					foreach(var result in results) {
+						var directoryEntry = result.GetDirectoryEntry();
+						var name = ldapNameHandler.GetGroupNameFromEntry(directoryEntry);
 						builder.Add(name);
 					}
 				}
@@ -266,7 +270,7 @@ namespace nJupiter.DataAccess.Ldap {
 			// Properties are in some systems loaded as byte arrays instead of strings
 			// In thouse cases we convert them to strings
 			// TODO: I do not realy know the reason of this behaviour, has to be investigate why and if I do something wrong.
-			byte[] b = valueObject as byte[];
+			var b = valueObject as byte[];
 			if(b != null) {
 				return System.Text.Encoding.UTF8.GetString(b);
 			}

@@ -25,34 +25,29 @@
 using System;
 using System.Text;
 
+using nJupiter.DataAccess.Ldap.Configuration;
+
 namespace nJupiter.DataAccess.Ldap {
-	internal class FilterBuilder {
+	internal class FilterBuilder : IFilterBuilder {
 
-		private readonly Configuration config;
+		private readonly ILdapConfig config;
 
-		public static FilterBuilder GetInstance(Configuration config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-			return new FilterBuilder(config);
-		}
-
-		private FilterBuilder(Configuration config) {
+		public FilterBuilder(ILdapConfig config) {
 			this.config = config;
 		}
 
 		public string CreateUserNameFilter(string usernameToMatch) {
-			string defaultFilter = CreateUserFilter();
+			var defaultFilter = CreateUserFilter();
 			if(config.Users.Attributes.Count > 0) {
-				return this.AttachUserAttributeFilters(usernameToMatch, defaultFilter);
+				return AttachUserAttributeFilters(usernameToMatch, defaultFilter);
 			}
 			return AttachFilter(config.Users.RdnAttribute, usernameToMatch, defaultFilter);
 		}
 
 		private string AttachUserAttributeFilters(string usernameToMatch, string userFilter) {
-			string escapedUsername = this.EscapeSearchFilter(usernameToMatch);
-			StringBuilder builder = new StringBuilder();
-			foreach(AttributeDefinition otherAttributes in config.Users.Attributes) {
+			var escapedUsername = EscapeSearchFilter(usernameToMatch);
+			var builder = new StringBuilder();
+			foreach(var otherAttributes in config.Users.Attributes) {
 				if(!otherAttributes.ExcludeFromNameSearch) {
 					builder.Append(String.Format("({0}={1})", otherAttributes.Name, escapedUsername));
 				}
@@ -61,7 +56,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public string CreateUserEmailFilter(string emailToMatch) {
-			string userFilter = CreateUserFilter();
+			var userFilter = CreateUserFilter();
 			return AttachFilter(config.Users.EmailAttribute, emailToMatch, userFilter);
 		}
 
@@ -81,26 +76,26 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
-			string escapedValue = this.EscapeSearchFilter(valueToMatch);
+			var escapedValue = EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}={2}))", defaultFilter, attributeToMatch, escapedValue);
 		}
 
 		public string AttachRdnFilter(string valueToMatch, string defaultFilter) {
-			string escapedValue = this.EscapeSearchFilter(valueToMatch);
+			var escapedValue = EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}))", defaultFilter, escapedValue);
 		}
 
 		private string EscapeSearchFilter(string searchFilter) {
 			//http://stackoverflow.com/questions/649149/how-to-escape-a-string-in-c-for-use-in-an-ldap-query
-			StringBuilder escape = new StringBuilder();
-			for(int i = 0; i < searchFilter.Length; ++i) {
-				char current = searchFilter[i];
+			var escape = new StringBuilder();
+			for(var i = 0; i < searchFilter.Length; ++i) {
+				var current = searchFilter[i];
 				switch(current) {
 					case '\\':
 					escape.Append(@"\5c");
 					break;
 					case '*':
-					if(this.config.Server.AllowWildcardSearch) {
+					if(config.Server.AllowWildcardSearch) {
 						escape.Append(current);
 					} else {
 						escape.Append(@"\2a");

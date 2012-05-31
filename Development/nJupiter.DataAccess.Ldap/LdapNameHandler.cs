@@ -23,28 +23,21 @@
 #endregion
 
 using System;
-using System.DirectoryServices;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap {
-	internal class LdapNameHandler {
+	internal class LdapNameHandler : ILdapNameHandler {
 
-		private readonly Configuration config;
+		private readonly ILdapConfig config;
 
-		public static LdapNameHandler GetInstance(Configuration config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-
-			return new LdapNameHandler(config);
-		}
-
-		private LdapNameHandler(Configuration config) {
+		public LdapNameHandler(ILdapConfig config) {
 			this.config = config;
 		}
 
-		public string GetUserNameFromEntry(DirectoryEntry entry) {
+		public string GetUserNameFromEntry(IDirectoryEntry entry) {
 			return GetNameFromEntry(config.Users.NameType, entry);
 		}
 
@@ -52,7 +45,7 @@ namespace nJupiter.DataAccess.Ldap {
 			return GetName(config.Users.NameType, entryName);
 		}
 
-		public string GetGroupNameFromEntry(DirectoryEntry entry) {
+		public string GetGroupNameFromEntry(IDirectoryEntry entry) {
 			return GetNameFromEntry(config.Groups.NameType, entry);
 		}
 
@@ -60,7 +53,7 @@ namespace nJupiter.DataAccess.Ldap {
 			return GetName(config.Groups.NameType, entryName);
 		}
 
-		private static string GetNameFromEntry(NameType nameType, DirectoryEntry entry) {
+		private static string GetNameFromEntry(NameType nameType, IDirectoryEntry entry) {
 			return GetName(nameType, entry.Name);
 		}
 
@@ -78,7 +71,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public bool GroupsEqual(string name, string nameToMatch) {
-			return NamesEqual(name, nameToMatch, this.config.Groups.RdnAttribute, this.config.Groups.Base);
+			return NamesEqual(name, nameToMatch, config.Groups.RdnAttribute, config.Groups.Base);
 		}
 
 		private static bool NamesEqual(string name, string nameToMatch, string attribute, string basePath) {

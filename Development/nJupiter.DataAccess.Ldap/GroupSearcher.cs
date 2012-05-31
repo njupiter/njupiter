@@ -24,14 +24,17 @@
 
 using System.DirectoryServices;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.Configuration;
+
 namespace nJupiter.DataAccess.Ldap {
 	internal class GroupSearcher : Searcher {
 
-		public GroupSearcher(Configuration config) : base(config) { }
+		public GroupSearcher(ILdapConfig config) : base(config) { }
 
-		public override DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope) {
-			DirectorySearcher searcher = CreateSearcher(entry, SearchScope.Subtree, this.Config.Groups.RdnAttribute, this.Config.Groups.Attributes);
-			searcher.PropertiesToLoad.Add(this.Config.Groups.MembershipAttribute);
+		public override IDirectorySearcher Create(IDirectoryEntry entry, SearchScope searchScope) {
+			var searcher = CreateSearcher(entry, SearchScope.Subtree, Config.Groups.RdnAttribute, Config.Groups.Attributes);
+			searcher.PropertiesToLoad.Add(Config.Groups.MembershipAttribute);
 			return searcher;
 		}
 

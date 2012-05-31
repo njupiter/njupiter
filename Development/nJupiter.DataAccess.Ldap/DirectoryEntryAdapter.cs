@@ -24,96 +24,82 @@
 
 using System;
 using System.Configuration.Provider;
-using System.DirectoryServices;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap {
-	internal class DirectoryEntryAdapter {
+	internal class DirectoryEntryAdapter : IDirectoryEntryAdapter {
 
-		private readonly Configuration config;
-		private readonly Searcher userSearcher;
-		private readonly Searcher groupSearcher;
-		private readonly FilterBuilder filterBuilder;
+		private readonly ILdapConfig config;
+		private readonly ISearcher userSearcher;
+		private readonly ISearcher groupSearcher;
+		private readonly IFilterBuilder filterBuilder;
+		private readonly IDirectoryEntryFactory directoryEntryFactory;
 
-		public static DirectoryEntryAdapter GetInstance(Configuration config, Searcher userSearcher, Searcher groupSearcher, FilterBuilder filterBuilder) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-			if(userSearcher == null) {
-				throw new ArgumentNullException("userSearcher");
-			}
-			if(groupSearcher == null) {
-				throw new ArgumentNullException("groupSearcher");
-			}
-			if(filterBuilder == null) {
-				throw new ArgumentNullException("filterBuilder");
-			}
-			return new DirectoryEntryAdapter(config, userSearcher, groupSearcher, filterBuilder);
-		}
-
-		private DirectoryEntryAdapter(Configuration config, Searcher userSearcher, Searcher groupSearcher, FilterBuilder filterBuilder) {
+		public DirectoryEntryAdapter(ILdapConfig config, IDirectoryEntryFactory directoryEntryFactory, ISearcher userSearcher, ISearcher groupSearcher, IFilterBuilder filterBuilder) {
 			this.config = config;
+			this.directoryEntryFactory = directoryEntryFactory;
 			this.filterBuilder = filterBuilder;
 			this.userSearcher = userSearcher;
 			this.groupSearcher = groupSearcher;
 		}
 
-		public DirectoryEntry GetUserEntry(string username) {
-			string userFilter = filterBuilder.CreateUserFilter();
+		public IDirectoryEntry GetUserEntry(string username) {
+			var userFilter = filterBuilder.CreateUserFilter();
 			return GetEntry(config.Users.RdnAttribute, username, config.Users.Path, userFilter, userSearcher);
 		}
 
-		public DirectoryEntry GetUsersEntry() {
+		public IDirectoryEntry GetUsersEntry() {
 			return GetEntry(config.Users.Path);
 		}
 
-		public DirectoryEntry GetGroupEntry(string groupname) {
-			string groupFilter = filterBuilder.CreateGroupFilter();
+		public IDirectoryEntry GetGroupEntry(string groupname) {
+			var groupFilter = filterBuilder.CreateGroupFilter();
 			return GetEntry(config.Groups.RdnAttribute, groupname, config.Groups.Path, groupFilter, groupSearcher);
 		}
 
-		public DirectoryEntry GetGroupsEntry() {
+		public IDirectoryEntry GetGroupsEntry() {
 			return GetEntry(config.Groups.Path);
 		}
 
-		private DirectoryEntry GetEntry(string path) {
+		private IDirectoryEntry GetEntry(string path) {
 			return GetEntry(path, config.Server.Username, config.Server.Password);
 		}
 
-		private DirectoryEntry GetEntry(Uri uri) {
+		private IDirectoryEntry GetEntry(Uri uri) {
 			return GetEntry(uri, config.Server.Username, config.Server.Password);
 		}
 
-		public DirectoryEntry GetEntry(Uri uri, string username, string password) {
-			string path = LdapPathHandler.UriToPath(uri);
+		public IDirectoryEntry GetEntry(Uri uri, string username, string password) {
+			var path = LdapPathHandler.UriToPath(uri);
 			return GetEntry(path, username, password);
 		}
 
-		private DirectoryEntry GetEntry(string path, string username, string password) {
-			return new DirectoryEntry(path, username, password, config.Server.AuthenticationTypes);
+		private IDirectoryEntry GetEntry(string path, string username, string password) {
+			return directoryEntryFactory.Create(path, username, password, config.Server.AuthenticationTypes);
 		}
 
-		private DirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, Searcher searcher) {
-			DirectorySearcher directorySearcher;
-			DirectoryEntry directoryEntry = null;
+		private IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, ISearcher searcher) {
+			IDirectoryEntry directoryEntry = null;
 
-			Dn dn = DnParser.GetDnObject(attributeValue);
+			var dn = DnParser.GetDnObject(attributeValue);
 			if(dn != null && dn.Rdns.Count > 1) {
-				Uri uri = new Uri(config.Server.Url, dn.ToString());
+				var uri = new Uri(config.Server.Url, dn.ToString());
 				return GetEntry(uri);
 			}
 
-			DirectoryEntry entry = GetEntry(path);
+			var entry = GetEntry(path);
 			if(IsBound(entry)) {
-				directorySearcher = searcher.Create(entry);
+				var directorySearcher = searcher.Create(entry);
 				if(dn != null) {
 					directorySearcher.Filter = filterBuilder.AttachRdnFilter(attributeValue, defaultFilter);
 				} else {
 					directorySearcher.Filter = filterBuilder.AttachFilter(attribute, attributeValue, defaultFilter);
 				}
 
-				foreach(SearchResult result in directorySearcher.FindAll()) {
+				foreach(var result in directorySearcher.FindAll()) {
 					if(directoryEntry != null) {
 						throw new ProviderException(String.Format("More than one entry with value {0} for attribute {1} was found.", attributeValue, attribute));
 					}
@@ -123,8 +109,8 @@ namespace nJupiter.DataAccess.Ldap {
 			return directoryEntry;
 		}
 
-		public static bool IsBound(DirectoryEntry entry) {
-			return entry != null ? entry.NativeObject != null : false;
+		public static bool IsBound(IDirectoryEntry entry) {
+			return entry != null && entry.NativeObject != null;
 		}
 	}
 }

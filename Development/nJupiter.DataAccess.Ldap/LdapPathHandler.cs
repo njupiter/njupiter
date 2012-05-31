@@ -46,7 +46,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public static string GetDistinguishedNameFromPath(string path) {
 			if(path.StartsWith(LdapScheme, StringComparison.InvariantCultureIgnoreCase)) {
-				Uri uri = new Uri(path);
+				var uri = new Uri(path);
 				path = HttpUtility.UrlDecode(uri.PathAndQuery);
 				if(path.StartsWith("/")) {
 					path = path.Substring(1);

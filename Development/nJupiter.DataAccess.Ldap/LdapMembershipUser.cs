@@ -33,7 +33,7 @@ namespace nJupiter.DataAccess.Ldap {
 											lastActivityDate,
 											lastPasswordChangedDate,
 											lastLockoutDate) {
-			this.attributes = new AttributeCollection(resultPropertyCollection);
+			attributes = new AttributeCollection(resultPropertyCollection);
 			this.path = path;
 		}
 

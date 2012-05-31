@@ -24,31 +24,33 @@
 
 using System.DirectoryServices;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
+
 namespace nJupiter.DataAccess.Ldap {
 	internal class UserSearcher : Searcher {
 
-		public UserSearcher(Configuration config) : base(config) { }
+		public UserSearcher(Configuration.ILdapConfig config) : base(config) { }
 
-		public override DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope) {
+		public override IDirectorySearcher Create(IDirectoryEntry entry, SearchScope searchScope) {
 
-			DirectorySearcher searcher = base.CreateSearcher(entry, searchScope, this.Config.Users.RdnAttribute, this.Config.Users.Attributes);
+			var searcher = base.CreateSearcher(entry, searchScope, Config.Users.RdnAttribute, Config.Users.Attributes);
 
-			searcher.PropertiesToLoad.Add(this.Config.Users.EmailAttribute);
+			searcher.PropertiesToLoad.Add(Config.Users.EmailAttribute);
 
-			if(!string.IsNullOrEmpty(this.Config.Users.CreationDateAttribute)) {
-				searcher.PropertiesToLoad.Add(this.Config.Users.CreationDateAttribute);
+			if(!string.IsNullOrEmpty(Config.Users.CreationDateAttribute)) {
+				searcher.PropertiesToLoad.Add(Config.Users.CreationDateAttribute);
 			}
-			if(!string.IsNullOrEmpty(this.Config.Users.LastLoginDateAttribute)) {
-				searcher.PropertiesToLoad.Add(this.Config.Users.LastLoginDateAttribute);
+			if(!string.IsNullOrEmpty(Config.Users.LastLoginDateAttribute)) {
+				searcher.PropertiesToLoad.Add(Config.Users.LastLoginDateAttribute);
 			}
-			if(!string.IsNullOrEmpty(this.Config.Users.LastPasswordChangedDateAttribute)) {
-				searcher.PropertiesToLoad.Add(this.Config.Users.LastPasswordChangedDateAttribute);
+			if(!string.IsNullOrEmpty(Config.Users.LastPasswordChangedDateAttribute)) {
+				searcher.PropertiesToLoad.Add(Config.Users.LastPasswordChangedDateAttribute);
 			}
-			if(!string.IsNullOrEmpty(this.Config.Users.DescriptionAttribute)) {
-				searcher.PropertiesToLoad.Add(this.Config.Users.DescriptionAttribute);
+			if(!string.IsNullOrEmpty(Config.Users.DescriptionAttribute)) {
+				searcher.PropertiesToLoad.Add(Config.Users.DescriptionAttribute);
 			}
 
-			searcher.PropertiesToLoad.Add(this.Config.Users.MembershipAttribute);
+			searcher.PropertiesToLoad.Add(Config.Users.MembershipAttribute);
 			return searcher;
 		}
 

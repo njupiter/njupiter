@@ -27,6 +27,7 @@ using System.Collections.Specialized;
 using System.DirectoryServices;
 using System.Web.Security;
 
+using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap {
@@ -36,17 +37,17 @@ namespace nJupiter.DataAccess.Ldap {
 		private string providerName;
 		private string appName;
 		private string ldapServer;
-		private Configuration configuration;
-		private Searcher userSearcher;
-		private Searcher groupSearcher;
-		private FilterBuilder filterBuilder;
-		private DirectoryEntryAdapter directoryEntryAdapter;
+		private ILdapConfig configuration;
+		private ISearcher userSearcher;
+		private ISearcher groupSearcher;
+		private IFilterBuilder filterBuilder;
+		private IDirectoryEntryAdapter directoryEntryAdapter;
 		private LdapMembershipUserFactory ldapMembershipUserFactory;
 
-		public override string ApplicationName { get { return this.appName; } set { this.appName = value; } }
+		public override string ApplicationName { get { return appName; } set { appName = value; } }
 		public override string Name {
 			get {
-				return string.IsNullOrEmpty(this.providerName) ? this.GetType().Name : this.providerName;
+				return string.IsNullOrEmpty(providerName) ? GetType().Name : providerName;
 			}
 		}
 
@@ -65,19 +66,19 @@ namespace nJupiter.DataAccess.Ldap {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
-			this.appName = LdapMembershipProvider.GetStringConfigValue(config, "applicationName", typeof(LdapMembershipProvider).GetType().Name);
-			this.providerName = !string.IsNullOrEmpty(name) ? name : this.appName;
+			appName = GetStringConfigValue(config, "applicationName", typeof(LdapMembershipProvider).Name);
+			providerName = !string.IsNullOrEmpty(name) ? name : appName;
 
-			this.ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
+			ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
-			this.configuration = Configuration.GetConfig(this.ldapServer);
-			this.userSearcher = SearcherFactory.GetSearcher("user", configuration);
-			this.groupSearcher = SearcherFactory.GetSearcher("group", configuration);
-			this.filterBuilder = FilterBuilder.GetInstance(this.configuration);
-			this.ldapMembershipUserFactory = LdapMembershipUserFactory.GetInstance(this.configuration);
-			this.directoryEntryAdapter = DirectoryEntryAdapter.GetInstance(this.configuration, this.userSearcher, this.groupSearcher, this.filterBuilder);
+			configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
+			userSearcher = SearcherFactory.GetSearcher("user", configuration);
+			groupSearcher = SearcherFactory.GetSearcher("group", configuration);
+			filterBuilder = FilterBuilderFactory.GetInstance(configuration);
+			ldapMembershipUserFactory = LdapMembershipUserFactory.GetInstance(configuration);
+			directoryEntryAdapter = DirectoryEntryAdapterFactory.GetInstance(configuration, userSearcher, groupSearcher, filterBuilder);
 
-			base.Initialize(this.providerName, config);
+			base.Initialize(providerName, config);
 		}
 
 		private static string GetStringConfigValue(NameValueCollection config, string configKey, string defaultValue) {
@@ -112,21 +113,21 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override bool ValidateUser(string username, string password) {
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUserEntry(username)) {
+			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return false;
 				}
-				string dn = DnParser.GetDn(entry.Path);
-				Uri uri = new Uri(configuration.Server.Url, dn);
+				var dn = DnParser.GetDn(entry.Path);
+				var uri = new Uri(configuration.Server.Url, dn);
 
 				try {
-					using(DirectoryEntry authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password)) {
+					using(var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password)) {
 						if(!DirectoryEntryAdapter.IsBound(authenticatedUser)) {
 							return false;
 						}
-						DirectorySearcher searcher = this.userSearcher.Create(authenticatedUser, SearchScope.Base);
+						var searcher = userSearcher.Create(authenticatedUser, SearchScope.Base);
 						searcher.Filter = filterBuilder.CreateUserFilter();
-						SearchResult result = searcher.FindOne();
+						var result = searcher.FindOne();
 						if(result != null && result.Properties.Contains(configuration.Users.RdnAttribute)) {
 							return result.Properties[configuration.Users.RdnAttribute].Count > 0;
 						}
@@ -146,29 +147,29 @@ namespace nJupiter.DataAccess.Ldap {
 			if(providerUserKey == null) {
 				throw new ArgumentNullException("providerUserKey");
 			}
-			string username = providerUserKey.ToString();
+			var username = providerUserKey.ToString();
 			return GetUser(username, userIsOnline);
 		}
 
 		public override MembershipUser GetUser(string username, bool userIsOnline) {
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUserEntry(username)) {
+			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return null;
 				}
-				DirectorySearcher searcher = this.userSearcher.Create(entry, SearchScope.Base);
+				var searcher = userSearcher.Create(entry, SearchScope.Base);
 				searcher.Filter = filterBuilder.CreateUserFilter();
-				return this.ldapMembershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
+				return ldapMembershipUserFactory.CreateUserFromSearcher(Name, searcher);
 			}
 		}
 
 		public override string GetUserNameByEmail(string email) {
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					return null;
 				}
-				DirectorySearcher searcher = this.userSearcher.Create(entry);
+				var searcher = userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserEmailFilter(email);
-				MembershipUser user = this.ldapMembershipUserFactory.CreateUserFromSearcher(this.Name, searcher);
+				var user = ldapMembershipUserFactory.CreateUserFromSearcher(Name, searcher);
 				return user != null ? user.UserName : null;
 			}
 		}
@@ -184,18 +185,18 @@ namespace nJupiter.DataAccess.Ldap {
 			if(pageSize < 1) {
 				throw new ArgumentOutOfRangeException("pageSize");
 			}
-			MembershipUserCollection users = new MembershipUserCollection();
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUsersEntry()) {
+			var users = new MembershipUserCollection();
+			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					totalRecords = users.Count;
 					return users;
 				}
-				DirectorySearcher searcher = this.userSearcher.Create(entry);
+				var searcher = userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserFilter();
-				if(this.configuration.Server.PageSize > 0) {
+				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
+				users = ldapMembershipUserFactory.CreateUsersFromSearcher(Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -212,22 +213,22 @@ namespace nJupiter.DataAccess.Ldap {
 			if(pageSize < 1) {
 				throw new ArgumentOutOfRangeException("pageSize");
 			}
-			MembershipUserCollection users = new MembershipUserCollection();
+			var users = new MembershipUserCollection();
 			if(string.IsNullOrEmpty(usernameToMatch)) {
 				totalRecords = 0;
 				return users;
 			}
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					totalRecords = users.Count;
 					return users;
 				}
-				DirectorySearcher searcher = this.userSearcher.Create(entry);
+				var searcher = userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserNameFilter(usernameToMatch);
-				if(this.configuration.Server.PageSize > 0) {
+				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
+				users = ldapMembershipUserFactory.CreateUsersFromSearcher(Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -241,22 +242,22 @@ namespace nJupiter.DataAccess.Ldap {
 				throw new ArgumentOutOfRangeException("pageSize");
 			}
 
-			MembershipUserCollection users = new MembershipUserCollection();
+			var users = new MembershipUserCollection();
 			if(string.IsNullOrEmpty(emailToMatch)) {
 				totalRecords = users.Count;
 				return users;
 			}
-			using(DirectoryEntry entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
 				if(!DirectoryEntryAdapter.IsBound(entry)) {
 					totalRecords = users.Count;
 					return users;
 				}
-				DirectorySearcher searcher = this.userSearcher.Create(entry);
+				var searcher = userSearcher.Create(entry);
 				searcher.Filter = filterBuilder.CreateUserEmailFilter(emailToMatch);
-				if(this.configuration.Server.PageSize > 0) {
+				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				users = this.ldapMembershipUserFactory.CreateUsersFromSearcher(this.Name, searcher);
+				users = ldapMembershipUserFactory.CreateUsersFromSearcher(Name, searcher);
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -264,11 +265,11 @@ namespace nJupiter.DataAccess.Ldap {
 
 		private static MembershipUserCollection PageUserCollection(MembershipUserCollection userCollection, int pageIndex, int pageSize, out int totalRecords) {
 			// TODO: How do I page the users directly on the ldap server?
-			MembershipUserCollection users = new MembershipUserCollection();
+			var users = new MembershipUserCollection();
 			totalRecords = userCollection.Count;
-			int index = 0;
-			int startIndex = pageIndex * pageSize;
-			int endIndex = startIndex + pageSize;
+			var index = 0;
+			var startIndex = pageIndex * pageSize;
+			var endIndex = startIndex + pageSize;
 			foreach(MembershipUser user in userCollection) {
 				if(index >= startIndex) {
 					users.Add(user);

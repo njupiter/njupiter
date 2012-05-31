@@ -27,11 +27,11 @@ using System;
 namespace nJupiter.DataAccess.Ldap {
 	internal static class SearcherFactory {
 
-		public static Searcher GetSearcher(string type, Configuration config) {
+		public static ISearcher GetSearcher(string type, Configuration.ILdapConfig config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
-			if(type.Equals("user", System.StringComparison.InvariantCultureIgnoreCase)) {
+			if(type.Equals("user", StringComparison.InvariantCultureIgnoreCase)) {
 				return new UserSearcher(config);
 			}
 			return new GroupSearcher(config);

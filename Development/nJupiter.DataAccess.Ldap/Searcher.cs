@@ -26,52 +26,55 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.Configuration;
+
 namespace nJupiter.DataAccess.Ldap {
-	internal abstract class Searcher {
+	internal abstract class Searcher : ISearcher {
 
-		private readonly Configuration config;
+		private readonly ILdapConfig config;
 
-		protected Searcher(Configuration config) {
+		protected Searcher(ILdapConfig config) {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
 			this.config = config;
 		}
 
-		protected Configuration Config { get { return this.config; } }
+		protected ILdapConfig Config { get { return config; } }
 
-		public DirectorySearcher Create(DirectoryEntry entry) {
-			return this.Create(entry, SearchScope.Subtree);
+		public IDirectorySearcher Create(IDirectoryEntry entry) {
+			return Create(entry, SearchScope.Subtree);
 		}
 
-		public abstract DirectorySearcher Create(DirectoryEntry entry, SearchScope searchScope);
+		public abstract IDirectorySearcher Create(IDirectoryEntry entry, SearchScope searchScope);
 
-		protected DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute, List<AttributeDefinition> otherAttributes) {
-			DirectorySearcher searcher = CreateSearcher(entry, searchScope, rdnAttribute);
+		protected IDirectorySearcher CreateSearcher(IDirectoryEntry entry, SearchScope searchScope, string rdnAttribute, List<AttributeDefinition> otherAttributes) {
+			var searcher = CreateSearcher(entry, searchScope, rdnAttribute);
 			searcher.PropertiesToLoad.Clear();
 			searcher.PropertiesToLoad.Add(rdnAttribute);
-			foreach(AttributeDefinition attribute in otherAttributes) {
+			foreach(var attribute in otherAttributes) {
 				searcher.PropertiesToLoad.Add(attribute.Name);
 			}
 			return searcher;
 		}
 
-		private DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope, string rdnAttribute) {
-			DirectorySearcher searcher = CreateSearcher(entry, searchScope);
-			if(this.Config.Server.PropertySortingSupport) {
+		private IDirectorySearcher CreateSearcher(IDirectoryEntry entry, SearchScope searchScope, string rdnAttribute) {
+			var searcher = CreateSearcher(entry, searchScope);
+			if(Config.Server.PropertySortingSupport) {
 				searcher.Sort.PropertyName = rdnAttribute;
 				searcher.Sort.Direction = SortDirection.Ascending;
 			}
 			return searcher;
 		}
 
-		public DirectorySearcher CreateSearcher(DirectoryEntry entry, SearchScope searchScope) {
-			DirectorySearcher searcher = new DirectorySearcher(entry);
+		public IDirectorySearcher CreateSearcher(IDirectoryEntry entry, SearchScope searchScope) {
+			var searcher = new DirectorySearcherWrapper(entry);
 			searcher.SearchRoot = entry;
 			searcher.SearchScope = searchScope;
-			searcher.ServerTimeLimit = this.Config.Server.TimeLimit;
-			if(this.Config.Server.PageSize > 0) {
-				searcher.PageSize = this.Config.Server.PageSize;
+			searcher.ServerTimeLimit = Config.Server.TimeLimit;
+			if(Config.Server.PageSize > 0) {
+				searcher.PageSize = Config.Server.PageSize;
 			}
 			searcher.PropertiesToLoad.Clear();
 			return searcher;
