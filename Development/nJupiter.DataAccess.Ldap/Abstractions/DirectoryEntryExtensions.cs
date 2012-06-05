@@ -15,6 +15,10 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 				return null;
 			}
 			return new DirectoryEntryWrapper(wrapped);
-		}	
+		}
+
+		public static bool IsBound(this IDirectoryEntry entry) {
+			return entry != null && entry.NativeObject != null;
+		}
 	}
 }

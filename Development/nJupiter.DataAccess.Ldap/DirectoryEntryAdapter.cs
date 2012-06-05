@@ -91,7 +91,7 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 
 			var entry = GetEntry(path);
-			if(IsBound(entry)) {
+			if(entry.IsBound()) {
 				var directorySearcher = searcher.Create(entry);
 				if(dn != null) {
 					directorySearcher.Filter = filterBuilder.AttachRdnFilter(attributeValue, defaultFilter);
@@ -109,8 +109,5 @@ namespace nJupiter.DataAccess.Ldap {
 			return directoryEntry;
 		}
 
-		public static bool IsBound(IDirectoryEntry entry) {
-			return entry != null && entry.NativeObject != null;
-		}
 	}
 }

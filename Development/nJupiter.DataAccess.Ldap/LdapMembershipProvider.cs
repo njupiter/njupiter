@@ -27,6 +27,7 @@ using System.Collections.Specialized;
 using System.DirectoryServices;
 using System.Web.Security;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.NameParser;
 
@@ -114,7 +115,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override bool ValidateUser(string username, string password) {
 			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					return false;
 				}
 				var dn = DnParser.GetDn(entry.Path);
@@ -122,7 +123,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 				try {
 					using(var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password)) {
-						if(!DirectoryEntryAdapter.IsBound(authenticatedUser)) {
+						if(!authenticatedUser.IsBound()) {
 							return false;
 						}
 						var searcher = userSearcher.Create(authenticatedUser, SearchScope.Base);
@@ -153,7 +154,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override MembershipUser GetUser(string username, bool userIsOnline) {
 			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					return null;
 				}
 				var searcher = userSearcher.Create(entry, SearchScope.Base);
@@ -164,7 +165,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override string GetUserNameByEmail(string email) {
 			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					return null;
 				}
 				var searcher = userSearcher.Create(entry);
@@ -187,7 +188,7 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 			var users = new MembershipUserCollection();
 			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					totalRecords = users.Count;
 					return users;
 				}
@@ -219,7 +220,7 @@ namespace nJupiter.DataAccess.Ldap {
 				return users;
 			}
 			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					totalRecords = users.Count;
 					return users;
 				}
@@ -248,7 +249,7 @@ namespace nJupiter.DataAccess.Ldap {
 				return users;
 			}
 			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					totalRecords = users.Count;
 					return users;
 				}

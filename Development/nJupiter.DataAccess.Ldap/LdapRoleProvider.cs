@@ -30,6 +30,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Web.Security;
 
+using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
 
 namespace nJupiter.DataAccess.Ldap {
@@ -87,7 +88,7 @@ namespace nJupiter.DataAccess.Ldap {
 				throw new ArgumentNullException("roleName");
 			}
 			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					return false;
 				}
 				if(entry.Properties.Contains(configuration.Users.MembershipAttribute)) {
@@ -119,7 +120,7 @@ namespace nJupiter.DataAccess.Ldap {
 				throw new ArgumentNullException("username");
 			}
 			using(var userEntry = directoryEntryAdapter.GetUserEntry(username)) {
-				if(!DirectoryEntryAdapter.IsBound(userEntry)) {
+				if(!userEntry.IsBound()) {
 					return new string[0];
 				}
 				var builder = new List<string>();
@@ -162,7 +163,7 @@ namespace nJupiter.DataAccess.Ldap {
 				throw new ArgumentNullException("roleName");
 			}
 			using(var entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
-				if(DirectoryEntryAdapter.IsBound(entry) && entry.Properties.Contains(configuration.Groups.RdnAttribute)) {
+				if(entry.IsBound() && entry.Properties.Contains(configuration.Groups.RdnAttribute)) {
 					return true;
 				}
 			}
@@ -183,7 +184,7 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 			var builder = new List<string>();
 			using(var entry = directoryEntryAdapter.GetGroupEntry(roleName)) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					return new string[0];
 				}
 				var searcher = groupSearcher.CreateSearcher(entry, SearchScope.Base);
@@ -240,7 +241,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override string[] GetAllRoles() {
 			using(var entry = directoryEntryAdapter.GetGroupsEntry()) {
-				if(!DirectoryEntryAdapter.IsBound(entry)) {
+				if(!entry.IsBound()) {
 					throw new ProviderException("Could not load role list.");
 				}
 				var searcher = groupSearcher.Create(entry);

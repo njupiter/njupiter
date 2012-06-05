@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31C621CB-94F9-4CFA-B49C-4FCBF5BD148F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Abstraction.Logging", "nJupiter.Abstraction.Logging\nJupiter.Abstraction.Logging.csproj", "{2EE05852-3C79-4760-985F-4BE1D21D4F42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Abstraction.Logging.Log4Net", "nJupiter.Abstraction.Logging.Log4Net\nJupiter.Abstraction.Logging.Log4Net.csproj", "{0CB0AA90-798F-4691-910C-39057CC31485}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Abstraction.Logging.NLog", "nJupiter.Abstraction.Logging.NLog\nJupiter.Abstraction.Logging.NLog.csproj", "{04A21805-E809-4AC4-8D52-9193B02662CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Abstraction.Logging.Log4Net.OldKey", "nJupiter.Abstraction.Logging.Log4Net.OldKey\nJupiter.Abstraction.Logging.Log4Net.OldKey.csproj", "{CE6F5A87-3691-4D8F-A428-14FCF6992785}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Abstraction.Logging.Tests.Unit", "nJupiter.Abstraction.Logging.Tests.Unit\nJupiter.Abstraction.Logging.Tests.Unit.csproj", "{29B4055B-1440-432A-8F6B-423824FF9E7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Abstraction.Logging.EnterpriseLibrary", "nJupiter.Abstraction.Logging.EnterpriseLibrary\nJupiter.Abstraction.Logging.EnterpriseLibrary.csproj", "{3247060F-13A6-47BB-895A-B79D0A346298}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release Signed|Any CPU = Release Signed|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EE05852-3C79-4760-985F-4BE1D21D4F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE05852-3C79-4760-985F-4BE1D21D4F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE05852-3C79-4760-985F-4BE1D21D4F42}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE05852-3C79-4760-985F-4BE1D21D4F42}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{2EE05852-3C79-4760-985F-4BE1D21D4F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE05852-3C79-4760-985F-4BE1D21D4F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CB0AA90-798F-4691-910C-39057CC31485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CB0AA90-798F-4691-910C-39057CC31485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CB0AA90-798F-4691-910C-39057CC31485}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{0CB0AA90-798F-4691-910C-39057CC31485}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{0CB0AA90-798F-4691-910C-39057CC31485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CB0AA90-798F-4691-910C-39057CC31485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A21805-E809-4AC4-8D52-9193B02662CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A21805-E809-4AC4-8D52-9193B02662CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A21805-E809-4AC4-8D52-9193B02662CA}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{04A21805-E809-4AC4-8D52-9193B02662CA}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{04A21805-E809-4AC4-8D52-9193B02662CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A21805-E809-4AC4-8D52-9193B02662CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE6F5A87-3691-4D8F-A428-14FCF6992785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE6F5A87-3691-4D8F-A428-14FCF6992785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE6F5A87-3691-4D8F-A428-14FCF6992785}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6F5A87-3691-4D8F-A428-14FCF6992785}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{CE6F5A87-3691-4D8F-A428-14FCF6992785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6F5A87-3691-4D8F-A428-14FCF6992785}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29B4055B-1440-432A-8F6B-423824FF9E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29B4055B-1440-432A-8F6B-423824FF9E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29B4055B-1440-432A-8F6B-423824FF9E7C}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{29B4055B-1440-432A-8F6B-423824FF9E7C}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{29B4055B-1440-432A-8F6B-423824FF9E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29B4055B-1440-432A-8F6B-423824FF9E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3247060F-13A6-47BB-895A-B79D0A346298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3247060F-13A6-47BB-895A-B79D0A346298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3247060F-13A6-47BB-895A-B79D0A346298}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{3247060F-13A6-47BB-895A-B79D0A346298}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{3247060F-13A6-47BB-895A-B79D0A346298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3247060F-13A6-47BB-895A-B79D0A346298}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
+	EndGlobalSection
+EndGlobal
