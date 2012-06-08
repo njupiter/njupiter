@@ -29,7 +29,7 @@ namespace nJupiter.Abstraction.Logging {
 		private readonly ILog log;
 
 		public TypedLog(ILogManager logManager) {
-			log = logManager.GetLogger<T>();
+			log = logManager.GetLogger(typeof(T));
 		}
 
 		public void Debug(object message, Exception exception) {

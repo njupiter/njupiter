@@ -24,6 +24,7 @@
 
 using System;
 
+using nJupiter.Abstraction.Logging.NullLogger;
 using nJupiter.Configuration;
 
 namespace nJupiter.Abstraction.Logging {
@@ -31,6 +32,7 @@ namespace nJupiter.Abstraction.Logging {
 
 		private static readonly object PadLock = new object();
 		private static Func<ILogManager> factoryMethod;
+		private static readonly ILogManager nullLogManager = new NullLogManager();
 
 		public static bool FactoryRegistered { get { return factoryMethod != null; } }
 
@@ -40,7 +42,11 @@ namespace nJupiter.Abstraction.Logging {
 
 		public static ILogManager GetLogManager() {
 			Initialize();
-			return factoryMethod();
+			var result = factoryMethod();
+			if(result == null) {
+				return nullLogManager;
+			}
+			return result;
 		}
 
 		private static void Initialize() {

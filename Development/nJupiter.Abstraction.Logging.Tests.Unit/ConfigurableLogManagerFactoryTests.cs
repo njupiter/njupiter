@@ -36,14 +36,14 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 	[TestFixture]
 	public class ConfigurableLogManagerFactoryTests {
 		[Test]
-		public void GetInstance_NoConfigFound_ReturnsNullLogManager() {
+		public void GetInstance_NoConfigFound_ReturnsNull() {
 			var configRepository = A.Fake<IConfigRepository>();
 			A.CallTo(() => configRepository.GetConfig(true)).Returns(null);
 			var facotry = new ConfigurableLogManagerFactory(configRepository);
 
 			var result = facotry.GetInstance();
 
-			Assert.IsInstanceOf<NullLogManager>(result);
+			Assert.IsNull(result);
 		}
 
 		[Test]
@@ -84,7 +84,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 
 		[Test]
-		public void GetInstance_ConfigForFakeLogManagerExistsButIsDiscarded_ReturnsNullLogManagerAfterConfigDiscarded() {
+		public void GetInstance_ConfigForFakeLogManagerExistsButIsDiscarded_ReturnsNullAfterConfigDiscarded() {
 			var configRepository = A.Fake<IConfigRepository>();
 			var config = A.Fake<IConfig>();
 			A.CallTo(() => configRepository.GetConfig(true)).Returns(config);
@@ -101,9 +101,8 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			result = facotry.GetInstance();
 
-			Assert.IsInstanceOf<NullLogManager>(result);
-
-			
+			Assert.IsNull(result);
+	
 		}
 	}
 

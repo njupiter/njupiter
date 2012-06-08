@@ -24,7 +24,6 @@
 
 using System;
 
-using nJupiter.Abstraction.Logging.NullLogger;
 using nJupiter.Configuration;
 
 namespace nJupiter.Abstraction.Logging {
@@ -37,7 +36,6 @@ namespace nJupiter.Abstraction.Logging {
 		private readonly object padlock = new object();
 
 		private readonly IConfigRepository configRepository;
-		private readonly ILogManager nullLogger = new NullLogManager();
 
 		public ConfigurableLogManagerFactory(IConfigRepository configRepository) {
 			this.configRepository = configRepository;
@@ -64,7 +62,7 @@ namespace nJupiter.Abstraction.Logging {
 				config.Discarded += ConfigDiscarded;
 				return Create(config);
 			}
-			return nullLogger;
+			return null;
 		}
 
 		private ILogManager Create(IConfig config) {
