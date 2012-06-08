@@ -17,7 +17,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			
 			var result = logManager.GetLogger<LogManagerExtensionsTests>();
 
-			Assert.AreSame(logger, result.BaseLog);
+			Assert.AreSame(logger, ((TypedLog<LogManagerExtensionsTests>)result).BaseLog);
 		}
 
 		[Test]

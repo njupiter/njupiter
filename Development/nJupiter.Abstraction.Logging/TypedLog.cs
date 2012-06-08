@@ -28,8 +28,8 @@ namespace nJupiter.Abstraction.Logging {
 	public class TypedLog<T> : ILog<T> {
 		private readonly ILog log;
 
-		public TypedLog(ILog log) {
-			this.log = log;
+		public TypedLog(ILogManager logManager) {
+			log = logManager.GetLogger<T>();
 		}
 
 		public void Debug(object message, Exception exception) {

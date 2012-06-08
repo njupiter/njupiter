@@ -32,7 +32,7 @@ namespace nJupiter.Abstraction.Logging {
 			if(logManager == null) {
 				throw new ArgumentNullException("logManager");
 			}
-			return new TypedLog<T>(logManager.GetLogger(typeof(T)));
+			return new TypedLog<T>(logManager);
 		}
 
 		public static ILog GetCurrentClassLogger(this ILogManager logManager) {
