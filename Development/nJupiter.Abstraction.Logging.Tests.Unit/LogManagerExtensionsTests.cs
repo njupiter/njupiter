@@ -10,14 +10,14 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 	public class LogManagerExtensionsTests {
 
 		[Test]
-		public void GetLogger_UseGenericMethod_ReturnsSameInstanceAsNonGenericMetod() {
+		public void GetLogger_UseGenericMethod_ReturnsTypedLogWhereBaseIsSameInstanceAsNonGenericMetod() {
 			var logger = A.Fake<ILog>();
 			var logManager = A.Fake<ILogManager>();
 			A.CallTo(() => logManager.GetLogger(typeof(LogManagerExtensionsTests))).Returns(logger);
 			
 			var result = logManager.GetLogger<LogManagerExtensionsTests>();
 
-			Assert.AreSame(logger, result);
+			Assert.AreSame(logger, result.BaseLog);
 		}
 
 		[Test]

@@ -29,17 +29,36 @@ using nJupiter.Configuration;
 namespace nJupiter.Abstraction.Logging {
 	public class LogManagerFactory {
 
-		static LogManagerFactory() {
-			var defaultManger = new ConfigurableLogManagerFactory(ConfigRepository.Instance);
-			GetInstance = defaultManger.GetInstance;
+		private static readonly object PadLock = new object();
+		private static Func<ILogManager> factoryMethod;
+
+		public static bool FactoryRegistered { get { return factoryMethod != null; } }
+
+		public static void RegisterFactory(Func<ILogManager> factory) {
+			factoryMethod = factory;
 		}
 
-		public static Func<ILogManager> GetInstance { get; set; }
+		public static ILogManager GetLogManager() {
+			Initialize();
+			return factoryMethod();
+		}
 
-		public static ILogManager Instance {
-			get {
-				return GetInstance();
+		private static void Initialize() {
+			if(factoryMethod == null) {
+				lock(PadLock) {
+					var result = factoryMethod;
+					if(factoryMethod == null) {
+						result = CreateDefaultFactoryMethod();
+					}
+					factoryMethod = result;
+				}
 			}
 		}
+
+		private static Func<ILogManager> CreateDefaultFactoryMethod() {
+			var defaultManger = new ConfigurableLogManagerFactory(ConfigRepository.Instance);
+			return defaultManger.GetInstance;
+		}
+
 	}
 }

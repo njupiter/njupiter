@@ -28,12 +28,12 @@ using Nlog = NLog;
 
 namespace nJupiter.Abstraction.Logging.NLog {
 
-	public class LogManagerAdapter : ILogManager {
-		public ILog GetLogger(Type type) {
+	public class LogManagerAdapter : AutoRegistratingLogManager {
+		public override ILog GetLogger(Type type) {
 			return GetLogger(type.FullName);
 		}
 
-		public ILog GetLogger(string name) {
+		public override ILog GetLogger(string name) {
 			return new LogAdapter(Nlog.LogManager.GetLogger(name));
 		}
 	}

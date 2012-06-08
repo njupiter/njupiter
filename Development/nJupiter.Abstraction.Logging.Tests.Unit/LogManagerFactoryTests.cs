@@ -22,6 +22,8 @@
 // 
 #endregion
 
+using FakeItEasy;
+
 using NUnit.Framework;
 
 using nJupiter.Abstraction.Logging.NullLogger;
@@ -31,11 +33,48 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 	[TestFixture]
 	public class LogManagerFactoryTests {
 
+		[SetUp]
+		public void SetUp() {
+			// Reset manager before every test
+			LogManagerFactory.RegisterFactory(null);
+		}
+
+		[TearDown]
+		public void TearDown() {
+			// Reset manager after every test
+			LogManagerFactory.RegisterFactory(null);
+		}
+
 		[Test]
-		public void GetInstance_GetDefaultInstance_ReturnsConfigurableLogManagerFactory() {
-			var instance  = LogManagerFactory.Instance;
+		public void GetLogManager_GetDefaultInstance_ReturnsNullLogManager() {
+			var instance  = LogManagerFactory.GetLogManager();
 			Assert.IsInstanceOf<NullLogManager>(instance);
 		}
+
+
+		[Test]
+		public void GetLogManager_RegisterFactoryMethod_ReturnsInstanceFromFactory() {
+			var manager = A.Fake<ILogManager>();
+			LogManagerFactory.RegisterFactory(() => manager);
+
+			var result  = LogManagerFactory.GetLogManager();
+
+			Assert.AreSame(manager, result);
+		}
+
+		[Test]
+		public void RegisterFactory_RegisterFactoryMethod_ReturnsTrue() {
+			LogManagerFactory.RegisterFactory(A.Fake<ILogManager>);
+			Assert.IsTrue(LogManagerFactory.FactoryRegistered);
+		}
+
+		[Test]
+		public void RegisterFactory_RegisterNullFactoryMethod_ReturnsFalse() {
+			LogManagerFactory.RegisterFactory(null);
+			Assert.IsFalse(LogManagerFactory.FactoryRegistered);
+		}
+
+
 		 
 	}
 }

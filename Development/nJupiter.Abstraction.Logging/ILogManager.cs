@@ -25,7 +25,7 @@
 using System;
 
 namespace nJupiter.Abstraction.Logging {
-	public interface ILogManager {
+	public interface ILogManager{
 		ILog GetLogger(Type type);
 		ILog GetLogger(string name);
 	}

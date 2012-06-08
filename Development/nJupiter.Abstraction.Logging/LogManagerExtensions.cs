@@ -28,11 +28,11 @@ using System.Diagnostics;
 namespace nJupiter.Abstraction.Logging {
 	public static class LogManagerExtensions {
 
-		public static ILog GetLogger<T>(this ILogManager logManager) {
+		public static ILog<T> GetLogger<T>(this ILogManager logManager) {
 			if(logManager == null) {
 				throw new ArgumentNullException("logManager");
 			}
-			return logManager.GetLogger(typeof(T));
+			return new TypedLog<T>(logManager.GetLogger(typeof(T)));
 		}
 
 		public static ILog GetCurrentClassLogger(this ILogManager logManager) {

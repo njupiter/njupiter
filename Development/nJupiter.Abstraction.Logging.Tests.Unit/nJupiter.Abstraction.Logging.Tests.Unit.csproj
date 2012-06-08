@@ -70,6 +70,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoRegistratingLogManagerTests.cs" />
     <Compile Include="ConfigurableLogManagerFactoryTests.cs" />
     <Compile Include="EnterpriseLibrary\LogAdapterTests.cs" />
     <Compile Include="EnterpriseLibrary\LogEntryFactoryTests.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="LogManagerFactoryTests.cs" />
     <Compile Include="NullLogManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypedLogTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -24,17 +24,28 @@
 
 using System;
 
-using log4net;
+using FakeItEasy;
 
-namespace nJupiter.Abstraction.Logging.Log4Net {
+using NUnit.Framework;
 
-	public class LogManagerAdapter : AutoRegistratingLogManager {
-		public override ILog GetLogger(Type type) {
-			return new LogWrapper(LogManager.GetLogger(type));
+namespace nJupiter.Abstraction.Logging.Tests.Unit {
+	
+	[TestFixture]
+	public class AutoRegistratingLogManagerTests {
+
+		[TearDown]
+		public void TearDown() {
+			// Reset manager after every test
+			LogManagerFactory.RegisterFactory(null);
 		}
 
-		public override ILog GetLogger(string name) {
-			return new LogWrapper(LogManager.GetLogger(name));
+		[Test]
+		public void Constructor_CreateInstanceWhenNoFacotryIsRegistered_LogManagerFactoryReturnsInstance() {
+			LogManagerFactory.RegisterFactory(null);
+			var manager = A.Fake<AutoRegistratingLogManager>();
+			Assert.AreSame(manager, LogManagerFactory.GetLogManager());
 		}
+		 
 	}
+
 }
