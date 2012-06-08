@@ -1,0 +1,115 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- Map task references  -->
+	<UsingTask TaskName="RegExMatch"
+			AssemblyFile="$(MSBuildProjectDirectory)\..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
+	<UsingTask TaskName="AddCompilerConstants"
+			AssemblyFile="$(MSBuildProjectDirectory)\..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
+	<UsingTask TaskName="GetReferenceInfo"
+			AssemblyFile="$(MSBuildProjectDirectory)\..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll" />
+
+	<!-- Import custom configuration -->
+	<Import Project="nJupiter.Deployment.targets" />
+	
+	<!-- Default values -->
+	<PropertyGroup>
+		<nJupiterBinPath Condition="'$(nJupiterBinPath)'==''">bin</nJupiterBinPath>
+		<nJupiterWebPath Condition="'$(nJupiterWebPath)'==''">nJupiter</nJupiterWebPath>
+		<ExcludeCurrentProject Condition="'$(ExcludeCurrentProject)'==''">true</ExcludeCurrentProject>
+		<IncludeCurrentProject Condition="'$(IncludeCurrentProject)'==''">false</IncludeCurrentProject>
+		<IncludeCurrentProject Condition="'$(ProjectsToInclude)'=='' And '$(ProjectsToExclude)'==''">true</IncludeCurrentProject>
+	</PropertyGroup>
+
+	<!-- Set the build-path depending on if custom configuration is set or not -->
+	<Choose>
+		<When Condition="'$(nJupiterDeploymentPath)' == ''">
+			<PropertyGroup>
+				<nJupiterBuildPath>$(MSBuildProjectDirectory)\..\..\Build</nJupiterBuildPath>
+				<OutputPath>$(nJupiterBuildPath)\$(nJupiterBinPath)\$(Configuration)</OutputPath>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<nJupiterBuildPath>$(nJupiterDeploymentPath)</nJupiterBuildPath>
+				<OutputPath>$(nJupiterBuildPath)\$(nJupiterBinPath)</OutputPath>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+
+	<!-- NET 2.0 Build Configurations -->
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)'==''">false</AllowUnsafeBlocks>
+		<DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+		<DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+		<Optimize Condition="'$(Optimize)'==''">false</Optimize>
+		<DebugType Condition="'$(DebugType)'==''">full</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)'==''">false</AllowUnsafeBlocks>
+		<DefineConstants Condition="'$(DefineConstants)'==''">TRACE</DefineConstants>
+		<DebugSymbols Condition="'$(DebugSymbols)'==''">false</DebugSymbols>
+		<Optimize Condition="'$(Optimize)'==''">true</Optimize>
+		<DebugType Condition="'$(DebugType)'==''">none</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+		<AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)'==''">false</AllowUnsafeBlocks>
+		<DefineConstants Condition="'$(DefineConstants)'==''">TRACE;SIGN</DefineConstants>
+		<DebugSymbols Condition="'$(DebugSymbols)'==''">false</DebugSymbols>
+		<Optimize Condition="'$(Optimize)'==''">true</Optimize>
+		<DebugType Condition="'$(DebugType)'==''">none</DebugType>
+	</PropertyGroup>
+
+	<!-- Define wich constants that shall be added to the build upon Assembly Version -->
+	<ItemGroup>
+		<ConstantReferenceMap Include="log4net">
+			<MinVersion>0.0.0.0</MinVersion>
+			<MaxVersion>1.2.9.0</MaxVersion>
+			<Constants>LOG4NET1_0_9</Constants>
+		</ConstantReferenceMap>
+	</ItemGroup>
+
+	<!-- Define file items used for deploy -->
+	<ItemGroup>
+		<ProjectReferences Include="*.csproj" />
+		<nJupiterWebPath_FilesToDelete Include="$(nJupiterBuildPath)$(nJupiterWebPath)\$(MSBuildProjectName)\**\*.*" />
+		<nJupiterWebPath_WebFileTypes Include="Web\**\*.*" Exclude="**\.svn\**;**\_svn\**;**\*.cs;**\*.resx;**\*.projdata;**\*.resx;**\*.scc" />
+	</ItemGroup>
+
+	<Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+	<!-- General targets -->
+	<Target Name="BeforeBuild">
+		<AddCompilerConstants CurrentConstants="$(DefineConstants)"  ConstantMaps="@(ConstantReferenceMap)" References="@(Reference)" ProjectPath="$(MSBuildProjectDirectory)">
+			<Output TaskParameter="Result" PropertyName="DefineConstants" />
+		</AddCompilerConstants>
+		<RegExMatch InputString="$(MSBuildProjectName)" Match="$(ProjectsToExclude)" UseWildcards="true" Condition="'$(ProjectsToExclude)' != ''">
+			<Output TaskParameter="Result" PropertyName="ExcludeCurrentProject" />
+		</RegExMatch>
+		<RegExMatch InputString="$(MSBuildProjectName)" Match="$(ProjectsToInclude)" UseWildcards="true" Condition="'$(ProjectsToInclude)' != ''">
+			<Output TaskParameter="Result" PropertyName="IncludeCurrentProject" />
+		</RegExMatch>
+		<Message Text="Project skipped: $(MSBuildProjectName)" Importance="High" Condition="('$(ExcludeCurrentProject)' == 'True' AND $(IncludeCurrentProject) != 'True')"/>
+	</Target>
+	
+	<Target Name="AfterBuild" Condition="'$(nJupiterBuildPath)' != '' And ('$(ExcludeCurrentProject)' != 'True' OR $(IncludeCurrentProject) == 'True')">
+		<Delete
+			Files="@(nJupiterWebPath_FilesToDelete)"
+			TreatErrorsAsWarnings="true"
+			Condition="'$(nJupiterWebPath)' != '' And Exists('$(nJupiterBuildPath)\$(nJupiterWebPath)\$(MSBuildProjectName)')" />
+		<RemoveDir
+			Directories="$(nJupiterBuildPath)\$(nJupiterWebPath)\$(MSBuildProjectName)"
+			Condition="'$(nJupiterWebPath)' != '' And Exists('$(nJupiterBuildPath)\$(nJupiterWebPath)\$(MSBuildProjectName)')" />
+		<MakeDir
+			Directories="$(nJupiterBuildPath)\$(nJupiterWebPath)\$(MSBuildProjectName)\Web"
+			Condition="Exists('$(MSBuildProjectDirectory)\Web') And '$(nJupiterWebPath)' != '' And !Exists('$(nJupiterBuildPath)\$(nJupiterWebPath)\$(MSBuildProjectName)')" />
+		<Copy
+			SourceFiles="@(nJupiterWebPath_WebFileTypes)"
+			DestinationFiles="@(nJupiterWebPath_WebFileTypes->'$(nJupiterBuildPath)\$(nJupiterWebPath)\$(MSBuildProjectName)\Web\%(RecursiveDir)%(Filename)%(Extension)')"
+			Condition="Exists('$(MSBuildProjectDirectory)\Web')" />
+	</Target>
+
+
+</Project>
