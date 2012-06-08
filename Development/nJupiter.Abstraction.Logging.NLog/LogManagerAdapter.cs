@@ -30,7 +30,7 @@ namespace nJupiter.Abstraction.Logging.NLog {
 
 	public class LogManagerAdapter : ILogManager {
 		public ILog GetLogger(Type type) {
-			return new LogAdapter(Nlog.LogManager.GetLogger(type.FullName));
+			return GetLogger(type.FullName);
 		}
 
 		public ILog GetLogger(string name) {
