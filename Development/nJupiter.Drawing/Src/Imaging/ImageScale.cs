@@ -56,7 +56,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
 		public static MemoryStream Resize(Image originalImage, int newWidth, int newHeight) {
-			return Resize(originalImage, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			return Resize(originalImage, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default);
 		}
 
 		/// <summary>
@@ -71,9 +71,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <returns>A memory stream containing the resized image.
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
-		public static MemoryStream Resize(Image originalImage, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static MemoryStream Resize(Image originalImage, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality) {
 			MemoryStream ms = new MemoryStream();
-			Resize(originalImage, ms, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode);
+			Resize(originalImage, ms, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality);
 			return ms;
 		}
 
@@ -85,7 +85,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newWidth">The new width of the image. Set to 0 to let the height decide.</param>
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		public static void Resize(Image originalImage, Stream outputStream, int newWidth, int newHeight) {
-			Resize(originalImage, outputStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			Resize(originalImage, outputStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default);
 		}
 
 		/// <summary>
@@ -98,8 +98,8 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
-		public static void Resize(Image originalImage, Stream outputStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-			Resize(originalImage, outputStream, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode);
+		public static void Resize(Image originalImage, Stream outputStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality) {
+			Resize(originalImage, outputStream, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality);
 		}
 
 		/// <summary>
@@ -113,7 +113,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
 		public static MemoryStream Resize(Image originalImage, int newWidth, int newHeight, ResizeFlags resizeFlags) {
-			return Resize(originalImage, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			return Resize(originalImage, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default);
 		}
 
 		/// <summary>
@@ -130,9 +130,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <returns>A memory stream containing the resized image.
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
-		public static MemoryStream Resize(Image originalImage, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static MemoryStream Resize(Image originalImage, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality) {
 			MemoryStream ms = new MemoryStream();
-			Resize(originalImage, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+			Resize(originalImage, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality);
 			return ms;
 		}
 
@@ -145,7 +145,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		/// <param name="resizeFlags">Specify the different flags in the ResizeFlags enumeration to deviate from the default behaviour.</param>
 		public static void Resize(Image originalImage, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags) {
-			Resize(originalImage, outputStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			Resize(originalImage, outputStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default);
 		}
 
 		/// <summary>
@@ -159,7 +159,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
-		public static void Resize(Image originalImage, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static void Resize(Image originalImage, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality) {
 			if(originalImage == null) {
 				throw new ArgumentNullException("originalImage");
 			}
@@ -178,12 +178,17 @@ namespace nJupiter.Drawing.Imaging {
 					originalImage.Save(memoryStream, new ImageFormat(originalImage.RawFormat.Guid));
 				} else {
 					// Create new pic.
-					using(Bitmap bitmap = new Bitmap(newSize.Width, newSize.Height)) {
+					using(Bitmap bitmap = new Bitmap(newSize.Width, newSize.Height, originalImage.PixelFormat)) {
+						bitmap.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
 						using(Graphics graphics = Graphics.FromImage(bitmap)) {
 							graphics.SmoothingMode = smoothingMode;
 							graphics.InterpolationMode = interpolationMode;
 							graphics.PixelOffsetMode = pixelOffsetMode;
-							graphics.DrawImage(originalImage, 0, 0, bitmap.Width, bitmap.Height);
+							graphics.CompositingQuality = compositingQuality;
+							graphics.DrawImage(originalImage,
+								new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+								new Rectangle(0, 0, originalImage.Width, originalImage.Height),
+								GraphicsUnit.Pixel);
 							bitmap.Save(memoryStream, originalImage.RawFormat);
 						}
 					}
@@ -202,7 +207,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
 		public static MemoryStream Resize(string imagePath, int newWidth, int newHeight) {
-			return Resize(imagePath, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			return Resize(imagePath, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -217,9 +222,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <returns>A memory stream containing the resized image.
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
-		public static MemoryStream Resize(string imagePath, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static MemoryStream Resize(string imagePath, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
 			MemoryStream ms = new MemoryStream();
-			Resize(imagePath, ms, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode);
+			Resize(imagePath, ms, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 			return ms;
 		}
 
@@ -231,7 +236,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newWidth">The new width of the image. Set to 0 to let the height decide.</param>
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight) {
-			Resize(imagePath, outputStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			Resize(imagePath, outputStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -244,8 +249,8 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
-		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-			Resize(imagePath, outputStream, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode);
+		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
+			Resize(imagePath, outputStream, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 		}
 
 		/// <summary>
@@ -259,7 +264,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
 		public static MemoryStream Resize(string imagePath, int newWidth, int newHeight, ResizeFlags resizeFlags) {
-			return Resize(imagePath, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			return Resize(imagePath, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -276,10 +281,10 @@ namespace nJupiter.Drawing.Imaging {
 		/// <returns>A memory stream containing the resized image.
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
-		public static MemoryStream Resize(string imagePath, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static MemoryStream Resize(string imagePath, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
 			try {
 				MemoryStream ms = new MemoryStream();
-				Resize(imagePath, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+				Resize(imagePath, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 				return ms;
 			} catch(FileNotFoundException) {
 				// If file not found
@@ -298,7 +303,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		/// <param name="resizeFlags">Specify the different flags in the ResizeFlags enumeration to deviate from the default behaviour.</param>
 		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags) {
-			Resize(imagePath, outputStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			Resize(imagePath, outputStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -312,9 +317,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
-		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-			using(Image origImage = Image.FromFile(imagePath)) {
-				Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+		public static void Resize(string imagePath, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
+			using(Image origImage = Image.FromFile(imagePath, useEmbeddedColorManagement)) {
+				Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality);
 			}
 		}
 
@@ -328,7 +333,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
 		public static MemoryStream Resize(Stream imageStream, int newWidth, int newHeight) {
-			return Resize(imageStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			return Resize(imageStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -343,9 +348,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <returns>A memory stream containing the resized image.
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
-		public static MemoryStream Resize(Stream imageStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static MemoryStream Resize(Stream imageStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
 			MemoryStream ms = new MemoryStream();
-			Resize(imageStream, ms, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode);
+			Resize(imageStream, ms, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 			return ms;
 		}
 
@@ -357,7 +362,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newWidth">The new width of the image. Set to 0 to let the height decide.</param>
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight) {
-			Resize(imageStream, outputStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			Resize(imageStream, outputStream, newWidth, newHeight, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -370,8 +375,8 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
-		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-			Resize(imageStream, outputStream, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode);
+		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
+			Resize(imageStream, outputStream, newWidth, newHeight, ResizeFlags.None, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 		}
 
 		/// <summary>
@@ -385,7 +390,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
 		public static MemoryStream Resize(Stream imageStream, int newWidth, int newHeight, ResizeFlags resizeFlags) {
-			return Resize(imageStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			return Resize(imageStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -402,10 +407,10 @@ namespace nJupiter.Drawing.Imaging {
 		/// <returns>A memory stream containing the resized image.
 		/// Returns null if the original file was neither an image nor found.
 		/// </returns>
-		public static MemoryStream Resize(Stream imageStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
+		public static MemoryStream Resize(Stream imageStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
 			try {
 				MemoryStream ms = new MemoryStream();
-				Resize(imageStream, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+				Resize(imageStream, ms, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 				return ms;
 			} catch(OutOfMemoryException) {
 				// If not image
@@ -422,7 +427,7 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="newHeight">The new height of the image. Set to 0 to let the width decide.</param>
 		/// <param name="resizeFlags">Specify the different flags in the ResizeFlags enumeration to deviate from the default behaviour.</param>
 		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags) {
-			Resize(imageStream, outputStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default);
+			Resize(imageStream, outputStream, newWidth, newHeight, resizeFlags, SmoothingMode.Default, InterpolationMode.Default, PixelOffsetMode.Default, CompositingQuality.Default, false);
 		}
 
 		/// <summary>
@@ -436,9 +441,9 @@ namespace nJupiter.Drawing.Imaging {
 		/// <param name="smoothingMode">Specifies the smoothing mode.</param>
 		/// <param name="interpolationMode">Specifies the interpolation mode.</param>
 		/// <param name="pixelOffsetMode">Specifies the pixel offset mode.</param>
-		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode) {
-			using(Image origImage = Image.FromStream(imageStream)) {
-				Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+		public static void Resize(Stream imageStream, Stream outputStream, int newWidth, int newHeight, ResizeFlags resizeFlags, SmoothingMode smoothingMode, InterpolationMode interpolationMode, PixelOffsetMode pixelOffsetMode, CompositingQuality compositingQuality, bool useEmbeddedColorManagement) {
+			using(Image origImage = Image.FromStream(imageStream, useEmbeddedColorManagement)) {
+				Resize(origImage, outputStream, newWidth, newHeight, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality);
 			}
 		}
 		#endregion

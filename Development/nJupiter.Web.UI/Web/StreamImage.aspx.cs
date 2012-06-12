@@ -203,6 +203,14 @@ namespace nJupiter.Web.UI {
 				if(config.ContainsKey("imageScaleConfig", "pixelOffsetMode")) {
 					pixelOffsetMode = (PixelOffsetMode)Enum.Parse(typeof(PixelOffsetMode), config.GetValue("imageScaleConfig", "pixelOffsetMode"), true);
 				}
+				CompositingQuality compositingQuality = CompositingQuality.Default;
+				if(config.ContainsKey("imageScaleConfig", "compositingQuality")) {
+					compositingQuality = (CompositingQuality)Enum.Parse(typeof(CompositingQuality), config.GetValue("imageScaleConfig", "compositingQuality"), true);
+				}
+				bool useEmbeddedColorManagement = false;
+				if(config.ContainsKey("imageScaleConfig", "useEmbeddedColorManagement")) {
+					useEmbeddedColorManagement = config.GetBoolValue("imageScaleConfig", "useEmbeddedColorManagement");
+				}
 
 				try {
 					width = reqWidth == null ? width : int.Parse(reqWidth, NumberFormatInfo.InvariantInfo);
@@ -222,7 +230,7 @@ namespace nJupiter.Web.UI {
 
 					this.Response.Clear();
 					try {
-						ImageScale.Resize(fileStream, this.Response.OutputStream, width, height, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode);
+						ImageScale.Resize(fileStream, this.Response.OutputStream, width, height, resizeFlags, smoothingMode, interpolationMode, pixelOffsetMode, compositingQuality, useEmbeddedColorManagement);
 						this.Response.AddHeader("Content-Disposition", "inline;filename=\"" + fileToStream.Name + "\"");
 						this.Response.ContentType = fileToStream.MimeType;
 						this.Response.Cache.SetLastModified(lastModifiedTime);

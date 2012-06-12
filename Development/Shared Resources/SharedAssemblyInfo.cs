@@ -8,8 +8,8 @@ using System.Security.Permissions;
 [assembly: CLSCompliant(true)]
 [assembly: AssemblyCompany("nJupiter")]
 [assembly: AssemblyProduct("nJupiter")]
-[assembly: AssemblyCopyright("\x00a9 2005-2011 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
-[assembly: AssemblyTrademark("\x00a9 2005-2011 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
+[assembly: AssemblyCopyright("\x00a9 2005-2012 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
+[assembly: AssemblyTrademark("\x00a9 2005-2012 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyCulture("")]
 
 [assembly: SecurityTransparent]
@@ -17,13 +17,13 @@ using System.Security.Permissions;
 [assembly: AssemblyDelaySign(false)]
 #if DEBUG
 [assembly: AssemblyKeyFile("")]
-[assembly: AssemblyVersion("3.16.6.*")]
+[assembly: AssemblyVersion("3.16.7.*")]
 [assembly: AssemblyConfiguration("Debug")]
 #else
 // Increment AssemblyVersion only on major and minor releases
-[assembly: AssemblyVersion("3.16.6.0")]
+[assembly: AssemblyVersion("3.16.7.0")]
 // Increment AssemblyFileVersion on every release
-[assembly: AssemblyFileVersion("3.16.6.0")]
+[assembly: AssemblyFileVersion("3.16.7.0")]
 [assembly: AssemblyConfiguration("Release")]
 #if SIGN
 [assembly: AssemblyKeyFile(@"C:\Projects\nJupiter\Development\nJupiter.snk")]
