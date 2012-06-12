@@ -32,9 +32,11 @@ namespace nJupiter.DataAccess.Ldap {
 	internal class LdapNameHandler : ILdapNameHandler {
 
 		private readonly ILdapConfig config;
+		private readonly IDnParser dnParser;
 
 		public LdapNameHandler(ILdapConfig config) {
 			this.config = config;
+			dnParser = config.Container.DnParser;
 		}
 
 		public string GetUserNameFromEntry(IDirectoryEntry entry) {
@@ -53,20 +55,20 @@ namespace nJupiter.DataAccess.Ldap {
 			return GetName(config.Groups.NameType, entryName);
 		}
 
-		private static string GetNameFromEntry(NameType nameType, IDirectoryEntry entry) {
+		private string GetNameFromEntry(NameType nameType, IDirectoryEntry entry) {
 			return GetName(nameType, entry.Name);
 		}
 
-		private static string GetName(NameType nameType, string entryName) {
+		private string GetName(NameType nameType, string entryName) {
 			switch(nameType) {
 				case NameType.Cn:
-				return DnParser.GetCn(entryName);
+				return dnParser.GetCn(entryName);
 
 				case NameType.Rdn:
-				return DnParser.GetRdn(entryName);
+				return dnParser.GetRdn(entryName);
 
 				default:
-				return DnParser.GetDn(entryName);
+				return dnParser.GetDn(entryName);
 			}
 		}
 
@@ -74,9 +76,9 @@ namespace nJupiter.DataAccess.Ldap {
 			return NamesEqual(name, nameToMatch, config.Groups.RdnAttribute, config.Groups.Base);
 		}
 
-		private static bool NamesEqual(string name, string nameToMatch, string attribute, string basePath) {
-			name = DnParser.GetDn(name, attribute, basePath);
-			nameToMatch = DnParser.GetDn(nameToMatch, attribute, basePath);
+		private bool NamesEqual(string name, string nameToMatch, string attribute, string basePath) {
+			name = dnParser.GetDn(name, attribute, basePath);
+			nameToMatch = dnParser.GetDn(nameToMatch, attribute, basePath);
 			return string.Equals(name, nameToMatch, StringComparison.InvariantCultureIgnoreCase);
 		}
 	}

@@ -36,14 +36,16 @@ namespace nJupiter.DataAccess.Ldap {
 		private readonly ISearcher userSearcher;
 		private readonly ISearcher groupSearcher;
 		private readonly IFilterBuilder filterBuilder;
+		private readonly IDnParser dnParser;
 		private readonly IDirectoryEntryFactory directoryEntryFactory;
 
-		public DirectoryEntryAdapter(ILdapConfig config, IDirectoryEntryFactory directoryEntryFactory, ISearcher userSearcher, ISearcher groupSearcher, IFilterBuilder filterBuilder) {
+		public DirectoryEntryAdapter(ILdapConfig config) {
 			this.config = config;
-			this.directoryEntryFactory = directoryEntryFactory;
-			this.filterBuilder = filterBuilder;
-			this.userSearcher = userSearcher;
-			this.groupSearcher = groupSearcher;
+			directoryEntryFactory = config.Container.DirectoryEntryFactory;
+			filterBuilder = config.Container.FilterBuilder;
+			dnParser = config.Container.DnParser;
+			userSearcher = config.Container.UserSearcher;
+			groupSearcher = config.Container.GroupSearcher;
 		}
 
 		public IDirectoryEntry GetUserEntry(string username) {
@@ -84,7 +86,7 @@ namespace nJupiter.DataAccess.Ldap {
 		private IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, ISearcher searcher) {
 			IDirectoryEntry directoryEntry = null;
 
-			var dn = DnParser.GetDnObject(attributeValue);
+			var dn = dnParser.GetDnObject(attributeValue)	;
 			if(dn != null && dn.Rdns.Count > 1) {
 				var uri = new Uri(config.Server.Url, dn.ToString());
 				return GetEntry(uri);

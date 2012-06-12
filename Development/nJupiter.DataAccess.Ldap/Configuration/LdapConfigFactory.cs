@@ -28,7 +28,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			if(!Configurations.ContainsKey(ldapServer)) {
 				lock(Padlock) {
 					if(!Configurations.ContainsKey(ldapServer)) {
-						Configurations.Add(ldapServer, new LdapConfig(configRepository,serverConfigFactory, usersConfigFactory, groupsConfigFactory, ldapServer));
+						Configurations.Add(ldapServer, new LdapConfig(ldapServer, configRepository, serverConfigFactory, usersConfigFactory, groupsConfigFactory));
 					}
 				}
 			}

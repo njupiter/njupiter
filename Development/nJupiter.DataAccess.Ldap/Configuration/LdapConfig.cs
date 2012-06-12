@@ -33,12 +33,13 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private IServerConfig serverConfig;
 		private IUsersConfig usersConfig;
 		private IGroupsConfig groupsConfig;
+		private IContainer container;
 		private readonly IConfigRepository configRepository;
 		private readonly IServerConfigFactory serverConfigFactory;
 		private readonly IUsersConfigFactory usersConfigFactory;
 		private readonly IGroupConfigFactory groupsConfigFactory;
 
-		internal LdapConfig(IConfigRepository configRepository, IServerConfigFactory serverConfigFactory, IUsersConfigFactory usersConfigFactory, IGroupConfigFactory groupsConfigFactory, string ldapServer) {
+		internal LdapConfig(string ldapServer, IConfigRepository configRepository, IServerConfigFactory serverConfigFactory, IUsersConfigFactory usersConfigFactory, IGroupConfigFactory groupsConfigFactory) {
 			this.configRepository = configRepository;
 			this.ldapServer = ldapServer;
 			this.serverConfigFactory = serverConfigFactory;
@@ -65,17 +66,25 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			}
 		}
 
+		public IContainer Container {
+			get {
+				return container;
+			}
+		}
+
 		private void Configure(object sender, EventArgs e) {
 
 			var config = configRepository.GetConfig();
-				var configSection = GetConfigSection(config);
+			var configSection = GetConfigSection(config);
 
-				serverConfig = serverConfigFactory.Create(configSection);
-				usersConfig = usersConfigFactory.Create(configSection);
-				groupsConfig = groupsConfigFactory.Create(configSection);
+			serverConfig = serverConfigFactory.Create(configSection);
+			usersConfig = usersConfigFactory.Create(configSection);
+			groupsConfig = groupsConfigFactory.Create(configSection);
+	
+			container = new Container(this);
 
-				// Auto reconfigure all values when this config object is disposed (droped from the cache)
-				config.Discarded += Configure;
+			// Auto reconfigure all values when this config object is disposed (droped from the cache)
+			config.Discarded += Configure;
 
 		}
 

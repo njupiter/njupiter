@@ -24,12 +24,9 @@
 
 using System;
 using System.Collections.Specialized;
-using System.DirectoryServices;
 using System.Web.Security;
 
-using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
-using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap {
 
@@ -38,12 +35,8 @@ namespace nJupiter.DataAccess.Ldap {
 		private string providerName;
 		private string appName;
 		private string ldapServer;
-		private ILdapConfig configuration;
-		private ISearcher userSearcher;
-		private ISearcher groupSearcher;
-		private IFilterBuilder filterBuilder;
-		private IDirectoryEntryAdapter directoryEntryAdapter;
-		private LdapMembershipUserFactory ldapMembershipUserFactory;
+
+		private MembershipAdapter membershipAdapter;
 
 		public override string ApplicationName { get { return appName; } set { appName = value; } }
 		public override string Name {
@@ -67,17 +60,15 @@ namespace nJupiter.DataAccess.Ldap {
 			if(config == null) {
 				throw new ArgumentNullException("config");
 			}
+
 			appName = GetStringConfigValue(config, "applicationName", typeof(LdapMembershipProvider).Name);
 			providerName = !string.IsNullOrEmpty(name) ? name : appName;
 
 			ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
-			configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
-			userSearcher = SearcherFactory.GetSearcher("user", configuration);
-			groupSearcher = SearcherFactory.GetSearcher("group", configuration);
-			filterBuilder = FilterBuilderFactory.GetInstance(configuration);
-			ldapMembershipUserFactory = LdapMembershipUserFactory.GetInstance(configuration);
-			directoryEntryAdapter = DirectoryEntryAdapterFactory.GetInstance(configuration, userSearcher, groupSearcher, filterBuilder);
+			var configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
+			var ldapMembershipUserFactory = new LdapMembershipUserFactory(providerName, configuration);
+			membershipAdapter = new MembershipAdapter(configuration, ldapMembershipUserFactory);
 
 			base.Initialize(providerName, config);
 		}
@@ -114,30 +105,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override bool ValidateUser(string username, string password) {
-			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
-				if(!entry.IsBound()) {
-					return false;
-				}
-				var dn = DnParser.GetDn(entry.Path);
-				var uri = new Uri(configuration.Server.Url, dn);
-
-				try {
-					using(var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password)) {
-						if(!authenticatedUser.IsBound()) {
-							return false;
-						}
-						var searcher = userSearcher.Create(authenticatedUser, SearchScope.Base);
-						searcher.Filter = filterBuilder.CreateUserFilter();
-						var result = searcher.FindOne();
-						if(result != null && result.Properties.Contains(configuration.Users.RdnAttribute)) {
-							return result.Properties[configuration.Users.RdnAttribute].Count > 0;
-						}
-					}
-				} catch(Exception) {
-					// Failed to validate user
-				}
-			}
-			return false;
+			return membershipAdapter.ValidateUser(username, password);
 		}
 
 		public override bool UnlockUser(string userName) {
@@ -145,34 +113,15 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
-			if(providerUserKey == null) {
-				throw new ArgumentNullException("providerUserKey");
-			}
-			var username = providerUserKey.ToString();
-			return GetUser(username, userIsOnline);
+			return membershipAdapter.GetUser(providerUserKey, userIsOnline);
 		}
 
 		public override MembershipUser GetUser(string username, bool userIsOnline) {
-			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
-				if(!entry.IsBound()) {
-					return null;
-				}
-				var searcher = userSearcher.Create(entry, SearchScope.Base);
-				searcher.Filter = filterBuilder.CreateUserFilter();
-				return ldapMembershipUserFactory.CreateUserFromSearcher(Name, searcher);
-			}
+			return membershipAdapter.GetUser(username, userIsOnline);
 		}
 
 		public override string GetUserNameByEmail(string email) {
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!entry.IsBound()) {
-					return null;
-				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserEmailFilter(email);
-				var user = ldapMembershipUserFactory.CreateUserFromSearcher(Name, searcher);
-				return user != null ? user.UserName : null;
-			}
+			return membershipAdapter.GetUserNameByEmail(email);
 		}
 
 		public override bool DeleteUser(string username, bool deleteAllRelatedData) {
@@ -180,27 +129,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
-			if(pageIndex < 0) {
-				throw new ArgumentOutOfRangeException("pageIndex");
-			}
-			if(pageSize < 1) {
-				throw new ArgumentOutOfRangeException("pageSize");
-			}
-			var users = new MembershipUserCollection();
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!entry.IsBound()) {
-					totalRecords = users.Count;
-					return users;
-				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserFilter();
-				if(configuration.Server.PageSize > 0) {
-					searcher.PageSize = pageSize;
-				}
-				users = ldapMembershipUserFactory.CreateUsersFromSearcher(Name, searcher);
-				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
-			}
-			return users;
+			return membershipAdapter.GetAllUsers(pageIndex, pageSize, out totalRecords);
 		}
 
 		public override int GetNumberOfUsersOnline() {
@@ -208,79 +137,11 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
-			if(pageIndex < 0) {
-				throw new ArgumentOutOfRangeException("pageIndex");
-			}
-			if(pageSize < 1) {
-				throw new ArgumentOutOfRangeException("pageSize");
-			}
-			var users = new MembershipUserCollection();
-			if(string.IsNullOrEmpty(usernameToMatch)) {
-				totalRecords = 0;
-				return users;
-			}
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!entry.IsBound()) {
-					totalRecords = users.Count;
-					return users;
-				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserNameFilter(usernameToMatch);
-				if(configuration.Server.PageSize > 0) {
-					searcher.PageSize = pageSize;
-				}
-				users = ldapMembershipUserFactory.CreateUsersFromSearcher(Name, searcher);
-				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
-			}
-			return users;
+			return membershipAdapter.FindUsersByName(usernameToMatch, pageIndex, pageSize, out totalRecords);
 		}
 
 		public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
-			if(pageIndex < 0) {
-				throw new ArgumentOutOfRangeException("pageIndex");
-			}
-			if(pageSize < 1) {
-				throw new ArgumentOutOfRangeException("pageSize");
-			}
-
-			var users = new MembershipUserCollection();
-			if(string.IsNullOrEmpty(emailToMatch)) {
-				totalRecords = users.Count;
-				return users;
-			}
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
-				if(!entry.IsBound()) {
-					totalRecords = users.Count;
-					return users;
-				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserEmailFilter(emailToMatch);
-				if(configuration.Server.PageSize > 0) {
-					searcher.PageSize = pageSize;
-				}
-				users = ldapMembershipUserFactory.CreateUsersFromSearcher(Name, searcher);
-				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
-			}
-			return users;
-		}
-
-		private static MembershipUserCollection PageUserCollection(MembershipUserCollection userCollection, int pageIndex, int pageSize, out int totalRecords) {
-			// TODO: How do I page the users directly on the ldap server?
-			var users = new MembershipUserCollection();
-			totalRecords = userCollection.Count;
-			var index = 0;
-			var startIndex = pageIndex * pageSize;
-			var endIndex = startIndex + pageSize;
-			foreach(MembershipUser user in userCollection) {
-				if(index >= startIndex) {
-					users.Add(user);
-				}
-				index++;
-				if(index >= endIndex) {
-					break;
-				}
-			}
-			return users;
+			return membershipAdapter.FindUsersByEmail(emailToMatch, pageIndex, pageSize, out totalRecords);
 		}
 	}
 }

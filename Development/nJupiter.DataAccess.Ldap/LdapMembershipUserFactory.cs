@@ -28,41 +28,35 @@ using System.Linq;
 using System.Web.Security;
 
 using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.Configuration;
 
 namespace nJupiter.DataAccess.Ldap {
+	internal class LdapMembershipUserFactory : IMembershipUserFactory {
 
-	internal class LdapMembershipUserFactory {
+		private readonly ILdapConfig config;
+		private readonly string providerName;
 
-		private readonly Configuration.ILdapConfig config;
-
-		public static LdapMembershipUserFactory GetInstance(Configuration.ILdapConfig config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-
-			return new LdapMembershipUserFactory(config);
-		}
-
-		private LdapMembershipUserFactory(Configuration.ILdapConfig config) {
+		public LdapMembershipUserFactory(string providerName, ILdapConfig config) {
 			this.config = config;
+			this.providerName = providerName;
 		}
 
-		public MembershipUser CreateUserFromSearcher(string providerName, IDirectorySearcher searcher) {
+		public MembershipUser CreateUserFromSearcher(IDirectorySearcher searcher) {
 			var result = searcher.FindOne();
-			return CreateUserFromResult(providerName, result);
+			return CreateUserFromResult(result);
 		}
 
-		public MembershipUserCollection CreateUsersFromSearcher(string providerName, IDirectorySearcher searcher) {
+		public MembershipUserCollection CreateUsersFromSearcher(IDirectorySearcher searcher) {
 			var results = searcher.FindAll();
-			return CreateUsersFromResult(results, providerName);
+			return CreateUsersFromResult(results);
 		}
 
-		private MembershipUserCollection CreateUsersFromResult(IEnumerable<ISearchResult> results, string providerName) {
+		private MembershipUserCollection CreateUsersFromResult(IEnumerable<ISearchResult> results) {
 
 			var users = new MembershipUserCollection();
 			if((results.Any())) {
 				foreach(var result in results) {
-					var user = CreateUserFromResult(providerName, result);
+					var user = CreateUserFromResult(result);
 					if(user != null) {
 						users.Add(user);
 					}
@@ -71,7 +65,7 @@ namespace nJupiter.DataAccess.Ldap {
 			return users;
 		}
 
-		private MembershipUser CreateUserFromResult(string providerName, ISearchResult result) {
+		private MembershipUser CreateUserFromResult(ISearchResult result) {
 			if(result == null) {
 				return null;
 			}

@@ -3,5 +3,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		IServerConfig Server { get; }
 		IUsersConfig Users { get; }
 		IGroupsConfig Groups { get; }
+		IContainer Container { get; }
 	}
 }

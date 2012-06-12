@@ -64,6 +64,8 @@
     <Compile Include="AttributeCollection.cs" />
     <Compile Include="AttributeDefinition.cs" />
     <Compile Include="AttributeValueCollection.cs" />
+    <Compile Include="Configuration\Container.cs" />
+    <Compile Include="Configuration\IContainer.cs" />
     <Compile Include="Configuration\IGroupConfigFactory.cs" />
     <Compile Include="Configuration\IGroupsConfig.cs" />
     <Compile Include="Configuration\ILdapConfig.cs" />
@@ -80,16 +82,17 @@
     <Compile Include="Configuration\UsersConfig.cs" />
     <Compile Include="Configuration\UsersConfigFactory.cs" />
     <Compile Include="DirectoryEntryAdapter.cs" />
-    <Compile Include="DirectoryEntryAdapterFactory.cs" />
-    <Compile Include="FilterBuilderFactory.cs" />
     <Compile Include="IDirectoryEntryAdapter.cs" />
     <Compile Include="IFilterBuilder.cs" />
     <Compile Include="ILdapNameHandler.cs" />
+    <Compile Include="IMembershipUserFactory.cs" />
     <Compile Include="ISearcher.cs" />
     <Compile Include="LdapMembershipUser.cs" />
-    <Compile Include="LdapNameHandlerFactory.cs" />
     <Compile Include="LdapPathHandler.cs" />
+    <Compile Include="MembershipAdapter.cs" />
     <Compile Include="NameParser\DnParser.cs" />
+    <Compile Include="NameParser\IDnParser.cs" />
+    <Compile Include="RoleAdapter.cs" />
     <Compile Include="Searcher.cs" />
     <Compile Include="NameParser\Dn.cs" />
     <Compile Include="GroupSearcher.cs" />
@@ -102,7 +105,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NameParser\Rdn.cs" />
     <Compile Include="NameParser\RdnComponent.cs" />
-    <Compile Include="SearcherFactory.cs" />
     <Compile Include="UserSearcher.cs" />
   </ItemGroup>
   <ItemGroup>

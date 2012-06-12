@@ -25,11 +25,12 @@
 using System.DirectoryServices;
 
 using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.Configuration;
 
 namespace nJupiter.DataAccess.Ldap {
 	internal class UserSearcher : Searcher {
 
-		public UserSearcher(Configuration.ILdapConfig config) : base(config) { }
+		public UserSearcher(ILdapConfig config) : base(config) { }
 
 		public override IDirectorySearcher Create(IDirectoryEntry entry, SearchScope searchScope) {
 

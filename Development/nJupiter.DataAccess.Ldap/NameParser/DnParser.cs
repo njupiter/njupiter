@@ -25,35 +25,35 @@
 using System;
 
 namespace nJupiter.DataAccess.Ldap.NameParser {
-	internal static class DnParser {
+	internal class DnParser : IDnParser {
 
-		public static string GetCn(string name) {
-			Dn dn = GetDnObject(name);
+		public string GetCn(string name) {
+			var dn = GetDnObject(name);
 			if(dn == null) {
 				return name;
 			}
 			return dn.Rdns[0].Components[0].ComponentValue;
 		}
 
-		public static string GetRdn(string name) {
-			Dn dn = GetDnObject(name);
+		public string GetRdn(string name) {
+			var dn = GetDnObject(name);
 			if(dn == null) {
 				return null;
 			}
 			return dn.Rdns[0].ToString();
 		}
 
-		public static string GetDn(string name) {
-			Dn dn = GetDnObject(name);
+		public string GetDn(string name) {
+			var dn = GetDnObject(name);
 			if(dn == null) {
 				return null;
 			}
 			return dn.ToString();
 		}
 
-		public static string GetDn(string name, string attribute, string basePath) {
-			Dn dn = GetDnObject(name);
-			NameType type = GetNameType(dn);
+		public string GetDn(string name, string attribute, string basePath) {
+			var dn = GetDnObject(name);
+			var type = GetNameType(dn);
 			switch(type) {
 				case NameType.Cn:
 				dn = GetDnObject(String.Format("{0}={1},{2}", attribute, name, basePath));
@@ -61,13 +61,11 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 				case NameType.Rdn:
 				dn = GetDnObject(String.Format("{0},{1}", name, basePath));
 				break;
-				default:
-				break;
 			}
 			return dn.ToString();
 		}
 
-		public static Dn GetDnObject(string name) {
+		public Dn GetDnObject(string name) {
 			name = LdapPathHandler.GetDistinguishedNameFromPath(name);
 			if(name.Contains("=")) {
 				return new Dn(name);
@@ -75,7 +73,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			return null;
 		}
 
-		private static NameType GetNameType(Dn dn) {
+		private NameType GetNameType(Dn dn) {
 			if(dn == null) {
 				return NameType.Cn;
 			}
