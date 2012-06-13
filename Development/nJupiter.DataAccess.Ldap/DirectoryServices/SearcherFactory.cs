@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 	Copyright (c) 2005-2011 nJupiter
 
@@ -22,34 +22,24 @@
 */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 
-using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
-namespace nJupiter.DataAccess.Ldap {
-	internal abstract class Searcher : ISearcher {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices {
+	internal class SearcherFactory : ISearcherFactory {
 
 		private readonly ILdapConfig config;
+		private readonly IFilterBuilder filterBuilder;
 
-		protected Searcher(ILdapConfig config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
+		public SearcherFactory(ILdapConfig config) {
 			this.config = config;
+			this.filterBuilder = config.Container.FilterBuilder;
 		}
 
-		protected ILdapConfig Config { get { return config; } }
-
-		public IDirectorySearcher Create(IDirectoryEntry entry) {
-			return Create(entry, SearchScope.Subtree);
-		}
-
-		public abstract IDirectorySearcher Create(IDirectoryEntry entry, SearchScope searchScope);
-
-		protected IDirectorySearcher CreateSearcher(IDirectoryEntry entry, SearchScope searchScope, string rdnAttribute, List<AttributeDefinition> otherAttributes) {
+		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute, IEnumerable<AttributeDefinition> otherAttributes) {
 			var searcher = CreateSearcher(entry, searchScope, rdnAttribute);
 			searcher.PropertiesToLoad.Clear();
 			searcher.PropertiesToLoad.Add(rdnAttribute);
@@ -59,25 +49,26 @@ namespace nJupiter.DataAccess.Ldap {
 			return searcher;
 		}
 
-		private IDirectorySearcher CreateSearcher(IDirectoryEntry entry, SearchScope searchScope, string rdnAttribute) {
+		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute) {
 			var searcher = CreateSearcher(entry, searchScope);
-			if(Config.Server.PropertySortingSupport) {
+			if(config.Server.PropertySortingSupport) {
 				searcher.Sort.PropertyName = rdnAttribute;
 				searcher.Sort.Direction = SortDirection.Ascending;
 			}
 			return searcher;
 		}
 
-		public IDirectorySearcher CreateSearcher(IDirectoryEntry entry, SearchScope searchScope) {
-			var searcher = new DirectorySearcherWrapper(entry);
-			searcher.SearchRoot = entry;
+		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
+			var searcher = new DirectorySearcherAdapter(entry, filterBuilder);
+			searcher.SearchRoot = entry.GetDirectoryEntry();
 			searcher.SearchScope = searchScope;
-			searcher.ServerTimeLimit = Config.Server.TimeLimit;
-			if(Config.Server.PageSize > 0) {
-				searcher.PageSize = Config.Server.PageSize;
+			searcher.ServerTimeLimit = config.Server.TimeLimit;
+			if(config.Server.PageSize > 0) {
+				searcher.PageSize = config.Server.PageSize;
 			}
 			searcher.PropertiesToLoad.Clear();
 			return searcher;
 		}
+
 	}
 }

@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 using nJupiter.DataAccess.Ldap.Configuration;
@@ -36,48 +37,33 @@ namespace nJupiter.DataAccess.Ldap {
 			this.config = config;
 		}
 
-		public string CreateUserNameFilter(string usernameToMatch) {
-			var defaultFilter = CreateUserFilter();
-			if(config.Users.Attributes.Count > 0) {
-				return AttachUserAttributeFilters(usernameToMatch, defaultFilter);
+		public string CreatePropertyRangeFilter(string propertyName, uint rangeLow, uint rangeHigh, bool isLastQuery) {
+			rangeHigh = isLastQuery ? uint.MaxValue: rangeHigh;
+			return CreatePropertyRangeFilter(propertyName, rangeLow, rangeHigh);
+		}
+
+		public string CreatePropertyRangeFilter(string propertyName, uint startIndex, uint endIndex) {
+			if(endIndex < startIndex || UInt32.MaxValue.Equals(endIndex)) {
+				return String.Format("{0};range={1}-*", propertyName, startIndex);
 			}
-			return AttachFilter(config.Users.RdnAttribute, usernameToMatch, defaultFilter);
-		}
-
-		private string AttachUserAttributeFilters(string usernameToMatch, string userFilter) {
-			var escapedUsername = EscapeSearchFilter(usernameToMatch);
-			var builder = new StringBuilder();
-			foreach(var otherAttributes in config.Users.Attributes) {
-				if(!otherAttributes.ExcludeFromNameSearch) {
-					builder.Append(String.Format("({0}={1})", otherAttributes.Name, escapedUsername));
-				}
-			}
-			return String.Format("(&{0}(|({1}={2}){3}))", userFilter, config.Users.RdnAttribute, escapedUsername, builder);
-		}
-
-		public string CreateUserEmailFilter(string emailToMatch) {
-			var userFilter = CreateUserFilter();
-			return AttachFilter(config.Users.EmailAttribute, emailToMatch, userFilter);
-		}
-
-		public string CreateGroupMembershipRangeFilter(uint startIndex, uint endIndex) {
-			if(UInt32.MaxValue.Equals(endIndex)) {
-				return String.Format("{0};range={1}-*", config.Groups.MembershipAttribute, startIndex);
-			}
-			return String.Format("{0};range={1}-{2}", config.Groups.MembershipAttribute, startIndex, endIndex);
-		}
-
-		public string CreateUserFilter() {
-			return config.Users.Filter;
-		}
-
-		public string CreateGroupFilter() {
-			return config.Groups.Filter;
+			return String.Format("{0};range={1}-{2}", propertyName, startIndex, endIndex);
 		}
 
 		public string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
 			var escapedValue = EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}={2}))", defaultFilter, attributeToMatch, escapedValue);
+		}
+
+
+		public string AttachAttributeFilters(string nameToMatch, string filter, string rdnAttribute, IEnumerable<AttributeDefinition> attributeDefinitinon) {
+			var escapedName = EscapeSearchFilter(nameToMatch);
+			var builder = new StringBuilder();
+			foreach(var attributes in attributeDefinitinon) {
+				if(!attributes.ExcludeFromNameSearch) {
+					builder.Append(String.Format("({0}={1})", attributes.Name, escapedName));
+				}
+			}
+			return String.Format("(&{0}(|({1}={2}){3}))", filter, rdnAttribute, escapedName, builder);
 		}
 
 		public string AttachRdnFilter(string valueToMatch, string defaultFilter) {

@@ -25,7 +25,7 @@
 using System;
 
 namespace nJupiter.DataAccess.Ldap.NameParser {
-	internal class DnParser : IDnParser {
+	internal class NameParser : INameParser {
 
 		public string GetCn(string name) {
 			var dn = GetDnObject(name);
@@ -78,6 +78,26 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 				return NameType.Cn;
 			}
 			return dn.Rdns.Count > 1 ? NameType.Dn : NameType.Rdn;
+		}
+
+
+		public string GetName(NameType nameType, string entryName) {
+			switch(nameType) {
+				case NameType.Cn:
+				return GetCn(entryName);
+
+				case NameType.Rdn:
+				return GetRdn(entryName);
+
+				default:
+				return GetDn(entryName);
+			}
+		}
+
+		public bool NamesEqual(string name, string nameToMatch, string attribute, string basePath) {
+			name = GetDn(name, attribute, basePath);
+			nameToMatch = GetDn(nameToMatch, attribute, basePath);
+			return string.Equals(name, nameToMatch, StringComparison.InvariantCultureIgnoreCase);
 		}
 	}
 }

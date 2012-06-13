@@ -5,11 +5,11 @@ using System.ComponentModel;
 using System.DirectoryServices;
 using System.Runtime.Remoting;
 
-namespace nJupiter.DataAccess.Ldap.Abstractions {
-	internal class DirectorySearcherWrapper : IDirectorySearcher {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+	internal class DirectorySearcherWrapper {
 		readonly DirectorySearcher directorySearcher;
 
-		public DirectorySearcherWrapper(IDirectoryEntry directoryEntry) {
+		public DirectorySearcherWrapper(IEntry directoryEntry) {
 			directorySearcher = new DirectorySearcher(directoryEntry.UnWrap());
 		}
 
@@ -51,11 +51,11 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		public string Filter { get { return directorySearcher.Filter; }
 			set { directorySearcher.Filter = value; } }
 
-		public IEnumerable<ISearchResult> FindAll() {
+		public IEnumerable<IEntry> FindAll() {
 			return directorySearcher.FindAll().Wrap();
 		}
 
-		public ISearchResult FindOne() {
+		public IEntry FindOne() {
 			return directorySearcher.FindOne().Wrap();
 		}
 
@@ -79,7 +79,7 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		public ReferralChasingOption ReferralChasing { get { return directorySearcher.ReferralChasing; }
 			set { directorySearcher.ReferralChasing = value; } }
 
-		public IDirectoryEntry SearchRoot { get { return directorySearcher.SearchRoot.Wrap(); }
+		public IEntry SearchRoot { get { return directorySearcher.SearchRoot.Wrap(); }
 			set { directorySearcher.SearchRoot = value.UnWrap(); } }
 
 		public SearchScope SearchScope { get { return directorySearcher.SearchScope; }

@@ -27,8 +27,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
 
-using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 	internal class LdapMembershipUserFactory : IMembershipUserFactory {
@@ -41,22 +41,11 @@ namespace nJupiter.DataAccess.Ldap {
 			this.providerName = providerName;
 		}
 
-		public MembershipUser CreateUserFromSearcher(IDirectorySearcher searcher) {
-			var result = searcher.FindOne();
-			return CreateUserFromResult(result);
-		}
-
-		public MembershipUserCollection CreateUsersFromSearcher(IDirectorySearcher searcher) {
-			var results = searcher.FindAll();
-			return CreateUsersFromResult(results);
-		}
-
-		private MembershipUserCollection CreateUsersFromResult(IEnumerable<ISearchResult> results) {
-
+		public MembershipUserCollection CreateCollection(IEnumerable<IEntry> entries) {
 			var users = new MembershipUserCollection();
-			if((results.Any())) {
-				foreach(var result in results) {
-					var user = CreateUserFromResult(result);
+			if((entries.Any())) {
+				foreach(var result in entries) {
+					var user = Create(result);
 					if(user != null) {
 						users.Add(user);
 					}
@@ -65,54 +54,24 @@ namespace nJupiter.DataAccess.Ldap {
 			return users;
 		}
 
-		private MembershipUser CreateUserFromResult(ISearchResult result) {
-			if(result == null) {
+		public MembershipUser Create(IEntry entry) {
+			if(entry == null) {
 				return null;
 			}
-			var name = GetStringAttributeFromSearchResult(config.Users.RdnAttribute, result);
-			var id = name;
-			var email = GetStringAttributeFromSearchResult(config.Users.EmailAttribute, result);
-			var description = GetStringAttributeFromSearchResult(config.Users.DescriptionAttribute, result);
 
-			var creationDate = GetDateTimeAttributeFromSearchResult(config.Users.CreationDateAttribute, result);
-			var lastLoginDate = GetDateTimeAttributeFromSearchResult(config.Users.LastLoginDateAttribute, result);
-			var lastPasswordChangedDate = GetDateTimeAttributeFromSearchResult(config.Users.LastPasswordChangedDateAttribute, result);
+			var name = entry.GetProperties<string>(config.Users.RdnAttribute).FirstOrDefault();
+			var id = name;
+			var email = entry.GetProperties<string>(config.Users.EmailAttribute).FirstOrDefault();
+			var description = entry.GetProperties<string>(config.Users.DescriptionAttribute).FirstOrDefault();
+
+			var creationDate = entry.GetProperties<DateTime>(config.Users.CreationDateAttribute).FirstOrDefault();
+			var lastLoginDate = entry.GetProperties<DateTime>(config.Users.LastLoginDateAttribute).FirstOrDefault();
+			var lastPasswordChangedDate = entry.GetProperties<DateTime>(config.Users.LastPasswordChangedDateAttribute).FirstOrDefault();
 			var lastLockoutDate = creationDate;
 			var lastActivitiyDate = DateTime.Now;
 
-			return new LdapMembershipUser(providerName, name, id, email, String.Empty, description, true, false, creationDate, lastLoginDate, lastActivitiyDate, lastPasswordChangedDate, lastLockoutDate, result.Properties, result.Path);
+			return new LdapMembershipUser(providerName, name, id, email, String.Empty, description, true, false, creationDate, lastLoginDate, lastActivitiyDate, lastPasswordChangedDate, lastLockoutDate, entry.Properties, entry.Path);
 		}
 
-		private static string GetStringAttributeFromSearchResult(string attribute, ISearchResult result) {
-			var value = GetAttributeFromSearchResult(attribute, result);
-			var stringValue = value as string;
-			return stringValue ?? string.Empty;
-		}
-
-		private static DateTime GetDateTimeAttributeFromSearchResult(string attribute, ISearchResult result) {
-			var value = GetAttributeFromSearchResult(attribute, result);
-			if(value == null) {
-				return DateTime.MinValue;
-			}
-			long parsedLong;
-			if(long.TryParse(value.ToString(), out parsedLong)) {
-				return DateTime.FromFileTime(parsedLong);
-			}
-			return (DateTime)value;
-		}
-
-		private static object GetAttributeFromSearchResult(string attribute, ISearchResult result) {
-			if(string.IsNullOrEmpty(attribute)) {
-				return null;
-			}
-			if(result.Properties.Contains(attribute)) {
-				var values = result.Properties[attribute];
-				foreach(var value in values) {
-					return value;
-				}
-			}
-			return null;
-
-		}
 	}
 }

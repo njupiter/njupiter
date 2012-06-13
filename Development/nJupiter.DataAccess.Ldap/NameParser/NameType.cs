@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 	Copyright (c) 2005-2011 nJupiter
 
@@ -22,7 +22,7 @@
 */
 #endregion
 
-namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.NameParser {
 	internal enum NameType {
 		Dn = 0,
 		Rdn = 1,

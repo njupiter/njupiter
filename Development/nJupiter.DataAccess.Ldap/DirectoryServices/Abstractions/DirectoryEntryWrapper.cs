@@ -1,12 +1,17 @@
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.DirectoryServices;
 using System.Runtime.Remoting;
 
-namespace nJupiter.DataAccess.Ldap.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 	internal class DirectoryEntryWrapper : IDirectoryEntry {
 		private readonly DirectoryEntry directoryEntry;
-		
+
+		public IDirectoryEntry GetDirectoryEntry() {
+			return this;
+		}
+
 		public DirectoryEntry WrappedEntry { get { return directoryEntry; } }
 
 		public DirectoryEntryWrapper(DirectoryEntry directoryEntry) {
@@ -30,11 +35,11 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		public IContainer Container {
 			get { return directoryEntry.Container; } }
 
-		public IDirectoryEntry CopyTo(IDirectoryEntry newParent) {
+		public IEntry CopyTo(IEntry newParent) {
 			return directoryEntry.CopyTo(newParent.UnWrap()).Wrap();
 		}
 
-		public IDirectoryEntry CopyTo(IDirectoryEntry newParent, string newName) {
+		public IEntry CopyTo(IEntry newParent, string newName) {
 			return directoryEntry.CopyTo(newParent.UnWrap(), newName).Wrap();
 		}
 
@@ -76,11 +81,11 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 			directoryEntry.InvokeSet(propertyName, args);
 		}
 
-		public void MoveTo(IDirectoryEntry newParent) {
+		public void MoveTo(IEntry newParent) {
 			directoryEntry.MoveTo(newParent.UnWrap());
 		}
 
-		public void MoveTo(IDirectoryEntry newParent, string newName) {
+		public void MoveTo(IEntry newParent, string newName) {
 			directoryEntry.MoveTo(newParent.UnWrap(), newName);
 		}
 
@@ -99,7 +104,7 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		public DirectoryEntryConfiguration Options {
 			get { return directoryEntry.Options; } }
 
-		public IDirectoryEntry Parent {
+		public IEntry Parent {
 			get { return directoryEntry.Parent.Wrap(); } }
 
 		public string Password {
@@ -108,7 +113,7 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		public string Path { get { return directoryEntry.Path; }
 			set { directoryEntry.Path = value; } }
 
-		public PropertyCollection Properties {
+		public IDictionary Properties {
 			get { return directoryEntry.Properties; } }
 
 		public void RefreshCache() {
@@ -126,7 +131,7 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		public string SchemaClassName {
 			get { return directoryEntry.SchemaClassName; } }
 
-		public IDirectoryEntry SchemaEntry {
+		public IEntry SchemaEntry {
 			get { return directoryEntry.SchemaEntry.Wrap(); } }
 
 		public ISite Site { get { return directoryEntry.Site; }

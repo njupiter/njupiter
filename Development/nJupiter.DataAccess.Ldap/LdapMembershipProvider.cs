@@ -27,6 +27,7 @@ using System.Collections.Specialized;
 using System.Web.Security;
 
 using nJupiter.DataAccess.Ldap.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices;
 
 namespace nJupiter.DataAccess.Ldap {
 

@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 	Copyright (c) 2005-2011 nJupiter
 
@@ -25,48 +25,26 @@
 using System;
 using System.Configuration.Provider;
 
-using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 using nJupiter.DataAccess.Ldap.NameParser;
 
-namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class DirectoryEntryAdapter : IDirectoryEntryAdapter {
 
 		private readonly ILdapConfig config;
-		private readonly ISearcher userSearcher;
-		private readonly ISearcher groupSearcher;
 		private readonly IFilterBuilder filterBuilder;
-		private readonly IDnParser dnParser;
+		private readonly INameParser nameParser;
 		private readonly IDirectoryEntryFactory directoryEntryFactory;
 
 		public DirectoryEntryAdapter(ILdapConfig config) {
 			this.config = config;
 			directoryEntryFactory = config.Container.DirectoryEntryFactory;
 			filterBuilder = config.Container.FilterBuilder;
-			dnParser = config.Container.DnParser;
-			userSearcher = config.Container.UserSearcher;
-			groupSearcher = config.Container.GroupSearcher;
+			nameParser = config.Container.NameParser;
 		}
 
-		public IDirectoryEntry GetUserEntry(string username) {
-			var userFilter = filterBuilder.CreateUserFilter();
-			return GetEntry(config.Users.RdnAttribute, username, config.Users.Path, userFilter, userSearcher);
-		}
-
-		public IDirectoryEntry GetUsersEntry() {
-			return GetEntry(config.Users.Path);
-		}
-
-		public IDirectoryEntry GetGroupEntry(string groupname) {
-			var groupFilter = filterBuilder.CreateGroupFilter();
-			return GetEntry(config.Groups.RdnAttribute, groupname, config.Groups.Path, groupFilter, groupSearcher);
-		}
-
-		public IDirectoryEntry GetGroupsEntry() {
-			return GetEntry(config.Groups.Path);
-		}
-
-		private IDirectoryEntry GetEntry(string path) {
+		public IDirectoryEntry GetEntry(string path) {
 			return GetEntry(path, config.Server.Username, config.Server.Password);
 		}
 
@@ -83,10 +61,10 @@ namespace nJupiter.DataAccess.Ldap {
 			return directoryEntryFactory.Create(path, username, password, config.Server.AuthenticationTypes);
 		}
 
-		private IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, ISearcher searcher) {
+		public IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, Func<IEntry, IDirectorySearcher> searcherFactory) {
 			IDirectoryEntry directoryEntry = null;
 
-			var dn = dnParser.GetDnObject(attributeValue)	;
+			var dn = nameParser.GetDnObject(attributeValue);
 			if(dn != null && dn.Rdns.Count > 1) {
 				var uri = new Uri(config.Server.Url, dn.ToString());
 				return GetEntry(uri);
@@ -94,7 +72,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 			var entry = GetEntry(path);
 			if(entry.IsBound()) {
-				var directorySearcher = searcher.Create(entry);
+				var directorySearcher = searcherFactory(entry);
 				if(dn != null) {
 					directorySearcher.Filter = filterBuilder.AttachRdnFilter(attributeValue, defaultFilter);
 				} else {

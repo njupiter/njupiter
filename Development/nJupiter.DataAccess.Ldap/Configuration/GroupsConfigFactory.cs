@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using nJupiter.Configuration;
+using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class GroupsConfigFactory : IGroupConfigFactory {

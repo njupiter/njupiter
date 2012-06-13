@@ -1,9 +1,9 @@
 using System.DirectoryServices;
 
-namespace nJupiter.DataAccess.Ldap.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 	internal static class DirectoryEntryExtensions {
-		public static DirectoryEntry UnWrap(this IDirectoryEntry wrapped) {
-			var wrapper = wrapped as DirectoryEntryWrapper;
+		public static DirectoryEntry UnWrap(this IEntry wrapped) {
+			var wrapper = wrapped.GetDirectoryEntry() as DirectoryEntryWrapper;
 			if(wrapper == null) {
 				return null;
 			}
@@ -17,8 +17,6 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 			return new DirectoryEntryWrapper(wrapped);
 		}
 
-		public static bool IsBound(this IDirectoryEntry entry) {
-			return entry != null && entry.NativeObject != null;
-		}
+
 	}
 }

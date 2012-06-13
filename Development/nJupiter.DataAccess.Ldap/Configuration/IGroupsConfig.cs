@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 
+using nJupiter.DataAccess.Ldap.NameParser;
+
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal interface IGroupsConfig {
 		string Filter { get; }

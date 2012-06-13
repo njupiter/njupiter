@@ -1,32 +1,33 @@
-using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class Container : IContainer {
-		private readonly IDnParser dnParser;
+		private readonly INameParser nameParser;
 		private readonly IDirectoryEntryFactory directoryEntryFactory;
-		private readonly ISearcher userSearcher;
-		private readonly ISearcher groupSearcher;
+		private readonly ISearcherFactory searcherFactory;
 		private readonly IFilterBuilder filterBuilder;
-		private readonly ILdapNameHandler ldapNameHandler;
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
+		private readonly IUserEntryAdapter userEntryAdapter;
+		private readonly IGroupEntryAdapter groupEntryAdapter;
 
-		public IDnParser DnParser { get { return dnParser; } }
+		public INameParser NameParser { get { return nameParser; } }
 		public IDirectoryEntryFactory DirectoryEntryFactory { get { return directoryEntryFactory; } }
-		public ISearcher UserSearcher { get { return userSearcher; } }
-		public ISearcher GroupSearcher { get { return groupSearcher; } }
+		public ISearcherFactory SearcherFactory { get { return searcherFactory; } }
 		public IFilterBuilder FilterBuilder { get { return filterBuilder; } }
-		public ILdapNameHandler LdapNameHandler { get { return ldapNameHandler; } }
 		public IDirectoryEntryAdapter DirectoryEntryAdapter { get { return directoryEntryAdapter; } }
+		public IUserEntryAdapter UserEntryAdapter { get { return userEntryAdapter; } }
+		public IGroupEntryAdapter GroupEntryAdapter { get { return groupEntryAdapter; } }
 
 		public Container(ILdapConfig configuration) {
-			dnParser = new DnParser();
+			nameParser = new NameParser.NameParser();
 			directoryEntryFactory = new DirectoryEntryFactory();
-			userSearcher = new UserSearcher(configuration);
-			groupSearcher = new GroupSearcher(configuration);
+			searcherFactory = new SearcherFactory(configuration);
 			filterBuilder = new FilterBuilder(configuration);
-			ldapNameHandler = new LdapNameHandler(configuration);
 			directoryEntryAdapter = new DirectoryEntryAdapter(configuration);
+			userEntryAdapter = new UserEntryAdapter(configuration);
+			groupEntryAdapter = new GroupEntryAdapter(configuration);
 		}
 	}
 }

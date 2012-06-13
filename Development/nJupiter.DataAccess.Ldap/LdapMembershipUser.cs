@@ -1,5 +1,5 @@
 ﻿using System;
-using System.DirectoryServices;
+using System.Collections;
 using System.Web.Security;
 
 namespace nJupiter.DataAccess.Ldap {
@@ -17,7 +17,7 @@ namespace nJupiter.DataAccess.Ldap {
 									DateTime lastActivityDate,
 									DateTime lastPasswordChangedDate,
 									DateTime lastLockoutDate,
-									ResultPropertyCollection resultPropertyCollection,
+									IDictionary propertyCollection,
 									string path
 									)
 									: base(providerName,
@@ -33,7 +33,7 @@ namespace nJupiter.DataAccess.Ldap {
 											lastActivityDate,
 											lastPasswordChangedDate,
 											lastLockoutDate) {
-			attributes = new AttributeCollection(resultPropertyCollection);
+			attributes = new AttributeCollection(propertyCollection);
 			this.path = path;
 		}
 

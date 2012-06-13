@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.DirectoryServices;
 using System.Runtime.Remoting;
 
-namespace nJupiter.DataAccess.Ldap.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 	internal interface IDirectorySearcher {
 		bool Asynchronous { get; set; }
 		string AttributeScopeQuery { get; set; }
@@ -20,7 +20,7 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		StringCollection PropertiesToLoad { get; }
 		bool PropertyNamesOnly { get; set; }
 		ReferralChasingOption ReferralChasing { get; set; }
-		IDirectoryEntry SearchRoot { get; set; }
+		IEntry SearchRoot { get; set; }
 		SearchScope SearchScope { get; set; }
 		SecurityMasks SecurityMasks { get; set; }
 		TimeSpan ServerPageTimeLimit { get; set; }
@@ -33,9 +33,11 @@ namespace nJupiter.DataAccess.Ldap.Abstractions {
 		ObjRef CreateObjRef(Type requestedType);
 		void Dispose();
 		event EventHandler Disposed;
-		IEnumerable<ISearchResult> FindAll();
-		ISearchResult FindOne();
+		IEnumerable<IEntry> FindAll();
+		IEntry FindOne();
 		object GetLifetimeService();
 		object InitializeLifetimeService();
+		IEnumerable<T> GetPropertiesByRangedFilter<T>(string propertyName);
+		IEntry FindOne(string propertyToLoad);
 	}
 }

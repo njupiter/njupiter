@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using System.Web.Security;
 
-using nJupiter.DataAccess.Ldap.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 	internal interface IMembershipUserFactory {
-		MembershipUser CreateUserFromSearcher(IDirectorySearcher searcher);
-		MembershipUserCollection CreateUsersFromSearcher(IDirectorySearcher searcher);
+		MembershipUser Create(IEntry entry);
+		MembershipUserCollection CreateCollection(IEnumerable<IEntry> entries);
 	}
 }

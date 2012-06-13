@@ -1,17 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.DirectoryServices;
 
 namespace nJupiter.DataAccess.Ldap {
 	public class AttributeValueCollection : IEnumerable {
 		private readonly List<object> attributeValueCollection;
 
-		internal AttributeValueCollection(ResultPropertyValueCollection resultPropertyValueCollection) {
+		internal AttributeValueCollection(IEnumerable propertyValueCollection) {
 			attributeValueCollection = new List<object>();
-			foreach(var propertyValue in resultPropertyValueCollection) {
+			foreach(var propertyValue in propertyValueCollection) {
 				attributeValueCollection.Add(propertyValue);
 			}
-
 		}
 
 		public object this[int index] {

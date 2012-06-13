@@ -1,38 +1,39 @@
 using System;
 using System.DirectoryServices;
+using System.Linq;
 using System.Web.Security;
 
-using nJupiter.DataAccess.Ldap.Abstractions;
 using nJupiter.DataAccess.Ldap.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 using nJupiter.DataAccess.Ldap.NameParser;
 
-namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class MembershipAdapter {
 
 		private readonly ILdapConfig configuration;
-		private readonly ISearcher userSearcher;
 		private readonly IFilterBuilder filterBuilder;
-		private readonly IDnParser dnParser;
+		private readonly INameParser nameParser;
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly IMembershipUserFactory membershipUserFactory;
+		private readonly IUserEntryAdapter userEntryAdapter;
 
 		public MembershipAdapter(ILdapConfig configuration,
 		                         IMembershipUserFactory membershipUserFactory) {
 
 			this.configuration = configuration;
 			this.membershipUserFactory = membershipUserFactory;
-			userSearcher = configuration.Container.UserSearcher;
 			filterBuilder = configuration.Container.FilterBuilder;
-			dnParser = configuration.Container.DnParser;
+			nameParser = configuration.Container.NameParser;
 			directoryEntryAdapter = configuration.Container.DirectoryEntryAdapter;
+			userEntryAdapter = configuration.Container.UserEntryAdapter;
 		}
 
 		public bool ValidateUser(string username, string password) {
-			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
+			using(var entry = userEntryAdapter.GetUserEntry(username)) {
 				if(!entry.IsBound()) {
 					return false;
 				}
-				var dn = dnParser.GetDn(entry.Path);
+				var dn = nameParser.GetDn(entry.Path);
 				var uri = new Uri(configuration.Server.Url, dn);
 
 				try {
@@ -40,11 +41,11 @@ namespace nJupiter.DataAccess.Ldap {
 						if(!authenticatedUser.IsBound()) {
 							return false;
 						}
-						var searcher = userSearcher.Create(authenticatedUser, SearchScope.Base);
-						searcher.Filter = filterBuilder.CreateUserFilter();
+						var searcher = userEntryAdapter.CreateSearcher(authenticatedUser, SearchScope.Base);
+						searcher.Filter = CreateUserFilter();
 						var result = searcher.FindOne();
 						if(result != null && result.Properties.Contains(configuration.Users.RdnAttribute)) {
-							return result.Properties[configuration.Users.RdnAttribute].Count > 0;
+							return result.GetProperties(configuration.Users.RdnAttribute).Any();
 						}
 					}
 				} catch(Exception) {
@@ -67,24 +68,23 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public MembershipUser GetUser(string username, bool userIsOnline) {
-			using(var entry = directoryEntryAdapter.GetUserEntry(username)) {
+			using(var entry = userEntryAdapter.GetUserEntry(username, true)) {
 				if(!entry.IsBound()) {
 					return null;
 				}
-				var searcher = userSearcher.Create(entry, SearchScope.Base);
-				searcher.Filter = filterBuilder.CreateUserFilter();
-				return membershipUserFactory.CreateUserFromSearcher(searcher);
+				return membershipUserFactory.Create(entry);
 			}
 		}
 
 		public string GetUserNameByEmail(string email) {
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = userEntryAdapter.GetUsersEntry()) {
 				if(!entry.IsBound()) {
 					return null;
 				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserEmailFilter(email);
-				var user = membershipUserFactory.CreateUserFromSearcher(searcher);
+				var searcher = userEntryAdapter.CreateSearcher(entry);
+				searcher.Filter = CreateUserEmailFilter(email);
+				var result = searcher.FindOne();
+				var user = membershipUserFactory.Create(result);
 				return user != null ? user.UserName : null;
 			}
 		}
@@ -97,17 +97,17 @@ namespace nJupiter.DataAccess.Ldap {
 				throw new ArgumentOutOfRangeException("pageSize");
 			}
 			var users = new MembershipUserCollection();
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = userEntryAdapter.GetUsersEntry()) {
 				if(!entry.IsBound()) {
 					totalRecords = users.Count;
 					return users;
 				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserFilter();
+				var searcher = userEntryAdapter.CreateSearcher(entry);
+				searcher.Filter = CreateUserFilter();
 				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				users = membershipUserFactory.CreateUsersFromSearcher(searcher);
+				users = membershipUserFactory.CreateCollection(searcher.FindAll());
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -125,17 +125,17 @@ namespace nJupiter.DataAccess.Ldap {
 				totalRecords = 0;
 				return users;
 			}
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = userEntryAdapter.GetUsersEntry()) {
 				if(!entry.IsBound()) {
 					totalRecords = users.Count;
 					return users;
 				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserNameFilter(usernameToMatch);
+				var searcher = userEntryAdapter.CreateSearcher(entry);
+				searcher.Filter = CreateUserNameFilter(usernameToMatch);
 				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				users = membershipUserFactory.CreateUsersFromSearcher(searcher);
+				users = membershipUserFactory.CreateCollection(searcher.FindAll());
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
@@ -154,20 +154,37 @@ namespace nJupiter.DataAccess.Ldap {
 				totalRecords = users.Count;
 				return users;
 			}
-			using(var entry = directoryEntryAdapter.GetUsersEntry()) {
+			using(var entry = userEntryAdapter.GetUsersEntry()) {
 				if(!entry.IsBound()) {
 					totalRecords = users.Count;
 					return users;
 				}
-				var searcher = userSearcher.Create(entry);
-				searcher.Filter = filterBuilder.CreateUserEmailFilter(emailToMatch);
+				var searcher = userEntryAdapter.CreateSearcher(entry);
+				searcher.Filter = CreateUserEmailFilter(emailToMatch);
 				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				users = membershipUserFactory.CreateUsersFromSearcher(searcher);
+				users = membershipUserFactory.CreateCollection(searcher.FindAll());
 				users = PageUserCollection(users, pageIndex, pageSize, out totalRecords);
 			}
 			return users;
+		}
+
+		public string CreateUserNameFilter(string usernameToMatch) {
+			var defaultFilter = CreateUserFilter();
+			if(configuration.Users.Attributes.Count > 0) {
+				return filterBuilder.AttachAttributeFilters(usernameToMatch, defaultFilter, configuration.Users.RdnAttribute, configuration.Users.Attributes);
+			}
+			return filterBuilder.AttachFilter(configuration.Users.RdnAttribute, usernameToMatch, defaultFilter);
+		}
+
+		public string CreateUserEmailFilter(string emailToMatch) {
+			var userFilter = CreateUserFilter();
+			return filterBuilder.AttachFilter(configuration.Users.EmailAttribute, emailToMatch, userFilter);
+		}
+
+		public string CreateUserFilter() {
+			return configuration.Users.Filter;
 		}
 
 		private static MembershipUserCollection PageUserCollection(MembershipUserCollection userCollection, int pageIndex, int pageSize, out int totalRecords) {
