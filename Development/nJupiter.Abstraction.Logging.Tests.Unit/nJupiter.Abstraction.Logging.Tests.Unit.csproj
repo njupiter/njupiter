@@ -75,6 +75,7 @@
     <Compile Include="EnterpriseLibrary\LogAdapterTests.cs" />
     <Compile Include="EnterpriseLibrary\LogEntryFactoryTests.cs" />
     <Compile Include="EnterpriseLibrary\LogManagerAdapterTests.cs" />
+    <Compile Include="LogExtensionsTests.cs" />
     <Compile Include="LogManagerExtensionsTests.cs" />
     <Compile Include="LogManagerFactoryTests.cs" />
     <Compile Include="NullLogManagerTests.cs" />

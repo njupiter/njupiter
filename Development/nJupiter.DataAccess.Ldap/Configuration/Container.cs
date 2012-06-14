@@ -1,3 +1,4 @@
+using nJupiter.Abstraction.Logging;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 using nJupiter.DataAccess.Ldap.NameParser;
@@ -11,6 +12,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly IUserEntryAdapter userEntryAdapter;
 		private readonly IGroupEntryAdapter groupEntryAdapter;
+		
 
 		public INameParser NameParser { get { return nameParser; } }
 		public IDirectoryEntryFactory DirectoryEntryFactory { get { return directoryEntryFactory; } }
@@ -19,6 +21,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public IDirectoryEntryAdapter DirectoryEntryAdapter { get { return directoryEntryAdapter; } }
 		public IUserEntryAdapter UserEntryAdapter { get { return userEntryAdapter; } }
 		public IGroupEntryAdapter GroupEntryAdapter { get { return groupEntryAdapter; } }
+		public ILogManager LogManager { get { return LogManagerFactory.GetLogManager(); } }
 
 		public Container(ILdapConfig configuration) {
 			nameParser = new NameParser.NameParser();

@@ -52,12 +52,24 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return directoryEntryAdapter.GetEntry(configuration.Users.RdnAttribute, username, configuration.Users.Path, userFilter, CreateSearcher);
 		}
 
+		public IEntry GetUserEntry(string username, string password) {
+			var user = GetUserEntry(username);
+			if(!user.IsBound()) {
+				return null;
+			}
+			var dn = nameHandler.GetDn(user.Path);
+			var uri = new Uri(configuration.Server.Url, dn);
+			user = directoryEntryAdapter.GetEntry(uri, dn, password);
+			return GetSearchedUserEntry(user);
+		}
+
 		[Obsolete("Make this private later")]
 		public IDirectoryEntry GetUsersEntry() {
 			return directoryEntryAdapter.GetEntry(configuration.Users.Path);
 		}
 
-		private IEntry GetSearchedUserEntry(IDirectoryEntry entry) {
+		[Obsolete("Make this private later")]
+		public IEntry GetSearchedUserEntry(IEntry entry) {
 			if(!entry.IsBound()) {
 				return null;
 			}

@@ -10,6 +10,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		IEntry GetUserEntry(string username, bool loadProperties);
 		string GetUserName(IEntry entry);
 		string GetUserName(string entryName);
+		IEntry GetUserEntry(string username, string password);
 		IEnumerable<string> GetUsersFromEntry(IEntry entry, string propertyName);
 
 		[Obsolete("Make this private later")]
@@ -17,6 +18,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		[Obsolete("Make this private later")]
 		IDirectorySearcher CreateSearcher(IEntry entry);
+
+		[Obsolete("Make this private later")]
+		IEntry GetSearchedUserEntry(IEntry entry);
 
 		[Obsolete("Make this private later")]
 		IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope);

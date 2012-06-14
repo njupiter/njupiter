@@ -47,6 +47,7 @@
     <Compile Include="ILog.cs" />
     <Compile Include="ILogManager.cs" />
     <Compile Include="ILog`T.cs" />
+    <Compile Include="LogExtensions.cs" />
     <Compile Include="LogManagerExtensions.cs" />
     <Compile Include="LogManagerFactory.cs" />
     <Compile Include="NullLogger\NullLog.cs" />

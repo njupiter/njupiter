@@ -1,21 +1,19 @@
 using System;
-using System.DirectoryServices;
 using System.Linq;
 using System.Web.Security;
 
+using nJupiter.Abstraction.Logging;
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
-using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class MembershipAdapter {
 
 		private readonly ILdapConfig configuration;
 		private readonly IFilterBuilder filterBuilder;
-		private readonly INameParser nameParser;
-		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly IMembershipUserFactory membershipUserFactory;
 		private readonly IUserEntryAdapter userEntryAdapter;
+		private readonly ILog<MembershipAdapter> log;
 
 		public MembershipAdapter(ILdapConfig configuration,
 		                         IMembershipUserFactory membershipUserFactory) {
@@ -23,33 +21,18 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			this.configuration = configuration;
 			this.membershipUserFactory = membershipUserFactory;
 			filterBuilder = configuration.Container.FilterBuilder;
-			nameParser = configuration.Container.NameParser;
-			directoryEntryAdapter = configuration.Container.DirectoryEntryAdapter;
 			userEntryAdapter = configuration.Container.UserEntryAdapter;
+			log = configuration.Container.LogManager.GetLogger<MembershipAdapter>();
 		}
 
 		public bool ValidateUser(string username, string password) {
-			using(var entry = userEntryAdapter.GetUserEntry(username)) {
-				if(!entry.IsBound()) {
-					return false;
+			try {
+				using(var user = userEntryAdapter.GetUserEntry(username, password)) {
+					return user.GetProperties(configuration.Users.RdnAttribute).Any();
 				}
-				var dn = nameParser.GetDn(entry.Path);
-				var uri = new Uri(configuration.Server.Url, dn);
-
-				try {
-					using(var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password)) {
-						if(!authenticatedUser.IsBound()) {
-							return false;
-						}
-						var searcher = userEntryAdapter.CreateSearcher(authenticatedUser, SearchScope.Base);
-						searcher.Filter = CreateUserFilter();
-						var result = searcher.FindOne();
-						if(result != null && result.Properties.Contains(configuration.Users.RdnAttribute)) {
-							return result.GetProperties(configuration.Users.RdnAttribute).Any();
-						}
-					}
-				} catch(Exception) {
-					// Failed to validate user
+			} catch(Exception ex) {
+				if(log.IsInfoEnabled) {
+					log.Info("Failed to validate user", ex);
 				}
 			}
 			return false;
