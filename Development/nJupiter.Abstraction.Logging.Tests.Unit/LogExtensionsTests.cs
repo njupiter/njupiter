@@ -14,7 +14,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsDebugEnabled).Returns(true);
 
-			log.Debug(m => m("Hello world"));
+			log.Debug(c => c("Hello world"));
 
 			A.CallTo(() => log.Debug("Hello world")).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -24,7 +24,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsDebugEnabled).Returns(false);
 
-			log.Debug(m => m("Hello world"));
+			log.Debug(c => c("Hello world"));
 
 			A.CallTo(() => log.Debug("Hello world")).MustNotHaveHappened();
 		}
@@ -35,7 +35,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsDebugEnabled).Returns(true);
 
 			var exception = new Exception();
-			log.Debug(m => m("Hello world", exception));
+			log.Debug(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Debug("Hello world", exception)).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -46,7 +46,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsDebugEnabled).Returns(false);
 
 			var exception = new Exception();
-			log.Debug(m => m("Hello world", exception));
+			log.Debug(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Debug("Hello world", exception)).MustNotHaveHappened();
 		}
@@ -59,7 +59,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			
 			var args = new object[] { "Message" };
 
-			log.DebugFormat(m => m("Format", args));
+			log.DebugFormat(c => c("Format", args));
 
 			A.CallTo(() => log.DebugFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -71,7 +71,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 
-			log.DebugFormat(m => m("Format", args));
+			log.DebugFormat(c => c("Format", args));
 
 			A.CallTo(() => log.DebugFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -84,7 +84,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.DebugFormat(m => m(provider, "Format", args));
+			log.DebugFormat(c => c(provider, "Format", args));
 
 			A.CallTo(() => log.DebugFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -96,7 +96,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.DebugFormat(m => m("Format", "Message"));
+			log.DebugFormat(c => c("Format", "Message"));
 
 			A.CallTo(() => log.DebugFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -106,7 +106,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsInfoEnabled).Returns(true);
 
-			log.Info(m => m("Hello world"));
+			log.Info(c => c("Hello world"));
 
 			A.CallTo(() => log.Info("Hello world")).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -116,7 +116,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsInfoEnabled).Returns(false);
 
-			log.Info(m => m("Hello world"));
+			log.Info(c => c("Hello world"));
 
 			A.CallTo(() => log.Info("Hello world")).MustNotHaveHappened();
 		}
@@ -127,7 +127,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsInfoEnabled).Returns(true);
 
 			var exception = new Exception();
-			log.Info(m => m("Hello world", exception));
+			log.Info(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Info("Hello world", exception)).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -138,7 +138,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsInfoEnabled).Returns(false);
 
 			var exception = new Exception();
-			log.Info(m => m("Hello world", exception));
+			log.Info(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Info("Hello world", exception)).MustNotHaveHappened();
 		}
@@ -151,7 +151,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			
 			var args = new object[] { "Message" };
 
-			log.InfoFormat(m => m("Format", args));
+			log.InfoFormat(c => c("Format", args));
 
 			A.CallTo(() => log.InfoFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -163,7 +163,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 
-			log.InfoFormat(m => m("Format", args));
+			log.InfoFormat(c => c("Format", args));
 
 			A.CallTo(() => log.InfoFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -176,7 +176,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.InfoFormat(m => m(provider, "Format", args));
+			log.InfoFormat(c => c(provider, "Format", args));
 
 			A.CallTo(() => log.InfoFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -188,7 +188,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.InfoFormat(m => m("Format", "Message"));
+			log.InfoFormat(c => c("Format", "Message"));
 
 			A.CallTo(() => log.InfoFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -198,7 +198,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsWarnEnabled).Returns(true);
 
-			log.Warn(m => m("Hello world"));
+			log.Warn(c => c("Hello world"));
 
 			A.CallTo(() => log.Warn("Hello world")).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -208,7 +208,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsWarnEnabled).Returns(false);
 
-			log.Warn(m => m("Hello world"));
+			log.Warn(c => c("Hello world"));
 
 			A.CallTo(() => log.Warn("Hello world")).MustNotHaveHappened();
 		}
@@ -219,7 +219,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsWarnEnabled).Returns(true);
 
 			var exception = new Exception();
-			log.Warn(m => m("Hello world", exception));
+			log.Warn(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Warn("Hello world", exception)).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -230,7 +230,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsWarnEnabled).Returns(false);
 
 			var exception = new Exception();
-			log.Warn(m => m("Hello world", exception));
+			log.Warn(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Warn("Hello world", exception)).MustNotHaveHappened();
 		}
@@ -243,7 +243,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			
 			var args = new object[] { "Message" };
 
-			log.WarnFormat(m => m("Format", args));
+			log.WarnFormat(c => c("Format", args));
 
 			A.CallTo(() => log.WarnFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -255,7 +255,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 
-			log.WarnFormat(m => m("Format", args));
+			log.WarnFormat(c => c("Format", args));
 
 			A.CallTo(() => log.WarnFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -268,7 +268,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.WarnFormat(m => m(provider, "Format", args));
+			log.WarnFormat(c => c(provider, "Format", args));
 
 			A.CallTo(() => log.WarnFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -280,7 +280,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.WarnFormat(m => m("Format", "Message"));
+			log.WarnFormat(c => c("Format", "Message"));
 
 			A.CallTo(() => log.WarnFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -290,7 +290,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsErrorEnabled).Returns(true);
 
-			log.Error(m => m("Hello world"));
+			log.Error(c => c("Hello world"));
 
 			A.CallTo(() => log.Error("Hello world")).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -300,7 +300,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsErrorEnabled).Returns(false);
 
-			log.Error(m => m("Hello world"));
+			log.Error(c => c("Hello world"));
 
 			A.CallTo(() => log.Error("Hello world")).MustNotHaveHappened();
 		}
@@ -311,7 +311,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsErrorEnabled).Returns(true);
 
 			var exception = new Exception();
-			log.Error(m => m("Hello world", exception));
+			log.Error(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Error("Hello world", exception)).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -322,7 +322,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsErrorEnabled).Returns(false);
 
 			var exception = new Exception();
-			log.Error(m => m("Hello world", exception));
+			log.Error(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Error("Hello world", exception)).MustNotHaveHappened();
 		}
@@ -335,7 +335,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			
 			var args = new object[] { "Message" };
 
-			log.ErrorFormat(m => m("Format", args));
+			log.ErrorFormat(c => c("Format", args));
 
 			A.CallTo(() => log.ErrorFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -347,7 +347,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 
-			log.ErrorFormat(m => m("Format", args));
+			log.ErrorFormat(c => c("Format", args));
 
 			A.CallTo(() => log.ErrorFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -360,7 +360,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.ErrorFormat(m => m(provider, "Format", args));
+			log.ErrorFormat(c => c(provider, "Format", args));
 
 			A.CallTo(() => log.ErrorFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -372,7 +372,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.ErrorFormat(m => m("Format", "Message"));
+			log.ErrorFormat(c => c("Format", "Message"));
 
 			A.CallTo(() => log.ErrorFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -382,7 +382,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsFatalEnabled).Returns(true);
 
-			log.Fatal(m => m("Hello world"));
+			log.Fatal(c => c("Hello world"));
 
 			A.CallTo(() => log.Fatal("Hello world")).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -392,7 +392,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			var log = A.Fake<ILog>();
 			A.CallTo(() => log.IsFatalEnabled).Returns(false);
 
-			log.Fatal(m => m("Hello world"));
+			log.Fatal(c => c("Hello world"));
 
 			A.CallTo(() => log.Fatal("Hello world")).MustNotHaveHappened();
 		}
@@ -403,7 +403,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsFatalEnabled).Returns(true);
 
 			var exception = new Exception();
-			log.Fatal(m => m("Hello world", exception));
+			log.Fatal(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Fatal("Hello world", exception)).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -414,7 +414,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			A.CallTo(() => log.IsFatalEnabled).Returns(false);
 
 			var exception = new Exception();
-			log.Fatal(m => m("Hello world", exception));
+			log.Fatal(c => c("Hello world", exception));
 
 			A.CallTo(() => log.Fatal("Hello world", exception)).MustNotHaveHappened();
 		}
@@ -427,7 +427,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 			
 			var args = new object[] { "Message" };
 
-			log.FatalFormat(m => m("Format", args));
+			log.FatalFormat(c => c("Format", args));
 
 			A.CallTo(() => log.FatalFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -439,7 +439,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 
-			log.FatalFormat(m => m("Format", args));
+			log.FatalFormat(c => c("Format", args));
 
 			A.CallTo(() => log.FatalFormat("Format", A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}
@@ -452,7 +452,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.FatalFormat(m => m(provider, "Format", args));
+			log.FatalFormat(c => c(provider, "Format", args));
 
 			A.CallTo(() => log.FatalFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -464,7 +464,7 @@ namespace nJupiter.Abstraction.Logging.Tests.Unit {
 
 			var args = new object[] { "Message" };
 			var provider = A.Fake<IFormatProvider>();
-			log.FatalFormat(m => m("Format", "Message"));
+			log.FatalFormat(c => c("Format", "Message"));
 
 			A.CallTo(() => log.FatalFormat(provider, "Format",  A<object[]>.That.IsSameSequenceAs(args))).MustNotHaveHappened();
 		}

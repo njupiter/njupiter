@@ -31,9 +31,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 					return user.GetProperties(configuration.Users.RdnAttribute).Any();
 				}
 			} catch(Exception ex) {
-				if(log.IsInfoEnabled) {
-					log.Info("Failed to validate user", ex);
-				}
+				log.Info(c => c(string.Format("Failed to validate user '{0}'.", username), ex));
 			}
 			return false;
 		}
