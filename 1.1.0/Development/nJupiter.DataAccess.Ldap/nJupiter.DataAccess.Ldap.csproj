@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6D989F7A-87CA-4CFC-B17D-21D486102C8D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nJupiter.DataAccess.Ldap</RootNamespace>
+    <AssemblyName>nJupiter.DataAccess.Ldap</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nJupiter.Abstraction.Logging, Version=1.0.0.377, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\nJupiter.Abstraction.Logging.1.0.2.384\lib\nJupiter.Abstraction.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.2.341\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AttributeCollection.cs" />
+    <Compile Include="AttributeDefinition.cs" />
+    <Compile Include="AttributeValueCollection.cs" />
+    <Compile Include="Configuration\Container.cs" />
+    <Compile Include="Configuration\IContainer.cs" />
+    <Compile Include="Configuration\IGroupConfigFactory.cs" />
+    <Compile Include="Configuration\IGroupsConfig.cs" />
+    <Compile Include="Configuration\ILdapConfig.cs" />
+    <Compile Include="Configuration\IServerConfig.cs" />
+    <Compile Include="Configuration\IServerConfigFactory.cs" />
+    <Compile Include="Configuration\IUsersConfig.cs" />
+    <Compile Include="Configuration\IUsersConfigFactory.cs" />
+    <Compile Include="Configuration\LdapConfig.cs" />
+    <Compile Include="Configuration\LdapConfigFactory.cs" />
+    <Compile Include="Configuration\GroupsConfig.cs" />
+    <Compile Include="Configuration\GroupsConfigFactory.cs" />
+    <Compile Include="Configuration\ServerConfig.cs" />
+    <Compile Include="Configuration\ServerConfigFactory.cs" />
+    <Compile Include="Configuration\UsersConfig.cs" />
+    <Compile Include="Configuration\UsersConfigFactory.cs" />
+    <Compile Include="DirectoryServices\Abstractions\DirectoryEntryExtensions.cs" />
+    <Compile Include="DirectoryServices\Abstractions\DirectoryEntryFactory.cs" />
+    <Compile Include="DirectoryServices\Abstractions\DirectoryEntryWrapper.cs" />
+    <Compile Include="DirectoryServices\Abstractions\DirectorySearcherAdapter.cs" />
+    <Compile Include="DirectoryServices\Abstractions\DirectorySearcherWrapper.cs" />
+    <Compile Include="DirectoryServices\Abstractions\EntryExtensions.cs" />
+    <Compile Include="DirectoryServices\Abstractions\IDirectoryEntry.cs" />
+    <Compile Include="DirectoryServices\Abstractions\IDirectoryEntryFactory.cs" />
+    <Compile Include="DirectoryServices\Abstractions\IDirectorySearcher.cs" />
+    <Compile Include="DirectoryServices\Abstractions\IEntry.cs" />
+    <Compile Include="DirectoryServices\Abstractions\PropertyValueParser.cs" />
+    <Compile Include="DirectoryServices\Abstractions\SearchResultExtensions.cs" />
+    <Compile Include="DirectoryServices\Abstractions\SearchResultFacade.cs" />
+    <Compile Include="DirectoryServices\DirectoryEntryAdapter.cs" />
+    <Compile Include="DirectoryServices\GroupEntryAdapter.cs" />
+    <Compile Include="DirectoryServices\IDirectoryEntryAdapter.cs" />
+    <Compile Include="DirectoryServices\IGroupEntryAdapter.cs" />
+    <Compile Include="DirectoryServices\IUserEntryAdapter.cs" />
+    <Compile Include="DirectoryServices\MembershipAdapter.cs" />
+    <Compile Include="DirectoryServices\RoleAdapter.cs" />
+    <Compile Include="DirectoryServices\SearcherFactory.cs" />
+    <Compile Include="DirectoryServices\UserEntryAdapter.cs" />
+    <Compile Include="IFilterBuilder.cs" />
+    <Compile Include="IMembershipUserFactory.cs" />
+    <Compile Include="ISearcherFactory.cs" />
+    <Compile Include="LdapMembershipUser.cs" />
+    <Compile Include="LdapPathHandler.cs" />
+    <Compile Include="NameParser\NameParser.cs" />
+    <Compile Include="NameParser\INameParser.cs" />
+    <Compile Include="NameParser\NameType.cs" />
+    <Compile Include="NameParser\Dn.cs" />
+    <Compile Include="LdapMembershipProvider.cs" />
+    <Compile Include="LdapMembershipUserFactory.cs" />
+    <Compile Include="LdapRoleProvider.cs" />
+    <Compile Include="FilterBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NameParser\Rdn.cs" />
+    <Compile Include="NameParser\RdnComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>
