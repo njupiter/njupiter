@@ -53,7 +53,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public MembershipUser Create(IEntry entry) {
-			if(entry == null) {
+			if(!entry.IsBound()) {
 				return null;
 			}
 

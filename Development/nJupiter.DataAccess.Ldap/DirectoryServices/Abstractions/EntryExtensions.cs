@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
@@ -9,8 +10,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 			return entry != null && entry.NativeObject != null;
 		}		
 
-		public static bool ContainsProperty(this IEntry result, string property) {
-			return result.IsBound() && result.Properties.Contains(property);
+		public static bool ContainsProperty(this IEntry entry, string propertyName) {
+			return entry.IsBound() && entry.Properties.Contains(FormatPropertyName(propertyName));
 		}
 
 		public static IEnumerable<T> GetProperties<T>(this IEntry entry, string propertyName) {
@@ -18,6 +19,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		}
 
 		public static IEnumerable<object> GetProperties(this IEntry entry, string propertyName) {
+			propertyName = FormatPropertyName(propertyName);
 			if(entry.ContainsProperty(propertyName)) {
 				foreach(var group in entry.GetPropertyCollection(propertyName)) {
 					yield return group;
@@ -26,7 +28,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		}
 
 		private static IEnumerable GetPropertyCollection(this IEntry entry, string propertyName) {
-			return entry.Properties[propertyName] as IEnumerable; 
+			return entry.Properties[FormatPropertyName(propertyName)] as IEnumerable; 
 		}
 
 		public static IEnumerable<IEntry> GetPaged(this IEnumerable<IEntry> entries, int pageIndex, int pageSize) {
@@ -48,6 +50,10 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 					yield break;
 				}
 			}			
+		}
+
+		private static string FormatPropertyName(string propertyName) {
+			return propertyName.ToLower(CultureInfo.InvariantCulture);
 		}
 	}
 }

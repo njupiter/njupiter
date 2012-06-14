@@ -37,7 +37,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public IEntry GetUserEntryByEmail(string email) {
 			using(var entry = GetUsersEntry()) {
-				return GetSearchedUserEntry(entry, CreateUserEmailFilter(email));
+				return GetSearchedUserEntry(entry, CreateUserEmailFilter(email), SearchScope.Subtree);
 			}
 		}
 
@@ -104,14 +104,14 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		private IEntry GetSearchedUserEntry(IEntry entry) {
-			return GetSearchedUserEntry(entry, configuration.Users.Filter);
+			return GetSearchedUserEntry(entry, configuration.Users.Filter, SearchScope.Base);
 		}
 
-		private IEntry GetSearchedUserEntry(IEntry entry, string filter) {
+		private IEntry GetSearchedUserEntry(IEntry entry, string filter, SearchScope searchScope) {
 			if(!entry.IsBound()) {
 				return null;
 			}
-			var searcher = CreateSearcher(entry, SearchScope.Base);
+			var searcher = CreateSearcher(entry, searchScope);
 			searcher.Filter = filter;
 			return searcher.FindOne();
 		}

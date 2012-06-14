@@ -44,9 +44,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public MembershipUser GetUser(string username, bool userIsOnline) {
 			using(var entry = userEntryAdapter.GetUserEntry(username, true)) {
-				if(!entry.IsBound()) {
-					return null;
-				}
 				return membershipUserFactory.Create(entry);
 			}
 		}
