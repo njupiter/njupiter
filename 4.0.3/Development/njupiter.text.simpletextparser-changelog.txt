@@ -1,0 +1,37 @@
+ChangeLog nJupiter.Text.SimpleTextParser
+===============================================================================
+
+Definitions
+BUG - Fixed bug
+CHG - Minor not breaking change
+BCH - Non interface compatible breaking change
+ENH - Enhanced feature
+NEW - New feature
+
+===============================================================================
+Changes for V4.0.1.308 - 2011-12-14
+===============================================================================
+
+ENH: nJupiter is now on NuGet and after this release all projects will be
+     splitted up in separate solutions to more easly handle separate releases
+	 of the packages. All components will be released in separate packages in
+	 the future so every project will get its own changelog.
+
+===============================================================================
+Changes for V3.16.1.0  - 2011-02-24
+===============================================================================
+
+BUG: Because of nJupiter.Text.SimpleTextParser was not configured for singning
+     a mixup of signed and non signed components was released in V3.16.0.0
+     package, this shall now be fixed.
+
+===============================================================================
+Changes for V3.16.0.0  - 2011-01-27
+===============================================================================
+
+NEW: A simple text parser added to nJupiter. Can for now only parse text by
+     using regular expressions that can be configured in a config file that can
+     be changed in runtime, but can esily be expanded with new formatters by
+     impelmenting the IFormatter interface.
+     Some example config how to parse for example BBCode to Xhtml added in
+     nJupiter.Text.SimpleTextParser.config

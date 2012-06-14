@@ -1,0 +1,95 @@
+﻿ChangeLog nJupiter.Configuration
+===============================================================================
+
+Definitions
+BUG - Fixed bug
+CHG - Minor not breaking change
+BCH - Non interface compatible breaking change
+ENH - Enhanced feature
+NEW - New feature
+
+===============================================================================
+Changes for V4.0.3.401 - 2012-03-30
+===============================================================================
+
+ENH: FileConfigLoader now by default if no path is configured loads config not
+     just in sub directories to the application folder, but in the application
+	 folder as well.
+
+===============================================================================
+Changes for V4.0.2.342 - 2012-03-30
+===============================================================================
+
+ENH: FileConfigLoader is now public so you do not need to implement your own
+     IConfigLoader if you want to register it via a IoC-container or change the
+     behaviour slightly.
+
+===============================================================================
+Changes for V4.0.1.308 - 2011-12-14
+===============================================================================
+
+ENH: nJupiter is now on NuGet and after this release all projects will be
+     splitted up in separate solutions to more easly handle separate releases
+     of the packages. All components will be released in separate packages in
+     the future so every project will get its own changelog.
+	 
+===============================================================================
+Changes for V4.0.0.0 - 2011-12-13
+===============================================================================
+
+BCH: This component has been totally refactored and now make use of
+     interfaces rather than concrete types throughout the whole component
+     and has thereby better support for unit testing and IoC-containers. The
+     config object also now has support for generics and can now parse all
+     types that has a System.ComponentModel.TypeDescriptor-converter.
+     The config handler is renamed to IConfigRepository and its default 
+     instance is now accessed thru the .Instance property in ConfigRepository.
+     You can now implement your own loaders and attache them in runtime thru
+     the CompositeConfigLoader, that is the default loader for the default
+     instance of IConfigRepository. The Add-method has also been changed to be
+     public and you can now add your own Config objects to the
+     ConfigCollection in runtime, they will automatically be removed from all
+     ConfigCollections they are added to when the .Discard() method is executed
+     on the Config-object.
+
+===============================================================================
+Changes for V3.16.1.0  - 2011-02-24
+===============================================================================
+
+ENH: Added support for Char methods in Config. Also eliminated some try catch
+     statements and replaced them with uses of TryParse methods.
+
+===============================================================================
+Changes for V3.13.0.0  - 2009-09-30
+===============================================================================
+
+NEW: Config object now have a method called GetConfigurationSectionHandler
+     that can read System.Configuration.IConfigurationSectionHandler
+     configurations.
+
+===============================================================================
+Changes for V3.8.0.0  - 2008-10-21
+===============================================================================
+
+NEW: New methods to fetch attribute arrays.
+
+===============================================================================
+Changes for V3.3.0.0  - 2008-05-02
+===============================================================================
+
+BUG: Major memory bug fixed in filewathcing functionality.
+
+===============================================================================  
+Changes for V3.2.0.0  - 2008-02-18
+===============================================================================
+
+BUG: Bugfixes in the filewatcher functionality. The configuration handler
+     shall no longer hang or crach if a non valid xml is saved.
+
+===============================================================================
+Changes for V2.0.0.0  - 2007-02-21
+===============================================================================
+
+CHG: ConfigKey in ConfigHandler.GetConfig is no longer case sensitive
+ENH: Has now support for relative paths in config. See the ReadMe.txt in the
+     install folder for example how to use.

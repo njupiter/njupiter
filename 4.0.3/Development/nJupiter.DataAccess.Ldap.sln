@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31C621CB-94F9-4CFA-B49C-4FCBF5BD148F}"
+	ProjectSection(SolutionItems) = preProject
+		njupiter.dataaccess.ldap-changelog.txt = njupiter.dataaccess.ldap-changelog.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Ldap", "nJupiter.DataAccess.Ldap\nJupiter.DataAccess.Ldap.csproj", "{6D989F7A-87CA-4CFC-B17D-21D486102C8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Ldap.Tests.Unit", "nJupiter.DataAccess.Ldap.Tests.Unit\nJupiter.DataAccess.Ldap.Tests.Unit.csproj", "{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.DataAccess.Ldap.Tests.Integration", "nJupiter.DataAccess.Ldap.Tests.Integration\nJupiter.DataAccess.Ldap.Tests.Integration.csproj", "{74B74C77-BBD5-4161-A4E7-633F486D52BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release Signed|Any CPU = Release Signed|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release Signed|Any CPU.ActiveCfg = Release Signed|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D989F7A-87CA-4CFC-B17D-21D486102C8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B017CF3-7FFE-4E50-9F4D-E40271F9CB23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74B74C77-BBD5-4161-A4E7-633F486D52BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74B74C77-BBD5-4161-A4E7-633F486D52BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74B74C77-BBD5-4161-A4E7-633F486D52BF}.Release Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{74B74C77-BBD5-4161-A4E7-633F486D52BF}.Release Signed|Any CPU.Build.0 = Release|Any CPU
+		{74B74C77-BBD5-4161-A4E7-633F486D52BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74B74C77-BBD5-4161-A4E7-633F486D52BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
