@@ -5,14 +5,14 @@ using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class Container : IContainer {
-		private readonly INameParser nameParser;
-		private readonly IDirectoryEntryFactory directoryEntryFactory;
-		private readonly ISearcherFactory searcherFactory;
-		private readonly IFilterBuilder filterBuilder;
-		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
-		private readonly IUserEntryAdapter userEntryAdapter;
-		private readonly IGroupEntryAdapter groupEntryAdapter;
-		
+		private readonly ILdapConfig configuration;
+		private INameParser nameParser;
+		private IDirectoryEntryFactory directoryEntryFactory;
+		private ISearcherFactory searcherFactory;
+		private IFilterBuilder filterBuilder;
+		private IDirectoryEntryAdapter directoryEntryAdapter;
+		private IUserEntryAdapter userEntryAdapter;
+		private IGroupEntryAdapter groupEntryAdapter;
 
 		public INameParser NameParser { get { return nameParser; } }
 		public IDirectoryEntryFactory DirectoryEntryFactory { get { return directoryEntryFactory; } }
@@ -24,10 +24,14 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public ILogManager LogManager { get { return LogManagerFactory.GetLogManager(); } }
 
 		public Container(ILdapConfig configuration) {
+			this.configuration = configuration;
+		}
+
+		public void Build() {
 			nameParser = new NameParser.NameParser();
 			directoryEntryFactory = new DirectoryEntryFactory();
-			searcherFactory = new SearcherFactory(configuration);
 			filterBuilder = new FilterBuilder(configuration);
+			searcherFactory = new SearcherFactory(configuration);
 			directoryEntryAdapter = new DirectoryEntryAdapter(configuration);
 			userEntryAdapter = new UserEntryAdapter(configuration);
 			groupEntryAdapter = new GroupEntryAdapter(configuration);

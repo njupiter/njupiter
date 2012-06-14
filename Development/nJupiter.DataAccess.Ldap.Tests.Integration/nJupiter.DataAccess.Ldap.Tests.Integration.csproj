@@ -41,8 +41,8 @@
     <Reference Include="nJupiter.Abstraction.Logging">
       <HintPath>..\packages\nJupiter.Abstraction.Logging.1.1.0.392\lib\nJupiter.Abstraction.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="nJupiter.Configuration">
-      <HintPath>..\packages\nJupiter.Configuration.4.0.2.341\lib\nJupiter.Configuration.dll</HintPath>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.3.401\lib\nJupiter.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="LdapMembershipProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

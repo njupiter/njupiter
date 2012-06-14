@@ -82,7 +82,8 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			groupsConfig = groupsConfigFactory.Create(configSection);
 	
 			container = new Container(this);
-
+			container.Build();
+			
 			// Auto reconfigure all values when this config object is disposed (droped from the cache)
 			config.Discarded += Configure;
 
