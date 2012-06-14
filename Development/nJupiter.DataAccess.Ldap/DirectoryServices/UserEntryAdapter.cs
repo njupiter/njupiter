@@ -13,12 +13,14 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		private readonly ILdapConfig configuration;
 		private readonly INameParser nameHandler;
 		private readonly ISearcherFactory searcherFactory;
+		private readonly IFilterBuilder filterBuilder;
 
 		public UserEntryAdapter(ILdapConfig configuration) {
 			this.configuration = configuration;
 			directoryEntryAdapter = configuration.Container.DirectoryEntryAdapter;
 			nameHandler = configuration.Container.NameParser;
 			searcherFactory = configuration.Container.SearcherFactory;
+			filterBuilder = configuration.Container.FilterBuilder;
 		}
 
 		public IEntry GetUserEntry(string username) {
@@ -33,6 +35,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return GetSearchedUserEntry(user);
 		}
 
+		public IEntry GetUserEntryByEmail(string email) {
+			using(var entry = GetUsersEntry()) {
+				return GetSearchedUserEntry(entry, CreateUserEmailFilter(email));
+			}
+		}
 
 		public string GetUserName(IEntry entry) {
 			return GetUserName(entry.Name);
@@ -63,28 +70,70 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return GetSearchedUserEntry(user);
 		}
 
-		[Obsolete("Make this private later")]
-		public IDirectoryEntry GetUsersEntry() {
+		public IEnumerable<IEntry> GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
+			return GetUserEntries(configuration.Users.Filter, pageIndex, pageSize, out totalRecords);
+		}
+
+		public IEnumerable<IEntry> FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
+			return GetUserEntries(CreateUserNameFilter(usernameToMatch), pageIndex, pageSize, out totalRecords);
+		}
+
+		public IEnumerable<IEntry> FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
+			return GetUserEntries(CreateUserEmailFilter(emailToMatch), pageIndex, pageSize, out totalRecords);
+		}
+
+		private IEnumerable<IEntry> GetUserEntries(string filter, int pageIndex, int pageSize, out int totalRecords) {
+			using(var entry = GetUsersEntry()) {
+				if(!entry.IsBound()) {
+					totalRecords = 0;
+					return new IEntry[0];
+				}
+				var searcher = CreateSearcher(entry);
+				searcher.Filter = filter;
+				if(configuration.Server.PageSize > 0) {
+					searcher.PageSize = pageSize;
+				}
+				var users = searcher.FindAll();
+				totalRecords = users.Count();
+				return users.GetPaged(pageIndex, pageSize);
+			}
+		}
+
+		private IDirectoryEntry GetUsersEntry() {
 			return directoryEntryAdapter.GetEntry(configuration.Users.Path);
 		}
 
-		[Obsolete("Make this private later")]
-		public IEntry GetSearchedUserEntry(IEntry entry) {
+		private IEntry GetSearchedUserEntry(IEntry entry) {
+			return GetSearchedUserEntry(entry, configuration.Users.Filter);
+		}
+
+		private IEntry GetSearchedUserEntry(IEntry entry, string filter) {
 			if(!entry.IsBound()) {
 				return null;
 			}
 			var searcher = CreateSearcher(entry, SearchScope.Base);
-			searcher.Filter = configuration.Users.Filter;
+			searcher.Filter = filter;
 			return searcher.FindOne();
 		}
 
-		[Obsolete("Make this private later")]
-		public IDirectorySearcher CreateSearcher(IEntry entry) {
+		private string CreateUserEmailFilter(string emailToMatch) {
+			var userFilter = configuration.Users.Filter;
+			return filterBuilder.AttachFilter(configuration.Users.EmailAttribute, emailToMatch, userFilter);
+		}
+
+		private string CreateUserNameFilter(string usernameToMatch) {
+			var defaultFilter = configuration.Users.Filter;
+			if(configuration.Users.Attributes.Count > 0) {
+				return filterBuilder.AttachAttributeFilters(usernameToMatch, defaultFilter, configuration.Users.RdnAttribute, configuration.Users.Attributes);
+			}
+			return filterBuilder.AttachFilter(configuration.Users.RdnAttribute, usernameToMatch, defaultFilter);
+		}
+
+		private IDirectorySearcher CreateSearcher(IEntry entry) {
 			return CreateSearcher(entry, SearchScope.Subtree);
 		}
 
-		[Obsolete("Make this private later")]
-		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
+		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
 
 			var searcher = searcherFactory.CreateSearcher(entry, searchScope, configuration.Users.RdnAttribute, configuration.Users.Attributes);
 

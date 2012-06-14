@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
@@ -11,18 +9,10 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		string GetUserName(IEntry entry);
 		string GetUserName(string entryName);
 		IEntry GetUserEntry(string username, string password);
+		IEntry GetUserEntryByEmail(string email);
 		IEnumerable<string> GetUsersFromEntry(IEntry entry, string propertyName);
-
-		[Obsolete("Make this private later")]
-		IDirectoryEntry GetUsersEntry();
-
-		[Obsolete("Make this private later")]
-		IDirectorySearcher CreateSearcher(IEntry entry);
-
-		[Obsolete("Make this private later")]
-		IEntry GetSearchedUserEntry(IEntry entry);
-
-		[Obsolete("Make this private later")]
-		IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope);
+		IEnumerable<IEntry> GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords);
+		IEnumerable<IEntry> FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords);
+		IEnumerable<IEntry> FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords);
 	}
 }

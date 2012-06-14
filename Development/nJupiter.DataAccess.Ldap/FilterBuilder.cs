@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 
-		public string AttachAttributeFilters(string nameToMatch, string filter, string rdnAttribute, IEnumerable<AttributeDefinition> attributeDefinitinon) {
+		public string AttachAttributeFilters(string nameToMatch, string defaultFilter, string rdnAttribute, IEnumerable<AttributeDefinition> attributeDefinitinon) {
 			var escapedName = EscapeSearchFilter(nameToMatch);
 			var builder = new StringBuilder();
 			foreach(var attributes in attributeDefinitinon) {
@@ -63,7 +63,7 @@ namespace nJupiter.DataAccess.Ldap {
 					builder.Append(String.Format("({0}={1})", attributes.Name, escapedName));
 				}
 			}
-			return String.Format("(&{0}(|({1}={2}){3}))", filter, rdnAttribute, escapedName, builder);
+			return String.Format("(&{0}(|({1}={2}){3}))", defaultFilter, rdnAttribute, escapedName, builder);
 		}
 
 		public string AttachRdnFilter(string valueToMatch, string defaultFilter) {
