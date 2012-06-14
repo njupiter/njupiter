@@ -11,6 +11,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 
 		private MembershipProvider provider;
 
+		private const string LdapServerInConfig = "ad";
 		private const string ExistingUserName = "existingUsername";
 		private const string ExistingUsersCorrectPassword = "correctpassword";
 		private const string ExistingUsersIncorrectPassword = "wrongpassword";
@@ -72,7 +73,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 		public void SetUp() {
 			var config = new NameValueCollection();
 			config.Add("applicationName", "IntegrationTests");
-			config.Add("ldapServer", "ad");
+			config.Add("ldapServer", LdapServerInConfig);
 			var ldapProvider = new LdapMembershipProvider();
 
 			ldapProvider.Initialize("IntegrationTests", config);
