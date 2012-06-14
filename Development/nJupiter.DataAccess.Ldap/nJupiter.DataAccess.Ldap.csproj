@@ -83,6 +83,7 @@
     <Compile Include="DirectoryServices\Abstractions\IDirectoryEntryFactory.cs" />
     <Compile Include="DirectoryServices\Abstractions\IDirectorySearcher.cs" />
     <Compile Include="DirectoryServices\Abstractions\IEntry.cs" />
+    <Compile Include="DirectoryServices\Abstractions\ISearcherFactory.cs" />
     <Compile Include="DirectoryServices\Abstractions\PropertyValueParser.cs" />
     <Compile Include="DirectoryServices\Abstractions\SearchResultExtensions.cs" />
     <Compile Include="DirectoryServices\Abstractions\SearchResultFacade.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="DirectoryServices\UserEntryAdapter.cs" />
     <Compile Include="IFilterBuilder.cs" />
     <Compile Include="IMembershipUserFactory.cs" />
-    <Compile Include="ISearcherFactory.cs" />
     <Compile Include="LdapMembershipUser.cs" />
     <Compile Include="LdapPathHandler.cs" />
     <Compile Include="NameParser\NameParser.cs" />

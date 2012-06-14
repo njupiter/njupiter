@@ -1,33 +1,36 @@
-﻿#region Copyright & License
-/*
-	Copyright (c) 2005-2011 nJupiter
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
-#endregion
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Web;
 
-namespace nJupiter.Configuration {
+using NUnit.Framework;
+
+using nJupiter.Configuration;
+
+namespace nJupiter.DataAccess.Ldap.Tests.Integration {
+	
+	[TestFixture]
+	public class LdapMembershipProviderTests{
+
+		[Test]
+		public void Method_Scenario_ExprectedResult() {
+			var config = new NameValueCollection();
+			config.Add("applicationName", typeof(LdapMembershipProvider).FullName);
+			config.Add("ldapServer", "ad");
+			var provider = new LdapMembershipProvider();
+
+			var fileLoader = new FileConfigLoader();
+			var result = fileLoader.Load("nJupiter.DataAccess.Ldap");
+
+			provider.Initialize("Integration Tests", config);
+
+			var user = provider.GetUser("modhelius", false);
+		}
+	}
+
+
 	public class FileConfigLoader : IConfigLoader {
 		
 		private static readonly char[] IllegalPathCharacters = new[] { '\\', '/', '"', '?', '<', '>' };
@@ -165,19 +168,20 @@ namespace nJupiter.Configuration {
 		protected virtual IEnumerable<string> ConfigPaths {
 			get {
 				if(configPaths == null) {
-					var paths = config != null ? config.GetValueArray("configDirectories", "configDirectory") : null;
-					if(paths == null || paths.Length == 0) {
+					IEnumerable<string> paths = config != null ? config.GetValueArray("configDirectories", "configDirectory") : null;
+					if(paths == null || !paths.Any()) {
 						var defaultPaths = new List<string>();
 						var result = Directory.GetDirectories(DefaultDirectory, DefaultDirectorySearchPattern, DefaultDirectorySearchOption);
 						defaultPaths.AddRange(result);
 						if(!defaultPaths.Contains(DefaultDirectory)) {
 							defaultPaths.Add(DefaultDirectory);	
 						}
-						paths = defaultPaths.ToArray();
+						paths = defaultPaths;
 					}
 					configPaths = paths;
 				}
 				return configPaths;
+
 			}
 		}
 

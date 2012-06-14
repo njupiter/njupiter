@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap {
 	public class AttributeValueCollection : IEnumerable {
+
 		private readonly List<object> attributeValueCollection;
 
 		internal AttributeValueCollection(IEnumerable propertyValueCollection) {

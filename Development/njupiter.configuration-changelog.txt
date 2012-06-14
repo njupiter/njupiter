@@ -9,6 +9,14 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V4.0.3.401 - 2012-03-30
+===============================================================================
+
+ENH: FileConfigLoader now by default if no path is configured loads config not
+     just in sub directories to the application folder, but in the application
+	 folder as well.
+
+===============================================================================
 Changes for V4.0.2.342 - 2012-03-30
 ===============================================================================
 

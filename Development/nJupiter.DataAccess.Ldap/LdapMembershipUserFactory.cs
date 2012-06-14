@@ -43,12 +43,10 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public MembershipUserCollection CreateCollection(IEnumerable<IEntry> entries) {
 			var users = new MembershipUserCollection();
-			if((entries.Any())) {
-				foreach(var result in entries) {
-					var user = Create(result);
-					if(user != null) {
-						users.Add(user);
-					}
+			foreach(var result in entries) {
+				var user = Create(result);
+				if(user != null) {
+					users.Add(user);
 				}
 			}
 			return users;
