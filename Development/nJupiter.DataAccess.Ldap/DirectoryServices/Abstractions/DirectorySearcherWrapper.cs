@@ -51,7 +51,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		public string Filter { get { return directorySearcher.Filter; }
 			set { directorySearcher.Filter = value; } }
 
-		public IEnumerable<IEntry> FindAll() {
+		public IEntityCollection FindAll() {
 			return directorySearcher.FindAll().Wrap();
 		}
 

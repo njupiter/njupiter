@@ -96,6 +96,7 @@
     <Compile Include="DirectoryServices\RoleAdapter.cs" />
     <Compile Include="DirectoryServices\SearcherFactory.cs" />
     <Compile Include="DirectoryServices\UserEntryAdapter.cs" />
+    <Compile Include="IAttributeDefinition.cs" />
     <Compile Include="IFilterBuilder.cs" />
     <Compile Include="IMembershipUserFactory.cs" />
     <Compile Include="LdapMembershipUser.cs" />

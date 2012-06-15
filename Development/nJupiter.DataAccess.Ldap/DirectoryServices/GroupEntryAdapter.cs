@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.DirectoryServices;
+using System.Linq;
 
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
@@ -31,10 +32,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return directoryEntryAdapter.GetEntry(configuration.Groups.RdnAttribute, groupname, configuration.Groups.Path, groupFilter, CreateSearcher);
 		}
 
-		public IDirectoryEntry GetGroupsEntry() {
-			return directoryEntryAdapter.GetEntry(configuration.Groups.Path);
-		}
-
 		public IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
 			using(var entry = GetGroupEntry(name)) {
 				var searcher = GetGroupSearcher(entry, SearchScope.Base);
@@ -42,8 +39,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			}
 		}
 
-		public IEnumerable<IEntry> GetAllRoleEntries() {
-			using(var entry = GetGroupsEntry()) {
+		public IEntityCollection GetAllRoleEntries() {
+			using(var entry = directoryEntryAdapter.GetEntry(configuration.Groups.Path)) {
 				if(!entry.IsBound()) {
 					throw new ProviderException("Could not load role list.");
 				}
@@ -53,15 +50,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string GetGroupName(IEntry entry) {
-			return GetGroupName(entry.Name);
+			var name = entry.GetProperties<string>(configuration.Groups.RdnAttribute).First();
+			return GetGroupName(name);
 		}
 
 		public string GetGroupName(string entryName) {
 			return nameHandler.GetName(configuration.Groups.NameType, entryName);
-		}
-
-		public bool GroupsEqual(string name, string nameToMatch) {
-			return nameHandler.NamesEqual(name, nameToMatch, configuration.Groups.RdnAttribute, configuration.Groups.Base);
 		}
 
 		private IDirectorySearcher GetGroupSearcher(IEntry entry, SearchScope searchScope) {

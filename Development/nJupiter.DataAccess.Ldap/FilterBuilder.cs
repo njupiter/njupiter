@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 
-		public string AttachAttributeFilters(string nameToMatch, string defaultFilter, string rdnAttribute, IEnumerable<AttributeDefinition> attributeDefinitinon) {
+		public string AttachAttributeFilters(string nameToMatch, string defaultFilter, string rdnAttribute, IEnumerable<IAttributeDefinition> attributeDefinitinon) {
 			var escapedName = EscapeSearchFilter(nameToMatch);
 			var builder = new StringBuilder();
 			foreach(var attributes in attributeDefinitinon) {

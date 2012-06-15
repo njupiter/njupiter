@@ -48,17 +48,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return GetEntry(path, config.Server.Username, config.Server.Password);
 		}
 
-		private IDirectoryEntry GetEntry(Uri uri) {
-			return GetEntry(uri, config.Server.Username, config.Server.Password);
-		}
-
 		public IDirectoryEntry GetEntry(Uri uri, string username, string password) {
 			var path = LdapPathHandler.UriToPath(uri);
 			return GetEntry(path, username, password);
-		}
-
-		private IDirectoryEntry GetEntry(string path, string username, string password) {
-			return directoryEntryFactory.Create(path, username, password, config.Server.AuthenticationTypes);
 		}
 
 		public IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, Func<IEntry, IDirectorySearcher> searcherFactory) {
@@ -67,7 +59,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			var dn = nameParser.GetDnObject(attributeValue);
 			if(dn != null && dn.Rdns.Count > 1) {
 				var uri = new Uri(config.Server.Url, dn.ToString());
-				return GetEntry(uri);
+				return GetEntry(uri, config.Server.Username, config.Server.Password);
 			}
 
 			var entry = GetEntry(path);
@@ -89,5 +81,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return directoryEntry;
 		}
 
+		private IDirectoryEntry GetEntry(string path, string username, string password) {
+			return directoryEntryFactory.Create(path, username, password, config.Server.AuthenticationTypes);
+		}
 	}
 }

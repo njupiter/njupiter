@@ -39,7 +39,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			this.filterBuilder = config.Container.FilterBuilder;
 		}
 
-		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute, IEnumerable<AttributeDefinition> otherAttributes) {
+		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute, IEnumerable<IAttributeDefinition> otherAttributes) {
 			var searcher = CreateSearcher(entry, searchScope, rdnAttribute);
 			searcher.PropertiesToLoad.Clear();
 			searcher.PropertiesToLoad.Add(rdnAttribute);

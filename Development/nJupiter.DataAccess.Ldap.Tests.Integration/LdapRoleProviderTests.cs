@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Reflection;
 using System.Web.Security;
 
@@ -19,6 +21,42 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 			 var roles = provider.GetRolesForUser(ExistingUserName);
 
 			Assert.IsTrue(roles.Length > 0);
+		}
+
+		[Test]
+		public void RoleExists_GetRolesForExistingUser_RetrunsTrueForAllRoles() {
+			var roles = provider.GetRolesForUser(ExistingUserName);
+
+			foreach(var role in roles) {
+				Assert.IsTrue(provider.RoleExists(role), string.Format("Role with name '{0}' does not exist", role));
+			}
+		}
+
+		[Test]
+		public void IsUserInRole_GetRolesForUserAndCheckIfuserInAllRoles_RetrunsTrueForAllRoles() {
+			var roles = provider.GetRolesForUser(ExistingUserName);
+
+			foreach(var role in roles) {
+				Assert.IsTrue(provider.IsUserInRole(ExistingUserName, role), string.Format("User '{0}' is not in role '{1}'", ExistingUserName, role));
+			}
+		}
+
+		[Test]
+		public void GetUsersInRole_GetRolesForExistingUserAndGetUsersInAllRoles_ExistingUserInRoles() {
+			var roles = provider.GetRolesForUser(ExistingUserName);
+			foreach(var role in roles) {
+				IEnumerable<string> users = provider.GetUsersInRole(role);
+				Assert.IsTrue(users.Contains(ExistingUserName));
+			}
+		}
+
+		[Test]
+		public void GetAllRoles_GetAllRolesForExistingUser_UsersRolesInAllRoles() {
+			var roles = provider.GetAllRoles();
+			var rolesForUsers = provider.GetRolesForUser(ExistingUserName);
+			foreach(var userRole in rolesForUsers) {
+				Assert.IsTrue(roles.Contains(userRole));
+			}
 		}
 
 		[SetUp]

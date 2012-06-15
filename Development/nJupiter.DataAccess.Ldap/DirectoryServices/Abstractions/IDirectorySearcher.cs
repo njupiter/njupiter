@@ -33,11 +33,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		ObjRef CreateObjRef(Type requestedType);
 		void Dispose();
 		event EventHandler Disposed;
-		IEnumerable<IEntry> FindAll();
-		IEntry FindOne();
 		object GetLifetimeService();
 		object InitializeLifetimeService();
 		IEnumerable<T> GetPropertiesByRangedFilter<T>(string propertyName);
+		IEntityCollection FindAll();
+		IEntry FindOne();
 		IEntry FindOne(string propertyToLoad);
 	}
 }

@@ -8,7 +8,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		string Base { get; }
 		string Path { get; }
 		string RdnAttribute { get; }
-		List<AttributeDefinition> Attributes { get; }
+		List<IAttributeDefinition> Attributes { get; }
 		string MembershipAttribute { get; }
 		string EmailAttribute { get; }
 		string CreationDateAttribute { get; }

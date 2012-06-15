@@ -27,7 +27,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 				groups.RdnAttribute = "cn";
 			}
 
-			var groupAttributeDefinitionList = new List<AttributeDefinition>();
+			var groupAttributeDefinitionList = new List<IAttributeDefinition>();
 			if(configSection.ContainsKey("groups", "attributes")) {
 				var attributes = configSection.GetValueArray("groups/attributes", "attribute");
 				foreach(var attribute in attributes) {
@@ -51,12 +51,21 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 				groups.MembershipAttribute = "groupMembership";
 			}
 
+			if(configSection.ContainsKey("groups", "membershipAttributeNameType")) {
+				var nameType = configSection.GetValue("groups", "membershipAttributeNameType");
+				groups.MembershipAttributeNameType = (NameType)Enum.Parse(typeof(NameType), nameType, true);
+			} else {
+				groups.MembershipAttributeNameType = NameType.Cn;
+			}
+
 			if(configSection.ContainsKey("groups", "nameType")) {
 				var nameType = configSection.GetValue("groups", "nameType");
 				groups.NameType = (NameType)Enum.Parse(typeof(NameType), nameType, true);
 			} else {
-				groups.NameType = NameType.Dn;
+				groups.NameType = NameType.Cn;
 			}
+
+
 
 			Uri groupUri = new Uri(configSection.GetValue("url"));
 			if(!String.IsNullOrEmpty(groups.Base)) {

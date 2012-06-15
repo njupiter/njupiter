@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Security;
 
@@ -41,7 +40,7 @@ namespace nJupiter.DataAccess.Ldap {
 			this.providerName = providerName;
 		}
 
-		public MembershipUserCollection CreateCollection(IEnumerable<IEntry> entries) {
+		public MembershipUserCollection CreateCollection(IEntityCollection entries) {
 			var users = new MembershipUserCollection();
 			foreach(var result in entries) {
 				var user = Create(result);

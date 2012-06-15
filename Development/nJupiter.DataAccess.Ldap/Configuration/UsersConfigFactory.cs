@@ -28,7 +28,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 				users.RdnAttribute = "cn";
 			}
 
-			var userAttributeDefinitionList = new List<AttributeDefinition>();
+			var userAttributeDefinitionList = new List<IAttributeDefinition>();
 			if(configSection.ContainsKey("users", "attributes")) {
 				var attributes = configSection.GetValueArray("users/attributes", "attribute");
 				foreach(var attribute in attributes) {
@@ -78,7 +78,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 				var nameType = configSection.GetValue("users", "nameType");
 				users.NameType = (NameType)Enum.Parse(typeof(NameType), nameType, true);
 			} else {
-				users.NameType = NameType.Dn;
+				users.NameType = NameType.Cn;
 			}
 
 			Uri userUri = new Uri(configSection.GetValue("url"));

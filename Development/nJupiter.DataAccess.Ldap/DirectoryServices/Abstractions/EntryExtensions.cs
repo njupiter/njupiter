@@ -19,37 +19,41 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		}
 
 		public static IEnumerable<object> GetProperties(this IEntry entry, string propertyName) {
+			var properties = new List<object>();
 			propertyName = FormatPropertyName(propertyName);
 			if(entry.ContainsProperty(propertyName)) {
 				foreach(var group in entry.GetPropertyCollection(propertyName)) {
-					yield return group;
+					properties.Add(group);
 				}
 			}
+			return properties;
 		}
 
 		private static IEnumerable GetPropertyCollection(this IEntry entry, string propertyName) {
 			return entry.Properties[FormatPropertyName(propertyName)] as IEnumerable; 
 		}
 
-		public static IEnumerable<IEntry> GetPaged(this IEnumerable<IEntry> entries, int pageIndex, int pageSize) {
+		public static IEntityCollection GetPaged(this IEntityCollection entries, int pageIndex, int pageSize) {
 			if(pageIndex < 0) {
 				throw new ArgumentOutOfRangeException("pageIndex");
 			}
 			if(pageSize < 1) {
 				throw new ArgumentOutOfRangeException("pageSize");
 			}
+			var pagedCollection = new EntityCollection();
 			var index = 0;
 			var startIndex = pageIndex * pageSize;
 			var endIndex = startIndex + pageSize;
 			foreach(var entry in entries) {
 				if(index >= startIndex) {
-					yield return entry;
+					pagedCollection.Add(entry);
 				}
 				index++;
 				if(index >= endIndex) {
-					yield break;
+					break;
 				}
-			}			
+			}
+			return pagedCollection;
 		}
 
 		private static string FormatPropertyName(string propertyName) {

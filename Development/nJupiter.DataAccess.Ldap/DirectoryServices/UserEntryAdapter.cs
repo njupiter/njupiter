@@ -36,16 +36,17 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public IEntry GetUserEntryByEmail(string email) {
-			using(var entry = GetUsersEntry()) {
+			using(var entry = directoryEntryAdapter.GetEntry(configuration.Users.Path)) {
 				return GetSearchedUserEntry(entry, CreateUserEmailFilter(email), SearchScope.Subtree);
 			}
 		}
 
-		public string GetUserName(IEntry entry) {
-			return GetUserName(entry.Name);
-		}
-
 		public string GetUserName(string entryName) {
+			if(	configuration.Groups.MembershipAttributeNameType != configuration.Users.NameType) {
+				using(var entry = GetUserDirectoryEntry(entryName)) {
+					entryName = entry.GetProperties<string>(configuration.Users	.RdnAttribute).First();
+				}
+			}
 			return nameHandler.GetName(configuration.Users.NameType, entryName);
 		}
 
@@ -60,47 +61,45 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public IEntry GetUserEntry(string username, string password) {
-			var user = GetUserEntry(username);
-			if(!user.IsBound()) {
-				return null;
+			using(var user = GetUserEntry(username)) {
+				if(!user.IsBound()) {
+					return null;
+				}
+				var dn = configuration.Container.NameParser.GetDn(user.Path);
+				var uri = new Uri(configuration.Server.Url, dn);
+				var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password);
+				return GetSearchedUserEntry(authenticatedUser);
 			}
-			var dn = nameHandler.GetDn(user.Path);
-			var uri = new Uri(configuration.Server.Url, dn);
-			user = directoryEntryAdapter.GetEntry(uri, dn, password);
-			return GetSearchedUserEntry(user);
 		}
 
-		public IEnumerable<IEntry> GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
+		public IEntityCollection GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(configuration.Users.Filter, pageIndex, pageSize, out totalRecords);
 		}
 
-		public IEnumerable<IEntry> FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
+		public IEntityCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(CreateUserNameFilter(usernameToMatch), pageIndex, pageSize, out totalRecords);
 		}
 
-		public IEnumerable<IEntry> FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
+		public IEntityCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(CreateUserEmailFilter(emailToMatch), pageIndex, pageSize, out totalRecords);
 		}
 
-		private IEnumerable<IEntry> GetUserEntries(string filter, int pageIndex, int pageSize, out int totalRecords) {
-			using(var entry = GetUsersEntry()) {
+		private IEntityCollection GetUserEntries(string filter, int pageIndex, int pageSize, out int totalRecords) {
+			using(var entry = directoryEntryAdapter.GetEntry(configuration.Users.Path)) {
 				if(!entry.IsBound()) {
 					totalRecords = 0;
-					return new IEntry[0];
+					return new EntityCollection();
 				}
 				var searcher = CreateSearcher(entry);
 				searcher.Filter = filter;
 				if(configuration.Server.PageSize > 0) {
 					searcher.PageSize = pageSize;
 				}
-				var users = searcher.FindAll();
-				totalRecords = users.Count();
-				return users.GetPaged(pageIndex, pageSize);
+				using(var users = searcher.FindAll()) {
+					totalRecords = users.Count();
+					return users.GetPaged(pageIndex, pageSize);
+				}
 			}
-		}
-
-		private IDirectoryEntry GetUsersEntry() {
-			return directoryEntryAdapter.GetEntry(configuration.Users.Path);
 		}
 
 		private IEntry GetSearchedUserEntry(IEntry entry) {

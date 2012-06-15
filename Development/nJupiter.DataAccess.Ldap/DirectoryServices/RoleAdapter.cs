@@ -54,18 +54,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public bool IsUserInRole(string username, string roleName) {
-			if(username == null) {
-				throw new ArgumentNullException("username");
-			}
 			if(roleName == null) {
 				throw new ArgumentNullException("roleName");
 			}
-			using(var user = userEntryAdapter.GetUserEntry(username)) {
-				if(UserEntryInRole(user, roleName)) {
-					return true;
-				}
-			}
-			return false;
+			var roles = GetRolesForUser(username);
+			return roles.Contains(roleName, StringComparer.InvariantCultureIgnoreCase);
 		}
 
 		public string[] GetRolesForUser(string username) {
@@ -92,19 +85,15 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string[] GetAllRoles() {
-			var roleEntries =  groupEntryAdapter.GetAllRoleEntries();
-			var roles = roleEntries.Select(entry => groupEntryAdapter.GetGroupName((IEntry)entry));
-			return ToOrderedArray(roles);
+			using(var roleEntries =  groupEntryAdapter.GetAllRoleEntries()) {
+				var roles = roleEntries.Select(entry => groupEntryAdapter.GetGroupName(entry));
+				return ToOrderedArray(roles);
+			}
 		}
 
 		private IEnumerable<string> GetRoleNamesFromEntry(IEntry entry) {
-			var users = entry.GetProperties<string>(configuration.Users.MembershipAttribute);
-			return users.Select(group => groupEntryAdapter.GetGroupName(group));
-		}
-
-		private bool UserEntryInRole(IEntry user, string roleName) {
-			var roles = user.GetProperties<string>(configuration.Users.MembershipAttribute);
-			return roles.Any(role => groupEntryAdapter.GroupsEqual(role, roleName));
+			var roles = entry.GetProperties<string>(configuration.Users.MembershipAttribute);
+			return roles.Select(group => groupEntryAdapter.GetGroupName(group));
 		}
 
 		private IEnumerable<string> GetUsersInRoleEntity(string name) {

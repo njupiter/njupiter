@@ -23,7 +23,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		public string Name { get { return GetDirectoryEntry().Name; } }
 
 		public void Dispose() {
-			GetDirectoryEntry().Dispose();
+			if(internalEntry != null) {
+				internalEntry.Dispose();
+			}
 		}
 	}
 }
