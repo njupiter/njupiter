@@ -11,7 +11,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		}		
 
 		public static bool ContainsProperty(this IEntry entry, string propertyName) {
-			return entry.IsBound() && entry.Properties.Contains(FormatPropertyName(propertyName));
+			return entry.ContainsPropertyInternal(FormatPropertyName(propertyName));
 		}
 
 		public static IEnumerable<T> GetProperties<T>(this IEntry entry, string propertyName) {
@@ -21,12 +21,16 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		public static IEnumerable<object> GetProperties(this IEntry entry, string propertyName) {
 			var properties = new List<object>();
 			propertyName = FormatPropertyName(propertyName);
-			if(entry.ContainsProperty(propertyName)) {
+			if(entry.ContainsPropertyInternal(propertyName)) {
 				foreach(var group in entry.GetPropertyCollection(propertyName)) {
 					properties.Add(group);
 				}
 			}
 			return properties;
+		}
+
+		private static bool ContainsPropertyInternal(this IEntry entry, string propertyName) {
+			return !string.IsNullOrEmpty(propertyName) && entry.IsBound() && entry.Properties.Contains(propertyName);
 		}
 
 		private static IEnumerable GetPropertyCollection(this IEntry entry, string propertyName) {
@@ -57,6 +61,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		}
 
 		private static string FormatPropertyName(string propertyName) {
+			if(propertyName == null) {
+				return null;
+			}
 			return propertyName.ToLower(CultureInfo.InvariantCulture);
 		}
 	}
