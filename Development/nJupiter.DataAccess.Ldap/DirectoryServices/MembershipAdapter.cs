@@ -9,24 +9,26 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class MembershipAdapter {
 
-		private readonly ILdapConfig configuration;
+		private readonly IUsersConfig usersConfig;
 		private readonly IMembershipUserFactory membershipUserFactory;
 		private readonly IUserEntryAdapter userEntryAdapter;
 		private readonly ILog<MembershipAdapter> log;
 
-		public MembershipAdapter(ILdapConfig configuration,
-		                         IMembershipUserFactory membershipUserFactory) {
+		public MembershipAdapter(	IUsersConfig usersConfig,
+									IMembershipUserFactory membershipUserFactory,
+									IUserEntryAdapter userEntryAdapter,
+									ILogManager logManager) {
 
-			this.configuration = configuration;
+			this.usersConfig = usersConfig;
 			this.membershipUserFactory = membershipUserFactory;
-			userEntryAdapter = configuration.Container.UserEntryAdapter;
-			log = configuration.Container.LogManager.GetLogger<MembershipAdapter>();
+			this.userEntryAdapter = userEntryAdapter;
+			log = logManager.GetLogger<MembershipAdapter>();
 		}
 
 		public bool ValidateUser(string username, string password) {
 			try {
 				using(var user = userEntryAdapter.GetUserEntry(username, password)) {
-					return user.GetProperties(configuration.Users.RdnAttribute).Any();
+					return user.GetProperties(usersConfig.RdnAttribute).Any();
 				}
 			} catch(Exception ex) {
 				log.Debug(c => c(string.Format("Failed to validate user '{0}'.", username), ex));

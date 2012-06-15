@@ -35,10 +35,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		private readonly IGroupEntryAdapter groupEntryAdapter;
 		private readonly IUserEntryAdapter userEntryAdapter;
 
-		public RoleAdapter(ILdapConfig configuration) {
+		public RoleAdapter(	ILdapConfig configuration,
+							IGroupEntryAdapter groupEntryAdapter,
+							IUserEntryAdapter userEntryAdapter) {
 			this.configuration = configuration;
-			groupEntryAdapter = configuration.Container.GroupEntryAdapter;
-			userEntryAdapter = configuration.Container.UserEntryAdapter;
+			this.groupEntryAdapter = groupEntryAdapter;
+			this.userEntryAdapter = userEntryAdapter;
 		}
 
 		public bool RoleExists(string roleName) {
@@ -61,16 +63,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return roles.Contains(roleName, StringComparer.InvariantCultureIgnoreCase);
 		}
 
-		public string[] GetRolesForUser(string username) {
-			if(username == null) {
-				throw new ArgumentNullException("username");
-			}
-			using(var user = userEntryAdapter.GetUserEntry(username)) {
-				var roles = GetRoleNamesFromEntry(user);
-				return ToOrderedArray(roles);
-			}
-		}
-
 		public string[] GetUsersInRole(string roleName) {
 			if(roleName == null) {
 				throw new ArgumentNullException("roleName");
@@ -89,6 +81,36 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				var roles = roleEntries.Select(entry => groupEntryAdapter.GetGroupName(entry));
 				return ToOrderedArray(roles);
 			}
+		}
+
+		public string[] GetRolesForUser(string username) {
+			if(username == null) {
+				throw new ArgumentNullException("username");
+			}
+			IEnumerable<string> roles;
+			if(string.IsNullOrEmpty(configuration.Users.MembershipAttribute)) {
+				roles = GetRolesForUserWithoutMembershipAttribute(username);
+			} else {
+				roles = GetRolesForUserWithMembershipAttribute(username);
+			}
+			return ToOrderedArray(roles);
+		}
+
+		private IEnumerable<string> GetRolesForUserWithMembershipAttribute(string username) {
+			using(var user = userEntryAdapter.GetUserEntry(username)) {
+				return GetRoleNamesFromEntry(user);
+			}			
+		}
+
+		private IEnumerable<string> GetRolesForUserWithoutMembershipAttribute(string username) {
+			if(string.IsNullOrEmpty(configuration.Users.MembershipAttribute)) {
+				var allRoles = GetAllRoles();
+				foreach(var role in allRoles) {
+					if(GetUsersInRole(role).Contains(username)) {
+						yield return role;
+					}
+				}
+			}		
 		}
 
 		private IEnumerable<string> GetRoleNamesFromEntry(IEntry entry) {

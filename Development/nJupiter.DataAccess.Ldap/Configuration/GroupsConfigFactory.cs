@@ -66,8 +66,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			}
 
 
-
-			Uri groupUri = new Uri(configSection.GetValue("url"));
+			var groupUri = new Uri(configSection.GetValue("url"));
 			if(!String.IsNullOrEmpty(groups.Base)) {
 				groupUri = new Uri(groupUri, groups.Base);
 			}

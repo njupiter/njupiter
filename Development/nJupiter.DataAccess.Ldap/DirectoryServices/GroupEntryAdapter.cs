@@ -11,15 +11,18 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class GroupEntryAdapter : IGroupEntryAdapter {
 
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
-		private readonly ILdapConfig configuration;
+		private readonly IGroupsConfig serverConfig;
 		private readonly INameParser nameHandler;
 		private readonly ISearcherFactory searcherFactory;
 
-		public GroupEntryAdapter(ILdapConfig configuration) {
-			this.configuration = configuration;
-			directoryEntryAdapter = configuration.Container.DirectoryEntryAdapter;
-			nameHandler = configuration.Container.NameParser;
-			searcherFactory = configuration.Container.SearcherFactory;
+		public GroupEntryAdapter(	IGroupsConfig serverConfig,
+									IDirectoryEntryAdapter directoryEntryAdapter,
+									ISearcherFactory searcherFactory,
+									INameParser nameHandler) {
+			this.serverConfig = serverConfig;
+			this.directoryEntryAdapter = directoryEntryAdapter;
+			this.nameHandler = nameHandler;
+			this.searcherFactory = searcherFactory;
 		}
 
 		public IEntry GetGroupEntry(string groupname, bool loadProperties) {
@@ -29,18 +32,18 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public IEntry GetGroupEntry(string groupname) {
 			var groupFilter = CreateGroupFilter();
-			return directoryEntryAdapter.GetEntry(configuration.Groups.RdnAttribute, groupname, configuration.Groups.Path, groupFilter, CreateSearcher);
+			return directoryEntryAdapter.GetEntry(serverConfig.RdnAttribute, groupname, serverConfig.Path, groupFilter, CreateSearcher);
 		}
 
 		public IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
 			using(var entry = GetGroupEntry(name)) {
 				var searcher = GetGroupSearcher(entry, SearchScope.Base);
-				return searcher.GetPropertiesByRangedFilter<string>(configuration.Groups.MembershipAttribute);
+				return searcher.GetPropertiesByRangedFilter<string>(serverConfig.MembershipAttribute);
 			}
 		}
 
 		public IEntityCollection GetAllRoleEntries() {
-			using(var entry = directoryEntryAdapter.GetEntry(configuration.Groups.Path)) {
+			using(var entry = directoryEntryAdapter.GetEntry(serverConfig.Path)) {
 				if(!entry.IsBound()) {
 					throw new ProviderException("Could not load role list.");
 				}
@@ -50,12 +53,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string GetGroupName(IEntry entry) {
-			var name = entry.GetProperties<string>(configuration.Groups.RdnAttribute).First();
+			var name = entry.GetProperties<string>(serverConfig.RdnAttribute).First();
 			return GetGroupName(name);
 		}
 
 		public string GetGroupName(string entryName) {
-			return nameHandler.GetName(configuration.Groups.NameType, entryName);
+			return nameHandler.GetName(serverConfig.NameType, entryName);
 		}
 
 		private IDirectorySearcher GetGroupSearcher(IEntry entry, SearchScope searchScope) {
@@ -69,11 +72,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				return null;
 			}
 			var searcher = GetGroupSearcher(entry, SearchScope.Base);
-			return searcher.FindOne(configuration.Groups.MembershipAttribute);
+			return searcher.FindOne(serverConfig.MembershipAttribute);
 		}
 
 		private string CreateGroupFilter() {
-			return configuration.Groups.Filter;
+			return serverConfig.Filter;
 		}
 
 		private IDirectorySearcher CreateSearcher(IEntry entry) {
@@ -81,8 +84,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
-			var searcher = searcherFactory.CreateSearcher(entry, searchScope, configuration.Groups.RdnAttribute, configuration.Groups.Attributes);
-			searcher.PropertiesToLoad.Add(configuration.Groups.MembershipAttribute);
+			var searcher = searcherFactory.CreateSearcher(entry, searchScope, serverConfig.RdnAttribute, serverConfig.Attributes);
+			searcher.PropertiesToLoad.Add(serverConfig.MembershipAttribute);
 			return searcher;
 		}
 		

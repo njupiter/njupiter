@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap {
 			var ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
 
 			var configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
-			roleAdapter = new RoleAdapter(configuration);
+			roleAdapter = new RoleAdapter(configuration, configuration.Container.GroupEntryAdapter, configuration.Container.UserEntryAdapter);
 
 			base.Initialize(providerName, config);
 		}

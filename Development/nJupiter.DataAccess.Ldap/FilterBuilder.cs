@@ -31,10 +31,10 @@ using nJupiter.DataAccess.Ldap.Configuration;
 namespace nJupiter.DataAccess.Ldap {
 	internal class FilterBuilder : IFilterBuilder {
 
-		private readonly ILdapConfig config;
+		private readonly IServerConfig serverConfig;
 
-		public FilterBuilder(ILdapConfig config) {
-			this.config = config;
+		public FilterBuilder(IServerConfig serverConfig) {
+			this.serverConfig = serverConfig;
 		}
 
 		public string CreatePropertyRangeFilter(string propertyName, uint rangeLow, uint rangeHigh, bool isLastQuery) {
@@ -81,7 +81,7 @@ namespace nJupiter.DataAccess.Ldap {
 					escape.Append(@"\5c");
 					break;
 					case '*':
-					if(config.Server.AllowWildcardSearch) {
+					if(serverConfig.AllowWildcardSearch) {
 						escape.Append(current);
 					} else {
 						escape.Append(@"\2a");

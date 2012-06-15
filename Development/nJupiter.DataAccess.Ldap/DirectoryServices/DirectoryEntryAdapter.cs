@@ -32,20 +32,23 @@ using nJupiter.DataAccess.Ldap.NameParser;
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class DirectoryEntryAdapter : IDirectoryEntryAdapter {
 
-		private readonly ILdapConfig config;
+		private readonly IServerConfig serverConfig;
 		private readonly IFilterBuilder filterBuilder;
 		private readonly INameParser nameParser;
 		private readonly IDirectoryEntryFactory directoryEntryFactory;
 
-		public DirectoryEntryAdapter(ILdapConfig config) {
-			this.config = config;
-			directoryEntryFactory = config.Container.DirectoryEntryFactory;
-			filterBuilder = config.Container.FilterBuilder;
-			nameParser = config.Container.NameParser;
+		public DirectoryEntryAdapter(	IServerConfig serverConfig,
+										IDirectoryEntryFactory directoryEntryFactory,
+										IFilterBuilder filterBuilder,
+										INameParser nameParser) {
+			this.serverConfig = serverConfig;
+			this.directoryEntryFactory = directoryEntryFactory;
+			this.filterBuilder = filterBuilder;
+			this.nameParser = nameParser;
 		}
 
 		public IDirectoryEntry GetEntry(string path) {
-			return GetEntry(path, config.Server.Username, config.Server.Password);
+			return GetEntry(path, serverConfig.Username, serverConfig.Password);
 		}
 
 		public IDirectoryEntry GetEntry(Uri uri, string username, string password) {
@@ -58,8 +61,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 			var dn = nameParser.GetDnObject(attributeValue);
 			if(dn != null && dn.Rdns.Count > 1) {
-				var uri = new Uri(config.Server.Url, dn.ToString());
-				return GetEntry(uri, config.Server.Username, config.Server.Password);
+				var uri = new Uri(serverConfig.Url, dn.ToString());
+				return GetEntry(uri, serverConfig.Username, serverConfig.Password);
 			}
 
 			var entry = GetEntry(path);
@@ -82,7 +85,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		private IDirectoryEntry GetEntry(string path, string username, string password) {
-			return directoryEntryFactory.Create(path, username, password, config.Server.AuthenticationTypes);
+			return directoryEntryFactory.Create(path, username, password, serverConfig.AuthenticationTypes);
 		}
 	}
 }

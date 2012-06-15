@@ -48,8 +48,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 
 			if(configSection.ContainsKey("users", "membershipAttribute")) {
 				users.MembershipAttribute = configSection.GetValue("users", "membershipAttribute");
-			} else {
-				users.MembershipAttribute = "person";
 			}
 
 			if(configSection.ContainsKey("users", "emailAttribute")) {

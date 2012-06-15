@@ -31,12 +31,13 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class SearcherFactory : ISearcherFactory {
 
-		private readonly ILdapConfig config;
+		private readonly IServerConfig serverConfig;
+
 		private readonly IFilterBuilder filterBuilder;
 
-		public SearcherFactory(ILdapConfig config) {
-			this.config = config;
-			this.filterBuilder = config.Container.FilterBuilder;
+		public SearcherFactory(IServerConfig serverConfig, IFilterBuilder filterBuilder) {
+			this.serverConfig = serverConfig;
+			this.filterBuilder = filterBuilder;
 		}
 
 		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute, IEnumerable<IAttributeDefinition> otherAttributes) {
@@ -51,7 +52,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute) {
 			var searcher = CreateSearcher(entry, searchScope);
-			if(config.Server.PropertySortingSupport) {
+			if(serverConfig.PropertySortingSupport) {
 				searcher.Sort.PropertyName = rdnAttribute;
 				searcher.Sort.Direction = SortDirection.Ascending;
 			}
@@ -62,9 +63,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			var searcher = new DirectorySearcherAdapter(entry, filterBuilder);
 			searcher.SearchRoot = entry.GetDirectoryEntry();
 			searcher.SearchScope = searchScope;
-			searcher.ServerTimeLimit = config.Server.TimeLimit;
-			if(config.Server.PageSize > 0) {
-				searcher.PageSize = config.Server.PageSize;
+			searcher.ServerTimeLimit = serverConfig.TimeLimit;
+			if(serverConfig.PageSize > 0) {
+				searcher.PageSize = serverConfig.PageSize;
 			}
 			searcher.PropertiesToLoad.Clear();
 			return searcher;

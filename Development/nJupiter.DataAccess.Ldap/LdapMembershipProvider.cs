@@ -69,7 +69,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 			var configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
 			var ldapMembershipUserFactory = new LdapMembershipUserFactory(providerName, configuration);
-			membershipAdapter = new MembershipAdapter(configuration, ldapMembershipUserFactory);
+			membershipAdapter = new MembershipAdapter(configuration.Users, ldapMembershipUserFactory, configuration.Container.UserEntryAdapter, configuration.Container.LogManager);
 
 			base.Initialize(providerName, config);
 		}

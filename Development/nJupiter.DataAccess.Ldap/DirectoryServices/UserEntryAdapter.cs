@@ -15,12 +15,16 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		private readonly ISearcherFactory searcherFactory;
 		private readonly IFilterBuilder filterBuilder;
 
-		public UserEntryAdapter(ILdapConfig configuration) {
+		public UserEntryAdapter(	ILdapConfig configuration,
+									IDirectoryEntryAdapter directoryEntryAdapter,
+									ISearcherFactory searcherFactory,
+									IFilterBuilder filterBuilder,
+									INameParser nameHandler) {
 			this.configuration = configuration;
-			directoryEntryAdapter = configuration.Container.DirectoryEntryAdapter;
-			nameHandler = configuration.Container.NameParser;
-			searcherFactory = configuration.Container.SearcherFactory;
-			filterBuilder = configuration.Container.FilterBuilder;
+			this.directoryEntryAdapter = directoryEntryAdapter;
+			this.nameHandler = nameHandler;
+			this.searcherFactory = searcherFactory;
+			this.filterBuilder = filterBuilder;
 		}
 
 		public IEntry GetUserEntry(string username) {
@@ -65,7 +69,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				if(!user.IsBound()) {
 					return null;
 				}
-				var dn = configuration.Container.NameParser.GetDn(user.Path);
+				var dn = nameHandler.GetDn(user.Path);
 				var uri = new Uri(configuration.Server.Url, dn);
 				var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password);
 				return GetSearchedUserEntry(authenticatedUser);

@@ -13,7 +13,5 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		IUserEntryAdapter UserEntryAdapter { get; }
 		IGroupEntryAdapter GroupEntryAdapter { get; }
 		ILogManager LogManager { get; }
-
-		void Build();
 	}
 }
