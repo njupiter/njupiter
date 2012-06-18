@@ -92,13 +92,12 @@
     <Compile Include="DirectoryServices\IDirectoryEntryAdapter.cs" />
     <Compile Include="DirectoryServices\IGroupEntryAdapter.cs" />
     <Compile Include="DirectoryServices\IUserEntryAdapter.cs" />
-    <Compile Include="DirectoryServices\MembershipAdapter.cs" />
-    <Compile Include="DirectoryServices\RoleAdapter.cs" />
     <Compile Include="DirectoryServices\SearcherFactory.cs" />
     <Compile Include="DirectoryServices\UserEntryAdapter.cs" />
     <Compile Include="IAttributeDefinition.cs" />
     <Compile Include="IFilterBuilder.cs" />
     <Compile Include="IMembershipUserFactory.cs" />
+    <Compile Include="Configuration\IProviderConfig.cs" />
     <Compile Include="LdapMembershipUser.cs" />
     <Compile Include="LdapPathHandler.cs" />
     <Compile Include="NameParser\NameParser.cs" />
@@ -112,6 +111,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NameParser\Rdn.cs" />
     <Compile Include="NameParser\RdnComponent.cs" />
+    <Compile Include="Configuration\ProviderConfig.cs" />
+    <Compile Include="Configuration\ProviderConfigFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">

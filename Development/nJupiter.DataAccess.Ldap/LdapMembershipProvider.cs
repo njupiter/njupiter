@@ -24,27 +24,39 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web.Security;
 
+using nJupiter.Abstraction.Logging;
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapMembershipProvider : MembershipProvider {
 
-		private string providerName;
-		private string appName;
-		private string ldapServer;
+		private IProviderConfig providerConfig;
+		private IMembershipUserFactory membershipUserFactory;
+		private IUsersConfig usersConfig;
+		private IUserEntryAdapter userEntryAdapter;
+		private ILog<LdapMembershipProvider> log;
 
-		private MembershipAdapter membershipAdapter;
+		public LdapMembershipProvider() {}
 
-		public override string ApplicationName { get { return appName; } set { appName = value; } }
-		public override string Name {
-			get {
-				return string.IsNullOrEmpty(providerName) ? GetType().Name : providerName;
-			}
+		internal LdapMembershipProvider(IUsersConfig usersConfig,
+										IMembershipUserFactory membershipUserFactory,
+										IUserEntryAdapter userEntryAdapter,
+										ILog<LdapMembershipProvider> log) {
+
+			this.usersConfig = usersConfig;
+			this.membershipUserFactory = membershipUserFactory;
+			this.userEntryAdapter = userEntryAdapter;
+			this.log = log;
 		}
+
+		public override string ApplicationName { get { return providerConfig.ApplicationName; } set { } }
+		public override string Name { get { return providerConfig.Name; } }
 
 		public override bool EnablePasswordRetrieval { get { return false; } }
 		public override bool EnablePasswordReset { get { return false; } }
@@ -58,27 +70,75 @@ namespace nJupiter.DataAccess.Ldap {
 		public override string PasswordStrengthRegularExpression { get { return string.Empty; } }
 
 		public override void Initialize(string name, NameValueCollection config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-
-			appName = GetStringConfigValue(config, "applicationName", typeof(LdapMembershipProvider).Name);
-			providerName = !string.IsNullOrEmpty(name) ? name : appName;
-
-			ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
-
-			var configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
-			var ldapMembershipUserFactory = new LdapMembershipUserFactory(providerName, configuration);
-			membershipAdapter = new MembershipAdapter(configuration.Users, ldapMembershipUserFactory, configuration.Container.UserEntryAdapter, configuration.Container.LogManager);
-
-			base.Initialize(providerName, config);
+			providerConfig = ProviderConfigFactory.Create<LdapMembershipProvider>(name, config);
+			membershipUserFactory = new LdapMembershipUserFactory(providerConfig.Name, providerConfig.LdapConfig);
+			usersConfig = providerConfig.LdapConfig.Users;
+			userEntryAdapter = providerConfig.LdapConfig.Container.UserEntryAdapter;
+			log = providerConfig.LdapConfig.Container.LogManager.GetLogger<LdapMembershipProvider>();
+			base.Initialize(providerConfig.Name, config);
 		}
 
-		private static string GetStringConfigValue(NameValueCollection config, string configKey, string defaultValue) {
-			if((config != null) && (config[configKey] != null)) {
-				return config[configKey];
+		public override bool ValidateUser(string username, string password) {
+			try {
+				using(var user = userEntryAdapter.GetUserEntry(username, password)) {
+					return user.GetProperties(usersConfig.RdnAttribute).Any();
+				}
+			} catch(Exception ex) {
+				log.Debug(c => c(string.Format("Failed to validate user '{0}'.", username), ex));
 			}
-			return defaultValue;
+			return false;
+		}
+
+		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
+			if(providerUserKey == null) {
+				throw new ArgumentNullException("providerUserKey");
+			}
+			var username = providerUserKey.ToString();
+			return GetUser(username, userIsOnline);
+		}
+
+		public override MembershipUser GetUser(string username, bool userIsOnline) {
+			using(var user = userEntryAdapter.GetUserEntry(username, true)) {
+				return membershipUserFactory.Create(user);
+			}
+		}
+
+		public override string GetUserNameByEmail(string email) {
+			using(var user = userEntryAdapter.GetUserEntryByEmail(email)) {
+				var membershipUser = membershipUserFactory.Create(user);
+				return membershipUser != null ? membershipUser.UserName : null;
+			}
+		}
+
+		public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
+			using(var results = userEntryAdapter.GetAllUserEntries(pageIndex, pageSize, out totalRecords)) {
+				return membershipUserFactory.CreateCollection(results);
+			}
+		}
+
+
+		public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
+			using(var results = userEntryAdapter.FindUsersByName(usernameToMatch, pageIndex, pageSize, out totalRecords)) {
+				return membershipUserFactory.CreateCollection(results);
+			}
+		}
+
+		public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
+			using(var results = userEntryAdapter.FindUsersByEmail(emailToMatch, pageIndex, pageSize, out totalRecords)) {
+				return membershipUserFactory.CreateCollection(results);
+			}
+		}
+
+		public override bool ChangePassword(string username, string oldPassword, string newPassword) {
+			throw new NotSupportedException();
+		}
+
+		public override bool UnlockUser(string userName) {
+			throw new NotSupportedException();
+		}
+
+		public override void UpdateUser(MembershipUser user) {
+			throw new NotSupportedException();
 		}
 
 		public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status) {
@@ -93,56 +153,16 @@ namespace nJupiter.DataAccess.Ldap {
 			throw new NotSupportedException();
 		}
 
-		public override bool ChangePassword(string username, string oldPassword, string newPassword) {
-			throw new NotSupportedException();
-		}
-
 		public override string ResetPassword(string username, string answer) {
 			throw new NotSupportedException();
-		}
-
-		public override void UpdateUser(MembershipUser user) {
-			throw new NotSupportedException();
-		}
-
-		public override bool ValidateUser(string username, string password) {
-			return membershipAdapter.ValidateUser(username, password);
-		}
-
-		public override bool UnlockUser(string userName) {
-			throw new NotSupportedException();
-		}
-
-		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
-			return membershipAdapter.GetUser(providerUserKey, userIsOnline);
-		}
-
-		public override MembershipUser GetUser(string username, bool userIsOnline) {
-			return membershipAdapter.GetUser(username, userIsOnline);
-		}
-
-		public override string GetUserNameByEmail(string email) {
-			return membershipAdapter.GetUserNameByEmail(email);
 		}
 
 		public override bool DeleteUser(string username, bool deleteAllRelatedData) {
 			throw new NotSupportedException();
 		}
 
-		public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
-			return membershipAdapter.GetAllUsers(pageIndex, pageSize, out totalRecords);
-		}
-
 		public override int GetNumberOfUsersOnline() {
 			throw new NotSupportedException();
-		}
-
-		public override MembershipUserCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
-			return membershipAdapter.FindUsersByName(usernameToMatch, pageIndex, pageSize, out totalRecords);
-		}
-
-		public override MembershipUserCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
-			return membershipAdapter.FindUsersByEmail(emailToMatch, pageIndex, pageSize, out totalRecords);
 		}
 	}
 }

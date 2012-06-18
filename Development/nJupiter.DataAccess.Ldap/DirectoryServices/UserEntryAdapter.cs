@@ -33,7 +33,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public IEntry GetUserEntry(string username, bool loadProperties) {
 			var user = GetUserDirectoryEntry(username);
-			if(!loadProperties && user.ContainsProperty(configuration.Users.MembershipAttribute)) {
+			if(!loadProperties) {
 				return user;
 			}
 			return GetSearchedUserEntry(user);
@@ -155,7 +155,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				searcher.PropertiesToLoad.Add(configuration.Users.DescriptionAttribute);
 			}
 
-			searcher.PropertiesToLoad.Add(configuration.Users.MembershipAttribute);
+			if(!string.IsNullOrEmpty(configuration.Users.MembershipAttribute)) {
+				searcher.PropertiesToLoad.Add(configuration.Users.MembershipAttribute);
+			}
 			return searcher;
 		}
 

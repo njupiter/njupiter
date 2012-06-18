@@ -23,56 +23,132 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Web.Security;
 
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapRoleProvider : RoleProvider {
 		
-		private string providerName;
-		private string appName;
-		private RoleAdapter roleAdapter;
+		private IProviderConfig providerConfig;
+		private ILdapConfig ldapConfig;
+		private IGroupEntryAdapter groupEntryAdapter;
+		private IUserEntryAdapter userEntryAdapter;
 
-		public override string ApplicationName { get { return appName; } set { appName = value; } }
-		
-		public override string Name {
-			get {
-				return string.IsNullOrEmpty(providerName) ? GetType().Name : providerName;
-			}
+		public override string ApplicationName { get { return providerConfig.ApplicationName; } set { } }
+		public override string Name { get { return providerConfig.Name; } }
+
+		public LdapRoleProvider() {}
+
+		internal LdapRoleProvider(	ILdapConfig ldapConfig,
+									IGroupEntryAdapter groupEntryAdapter,
+									IUserEntryAdapter userEntryAdapter) {
+			this.ldapConfig = ldapConfig;
+			this.groupEntryAdapter = groupEntryAdapter;
+			this.userEntryAdapter = userEntryAdapter;
 		}
 
 		public override void Initialize(string name, NameValueCollection config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
-			appName = GetStringConfigValue(config, "applicationName", typeof(LdapRoleProvider).Name);
-			providerName = !string.IsNullOrEmpty(name) ? name : appName;
-			
-			var ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);
-
-			var configuration = LdapConfigFactory.Instance.GetConfig(ldapServer);
-			roleAdapter = new RoleAdapter(configuration, configuration.Container.GroupEntryAdapter, configuration.Container.UserEntryAdapter);
-
-			base.Initialize(providerName, config);
+			providerConfig = ProviderConfigFactory.Create<LdapRoleProvider>(name, config);
+			ldapConfig = providerConfig.LdapConfig;
+			groupEntryAdapter = ldapConfig.Container.GroupEntryAdapter;
+			userEntryAdapter = ldapConfig.Container.UserEntryAdapter;
+			base.Initialize(providerConfig.Name, config);
 		}
 
-		private static string GetStringConfigValue(NameValueCollection config, string configKey, string defaultValue) {
-			if((config != null) && (config[configKey] != null)) {
-				return config[configKey];
+		public override bool RoleExists(string roleName) {
+			if(roleName == null) {
+				throw new ArgumentNullException("roleName");
 			}
-			return defaultValue;
+			using(var role = groupEntryAdapter.GetGroupEntry(roleName)) {
+				if(role.ContainsProperty(ldapConfig.Groups.RdnAttribute)) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public override bool IsUserInRole(string username, string roleName) {
-			return roleAdapter.IsUserInRole(username, roleName);
+			if(roleName == null) {
+				throw new ArgumentNullException("roleName");
+			}
+			var roles = GetRolesForUser(username);
+			return roles.Contains(roleName, StringComparer.InvariantCultureIgnoreCase);
+		}
+
+		public override string[] GetUsersInRole(string roleName) {
+			if(roleName == null) {
+				throw new ArgumentNullException("roleName");
+			}
+			IEnumerable<string> result;
+			if(ldapConfig.Server.RangeRetrievalSupport) {
+				result = GetUsersInRoleEntityByRangedRetrival(roleName);
+			} else {
+				result = GetUsersInRoleEntity(roleName);
+			}
+			return ToOrderedArray(result);
+		}
+
+		public override string[] GetAllRoles() {
+			using(var roleEntries =  groupEntryAdapter.GetAllRoleEntries()) {
+				var roles = roleEntries.Select(entry => groupEntryAdapter.GetGroupName(entry));
+				return ToOrderedArray(roles);
+			}
 		}
 
 		public override string[] GetRolesForUser(string username) {
-			return roleAdapter.GetRolesForUser(username);
+			if(username == null) {
+				throw new ArgumentNullException("username");
+			}
+			IEnumerable<string> roles;
+			if(string.IsNullOrEmpty(ldapConfig.Users.MembershipAttribute)) {
+				roles = GetRolesForUserWithoutMembershipAttribute(username);
+			} else {
+				roles = GetRolesForUserWithMembershipAttribute(username);
+			}
+			return ToOrderedArray(roles);
+		}
+
+		private IEnumerable<string> GetRolesForUserWithMembershipAttribute(string username) {
+			using(var user = userEntryAdapter.GetUserEntry(username)) {
+				return GetRoleNamesFromEntry(user);
+			}			
+		}
+
+		private IEnumerable<string> GetRolesForUserWithoutMembershipAttribute(string username) {
+			var allRoles = GetAllRoles();
+			foreach(var role in allRoles) {
+				if(GetUsersInRole(role).Contains(username)) {
+					yield return role;
+				}
+			}
+		}
+
+		private IEnumerable<string> GetRoleNamesFromEntry(IEntry entry) {
+			var roles = entry.GetProperties<string>(ldapConfig.Users.MembershipAttribute);
+			return roles.Select(group => groupEntryAdapter.GetGroupName(group));
+		}
+
+		private IEnumerable<string> GetUsersInRoleEntity(string name) {
+			using(var group = groupEntryAdapter.GetGroupEntry(name, true)) {
+				return userEntryAdapter.GetUsersFromEntry(group, ldapConfig.Groups.MembershipAttribute);
+			}
+		}
+
+		private IEnumerable<string> GetUsersInRoleEntityByRangedRetrival(string name) {
+			var users = groupEntryAdapter.GetGroupMembersByRangedRetrival(name);
+			return users.Select(user => userEntryAdapter.GetUserName(user));
+		}
+
+		private static string[] ToOrderedArray(IEnumerable<string> strings) {
+			strings = strings.OrderBy(s => s);
+			return strings.ToArray();
 		}
 
 		public override void CreateRole(string roleName) {
@@ -83,24 +159,12 @@ namespace nJupiter.DataAccess.Ldap {
 			throw new NotSupportedException();
 		}
 
-		public override bool RoleExists(string roleName) {
-			return roleAdapter.RoleExists(roleName);
-		}
-
 		public override void AddUsersToRoles(string[] usernames, string[] roleNames) {
 			throw new NotSupportedException();
 		}
 
 		public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames) {
 			throw new NotSupportedException();
-		}
-
-		public override string[] GetUsersInRole(string roleName) {
-			return roleAdapter.GetUsersInRole(roleName);
-		}
-
-		public override string[] GetAllRoles() {
-			return roleAdapter.GetAllRoles();
 		}
 
 		public override string[] FindUsersInRole(string roleName, string usernameToMatch) {
