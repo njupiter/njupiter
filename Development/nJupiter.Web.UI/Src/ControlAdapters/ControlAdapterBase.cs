@@ -43,7 +43,11 @@ namespace nJupiter.Web.UI.ControlAdapters {
 		private static void Configure(object sender, EventArgs e) {
 			lock(PadLock) {
 				var array = new Dictionary<string, List<string>>();
-				var config = ConfigRepository.Instance.GetSystemConfig();
+				var config = sender as IConfig;
+				if(config != null) {
+					config.Discarded -= Configure;
+				}
+				config = ConfigRepository.Instance.GetSystemConfig();
 				if(config != null) {
 					var controlAdapterConfig = config.GetConfigSection("serverConfig/controlAdapters");
 					if(controlAdapterConfig != null) {

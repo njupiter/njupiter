@@ -81,6 +81,10 @@ namespace nJupiter.Configuration {
 
 				if(this.watcher != null) {
 					this.watcher.EnableRaisingEvents = false;
+					this.watcher.Changed -= this.WatchedConfigOnChanged;
+					this.watcher.Created -= this.WatchedConfigOnChanged;
+					this.watcher.Deleted -= this.WatchedConfigOnChanged;
+					this.watcher.Renamed -= this.WatchedConfigOnRenamed;
 					this.watcher.Dispose();
 				}
 

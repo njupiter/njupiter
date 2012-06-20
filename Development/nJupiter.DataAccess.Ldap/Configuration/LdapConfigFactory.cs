@@ -28,8 +28,9 @@ using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class LdapConfigFactory : ILdapConfigFactory {
-		private readonly Dictionary<string, ILdapConfig> Configurations = new Dictionary<string, ILdapConfig>();
-		private readonly object Padlock = new object();
+
+		private readonly Dictionary<string, ILdapConfig> configurations = new Dictionary<string, ILdapConfig>();
+		private readonly object padlock = new object();
 
 		private readonly IConfigRepository configRepository;
 		private readonly IServerConfigFactory serverConfigFactory;
@@ -51,19 +52,22 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		}
 
 		public ILdapConfig GetConfig(string ldapServer) {
-			if(!Configurations.ContainsKey(ldapServer)) {
-				lock(Padlock) {
-					if(!Configurations.ContainsKey(ldapServer)) {
-						Configurations.Add(ldapServer,
-						                   new LdapConfig(ldapServer,
-						                                  configRepository,
-						                                  serverConfigFactory,
-						                                  usersConfigFactory,
-						                                  groupsConfigFactory));
+			if(!configurations.ContainsKey(ldapServer)) {
+				lock(padlock) {
+					if(!configurations.ContainsKey(ldapServer)) {
+						configurations.Add(ldapServer, CreateLdapConfig(ldapServer));
 					}
 				}
 			}
-			return Configurations[ldapServer];
+			return configurations[ldapServer];
+		}
+
+		protected virtual ILdapConfig CreateLdapConfig(string ldapServer) {
+			return new LdapConfig(ldapServer,
+			                      configRepository,
+			                      serverConfigFactory,
+			                      usersConfigFactory,
+			                      groupsConfigFactory);
 		}
 
 		public static ILdapConfigFactory Instance { get { return NestedSingleton.instance; } }

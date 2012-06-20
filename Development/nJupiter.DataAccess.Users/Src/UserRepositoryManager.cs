@@ -39,6 +39,10 @@ namespace nJupiter.DataAccess.Users {
 
 		private void ConfigDiscarded(object sender, EventArgs e) {
 			lock(padlock) {
+				var c = sender as IConfig;
+				if(c != null) {
+					c.Discarded -= ConfigDiscarded;
+				}
 				config = null;
 				userRepositories.Clear();
 			}

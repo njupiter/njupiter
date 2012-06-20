@@ -40,8 +40,12 @@ namespace nJupiter.Text.SimpleTextParser {
 
 		private void Configure(object sender, EventArgs e) {
 			lock(Padlock) {
-				IConfig config = ConfigRepository.Instance.GetConfig();
-				IConfig configSection = this.GetConfigSection(config);
+				var config = sender as IConfig;
+				if(config != null) {
+					config.Discarded -= Configure;
+				}
+				config = ConfigRepository.Instance.GetConfig();
+				var configSection = this.GetConfigSection(config);
 				if(configSection != null) {
 					this.formatter = FormatterFactory.GetFormatter(configSection);
 				}

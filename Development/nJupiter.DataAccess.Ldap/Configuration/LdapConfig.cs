@@ -60,7 +60,12 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public IContainer Container { get { return container; } }
 
 		private void Configure(object sender, EventArgs e) {
-			var config = configRepository.GetConfig();
+			var config = sender as IConfig;
+			if(config != null) {
+				config.Discarded -= Configure;
+			}
+
+			config = configRepository.GetConfig();
 			var configSection = GetConfigSection(config);
 
 			serverConfig = serverConfigFactory.Create(configSection);

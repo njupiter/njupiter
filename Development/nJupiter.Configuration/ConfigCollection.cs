@@ -76,6 +76,7 @@ namespace nJupiter.Configuration {
 		private void ConfigDiscard(object sender, EventArgs e) {
 			var config = sender as IConfig;
 			if(config != null){
+				config.Discarded -= ConfigDiscard;
 				this.Remove(config.ConfigKey);
 			}
 		}
