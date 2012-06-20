@@ -1,6 +1,6 @@
 using System;
 
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal interface IDirectoryEntryAdapter {

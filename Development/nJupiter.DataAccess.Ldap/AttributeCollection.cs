@@ -3,19 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap {
-	public class AttributeCollection : IEnumerable {
-		private readonly Dictionary<string, AttributeValueCollection> attributeCollection;
+	public class AttributeCollection : IAttributeCollection {
+		private readonly Dictionary<string, IAttributeValueCollection> attributeCollection;
 
 		internal AttributeCollection(IDictionary propertyCollection) {
-			attributeCollection = new Dictionary<string, AttributeValueCollection>(StringComparer.InvariantCultureIgnoreCase);
+			attributeCollection = new Dictionary<string, IAttributeValueCollection>(StringComparer.InvariantCultureIgnoreCase);
+			try {
+				InitializeCollection(propertyCollection);
+			}catch(InvalidCastException ex){
+				throw new ArgumentException("IDictionary.Keys must be of type string and IDictionary.Values must be of type IEnumerable", "propertyCollection", ex);
+			}
+		}
+
+		private void InitializeCollection(IDictionary propertyCollection) {
 			foreach(string key in propertyCollection.Keys) {
-				var values = propertyCollection[key] as IEnumerable;
+				var values = (IEnumerable)propertyCollection[key];
 				var attributeValueCollection = new AttributeValueCollection(values);
 				attributeCollection.Add(key, attributeValueCollection);
 			}
 		}
 
-		public AttributeValueCollection this[string attributeName] {
+		public IAttributeValueCollection this[string attributeName] {
 			get {
 				return attributeCollection[attributeName];
 			}
@@ -31,7 +39,7 @@ namespace nJupiter.DataAccess.Ldap {
 			return attributeCollection.ContainsKey(key);
 		}
 
-		public bool ContainsValue(AttributeValueCollection value) {
+		public bool ContainsValue(IAttributeValueCollection value) {
 			return attributeCollection.ContainsValue(value);
 		}
 
@@ -41,7 +49,7 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 		}
 
-		public IEnumerable<AttributeValueCollection> Values {
+		public IEnumerable<IAttributeValueCollection> Values {
 			get {
 				return attributeCollection.Values;
 			}
@@ -53,6 +61,10 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override int GetHashCode() {
 			return attributeCollection.GetHashCode();
+		}
+
+		public IEnumerator<IAttributeValueCollection> GetEnumerator() {
+			return attributeCollection.Values.GetEnumerator();
 		}
 
 		public override bool Equals(object obj) {

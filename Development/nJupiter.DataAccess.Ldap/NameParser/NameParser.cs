@@ -65,15 +65,15 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			return dn.ToString();
 		}
 
-		public Dn GetDnObject(string name) {
+		public IDn GetDnObject(string name) {
 			name = LdapPathHandler.GetDistinguishedNameFromPath(name);
 			if(name.Contains("=")) {
-				return new Dn(name);
+				return CreateDnObject(name);
 			}
 			return null;
 		}
 
-		private NameType GetNameType(Dn dn) {
+		private NameType GetNameType(IDn dn) {
 			if(dn == null) {
 				return NameType.Cn;
 			}
@@ -98,6 +98,10 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			name = GetDn(name, attribute, basePath);
 			nameToMatch = GetDn(nameToMatch, attribute, basePath);
 			return string.Equals(name, nameToMatch, StringComparison.InvariantCultureIgnoreCase);
+		}
+
+		protected virtual IDn CreateDnObject(string name) {
+			return new Dn(name);
 		}
 	}
 }

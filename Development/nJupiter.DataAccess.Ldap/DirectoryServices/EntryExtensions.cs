@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal static class EntryExtensions {
 		public static bool IsBound(this IEntry entry) {
 			return entry != null && entry.NativeObject != null;
@@ -34,17 +34,17 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		}
 
 		private static IEnumerable GetPropertyCollection(this IEntry entry, string propertyName) {
-			return entry.Properties[FormatPropertyName(propertyName)] as IEnumerable; 
+			return entry.Properties[propertyName] as IEnumerable; 
 		}
 
-		public static IEntityCollection GetPaged(this IEntityCollection entries, int pageIndex, int pageSize) {
+		public static IEntryCollection GetPaged(this IEntryCollection entries, int pageIndex, int pageSize) {
 			if(pageIndex < 0) {
 				throw new ArgumentOutOfRangeException("pageIndex");
 			}
 			if(pageSize < 1) {
 				throw new ArgumentOutOfRangeException("pageSize");
 			}
-			var pagedCollection = new EntityCollection();
+			var pagedCollection = new EntryCollection();
 			var index = 0;
 			var startIndex = pageIndex * pageSize;
 			var endIndex = startIndex + pageSize;

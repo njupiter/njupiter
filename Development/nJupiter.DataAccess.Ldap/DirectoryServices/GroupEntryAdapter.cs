@@ -4,7 +4,7 @@ using System.DirectoryServices;
 using System.Linq;
 
 using nJupiter.DataAccess.Ldap.Configuration;
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
@@ -42,7 +42,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			}
 		}
 
-		public IEntityCollection GetAllRoleEntries() {
+		public IEntryCollection GetAllRoleEntries() {
 			using(var entry = directoryEntryAdapter.GetEntry(serverConfig.Path)) {
 				if(!entry.IsBound()) {
 					throw new ProviderException("Could not load role list.");

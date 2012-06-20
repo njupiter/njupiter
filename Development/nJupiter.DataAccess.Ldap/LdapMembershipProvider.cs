@@ -30,12 +30,12 @@ using System.Web.Security;
 using nJupiter.Abstraction.Logging;
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapMembershipProvider : MembershipProvider {
 
+		private readonly IProviderConfigFactory providerConfigFactory;
 		private IProviderConfig providerConfig;
 		private IMembershipUserFactory membershipUserFactory;
 		private IUsersConfig usersConfig;
@@ -44,34 +44,17 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public LdapMembershipProvider() {}
 
-		internal LdapMembershipProvider(IUsersConfig usersConfig,
-										IMembershipUserFactory membershipUserFactory,
-										IUserEntryAdapter userEntryAdapter,
-										ILog<LdapMembershipProvider> log) {
-
-			this.usersConfig = usersConfig;
-			this.membershipUserFactory = membershipUserFactory;
-			this.userEntryAdapter = userEntryAdapter;
-			this.log = log;
+		internal LdapMembershipProvider(IProviderConfigFactory providerConfigFactory) {
+			this.providerConfigFactory = providerConfigFactory;
 		}
 
 		public override string ApplicationName { get { return providerConfig.ApplicationName; } set { } }
 		public override string Name { get { return providerConfig.Name; } }
-
-		public override bool EnablePasswordRetrieval { get { return false; } }
-		public override bool EnablePasswordReset { get { return false; } }
-		public override bool RequiresQuestionAndAnswer { get { return false; } }
-		public override int MaxInvalidPasswordAttempts { get { return 256; } }
-		public override int PasswordAttemptWindow { get { return 1; } }
-		public override bool RequiresUniqueEmail { get { return false; } }
-		public override MembershipPasswordFormat PasswordFormat { get { return MembershipPasswordFormat.Clear; } }
-		public override int MinRequiredPasswordLength { get { return 6; } }
-		public override int MinRequiredNonAlphanumericCharacters { get { return 0; } }
-		public override string PasswordStrengthRegularExpression { get { return string.Empty; } }
+		private IProviderConfigFactory ConfigFactory { get { return providerConfigFactory ?? ProviderConfigFactory.Instance; } }
 
 		public override void Initialize(string name, NameValueCollection config) {
-			providerConfig = ProviderConfigFactory.Create<LdapMembershipProvider>(name, config);
-			membershipUserFactory = new LdapMembershipUserFactory(providerConfig.Name, providerConfig.LdapConfig);
+			providerConfig = ConfigFactory.Create<LdapMembershipProvider>(name, config);
+			membershipUserFactory = providerConfig.MembershipUserFactory;
 			usersConfig = providerConfig.LdapConfig.Users;
 			userEntryAdapter = providerConfig.LdapConfig.Container.UserEntryAdapter;
 			log = providerConfig.LdapConfig.Container.LogManager.GetLogger<LdapMembershipProvider>();
@@ -89,18 +72,14 @@ namespace nJupiter.DataAccess.Ldap {
 			return false;
 		}
 
-		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
-			if(providerUserKey == null) {
-				throw new ArgumentNullException("providerUserKey");
-			}
-			var username = providerUserKey.ToString();
-			return GetUser(username, userIsOnline);
-		}
-
 		public override MembershipUser GetUser(string username, bool userIsOnline) {
-			using(var user = userEntryAdapter.GetUserEntry(username, true)) {
+			using(var user = userEntryAdapter.GetUserEntryAndLoadProperties(username)) {
 				return membershipUserFactory.Create(user);
 			}
+		}
+	
+		public override MembershipUser GetUser(object providerUserKey, bool userIsOnline) {
+			return GetUser(providerUserKey as string, userIsOnline);
 		}
 
 		public override string GetUserNameByEmail(string email) {
@@ -164,5 +143,16 @@ namespace nJupiter.DataAccess.Ldap {
 		public override int GetNumberOfUsersOnline() {
 			throw new NotSupportedException();
 		}
+
+		public override bool EnablePasswordRetrieval { get { return false; } }
+		public override bool EnablePasswordReset { get { return false; } }
+		public override bool RequiresQuestionAndAnswer { get { return false; } }
+		public override int MaxInvalidPasswordAttempts { get { return 256; } }
+		public override int PasswordAttemptWindow { get { return 1; } }
+		public override bool RequiresUniqueEmail { get { return false; } }
+		public override MembershipPasswordFormat PasswordFormat { get { return MembershipPasswordFormat.Clear; } }
+		public override int MinRequiredPasswordLength { get { return 6; } }
+		public override int MinRequiredNonAlphanumericCharacters { get { return 0; } }
+		public override string PasswordStrengthRegularExpression { get { return string.Empty; } }
 	}
 }

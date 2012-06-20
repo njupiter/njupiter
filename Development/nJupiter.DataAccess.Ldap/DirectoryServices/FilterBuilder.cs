@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 /*
 	Copyright (c) 2005-2011 nJupiter
 
@@ -28,7 +28,7 @@ using System.Text;
 
 using nJupiter.DataAccess.Ldap.Configuration;
 
-namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class FilterBuilder : IFilterBuilder {
 
 		private readonly IServerConfig serverConfig;

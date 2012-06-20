@@ -32,7 +32,7 @@ namespace nJupiter.DataAccess.Ldap {
 		private const string LdapSchemeLoweCase = "ldap://";
 
 		public static string UriToPath(Uri uri) {
-			return ConvertSchemeInPathToUpperCase(uri.ToString());
+			return ConvertSchemeInPathToUpperCase(uri.OriginalString);
 		}
 
 		private static string ConvertSchemeInPathToUpperCase(string path) {
@@ -48,9 +48,9 @@ namespace nJupiter.DataAccess.Ldap {
 			if(path.StartsWith(LdapScheme, StringComparison.InvariantCultureIgnoreCase)) {
 				var uri = new Uri(path);
 				path = HttpUtility.UrlDecode(uri.PathAndQuery);
-				if(path.StartsWith("/")) {
-					path = path.Substring(1);
-				}
+			}
+			if(path.StartsWith("/")) {
+				return path.Substring(1);
 			}
 			return path;
 		}

@@ -22,11 +22,11 @@
 // 
 #endregion
 
-namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IProviderConfig {
-		string Name { get; }
-		string ApplicationName { get; }
-		ILdapConfig LdapConfig { get; }
-		IMembershipUserFactory MembershipUserFactory { get; }
+namespace nJupiter.DataAccess.Ldap.NameParser {
+	internal interface IRdnComponent {
+		string ComponentType { get; }
+		string ComponentValue { get; }
+		string ToString();
+		string ToString(EscapeChars escapeChars);
 	}
 }

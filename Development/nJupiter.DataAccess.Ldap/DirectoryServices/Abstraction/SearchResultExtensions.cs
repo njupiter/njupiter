@@ -1,9 +1,9 @@
 using System.DirectoryServices;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 	internal static class SearchResultExtensions {
-		public static IEntityCollection Wrap(this SearchResultCollection wrapped) {
-			var result = new EntityCollection();
+		public static IEntryCollection Wrap(this SearchResultCollection wrapped) {
+			var result = new EntryCollection();
 			if(wrapped != null) {
 				foreach(SearchResult searchResult in wrapped) {
 					result.Add(searchResult.Wrap());

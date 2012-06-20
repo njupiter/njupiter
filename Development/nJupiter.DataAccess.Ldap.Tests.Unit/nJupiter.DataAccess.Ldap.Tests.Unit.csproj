@@ -53,11 +53,25 @@
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeCollectionTests.cs" />
+    <Compile Include="AttributeValueCollectionTests.cs" />
+    <Compile Include="Configuration\ContainerTests.cs" />
+    <Compile Include="Configuration\GroupsConfigFactoryTests.cs" />
+    <Compile Include="DirectoryServices\Abstraction\PropertyValueParserTests.cs" />
+    <Compile Include="LdapMembershipProviderTests.cs" />
+    <Compile Include="LdapMembershipUserFactoryTests.cs" />
+    <Compile Include="LdapPathHandlerTests.cs" />
+    <Compile Include="LdapRoleProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyValueParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

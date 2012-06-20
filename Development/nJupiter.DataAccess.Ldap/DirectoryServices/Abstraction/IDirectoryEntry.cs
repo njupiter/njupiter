@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.DirectoryServices;
 using System.Runtime.Remoting;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 	internal interface IDirectoryEntry : IEntry {
 		AuthenticationTypes AuthenticationType { get; set; }
 		DirectoryEntries Children { get; }

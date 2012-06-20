@@ -30,12 +30,12 @@ using System.Web.Security;
 
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
 
 namespace nJupiter.DataAccess.Ldap {
 
 	public class LdapRoleProvider : RoleProvider {
 		
+		private readonly IProviderConfigFactory providerConfigFactory;
 		private IProviderConfig providerConfig;
 		private ILdapConfig ldapConfig;
 		private IGroupEntryAdapter groupEntryAdapter;
@@ -43,19 +43,16 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override string ApplicationName { get { return providerConfig.ApplicationName; } set { } }
 		public override string Name { get { return providerConfig.Name; } }
+		private IProviderConfigFactory ConfigFactory { get { return providerConfigFactory ?? ProviderConfigFactory.Instance; } }
 
 		public LdapRoleProvider() {}
 
-		internal LdapRoleProvider(	ILdapConfig ldapConfig,
-									IGroupEntryAdapter groupEntryAdapter,
-									IUserEntryAdapter userEntryAdapter) {
-			this.ldapConfig = ldapConfig;
-			this.groupEntryAdapter = groupEntryAdapter;
-			this.userEntryAdapter = userEntryAdapter;
+		internal LdapRoleProvider(IProviderConfigFactory providerConfigFactory) {
+			this.providerConfigFactory = providerConfigFactory;
 		}
 
 		public override void Initialize(string name, NameValueCollection config) {
-			providerConfig = ProviderConfigFactory.Create<LdapRoleProvider>(name, config);
+			providerConfig = ConfigFactory.Create<LdapRoleProvider>(name, config);
 			ldapConfig = providerConfig.LdapConfig;
 			groupEntryAdapter = ldapConfig.Container.GroupEntryAdapter;
 			userEntryAdapter = ldapConfig.Container.UserEntryAdapter;
@@ -63,9 +60,6 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override bool RoleExists(string roleName) {
-			if(roleName == null) {
-				throw new ArgumentNullException("roleName");
-			}
 			using(var role = groupEntryAdapter.GetGroupEntry(roleName)) {
 				if(role.ContainsProperty(ldapConfig.Groups.RdnAttribute)) {
 					return true;
@@ -75,17 +69,21 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		public override bool IsUserInRole(string username, string roleName) {
-			if(roleName == null) {
-				throw new ArgumentNullException("roleName");
-			}
 			var roles = GetRolesForUser(username);
 			return roles.Contains(roleName, StringComparer.InvariantCultureIgnoreCase);
 		}
+	
+		public override string[] GetRolesForUser(string username) {
+			IEnumerable<string> roles;
+			if(string.IsNullOrEmpty(ldapConfig.Users.MembershipAttribute)) {
+				roles = GetRolesForUserWithoutMembershipAttribute(username);
+			} else {
+				roles = GetRolesForUserWithMembershipAttribute(username);
+			}
+			return ToOrderedArray(roles);
+		}
 
 		public override string[] GetUsersInRole(string roleName) {
-			if(roleName == null) {
-				throw new ArgumentNullException("roleName");
-			}
 			IEnumerable<string> result;
 			if(ldapConfig.Server.RangeRetrievalSupport) {
 				result = GetUsersInRoleEntityByRangedRetrival(roleName);
@@ -102,18 +100,6 @@ namespace nJupiter.DataAccess.Ldap {
 			}
 		}
 
-		public override string[] GetRolesForUser(string username) {
-			if(username == null) {
-				throw new ArgumentNullException("username");
-			}
-			IEnumerable<string> roles;
-			if(string.IsNullOrEmpty(ldapConfig.Users.MembershipAttribute)) {
-				roles = GetRolesForUserWithoutMembershipAttribute(username);
-			} else {
-				roles = GetRolesForUserWithMembershipAttribute(username);
-			}
-			return ToOrderedArray(roles);
-		}
 
 		private IEnumerable<string> GetRolesForUserWithMembershipAttribute(string username) {
 			using(var user = userEntryAdapter.GetUserEntry(username)) {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal interface IFilterBuilder {
 		string CreatePropertyRangeFilter(string propertyName, uint rangeLow, uint rangeHigh, bool isLastQuery);
 		string CreatePropertyRangeFilter(string propertyName, uint startIndex, uint endIndex);

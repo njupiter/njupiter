@@ -22,11 +22,10 @@
 // 
 #endregion
 
+using System.Collections.Specialized;
+
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IProviderConfig {
-		string Name { get; }
-		string ApplicationName { get; }
-		ILdapConfig LdapConfig { get; }
-		IMembershipUserFactory MembershipUserFactory { get; }
+	internal interface IProviderConfigFactory {
+		IProviderConfig Create<T>(string name, NameValueCollection config);
 	}
 }

@@ -4,7 +4,7 @@ using System.DirectoryServices;
 using System.Linq;
 
 using nJupiter.DataAccess.Ldap.Configuration;
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
@@ -31,17 +31,21 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return GetUserEntry(username, false);
 		}
 
-		public IEntry GetUserEntry(string username, bool loadProperties) {
+		public IEntry GetUserEntryAndLoadProperties(string username) {
+			return GetUserEntry(username, true);
+		}
+
+		private IEntry GetUserEntry(string username, bool loadProperties) {
 			var user = GetUserDirectoryEntry(username);
 			if(!loadProperties) {
 				return user;
 			}
-			return GetSearchedUserEntry(user);
+			return GetUserEntryFromSearcher(user);
 		}
 
 		public IEntry GetUserEntryByEmail(string email) {
 			using(var entry = directoryEntryAdapter.GetEntry(configuration.Users.Path)) {
-				return GetSearchedUserEntry(entry, CreateUserEmailFilter(email), SearchScope.Subtree);
+				return GetUserEntryFromSearcher(entry, CreateUserEmailFilter(email), SearchScope.Subtree);
 			}
 		}
 
@@ -72,27 +76,27 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				var dn = nameHandler.GetDn(user.Path);
 				var uri = new Uri(configuration.Server.Url, dn);
 				var authenticatedUser = directoryEntryAdapter.GetEntry(uri, dn, password);
-				return GetSearchedUserEntry(authenticatedUser);
+				return GetUserEntryFromSearcher(authenticatedUser);
 			}
 		}
 
-		public IEntityCollection GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
+		public IEntryCollection GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(configuration.Users.Filter, pageIndex, pageSize, out totalRecords);
 		}
 
-		public IEntityCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
+		public IEntryCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(CreateUserNameFilter(usernameToMatch), pageIndex, pageSize, out totalRecords);
 		}
 
-		public IEntityCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
+		public IEntryCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(CreateUserEmailFilter(emailToMatch), pageIndex, pageSize, out totalRecords);
 		}
 
-		private IEntityCollection GetUserEntries(string filter, int pageIndex, int pageSize, out int totalRecords) {
+		private IEntryCollection GetUserEntries(string filter, int pageIndex, int pageSize, out int totalRecords) {
 			using(var entry = directoryEntryAdapter.GetEntry(configuration.Users.Path)) {
 				if(!entry.IsBound()) {
 					totalRecords = 0;
-					return new EntityCollection();
+					return new EntryCollection();
 				}
 				var searcher = CreateSearcher(entry);
 				searcher.Filter = filter;
@@ -106,11 +110,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			}
 		}
 
-		private IEntry GetSearchedUserEntry(IEntry entry) {
-			return GetSearchedUserEntry(entry, configuration.Users.Filter, SearchScope.Base);
+		private IEntry GetUserEntryFromSearcher(IEntry entry) {
+			return GetUserEntryFromSearcher(entry, configuration.Users.Filter, SearchScope.Base);
 		}
 
-		private IEntry GetSearchedUserEntry(IEntry entry, string filter, SearchScope searchScope) {
+		private IEntry GetUserEntryFromSearcher(IEntry entry, string filter, SearchScope searchScope) {
 			if(!entry.IsBound()) {
 				return null;
 			}

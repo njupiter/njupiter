@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 	internal class DirectorySearcherAdapter : DirectorySearcherWrapper, IDirectorySearcher {
 		private readonly IFilterBuilder filterBuilder;
 

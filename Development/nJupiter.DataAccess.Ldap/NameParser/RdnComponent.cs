@@ -28,7 +28,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 	// based on http://www.codeproject.com/KB/IP/dnparser.aspx?msg=1758400 by by (C) 2005 Pete Everett (pete@CynicalPirate.com)
 	// Code will be cleaned up later
-	internal sealed class RdnComponent {
+	internal sealed class RdnComponent : IRdnComponent {
 		public enum RdnValueType {
 			StringValue,
 			HexValue
@@ -60,28 +60,28 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			return ToString(Dn.DefaultEscapeChars);
 		}
 
-		public string ToString(Dn.EscapeChars escapeChars) {
-			if(this.componentValueType == RdnValueType.HexValue) {
-				return this.componentType + "=" + this.componentValue;
+		public string ToString(EscapeChars escapeChars) {
+			if(componentValueType == RdnValueType.HexValue) {
+				return string.Format("{0}={1}", componentType, componentValue);
 			}
-			return this.componentType + "=" + EscapeValue(this.componentValue, escapeChars);
+			return string.Format("{0}={1}", componentType, EscapeValue(componentValue, escapeChars));
 		}
 
-		private static string EscapeValue(string s, Dn.EscapeChars escapeChars) {
-			StringBuilder returnValue = new StringBuilder();
+		private static string EscapeValue(string s, EscapeChars escapeChars) {
+			var returnValue = new StringBuilder();
 
-			for(int i = 0; i < s.Length; i++) {
+			for(var i = 0; i < s.Length; i++) {
 				if(Rdn.IsSpecialChar(s[i]) || ((i == 0 || i == s.Length - 1) && s[i] == ' ')) {
-					if((escapeChars & Dn.EscapeChars.SpecialChars) != Dn.EscapeChars.None)
+					if((escapeChars & EscapeChars.SpecialChars) != EscapeChars.None)
 						returnValue.Append('\\');
 
 					returnValue.Append(s[i]);
-				} else if(s[i] < 32 && ((escapeChars & Dn.EscapeChars.ControlChars) != Dn.EscapeChars.None)) {
+				} else if(s[i] < 32 && ((escapeChars & EscapeChars.ControlChars) != EscapeChars.None)) {
 					returnValue.AppendFormat("\\{0:X2}", (int)s[i]);
-				} else if(s[i] >= 128 && ((escapeChars & Dn.EscapeChars.MultibyteChars) != Dn.EscapeChars.None)) {
-					byte[] bytes = Encoding.UTF8.GetBytes(new[] { s[i] });
+				} else if(s[i] >= 128 && ((escapeChars & EscapeChars.MultibyteChars) != EscapeChars.None)) {
+					var bytes = Encoding.UTF8.GetBytes(new[] { s[i] });
 
-					foreach(byte b in bytes) {
+					foreach(var b in bytes) {
 						returnValue.AppendFormat("\\{0:X2}", b);
 					}
 				} else {

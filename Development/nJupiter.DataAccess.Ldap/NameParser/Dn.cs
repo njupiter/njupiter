@@ -27,29 +27,20 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace nJupiter.DataAccess.Ldap.NameParser {
-
 	// based on http://www.codeproject.com/KB/IP/dnparser.aspx?msg=1758400 by by (C) 2005 Pete Everett (pete@CynicalPirate.com)
 	// Code will be cleaned up later
-	internal sealed class Dn {
+	internal sealed class Dn : IDn {
 
 		private enum ParserState { LookingForSeparator, InQuotedString };
 
-		[Flags]
-		internal enum EscapeChars {
-			None = 0,
-			ControlChars = 1,
-			SpecialChars = 2,
-			MultibyteChars = 4
-		}
-
 		public const EscapeChars DefaultEscapeChars = EscapeChars.ControlChars | EscapeChars.SpecialChars;
 
-		private readonly List<Rdn> rdns;
+		private readonly List<IRdn> rdns;
 		private readonly EscapeChars escapeChars;
 
-		public List<Rdn> Rdns {
+		public List<IRdn> Rdns {
 			get {
-				return this.rdns;
+				return rdns;
 			}
 		}
 
@@ -59,17 +50,17 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 				throw new ArgumentNullException("dnString");
 			}
 			this.escapeChars = escapeChars;
-			this.rdns = ParseDn(dnString);
+			rdns = ParseDn(dnString);
 		}
 
 		public override string ToString() {
-			return ToString(this.escapeChars);
+			return ToString(escapeChars);
 		}
 
 		private string ToString(EscapeChars chars) {
-			StringBuilder returnValue = new StringBuilder();
+			var returnValue = new StringBuilder();
 
-			foreach(Rdn rdn in this.Rdns) {
+			foreach(var rdn in Rdns) {
 				returnValue.Append(rdn.ToString(chars));
 				returnValue.Append(",");
 			}
@@ -82,23 +73,23 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 		}
 
 
-		private static List<Rdn> ParseDn(string dnString) {
+		private static List<IRdn> ParseDn(string dnString) {
 			if(string.IsNullOrEmpty(dnString)) {
-				return new List<Rdn>();
+				return new List<IRdn>();
 			}
-			List<Rdn> rdns = new List<Rdn>();
-			ParserState state = ParserState.LookingForSeparator;
-			StringBuilder rawRdn = new StringBuilder();
+			var rdns = new List<IRdn>();
+			var state = ParserState.LookingForSeparator;
+			var rawRdn = new StringBuilder();
 
 
-			for(int position = 0; position < dnString.Length; ++position) {
+			for(var position = 0; position < dnString.Length; ++position) {
 				switch(state) {
 					case ParserState.LookingForSeparator:
 					// If we find a separator character, we've hit the end of an Rdn.
 					// We'll store the Rdn, and we'll check to see if the Rdn is actually
 					// valid later.
 					if(dnString[position] == ',' || dnString[position] == ';') {
-						Rdn rdn = new Rdn(rawRdn.ToString());
+						var rdn = new Rdn(rawRdn.ToString());
 						rdns.Add(rdn); // Add the string to the list of raw Rdns
 						rawRdn.Length = 0;              // Clear the StringBuilder to prepare for the next Rdn
 					} else {
@@ -148,7 +139,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			}
 
 			// Take the last Rdn and add it to the list
-			Rdn lastRdn = new Rdn(rawRdn.ToString());
+			var lastRdn = new Rdn(rawRdn.ToString());
 			rdns.Add(lastRdn);
 
 			// Check parser's end state

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.DirectoryServices;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 	internal class SearchResultFacade : IEntry {
 		private readonly SearchResult searchResult;
 		private IDirectoryEntry internalEntry;

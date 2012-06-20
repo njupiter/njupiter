@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.DirectoryServices;
 using System.Runtime.Remoting;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 	internal class DirectorySearcherWrapper {
 		readonly DirectorySearcher directorySearcher;
 
@@ -51,7 +50,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		public string Filter { get { return directorySearcher.Filter; }
 			set { directorySearcher.Filter = value; } }
 
-		public IEntityCollection FindAll() {
+		public IEntryCollection FindAll() {
 			return directorySearcher.FindAll().Wrap();
 		}
 

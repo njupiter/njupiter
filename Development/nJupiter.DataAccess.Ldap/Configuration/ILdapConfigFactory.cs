@@ -23,10 +23,8 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IProviderConfig {
-		string Name { get; }
-		string ApplicationName { get; }
-		ILdapConfig LdapConfig { get; }
-		IMembershipUserFactory MembershipUserFactory { get; }
+	internal interface ILdapConfigFactory {
+		ILdapConfig GetConfig();
+		ILdapConfig GetConfig(string ldapServer);
 	}
 }

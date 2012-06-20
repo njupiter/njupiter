@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap {
-	public class AttributeValueCollection : IEnumerable {
+	public class AttributeValueCollection : IAttributeValueCollection {
 
 		private readonly List<object> attributeValueCollection;
 

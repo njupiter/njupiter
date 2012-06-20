@@ -22,45 +22,12 @@
 // 
 #endregion
 
-using System;
-
 using NUnit.Framework;
 
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
-
-namespace nJupiter.DataAccess.Ldap.Tests.Unit {
+namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 	
 	[TestFixture]
-	public class PropertyValueParserTests {
-
-		[Test]
-		public void ParseString_SendInString_ReturnsCorrectString() {
-			var result = PropertyValueParser.Parse<string>("hello world");
-			Assert.AreEqual("hello world", result);
-		}
-
-		[Test]
-		public void ParseString_SendInStringAsByteArray_ReturnsCorrectString() {
-			var byteArray = System.Text.Encoding.UTF8.GetBytes("hello world");
-			var result = PropertyValueParser.Parse<string>(byteArray);
-			Assert.AreEqual("hello world", result);
-		}
-
-		[Test]
-		public void ParseDateTime_SendInDateAsFileTime_ReturnsCorrectDateTime() {
-			var date = new DateTime(2000, 1, 1);
-			var result = PropertyValueParser.Parse<DateTime>(date.ToFileTime());
-			Assert.AreEqual(date, result);
-
-		}
-
-		[Test]
-		public void ParseDateTime_SendInDateAsFileTimeString_ReturnsCorrectDateTime() {
-			var date = new DateTime(2000, 1, 1);
-			var result = PropertyValueParser.Parse<DateTime>(date.ToFileTime().ToString());
-			Assert.AreEqual(date, result);
-
-		}
+	public class GroupsConfigFactoryTests {
 		 
 	}
 }

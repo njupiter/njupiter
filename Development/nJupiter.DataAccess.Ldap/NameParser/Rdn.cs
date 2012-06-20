@@ -31,17 +31,17 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 	// based on http://www.codeproject.com/KB/IP/dnparser.aspx?msg=1758400 by by (C) 2005 Pete Everett (pete@CynicalPirate.com)
 	// Code will be cleaned up later
-	internal sealed class Rdn {
+	internal sealed class Rdn : IRdn {
 
 		private enum ParserState { DetermineAttributeType, GetTypeByOId, GetTypeByName, DetermineValueType, GetQuotedValue, GetUnquotedValue, GetHexValue };
 
-		private readonly List<RdnComponent> components;
+		private readonly List<IRdnComponent> components;
 
 		internal Rdn(string rdnString) {
-			this.components = ParseRdn(rdnString);
+			components = ParseRdn(rdnString);
 		}
 
-		public List<RdnComponent> Components {
+		public List<IRdnComponent> Components {
 			get {
 				return components;
 			}
@@ -51,10 +51,10 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			return ToString(Dn.DefaultEscapeChars);
 		}
 
-		public string ToString(Dn.EscapeChars escapeChars) {
-			StringBuilder returnValue = new StringBuilder();
+		public string ToString(EscapeChars escapeChars) {
+			var returnValue = new StringBuilder();
 
-			foreach(RdnComponent component in components) {
+			foreach(var component in components) {
 				returnValue.Append(component.ToString(escapeChars));
 				returnValue.Append("+");
 			}
@@ -68,25 +68,25 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 
 		private static void WriteUtf8Bytes(Stream s, char c) {
-			char[] charArray = new char[1];
+			var charArray = new char[1];
 			charArray[0] = c;
 
-			byte[] utf8Bytes = Encoding.UTF8.GetBytes(charArray);
+			var utf8Bytes = Encoding.UTF8.GetBytes(charArray);
 
 			s.Write(utf8Bytes, 0, utf8Bytes.Length);
 		}
 
 
-		private static List<RdnComponent> ParseRdn(string rdnString) {
-			List<string> rawTypes = new List<string>();
-			List<string> rawValues = new List<string>();
-			List<RdnComponent.RdnValueType> rawValueTypes = new List<RdnComponent.RdnValueType>();
+		private static List<IRdnComponent> ParseRdn(string rdnString) {
+			var rawTypes = new List<string>();
+			var rawValues = new List<string>();
+			var rawValueTypes = new List<RdnComponent.RdnValueType>();
 
-			MemoryStream rawData = new MemoryStream();
+			var rawData = new MemoryStream();
 
-			ParserState state = ParserState.DetermineAttributeType;
+			var state = ParserState.DetermineAttributeType;
 
-			int position = 0;
+			var position = 0;
 
 			while(position < rdnString.Length) {
 				switch(state) {
@@ -108,7 +108,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 					# region Are we looking at a letter?
 
 					if(IsAlpha(rdnString[position])) {
-						string startPoint = rdnString.Substring(position);
+						var startPoint = rdnString.Substring(position);
 
 						// OID. is an optional string at the beginning of an object identifier.
 						// if we find it, we ignore it, but we assume that the rest of the type
@@ -131,7 +131,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 					# region If not, are we looking at a digit?
 
- else if(IsDigit(rdnString[position])) {
+					else if(IsDigit(rdnString[position])) {
 						// If we're looking at a digit, that means we're looking at an OID.
 						// We'll set the state to GetTypeByOId.
 						state = ParserState.GetTypeByOId;
@@ -141,7 +141,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 					# region If not, we're looking at something that shouldn't be there.
 
- else {
+					else {
 						// If it's not a letter or a digit, then it's a wacky and invalid character,
 						// and we'd do well to freak out.
 						throw new ArgumentException("Invalid Rdn: Invalid character in attribute name", rdnString);
@@ -257,7 +257,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 						if(rdnString[position] == '=') {
 							position++;
 
-							string oid = Encoding.UTF8.GetString(rawData.ToArray());
+							var oid = Encoding.UTF8.GetString(rawData.ToArray());
 
 							# region OIDs aren't allowed to end with a period
 
@@ -282,9 +282,9 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 							// "12.3.4.2".  If we see a leading zero, we don't just ignore it.
 							// We complain about it.  LOUDLY.
 
-							string[] oidPieces = oid.Split('.');
+							var oidPieces = oid.Split('.');
 
-							foreach(string oidPiece in oidPieces) {
+							foreach(var oidPiece in oidPieces) {
 								if(oidPiece.Length > 1 && oidPiece[0] == '0')
 									throw new ArgumentException("Invalid Rdn: OIDs cannot have a leading zero", rdnString);
 							}
@@ -509,7 +509,7 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 
 					# region Read all characters, keeping track of trailing spaces
 
-					int trailingSpaces = 0;
+					var trailingSpaces = 0;
 
 					while(position < rdnString.Length && rdnString[position] != '+') {
 						if(rdnString[position] == ' ') {
@@ -596,10 +596,10 @@ namespace nJupiter.DataAccess.Ldap.NameParser {
 			# endregion
 
 			# region Store the results we've collected
-			List<RdnComponent> result = new List<RdnComponent>();
+			var result = new List<IRdnComponent>();
 
-			for(int i = 0; i < rawTypes.Count; i++) {
-				RdnComponent rdnComponent = new RdnComponent(rawTypes[i], rawValues[i], rawValueTypes[i]);
+			for(var i = 0; i < rawTypes.Count; i++) {
+				var rdnComponent = new RdnComponent(rawTypes[i], rawValues[i], rawValueTypes[i]);
 				result.Add(rdnComponent);
 			}
 

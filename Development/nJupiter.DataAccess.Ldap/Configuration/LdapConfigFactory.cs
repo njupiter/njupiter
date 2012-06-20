@@ -1,10 +1,33 @@
+#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
 using System.Collections.Generic;
 
 using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal class LdapConfigFactory {
-
+	internal class LdapConfigFactory : ILdapConfigFactory {
 		private readonly Dictionary<string, ILdapConfig> Configurations = new Dictionary<string, ILdapConfig>();
 		private readonly object Padlock = new object();
 
@@ -13,7 +36,10 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private readonly IUsersConfigFactory usersConfigFactory;
 		private readonly IGroupConfigFactory groupsConfigFactory;
 
-		public LdapConfigFactory(IConfigRepository configRepository, IServerConfigFactory serverConfigFactory, IUsersConfigFactory usersConfigFactory, IGroupConfigFactory groupsConfigFactory) {
+		public LdapConfigFactory(IConfigRepository configRepository,
+		                         IServerConfigFactory serverConfigFactory,
+		                         IUsersConfigFactory usersConfigFactory,
+		                         IGroupConfigFactory groupsConfigFactory) {
 			this.configRepository = configRepository;
 			this.serverConfigFactory = serverConfigFactory;
 			this.usersConfigFactory = usersConfigFactory;
@@ -28,27 +54,29 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			if(!Configurations.ContainsKey(ldapServer)) {
 				lock(Padlock) {
 					if(!Configurations.ContainsKey(ldapServer)) {
-						Configurations.Add(ldapServer, new LdapConfig(ldapServer, configRepository, serverConfigFactory, usersConfigFactory, groupsConfigFactory));
+						Configurations.Add(ldapServer,
+						                   new LdapConfig(ldapServer,
+						                                  configRepository,
+						                                  serverConfigFactory,
+						                                  usersConfigFactory,
+						                                  groupsConfigFactory));
 					}
 				}
 			}
 			return Configurations[ldapServer];
 		}
 
+		public static ILdapConfigFactory Instance { get { return NestedSingleton.instance; } }
 
-		public static LdapConfigFactory Instance { get { return NestedSingleton.instance; } }
-		// thread safe Singleton implementation with fully lazy instantiation and with full performance
-		private sealed class NestedSingleton {
-			// ReSharper disable EmptyConstructor
-			static NestedSingleton() {} // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
-			// ReSharper restore EmptyConstructor
-			internal static readonly LdapConfigFactory instance = new LdapConfigFactory(
-																							ConfigRepository.Instance,
-																							new ServerConfigFactory(),
-																							new UsersConfigFactory(),
-																							new GroupsConfigFactory()
-																						);
+		private static class NestedSingleton {
+			static NestedSingleton() {}
+
+			internal static readonly ILdapConfigFactory instance = new LdapConfigFactory(
+				ConfigRepository.Instance,
+				new ServerConfigFactory(),
+				new UsersConfigFactory(),
+				new GroupsConfigFactory()
+				);
 		}
-
 	}
 }

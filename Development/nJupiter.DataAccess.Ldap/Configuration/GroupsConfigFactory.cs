@@ -1,3 +1,27 @@
+#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
 using System;
 using System.Collections.Generic;
 
@@ -11,24 +35,40 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			if(configSection == null) {
 				return groups;
 			}
+
+			SetFilter(configSection, groups);
+			SetBase(configSection, groups);
+			SetRdnAttribute(configSection, groups);
+			SetAttributeDefinitionList(configSection, groups);
+			SetMembershipAttribute(configSection, groups);
+			SetMembershipAttributeNameType(configSection, groups);
+			SetNameType(configSection, groups);
+			SetPath(configSection, groups);
+
+			return groups;
+		}
+
+		private static void SetFilter(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "filter")) {
 				groups.Filter = configSection.GetValue("groups", "filter");
-			} else {
-				groups.Filter = "(objectClass=groupOfNames)";
 			}
+		}
 
+		private static void SetBase(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "base")) {
 				groups.Base = configSection.GetValue("groups", "base");
 			}
+		}
 
+		private static void SetRdnAttribute(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "rdnAttribute")) {
 				groups.RdnAttribute = configSection.GetValue("groups", "rdnAttribute");
-			} else {
-				groups.RdnAttribute = "cn";
 			}
+		}
 
-			var groupAttributeDefinitionList = new List<IAttributeDefinition>();
+		private static void SetAttributeDefinitionList(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "attributes")) {
+				var groupAttributeDefinitionList = new List<IAttributeDefinition>();
 				var attributes = configSection.GetValueArray("groups/attributes", "attribute");
 				foreach(var attribute in attributes) {
 					var excludeFromNameSearch = false;
@@ -39,40 +79,36 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 					var attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
 					groupAttributeDefinitionList.Add(attributeDefinition);
 				}
-			} else {
-				var attributeDefinition = new AttributeDefinition("cn");
-				groupAttributeDefinitionList.Add(attributeDefinition);
+				groups.Attributes = groupAttributeDefinitionList;
 			}
-			groups.Attributes = groupAttributeDefinitionList;
+		}
 
-			if(configSection.ContainsKey("groups", "membershipAttribute")) {
-				groups.MembershipAttribute = configSection.GetValue("groups", "membershipAttribute");
-			} else {
-				groups.MembershipAttribute = "groupMembership";
-			}
-
+		private static void SetMembershipAttributeNameType(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "membershipAttributeNameType")) {
 				var nameType = configSection.GetValue("groups", "membershipAttributeNameType");
 				groups.MembershipAttributeNameType = (NameType)Enum.Parse(typeof(NameType), nameType, true);
-			} else {
-				groups.MembershipAttributeNameType = NameType.Cn;
 			}
+		}
 
+		private static void SetMembershipAttribute(IConfig configSection, GroupsConfig groups) {
+			if(configSection.ContainsKey("groups", "membershipAttribute")) {
+				groups.MembershipAttribute = configSection.GetValue("groups", "membershipAttribute");
+			}
+		}
+
+		private static void SetNameType(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "nameType")) {
 				var nameType = configSection.GetValue("groups", "nameType");
 				groups.NameType = (NameType)Enum.Parse(typeof(NameType), nameType, true);
-			} else {
-				groups.NameType = NameType.Cn;
 			}
+		}
 
-
+		private static void SetPath(IConfig configSection, GroupsConfig groups) {
 			var groupUri = new Uri(configSection.GetValue("url"));
 			if(!String.IsNullOrEmpty(groups.Base)) {
 				groupUri = new Uri(groupUri, groups.Base);
 			}
 			groups.Path = LdapPathHandler.UriToPath(groupUri);
-
-			return groups;
 		}
 	}
 }

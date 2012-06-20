@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 
 using nJupiter.DataAccess.Ldap.Configuration;
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class SearcherFactory : ISearcherFactory {

@@ -26,7 +26,7 @@ using System;
 using System.Configuration.Provider;
 
 using nJupiter.DataAccess.Ldap.Configuration;
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions;
+using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.NameParser;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
@@ -58,6 +58,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, Func<IEntry, IDirectorySearcher> searcherFactory) {
 			IDirectoryEntry directoryEntry = null;
+			if(attributeValue == null) {
+				return null;
+			}
 
 			var dn = nameParser.GetDnObject(attributeValue);
 			if(dn != null && dn.Rdns.Count > 1) {

@@ -4,6 +4,8 @@ using System.Web.Security;
 
 namespace nJupiter.DataAccess.Ldap {
 	public class LdapMembershipUser : MembershipUser {
+		internal LdapMembershipUser() {}
+
 		internal LdapMembershipUser(string providerName,
 									string name,
 									object providerUserKey,
@@ -18,8 +20,7 @@ namespace nJupiter.DataAccess.Ldap {
 									DateTime lastPasswordChangedDate,
 									DateTime lastLockoutDate,
 									IDictionary propertyCollection,
-									string path
-									)
+									string path)
 									: base(providerName,
 											name,
 											providerUserKey,
@@ -37,16 +38,16 @@ namespace nJupiter.DataAccess.Ldap {
 			this.path = path;
 		}
 
-		private readonly AttributeCollection attributes;
+		private readonly IAttributeCollection attributes;
 		private readonly string path;
 
-		public AttributeCollection Attributes {
+		public virtual IAttributeCollection Attributes {
 			get {
 				return attributes;
 			}
 		}
 
-		public string Path {
+		public virtual string Path {
 			get {
 				return path;
 			}

@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.DirectoryServices;
 using System.Runtime.Remoting;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
+namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 	internal interface IDirectorySearcher {
 		bool Asynchronous { get; set; }
 		string AttributeScopeQuery { get; set; }
@@ -36,7 +36,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstractions {
 		object GetLifetimeService();
 		object InitializeLifetimeService();
 		IEnumerable<T> GetPropertiesByRangedFilter<T>(string propertyName);
-		IEntityCollection FindAll();
+		IEntryCollection FindAll();
 		IEntry FindOne();
 		IEntry FindOne(string propertyToLoad);
 	}
