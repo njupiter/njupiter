@@ -33,7 +33,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			RdnAttribute = "cn";
 			Attributes = new List<IAttributeDefinition>();
 			Attributes.Add(new AttributeDefinition("cn"));
-			MembershipAttribute = "groupMembership";
+			MembershipAttribute = "member";
 			MembershipAttributeNameType = NameType.Cn;
 			NameType = NameType.Cn;
 		}

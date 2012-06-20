@@ -34,6 +34,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			RdnAttribute = "cn";
 			Attributes = new List<IAttributeDefinition>();
 			Attributes.Add(new AttributeDefinition("cn"));
+			MembershipAttribute = "memberOf";
 			EmailAttribute = "mail";
 			NameType = NameType.Cn;
 		}

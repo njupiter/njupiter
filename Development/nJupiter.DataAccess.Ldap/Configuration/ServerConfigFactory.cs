@@ -32,7 +32,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public IServerConfig Create(IConfig configSection) {
 			var server = new ServerConfig();
 			if(configSection == null) {
-				return server;
+				throw new ArgumentNullException("configSection");
 			}
 
 			SetUrl(configSection, server);
@@ -41,9 +41,9 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetAllowWildcardSearch(configSection, server);
 			SetTimeLimit(configSection, server); 
 			SetPageSize(configSection, server);
-			SetAuthenticationTypes(configSection, server);
 			SetRangeRetrievalSupport(configSection, server);
 			SetPropertySortingSupport(configSection, server);
+			SetAuthenticationTypes(configSection, server);
 
 			return server;
 		}
@@ -84,16 +84,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			}
 		}
 
-		private static void SetAuthenticationTypes(IConfig configSection, ServerConfig server) {
-			if(configSection.ContainsKey("authenticationTypes")) {
-				var authenticationTypes = configSection.GetValueArray("authenticationTypes", "authenticationType");
-				foreach(var authenticationType in authenticationTypes) {
-					server.AuthenticationTypes |=
-						(AuthenticationTypes)Enum.Parse(typeof(AuthenticationTypes), authenticationType, true);
-				}
-			}
-		}
-
 		private static void SetRangeRetrievalSupport(IConfig configSection, ServerConfig server) {
 			if(configSection.ContainsKey("rangeRetrievalSupport")) {
 				server.RangeRetrievalSupport = configSection.GetValue<bool>("rangeRetrievalSupport");
@@ -103,6 +93,16 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private static void SetPropertySortingSupport(IConfig configSection, ServerConfig server) {
 			if(configSection.ContainsKey("propertySortingSupport")) {
 				server.PropertySortingSupport = configSection.GetValue<bool>("propertySortingSupport");
+			}
+		}
+
+		private static void SetAuthenticationTypes(IConfig configSection, ServerConfig server) {
+			if(configSection.ContainsKey("authenticationTypes")) {
+				var authenticationTypes = configSection.GetValueArray("authenticationTypes", "authenticationType");
+				foreach(var authenticationType in authenticationTypes) {
+					server.AuthenticationTypes |=
+						(AuthenticationTypes)Enum.Parse(typeof(AuthenticationTypes), authenticationType, true);
+				}
 			}
 		}
 	}

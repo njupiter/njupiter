@@ -33,17 +33,17 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public IGroupsConfig Create(IConfig configSection) {
 			var groups = new GroupsConfig();
 			if(configSection == null) {
-				return groups;
+				throw new ArgumentNullException("configSection");
 			}
 
 			SetFilter(configSection, groups);
 			SetBase(configSection, groups);
 			SetRdnAttribute(configSection, groups);
-			SetAttributeDefinitionList(configSection, groups);
 			SetMembershipAttribute(configSection, groups);
 			SetMembershipAttributeNameType(configSection, groups);
 			SetNameType(configSection, groups);
 			SetPath(configSection, groups);
+			SetAttributeDefinitionList(configSection, groups);
 
 			return groups;
 		}
@@ -63,23 +63,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private static void SetRdnAttribute(IConfig configSection, GroupsConfig groups) {
 			if(configSection.ContainsKey("groups", "rdnAttribute")) {
 				groups.RdnAttribute = configSection.GetValue("groups", "rdnAttribute");
-			}
-		}
-
-		private static void SetAttributeDefinitionList(IConfig configSection, GroupsConfig groups) {
-			if(configSection.ContainsKey("groups", "attributes")) {
-				var groupAttributeDefinitionList = new List<IAttributeDefinition>();
-				var attributes = configSection.GetValueArray("groups/attributes", "attribute");
-				foreach(var attribute in attributes) {
-					var excludeFromNameSearch = false;
-					var attributeKey = String.Format("groups/attributes/attribute[@value='{0}']", attribute);
-					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
-						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
-					}
-					var attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
-					groupAttributeDefinitionList.Add(attributeDefinition);
-				}
-				groups.Attributes = groupAttributeDefinitionList;
 			}
 		}
 
@@ -109,6 +92,23 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 				groupUri = new Uri(groupUri, groups.Base);
 			}
 			groups.Path = LdapPathHandler.UriToPath(groupUri);
+		}
+
+		private static void SetAttributeDefinitionList(IConfig configSection, GroupsConfig groups) {
+			if(configSection.ContainsKey("groups", "attributes")) {
+				var groupAttributeDefinitionList = new List<IAttributeDefinition>();
+				var attributes = configSection.GetValueArray("groups/attributes", "attribute");
+				foreach(var attribute in attributes) {
+					var excludeFromNameSearch = false;
+					var attributeKey = String.Format("groups/attributes/attribute[@value='{0}']", attribute);
+					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
+						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
+					}
+					var attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
+					groupAttributeDefinitionList.Add(attributeDefinition);
+				}
+				groups.Attributes = groupAttributeDefinitionList;
+			}
 		}
 	}
 }

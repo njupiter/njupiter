@@ -33,7 +33,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public IUsersConfig Create(IConfig configSection) {
 			var users = new UsersConfig();
 			if(configSection == null) {
-				return users;
+				throw new ArgumentNullException("configSection");
 			}
 
 			SetFilter(configSection, users);

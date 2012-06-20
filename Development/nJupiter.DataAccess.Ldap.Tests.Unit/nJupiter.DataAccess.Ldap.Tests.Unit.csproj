@@ -66,6 +66,7 @@
     <Compile Include="AttributeValueCollectionTests.cs" />
     <Compile Include="Configuration\ContainerTests.cs" />
     <Compile Include="Configuration\GroupsConfigFactoryTests.cs" />
+    <Compile Include="Configuration\ServerConfigFactoryTests.cs" />
     <Compile Include="DirectoryServices\Abstraction\PropertyValueParserTests.cs" />
     <Compile Include="LdapMembershipProviderTests.cs" />
     <Compile Include="LdapMembershipUserFactoryTests.cs" />
