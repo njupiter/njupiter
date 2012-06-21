@@ -54,18 +54,18 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public IEntry GetGroupEntry(string groupname) {
-			return directoryEntryAdapter.GetEntry(groupname, groupConfig, CreateSearcher);
+			return directoryEntryAdapter.GetEntry(groupname, Config, CreateSearcher);
 		}
 
 		public IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
 			using(var entry = GetGroupEntry(name)) {
 				var searcher = GetGroupSearcher(entry, SearchScope.Base);
-				return searcher.GetPropertiesByRangedFilter<string>(groupConfig.MembershipAttribute);
+				return searcher.GetPropertiesByRangedFilter<string>(Config.MembershipAttribute);
 			}
 		}
 
 		public IEntryCollection GetAllRoleEntries() {
-			using(var entry = directoryEntryAdapter.GetEntry(groupConfig.Path)) {
+			using(var entry = directoryEntryAdapter.GetEntry(Config.Path)) {
 				if(!entry.IsBound()) {
 					throw new ProviderException("Could not load role list.");
 				}
@@ -75,18 +75,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string GetGroupName(IEntry entry) {
-			var name = entry.GetProperties<string>(groupConfig.RdnAttribute).First();
+			var name = entry.GetProperties<string>(Config.RdnAttribute).First();
 			return GetGroupName(name);
 		}
 
 		public string GetGroupName(string entryName) {
-			return nameParser.GetName(groupConfig.NameType, entryName);
-		}
-
-		private IDirectorySearcher GetGroupSearcher(IEntry entry, SearchScope searchScope) {
-			var searcher = CreateSearcher(entry, searchScope);
-			searcher.Filter = groupConfig.Filter;
-			return searcher;
+			return nameParser.GetName(Config.NameType, entryName);
 		}
 
 		private IEntry GetSearchedGroupEntry(IEntry entry) {
@@ -94,7 +88,14 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				return null;
 			}
 			var searcher = GetGroupSearcher(entry, SearchScope.Base);
-			return searcher.FindOne(groupConfig.MembershipAttribute);
+			return searcher.FindOne(Config.MembershipAttribute);
 		}
+
+		private IDirectorySearcher GetGroupSearcher(IEntry entry, SearchScope searchScope) {
+			var searcher = CreateSearcher(entry, searchScope);
+			searcher.Filter = Config.Filter;
+			return searcher;
+		}
+
 	}
 }

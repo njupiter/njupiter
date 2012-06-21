@@ -147,8 +147,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		private string CreateUserEmailFilter(string emailToMatch) {
-			var userFilter = configuration.Users.Filter;
-			return filterBuilder.AttachFilter(configuration.Users.EmailAttribute, emailToMatch, userFilter);
+			return filterBuilder.AttachFilter(configuration.Users.EmailAttribute, emailToMatch, configuration.Users.Filter);
 		}
 
 		private string CreateUserNameFilter(string usernameToMatch) {

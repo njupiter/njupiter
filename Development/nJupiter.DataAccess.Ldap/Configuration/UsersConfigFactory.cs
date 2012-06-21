@@ -23,7 +23,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 using nJupiter.Configuration;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
