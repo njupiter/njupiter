@@ -123,7 +123,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		[Test]
 		public void Create_AttributeDefinitionListWithOneAttributeDefiendedInConfig_AttributeContainsOneAttributeWithCorrectName() {
 			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='attributeName'/></attributes></groups>");
-			Assert.AreEqual("attributeName", config.Attributes.First().Name);
+			Assert.IsTrue(config.Attributes.Any(a => a.Name == "attributeName"));
 		}
 
 		[Test]
@@ -135,19 +135,51 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		[Test]
 		public void Create_AttributeDefinitionListWithOneAttributeDefiendedInConfig_AttributeContainsOneAttributeThatIsNotExcludedFromSearch() {
 			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='attributeName' /></attributes></groups>");
-			Assert.IsFalse(config.Attributes.First().ExcludeFromNameSearch);
+			Assert.IsFalse(config.Attributes.First(a => a.Name == "attributeName").ExcludeFromNameSearch);
 		}
 
 		[Test]
-		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeContainsTwoAttributes() {
+		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeContainsTwoAttributesPlusDefaultAttributes() {
+			const int defaultNumberOfAttributes = 1;
 			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></groups>");
-			Assert.AreEqual(2, config.Attributes.Count);
+			Assert.AreEqual(2 + defaultNumberOfAttributes, config.Attributes.Count);
 		}
 
 		[Test]
-		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsOneDefaultAttribute() {
+		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeContainsMemberattributeEvenWhenCustomAttributesAreDefinedButItIsExcludedFromSearch() {
+			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></groups>");
+			Assert.IsTrue(config.Attributes.Any(c => c.Name == "member" && c.ExcludeFromNameSearch));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeDoesNotContainsCnWhenCustomAttributesAreDefined() {
+			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></groups>");
+			Assert.IsFalse(config.Attributes.Any(c => c.Name == "cn"));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWithMembershipAttribute_OnlyOneAttributeDefinitionInList() {
+			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='member'/></attributes></groups>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "member"));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWithMembershipAttributeNotExcludeFromNameSearch_OneAttributeDefinitionInListThatIsNotExcludedFromSearch() {
+			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='member'/></attributes></groups>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "member" && !c.ExcludeFromNameSearch));
+		}
+
+		[Test]
+		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsOneDefaultAttributePlusDefaultAttributes() {
+			const int defaultNumberOfAttributes = 1;
 			var config = CreateGroupConfigWithServerConfig();
-			Assert.AreEqual(1, config.Attributes.Count);
+			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count);
+		}
+
+		[Test]
+		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsMemberattributeButItIsExcludedFromSearch() {
+			var config = CreateGroupConfigWithServerConfig();
+			Assert.IsTrue(config.Attributes.Any(c => c.Name == "member" && c.ExcludeFromNameSearch));
 		}
 
 		[Test]

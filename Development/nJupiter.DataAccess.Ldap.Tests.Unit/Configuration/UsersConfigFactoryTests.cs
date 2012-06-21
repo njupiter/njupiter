@@ -172,7 +172,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 			Create_AttributeDefinitionListWithOneAttributeDefiendedInConfig_AttributeContainsOneAttributeWithCorrectName() {
 			var config =
 				CreateUserConfigWithServerConfig("<users><attributes><attribute value='attributeName'/></attributes></users>");
-			Assert.AreEqual("attributeName", config.Attributes.First().Name);
+			Assert.IsTrue(config.Attributes.Any(a => a.Name == "attributeName"));
 		}
 
 		[Test]
@@ -191,27 +191,98 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 			() {
 			var config =
 				CreateUserConfigWithServerConfig("<users><attributes><attribute value='attributeName' /></attributes></users>");
-			Assert.IsFalse(config.Attributes.First().ExcludeFromNameSearch);
+			Assert.IsFalse(config.Attributes.First(a => a.Name == "attributeName").ExcludeFromNameSearch);
 		}
 
 		[Test]
 		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeContainsTwoAttributes() {
+			const int defaultNumberOfAttributes = 2;
 			var config =
 				CreateUserConfigWithServerConfig(
 				                                 "<users><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></users>");
-			Assert.AreEqual(2, config.Attributes.Count);
+			Assert.AreEqual(2 + defaultNumberOfAttributes, config.Attributes.Count);
 		}
 
 		[Test]
 		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsOneDefaultAttribute() {
+			const int defaultNumberOfAttributes = 2;
 			var config = CreateUserConfigWithServerConfig();
-			Assert.AreEqual(1, config.Attributes.Count);
+			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count);
 		}
 
 		[Test]
 		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsCnAttributeByDefault() {
 			var config = CreateUserConfigWithServerConfig();
 			Assert.IsTrue(config.Attributes.Any(c => c.Name == "cn"));
+		}
+
+
+		[Test]
+		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsMemberattributeButItIsExcludedFromSearch() {
+			var config = CreateUserConfigWithServerConfig();
+			Assert.IsTrue(config.Attributes.Any(c => c.Name == "memberOf" && c.ExcludeFromNameSearch));
+		}
+
+		[Test]
+		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsEmailButItIsExcludedFromSearch() {
+			var config = CreateUserConfigWithServerConfig();
+			Assert.IsTrue(config.Attributes.Any(c => c.Name == "mail" && c.ExcludeFromNameSearch));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeDoesNotContainsCnWhenCustomAttributesAreDefined() {
+			var config = CreateUserConfigWithServerConfig("<users><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></users>");
+			Assert.IsFalse(config.Attributes.Any(c => c.Name == "cn"));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWithMembershipAttribute_OnlyOneAttributeDefinitionInList() {
+			var config = CreateUserConfigWithServerConfig("<users><attributes><attribute value='memberOf'/></attributes></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "memberOf"));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWitEmailAttribute_OnlyOneAttributeDefinitionInList() {
+			var config = CreateUserConfigWithServerConfig("<users><attributes><attribute value='mail'/></attributes></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "mail"));
+		}
+
+
+		[Test]
+		public void Create_AttributeDefinitionListWithMembershipAttributeNotExcludeFromNameSearch_OneAttributeDefinitionInListThatIsNotExcludedFromSearch() {
+			var config = CreateUserConfigWithServerConfig("<users><attributes><attribute value='memberOf'/></attributes></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "memberOf" && !c.ExcludeFromNameSearch));
+		}
+
+		[Test]
+		public void Create_AttributeDefinitionListWithEmailAttributeNotExcludeFromNameSearch_OneAttributeDefinitionInListThatIsNotExcludedFromSearch() {
+			var config = CreateUserConfigWithServerConfig("<users><attributes><attribute value='mail'/></attributes></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "mail" && !c.ExcludeFromNameSearch));
+		}
+
+
+		[Test]
+		public void Create_CreationDateAttributeDefiend_AddedToAttributesCollection() {
+			var config = CreateUserConfigWithServerConfig("<users><creationDateAttribute value='creationDate' /></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "creationDate"));
+		}
+
+		[Test]
+		public void Create_LastLoginDateAttributeDefiend_AddedToAttributesCollection() {
+			var config = CreateUserConfigWithServerConfig("<users><lastLoginDateAttribute value='lastLoginDate' /></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "lastLoginDate"));
+		}
+
+		[Test]
+		public void Create_LastPasswordChangedDateAttributeDefiend_AddedToAttributesCollection() {
+			var config = CreateUserConfigWithServerConfig("<users><lastPasswordChangedDateAttribute value='lastPasswordChangedDate' /></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "lastPasswordChangedDate"));
+		}
+
+		[Test]
+		public void Create_DescriptionAttributeAttributeDefiend_AddedToAttributesCollection() {
+			var config = CreateUserConfigWithServerConfig("<users><descriptionAttribute value='description' /></users>");
+			Assert.AreEqual(1, config.Attributes.Count(c => c.Name == "description"));
 		}
 
 		[Test]

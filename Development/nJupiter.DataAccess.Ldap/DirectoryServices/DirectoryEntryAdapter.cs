@@ -56,7 +56,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return GetEntry(path, username, password);
 		}
 
-		public IDirectoryEntry GetEntry(string attribute, string attributeValue, string path, string defaultFilter, Func<IEntry, IDirectorySearcher> searcherFactory) {
+		public IDirectoryEntry GetEntry(string attributeValue, IEntryConfig entryConfig, Func<IEntry, IDirectorySearcher> searcherFactory) {
 			IDirectoryEntry directoryEntry = null;
 			if(attributeValue == null) {
 				return null;
@@ -65,14 +65,14 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			var dn = nameParser.GetDnObject(attributeValue);
 			var dnValue = dn != null;
 			if(dnValue && dn.Rdns.Count > 1) {
-				var uri = new Uri(new Uri(path), dn.ToString());
+				var uri = new Uri(new Uri(entryConfig.Path), dn.ToString());
 				return GetEntry(uri, serverConfig.Username, serverConfig.Password);
 			}
 
-			var entry = GetEntry(path);
+			var entry = GetEntry(entryConfig.Path);
 			if(entry.IsBound()) {
 				var directorySearcher = searcherFactory(entry);
-				directorySearcher.Filter = CreateFilter(dnValue, attribute, attributeValue, defaultFilter);
+				directorySearcher.Filter = CreateFilter(dnValue, entryConfig.RdnAttribute, attributeValue, entryConfig.Filter);
 				directoryEntry = GetEntry(directorySearcher);
 			}
 			return directoryEntry;

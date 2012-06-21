@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="AttributeCollection.cs" />
     <Compile Include="AttributeDefinition.cs" />
+    <Compile Include="AttributeDefinitionExtensions.cs" />
     <Compile Include="AttributeValueCollection.cs" />
     <Compile Include="Configuration\Container.cs" />
     <Compile Include="Configuration\IContainer.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Configuration\IGroupsConfig.cs" />
     <Compile Include="Configuration\ILdapConfig.cs" />
     <Compile Include="Configuration\ILdapConfigFactory.cs" />
+    <Compile Include="Configuration\IEntryConfig.cs" />
     <Compile Include="Configuration\IProviderConfigFactory.cs" />
     <Compile Include="Configuration\IServerConfig.cs" />
     <Compile Include="Configuration\IServerConfigFactory.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="DirectoryServices\Abstraction\SearchResultExtensions.cs" />
     <Compile Include="DirectoryServices\Abstraction\SearchResultFacade.cs" />
     <Compile Include="DirectoryServices\DirectoryEntryAdapter.cs" />
+    <Compile Include="DirectoryServices\EntryAdapterBase.cs" />
     <Compile Include="DirectoryServices\EntryCollection.cs" />
     <Compile Include="DirectoryServices\EntryExtensions.cs" />
     <Compile Include="DirectoryServices\FilterBuilder.cs" />

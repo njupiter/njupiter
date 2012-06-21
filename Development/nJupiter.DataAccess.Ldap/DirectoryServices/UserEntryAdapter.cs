@@ -1,3 +1,27 @@
+#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -8,24 +32,24 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class UserEntryAdapter : IUserEntryAdapter {
+	internal class UserEntryAdapter : EntryAdapterBase, IUserEntryAdapter {
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly ILdapConfig configuration;
 		private readonly INameParser nameHandler;
-		private readonly ISearcherFactory searcherFactory;
 		private readonly IFilterBuilder filterBuilder;
 
-		public UserEntryAdapter(	ILdapConfig configuration,
-									IDirectoryEntryAdapter directoryEntryAdapter,
-									ISearcherFactory searcherFactory,
-									IFilterBuilder filterBuilder,
-									INameParser nameHandler) {
+		public UserEntryAdapter(ILdapConfig configuration,
+		                        IDirectoryEntryAdapter directoryEntryAdapter,
+		                        ISearcherFactory searcherFactory,
+		                        IFilterBuilder filterBuilder,
+		                        INameParser nameHandler) : base(searcherFactory) {
 			this.configuration = configuration;
 			this.directoryEntryAdapter = directoryEntryAdapter;
 			this.nameHandler = nameHandler;
-			this.searcherFactory = searcherFactory;
 			this.filterBuilder = filterBuilder;
 		}
+
+		protected override IEntryConfig Config { get { return configuration.Users; } }
 
 		public IEntry GetUserEntry(string username) {
 			return GetUserEntry(username, false);
@@ -50,9 +74,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string GetUserName(string entryName) {
-			if(	configuration.Groups.MembershipAttributeNameType != configuration.Users.NameType) {
+			if(configuration.Groups.MembershipAttributeNameType != configuration.Users.NameType) {
 				using(var entry = GetUserDirectoryEntry(entryName)) {
-					entryName = entry.GetProperties<string>(configuration.Users	.RdnAttribute).First();
+					entryName = entry.GetProperties<string>(configuration.Users.RdnAttribute).First();
 				}
 			}
 			return nameHandler.GetName(configuration.Users.NameType, entryName);
@@ -64,8 +88,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		private IDirectoryEntry GetUserDirectoryEntry(string username) {
-			var userFilter = configuration.Users.Filter;
-			return directoryEntryAdapter.GetEntry(configuration.Users.RdnAttribute, username, configuration.Users.Path, userFilter, CreateSearcher);
+			return directoryEntryAdapter.GetEntry(username, configuration.Users, CreateSearcher);
 		}
 
 		public IEntry GetUserEntry(string username, string password) {
@@ -131,40 +154,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		private string CreateUserNameFilter(string usernameToMatch) {
 			var defaultFilter = configuration.Users.Filter;
 			if(configuration.Users.Attributes.Count > 0) {
-				return filterBuilder.AttachAttributeFilters(usernameToMatch, defaultFilter, configuration.Users.RdnAttribute, configuration.Users.Attributes);
+				return filterBuilder.AttachAttributeFilters(usernameToMatch,
+				                                            defaultFilter,
+				                                            configuration.Users.RdnAttribute,
+				                                            configuration.Users.Attributes);
 			}
 			return filterBuilder.AttachFilter(configuration.Users.RdnAttribute, usernameToMatch, defaultFilter);
 		}
-
-		private IDirectorySearcher CreateSearcher(IEntry entry) {
-			return CreateSearcher(entry, SearchScope.Subtree);
-		}
-
-		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
-
-			var searcher = searcherFactory.CreateSearcher(entry, searchScope, configuration.Users.RdnAttribute, configuration.Users.Attributes);
-
-			searcher.PropertiesToLoad.Add(configuration.Users.EmailAttribute);
-
-			if(!string.IsNullOrEmpty(configuration.Users.CreationDateAttribute)) {
-				searcher.PropertiesToLoad.Add(configuration.Users.CreationDateAttribute);
-			}
-			if(!string.IsNullOrEmpty(configuration.Users.LastLoginDateAttribute)) {
-				searcher.PropertiesToLoad.Add(configuration.Users.LastLoginDateAttribute);
-			}
-			if(!string.IsNullOrEmpty(configuration.Users.LastPasswordChangedDateAttribute)) {
-				searcher.PropertiesToLoad.Add(configuration.Users.LastPasswordChangedDateAttribute);
-			}
-			if(!string.IsNullOrEmpty(configuration.Users.DescriptionAttribute)) {
-				searcher.PropertiesToLoad.Add(configuration.Users.DescriptionAttribute);
-			}
-
-			if(!string.IsNullOrEmpty(configuration.Users.MembershipAttribute)) {
-				searcher.PropertiesToLoad.Add(configuration.Users.MembershipAttribute);
-			}
-			return searcher;
-		}
-
-		
 	}
 }

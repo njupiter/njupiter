@@ -72,6 +72,7 @@
     <Compile Include="Configuration\ServerConfigFactoryTests.cs" />
     <Compile Include="Configuration\UsersConfigFactoryTests.cs" />
     <Compile Include="DirectoryServices\DirectoryEntryAdapterTests.cs" />
+    <Compile Include="DirectoryServices\GroupEntryAdapterTests.cs" />
     <Compile Include="DirectoryServices\PropertyValueParserTests.cs" />
     <Compile Include="LdapMembershipProviderTests.cs" />
     <Compile Include="LdapMembershipUserFactoryTests.cs" />

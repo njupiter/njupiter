@@ -108,12 +108,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		private IEnumerable<string> GetRolesForUserWithoutMembershipAttribute(string username) {
-			var allRoles = GetAllRoles();
-			foreach(var role in allRoles) {
-				if(GetUsersInRole(role).Contains(username)) {
-					yield return role;
-				}
-			}
+			return GetAllRoles().Where(role => GetUsersInRole(role).Contains(username));
 		}
 
 		private IEnumerable<string> GetRoleNamesFromEntry(IEntry entry) {

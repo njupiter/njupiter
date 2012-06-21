@@ -22,7 +22,6 @@
 */
 #endregion
 
-using System.Collections.Generic;
 using System.DirectoryServices;
 
 using nJupiter.DataAccess.Ldap.Configuration;
@@ -40,11 +39,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			this.filterBuilder = filterBuilder;
 		}
 
-		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute, IEnumerable<IAttributeDefinition> otherAttributes) {
-			var searcher = CreateSearcher(entry, searchScope, rdnAttribute);
+		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, IEntryConfig entryConfig) {
+			var searcher = CreateSearcher(entry, searchScope, entryConfig.RdnAttribute);
 			searcher.PropertiesToLoad.Clear();
-			searcher.PropertiesToLoad.Add(rdnAttribute);
-			foreach(var attribute in otherAttributes) {
+			searcher.PropertiesToLoad.Add(entryConfig.RdnAttribute);
+			foreach(var attribute in entryConfig.Attributes) {
 				searcher.PropertiesToLoad.Add(attribute.Name);
 			}
 			return searcher;

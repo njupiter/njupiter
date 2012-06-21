@@ -40,8 +40,8 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		private IServerConfig serverConfig;
 		private IDirectoryEntryFactory directoryEntryFactory;
 		private IFilterBuilder filterBuilde;
-		private NameParser nameParser;
-		private DirectoryEntryAdapter adapter;
+		private INameParser nameParser;
+		private IDirectoryEntryAdapter adapter;
 
 		[SetUp]
 		public void SetUp() {
@@ -77,7 +77,9 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SendInAttributeAsCn_EntryFetchedBySeracherWithCorrectFilter() {
 			var searcher = A.Fake<IDirectorySearcher>();
-			adapter.GetEntry("attributeName", "cn=attributeValue", "anypath", "(any=filter)", e => searcher);
+			var config = A.Fake<IEntryConfig>();
+			A.CallTo(() => config.Filter).Returns("(any=filter)");
+			adapter.GetEntry("cn=attributeValue", config, e => searcher);
 
 			Assert.AreEqual("(&(any=filter)(cn=attributeValue))", searcher.Filter);
 		}
@@ -85,7 +87,11 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SendInAttributeAsPlainValue_EntryFetchedBySeracherWithCorrectFilter() {
 			var searcher = A.Fake<IDirectorySearcher>();
-			adapter.GetEntry("attributeName", "attributeValue", "anypath", "(any=filter)", e => searcher);
+			var config = A.Fake<IEntryConfig>();
+			A.CallTo(() => config.RdnAttribute).Returns("attributeName");
+			A.CallTo(() => config.Filter).Returns("(any=filter)");
+
+			adapter.GetEntry("attributeValue", config, e => searcher);
 
 			Assert.AreEqual("(&(any=filter)(attributeName=attributeValue))", searcher.Filter);
 		}
@@ -93,7 +99,10 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SendInPath_DefaultEntryFetchedFromPath() {
 			var searcher = A.Fake<IDirectorySearcher>();
-			adapter.GetEntry("attributeName", "attributeValue", "anypath", "anyfilter", e => searcher);
+			var config = A.Fake<IEntryConfig>();
+			A.CallTo(() => config.Path).Returns("anypath");
+
+			adapter.GetEntry("attributeValue", config, e => searcher);
 
 			A.CallTo(()  => directoryEntryFactory.Create(	"anypath",
 															serverConfig.Username,
@@ -109,7 +118,10 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 			var entry = A.Fake<IEntry>();
 			A.CallTo(() => entry.GetDirectoryEntry()).Returns(directoryEntry);
 			A.CallTo(() => searcher.FindOne()).Returns(entry);
-			var result = adapter.GetEntry("attributeName", "attributeValue", "anypath", "anyfilter", e => searcher);
+
+			var config = A.Fake<IEntryConfig>();
+
+			var result = adapter.GetEntry("attributeValue", config, e => searcher);
 
 			Assert.AreSame(directoryEntry, result);
 		}
@@ -117,8 +129,9 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SearcherReturnsNull_ReturnsNullEntry() {
 			var searcher = A.Fake<IDirectorySearcher>();
+			var config = A.Fake<IEntryConfig>();
 			A.CallTo(() => searcher.FindOne()).Returns(null);
-			var result = adapter.GetEntry("attributeName", "attributeValue", "anypath", "anyfilter", e => searcher);
+			var result = adapter.GetEntry("attributeValue", config, e => searcher);
 
 			Assert.IsNull(result);
 		}
@@ -126,8 +139,9 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SendInNotNullAttributeValue_ReturnsEntry() {
 			var searcher = A.Fake<IDirectorySearcher>();
+			var config = A.Fake<IEntryConfig>();
 			A.CallTo(() => searcher.FindOne()).Returns(A.Fake<IEntry>());
-			var result = adapter.GetEntry("attributeName", "attributeValue", "anypath", "anyfilter", e => searcher);
+			var result = adapter.GetEntry("attributeValue", config, e => searcher);
 
 			Assert.IsNotNull(result);
 		}
@@ -135,8 +149,9 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SendInNullAttributeValue_ReturnsNullEntry() {
 			var searcher = A.Fake<IDirectorySearcher>();
+			var config = A.Fake<IEntryConfig>();
 			A.CallTo(() => searcher.FindOne()).Returns(A.Fake<IEntry>());
-			var result = adapter.GetEntry("attributeName", null, "anypath", "anyfilter", e => searcher);
+			var result = adapter.GetEntry(null, config, e => searcher);
 
 			Assert.IsNull(result);
 		}
@@ -144,7 +159,12 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		[Test]
 		public void GetEntry_SendInAttributeAsDn_EntryCreatedWithCorrectPath() {
 			var searcher = A.Fake<IDirectorySearcher>();
-			adapter.GetEntry("attributeName", "cn=any,o=distinguished,dc=name", "ldap://anypath/cn=any,cn=subpath", "anyfilter", e => searcher);
+
+			var config = A.Fake<IEntryConfig>();
+			A.CallTo(() => config.RdnAttribute).Returns("attributeName");
+			A.CallTo(() => config.Path).Returns("ldap://anypath/cn=any,cn=subpath");
+
+			adapter.GetEntry("cn=any,o=distinguished,dc=name", config, e => searcher);
 
 			A.CallTo(()  => directoryEntryFactory.Create(	"LDAP://anypath/cn=any,o=distinguished,dc=name",
 															serverConfig.Username,

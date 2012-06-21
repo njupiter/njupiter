@@ -39,7 +39,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetFilter(configSection, users);
 			SetBase(configSection, users);
 			SetRdnAttribute(configSection, users);
-			SetAttributeDefinitionList(configSection, users);
 			SetMembershipAttribute(configSection, users);
 			SetEmailAttribute(configSection, users);
 			SetCreationDateAttribute(configSection, users);
@@ -48,6 +47,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetDescriptionAttribute(configSection, users);
 			SetNameType(configSection, users);
 			SetPath(configSection, users);
+			SetAttributeDefinitionList(configSection, users);
 
 			return users;
 		}
@@ -67,23 +67,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private static void SetLastLoginDateAttribute(IConfig configSection, UsersConfig users) {
 			if(configSection.ContainsKey("users", "lastLoginDateAttribute")) {
 				users.LastLoginDateAttribute = configSection.GetValue("users", "lastLoginDateAttribute");
-			}
-		}
-
-		private static void SetAttributeDefinitionList(IConfig configSection, UsersConfig users) {
-			if(configSection.ContainsKey("users", "attributes")) {
-				var userAttributeDefinitionList = new List<IAttributeDefinition>();
-				var attributes = configSection.GetValueArray("users/attributes", "attribute");
-				foreach(var attribute in attributes) {
-					var excludeFromNameSearch = false;
-					var attributeKey = String.Format("users/attributes/attribute[@value='{0}']", attribute);
-					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
-						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
-					}
-					var attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
-					userAttributeDefinitionList.Add(attributeDefinition);
-				}
-				users.Attributes = userAttributeDefinitionList;
 			}
 		}
 
@@ -137,5 +120,31 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			}
 			users.Path = LdapPathHandler.UriToPath(userUri);
 		}
+
+		private static void SetAttributeDefinitionList(IConfig configSection, UsersConfig users) {
+			var containsCustomAttributes = configSection.ContainsKey("users", "attributes");
+			if(containsCustomAttributes) {
+				users.Attributes.Clear();
+			}
+			users.Attributes.Attach(users.EmailAttribute, true);
+			users.Attributes.Attach(users.CreationDateAttribute, true);
+			users.Attributes.Attach(users.LastLoginDateAttribute, true);
+			users.Attributes.Attach(users.LastPasswordChangedDateAttribute, true);
+			users.Attributes.Attach(users.DescriptionAttribute, true);
+			users.Attributes.Attach(users.MembershipAttribute, true);
+			if(containsCustomAttributes) {
+				var attributes = configSection.GetValueArray("users/attributes", "attribute");
+				foreach(var attribute in attributes) {
+					var excludeFromNameSearch = false;
+					var attributeKey = String.Format("users/attributes/attribute[@value='{0}']", attribute);
+					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
+						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
+					}
+					users.Attributes.Attach(attribute, excludeFromNameSearch);
+				}
+				users.Attributes = users.Attributes;
+			}
+		}
+
 	}
 }

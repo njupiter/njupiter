@@ -22,17 +22,27 @@
 // 
 #endregion
 
-using System;
-using System.Collections;
+using System.DirectoryServices;
 
+using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface IEntry : IDisposable {
-		IDictionary Properties { get; }
-		object NativeObject { get; }
-		string Name { get; }
-		string Path { get; }
-		IDirectoryEntry GetDirectoryEntry();
+	internal abstract class EntryAdapterBase {
+		private readonly ISearcherFactory searcherFactory;
+
+		protected EntryAdapterBase(ISearcherFactory searcherFactory) {
+			this.searcherFactory = searcherFactory;
+		}
+
+		protected abstract IEntryConfig Config { get; }
+
+		protected IDirectorySearcher CreateSearcher(IEntry entry) {
+			return CreateSearcher(entry, SearchScope.Subtree);
+		}
+
+		protected IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
+			return searcherFactory.CreateSearcher(entry, searchScope, Config);
+		}
 	}
 }

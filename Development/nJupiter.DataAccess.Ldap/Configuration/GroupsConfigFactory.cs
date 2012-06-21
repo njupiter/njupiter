@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using nJupiter.Configuration;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
@@ -31,11 +32,10 @@ using nJupiter.DataAccess.Ldap.DistinguishedNames;
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class GroupsConfigFactory : IGroupConfigFactory {
 		public IGroupsConfig Create(IConfig configSection) {
-			var groups = new GroupsConfig();
 			if(configSection == null) {
 				throw new ArgumentNullException("configSection");
 			}
-
+			var groups = new GroupsConfig();
 			SetFilter(configSection, groups);
 			SetBase(configSection, groups);
 			SetRdnAttribute(configSection, groups);
@@ -44,7 +44,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetNameType(configSection, groups);
 			SetPath(configSection, groups);
 			SetAttributeDefinitionList(configSection, groups);
-
 			return groups;
 		}
 
@@ -95,8 +94,12 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		}
 
 		private static void SetAttributeDefinitionList(IConfig configSection, GroupsConfig groups) {
-			if(configSection.ContainsKey("groups", "attributes")) {
-				var groupAttributeDefinitionList = new List<IAttributeDefinition>();
+			var containsCustomAttributes = configSection.ContainsKey("groups", "attributes");
+			if(containsCustomAttributes) {
+				groups.Attributes.Clear();
+			}
+			groups.Attributes.Attach(groups.MembershipAttribute, true);
+			if(containsCustomAttributes) {
 				var attributes = configSection.GetValueArray("groups/attributes", "attribute");
 				foreach(var attribute in attributes) {
 					var excludeFromNameSearch = false;
@@ -104,10 +107,8 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
 						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
 					}
-					var attributeDefinition = new AttributeDefinition(attribute, excludeFromNameSearch);
-					groupAttributeDefinitionList.Add(attributeDefinition);
+					groups.Attributes.Attach(attribute, excludeFromNameSearch);
 				}
-				groups.Attributes = groupAttributeDefinitionList;
 			}
 		}
 	}

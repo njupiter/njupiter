@@ -1,3 +1,27 @@
+#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.DirectoryServices;
@@ -8,22 +32,21 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class GroupEntryAdapter : IGroupEntryAdapter {
-
+	internal class GroupEntryAdapter : EntryAdapterBase, IGroupEntryAdapter {
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly IGroupsConfig groupConfig;
-		private readonly INameParser nameHandler;
-		private readonly ISearcherFactory searcherFactory;
+		private readonly INameParser nameParser;
 
-		public GroupEntryAdapter(	IGroupsConfig groupConfig,
-									IDirectoryEntryAdapter directoryEntryAdapter,
-									ISearcherFactory searcherFactory,
-									INameParser nameHandler) {
+		public GroupEntryAdapter(IGroupsConfig groupConfig,
+		                         IDirectoryEntryAdapter directoryEntryAdapter,
+		                         ISearcherFactory searcherFactory,
+		                         INameParser nameParser) : base(searcherFactory) {
 			this.groupConfig = groupConfig;
 			this.directoryEntryAdapter = directoryEntryAdapter;
-			this.nameHandler = nameHandler;
-			this.searcherFactory = searcherFactory;
+			this.nameParser = nameParser;
 		}
+
+		protected override IEntryConfig Config { get { return groupConfig; } }
 
 		public IEntry GetGroupEntry(string groupname, bool loadProperties) {
 			var entry = GetGroupEntry(groupname);
@@ -31,8 +54,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public IEntry GetGroupEntry(string groupname) {
-			var groupFilter = CreateGroupFilter();
-			return directoryEntryAdapter.GetEntry(groupConfig.RdnAttribute, groupname, groupConfig.Path, groupFilter, CreateSearcher);
+			return directoryEntryAdapter.GetEntry(groupname, groupConfig, CreateSearcher);
 		}
 
 		public IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
@@ -47,7 +69,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				if(!entry.IsBound()) {
 					throw new ProviderException("Could not load role list.");
 				}
-				var searcher =  GetGroupSearcher(entry, SearchScope.Subtree);
+				var searcher = GetGroupSearcher(entry, SearchScope.Subtree);
 				return searcher.FindAll();
 			}
 		}
@@ -58,12 +80,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string GetGroupName(string entryName) {
-			return nameHandler.GetName(groupConfig.NameType, entryName);
+			return nameParser.GetName(groupConfig.NameType, entryName);
 		}
 
 		private IDirectorySearcher GetGroupSearcher(IEntry entry, SearchScope searchScope) {
 			var searcher = CreateSearcher(entry, searchScope);
-			searcher.Filter = CreateGroupFilter();
+			searcher.Filter = groupConfig.Filter;
 			return searcher;
 		}
 
@@ -74,20 +96,5 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			var searcher = GetGroupSearcher(entry, SearchScope.Base);
 			return searcher.FindOne(groupConfig.MembershipAttribute);
 		}
-
-		private string CreateGroupFilter() {
-			return groupConfig.Filter;
-		}
-
-		private IDirectorySearcher CreateSearcher(IEntry entry) {
-			return CreateSearcher(entry, SearchScope.Subtree);
-		}
-
-		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
-			var searcher = searcherFactory.CreateSearcher(entry, searchScope, groupConfig.RdnAttribute, groupConfig.Attributes);
-			searcher.PropertiesToLoad.Add(groupConfig.MembershipAttribute);
-			return searcher;
-		}
-		
 	}
 }

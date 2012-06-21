@@ -1,3 +1,27 @@
+#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -18,11 +42,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			this.directoryEntry = directoryEntry;
 		}
 
-		public AuthenticationTypes AuthenticationType { get { return directoryEntry.AuthenticationType; }
-			set { directoryEntry.AuthenticationType = value; } }
+		public AuthenticationTypes AuthenticationType { get { return directoryEntry.AuthenticationType; } set { directoryEntry.AuthenticationType = value; } }
 
-		public DirectoryEntries Children {
-			get { return directoryEntry.Children; } }
+		public DirectoryEntries Children { get { return directoryEntry.Children; } }
 
 		public void Close() {
 			directoryEntry.Close();
@@ -32,8 +54,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			directoryEntry.CommitChanges();
 		}
 
-		public IContainer Container {
-			get { return directoryEntry.Container; } }
+		public IContainer Container { get { return directoryEntry.Container; } }
 
 		public IEntry CopyTo(IEntry newParent) {
 			return directoryEntry.CopyTo(newParent.UnWrap()).Wrap();
@@ -55,15 +76,13 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			directoryEntry.Dispose();
 		}
 
-		public event EventHandler Disposed { add { directoryEntry.Disposed += value; }
-			remove { directoryEntry.Disposed -= value; } }
+		public event EventHandler Disposed { add { directoryEntry.Disposed += value; } remove { directoryEntry.Disposed -= value; } }
 
 		public object GetLifetimeService() {
 			return directoryEntry.GetLifetimeService();
 		}
 
-		public Guid Guid {
-			get { return directoryEntry.Guid; } }
+		public Guid Guid { get { return directoryEntry.Guid; } }
 
 		public object InitializeLifetimeService() {
 			return directoryEntry.InitializeLifetimeService();
@@ -89,32 +108,23 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			directoryEntry.MoveTo(newParent.UnWrap(), newName);
 		}
 
-		public string Name {
-			get { return directoryEntry.Name; } }
+		public string Name { get { return directoryEntry.Name; } }
 
-		public string NativeGuid {
-			get { return directoryEntry.NativeGuid; } }
+		public string NativeGuid { get { return directoryEntry.NativeGuid; } }
 
-		public object NativeObject {
-			get { return directoryEntry.NativeObject; } }
+		public object NativeObject { get { return directoryEntry.NativeObject; } }
 
-		public ActiveDirectorySecurity ObjectSecurity { get { return directoryEntry.ObjectSecurity; }
-			set { directoryEntry.ObjectSecurity = value; } }
+		public ActiveDirectorySecurity ObjectSecurity { get { return directoryEntry.ObjectSecurity; } set { directoryEntry.ObjectSecurity = value; } }
 
-		public DirectoryEntryConfiguration Options {
-			get { return directoryEntry.Options; } }
+		public DirectoryEntryConfiguration Options { get { return directoryEntry.Options; } }
 
-		public IEntry Parent {
-			get { return directoryEntry.Parent.Wrap(); } }
+		public IEntry Parent { get { return directoryEntry.Parent.Wrap(); } }
 
-		public string Password {
-			set { directoryEntry.Password = value; } }
+		public string Password { set { directoryEntry.Password = value; } }
 
-		public string Path { get { return directoryEntry.Path; }
-			set { directoryEntry.Path = value; } }
+		public string Path { get { return directoryEntry.Path; } set { directoryEntry.Path = value; } }
 
-		public IDictionary Properties {
-			get { return directoryEntry.Properties; } }
+		public IDictionary Properties { get { return directoryEntry.Properties; } }
 
 		public void RefreshCache() {
 			directoryEntry.RefreshCache();
@@ -128,21 +138,14 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			directoryEntry.Rename(newName);
 		}
 
-		public string SchemaClassName {
-			get { return directoryEntry.SchemaClassName; } }
+		public string SchemaClassName { get { return directoryEntry.SchemaClassName; } }
 
-		public IEntry SchemaEntry {
-			get { return directoryEntry.SchemaEntry.Wrap(); } }
+		public IEntry SchemaEntry { get { return directoryEntry.SchemaEntry.Wrap(); } }
 
-		public ISite Site { get { return directoryEntry.Site; }
-			set { directoryEntry.Site = value; } }
+		public ISite Site { get { return directoryEntry.Site; } set { directoryEntry.Site = value; } }
 
-		public bool UsePropertyCache { get { return directoryEntry.UsePropertyCache; }
-			set { directoryEntry.UsePropertyCache = value; } }
+		public bool UsePropertyCache { get { return directoryEntry.UsePropertyCache; } set { directoryEntry.UsePropertyCache = value; } }
 
-		public string Username { get { return directoryEntry.Username; }
-			set { directoryEntry.Username = value; } }
-
-
+		public string Username { get { return directoryEntry.Username; } set { directoryEntry.Username = value; } }
 	}
 }

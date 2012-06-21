@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -22,17 +22,36 @@
 // 
 #endregion
 
-using System;
-using System.Collections;
+using FakeItEasy;
 
-using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
+using NUnit.Framework;
 
-namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface IEntry : IDisposable {
-		IDictionary Properties { get; }
-		object NativeObject { get; }
-		string Name { get; }
-		string Path { get; }
-		IDirectoryEntry GetDirectoryEntry();
+using nJupiter.DataAccess.Ldap.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices;
+using nJupiter.DataAccess.Ldap.DistinguishedNames;
+
+namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
+	
+	[TestFixture]
+	public class GroupEntryAdapterTests {
+		private INameParser nameParser;
+		private ISearcherFactory searcherFactory;
+		private IDirectoryEntryAdapter directoryEntryAdapter;
+		private IGroupsConfig groupConfig;
+		private IGroupEntryAdapter adapter;
+
+		[SetUp]
+		public void SetUp() {
+			nameParser = A.Fake<INameParser>();
+			searcherFactory = A.Fake<ISearcherFactory>();
+			directoryEntryAdapter = A.Fake<IDirectoryEntryAdapter>();
+			groupConfig = A.Fake<IGroupsConfig>();
+			adapter = new GroupEntryAdapter(groupConfig, directoryEntryAdapter, searcherFactory, nameParser);
+		}
+
+		[Test]
+		public void Method_Scenario_ExprectedResult() {
+			//adapter.
+		}
 	}
 }
