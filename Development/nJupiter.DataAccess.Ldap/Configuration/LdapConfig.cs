@@ -51,6 +51,8 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			Configure(null, EventArgs.Empty);
 		}
 
+		public string Name { get { return ldapServer; } }
+
 		public IServerConfig Server { get { return serverConfig; } }
 
 		public IUsersConfig Users { get { return usersConfig; } }

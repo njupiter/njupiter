@@ -62,7 +62,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			return configurations[ldapServer];
 		}
 
-		protected virtual ILdapConfig CreateLdapConfig(string ldapServer) {
+		private ILdapConfig CreateLdapConfig(string ldapServer) {
 			return new LdapConfig(ldapServer,
 			                      configRepository,
 			                      serverConfigFactory,

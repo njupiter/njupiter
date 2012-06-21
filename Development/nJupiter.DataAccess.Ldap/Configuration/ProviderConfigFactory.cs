@@ -22,7 +22,6 @@
 // 
 #endregion
 
-using System;
 using System.Collections.Specialized;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
@@ -34,9 +33,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		}
 
 		public IProviderConfig Create<T>(string name, NameValueCollection config) {
-			if(config == null) {
-				throw new ArgumentNullException("config");
-			}
 			var appName = GetStringConfigValue(config, "applicationName", typeof(T).Name);
 			var providerName = !string.IsNullOrEmpty(name) ? name : appName;
 			var ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);

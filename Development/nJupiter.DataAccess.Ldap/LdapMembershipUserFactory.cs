@@ -37,6 +37,8 @@ namespace nJupiter.DataAccess.Ldap {
 		private readonly ILdapConfig config;
 		private readonly string providerName;
 
+		public string Name { get { return providerName; } }
+
 		public LdapMembershipUserFactory(string providerName, ILdapConfig config) {
 			this.config = config;
 			this.providerName = providerName;

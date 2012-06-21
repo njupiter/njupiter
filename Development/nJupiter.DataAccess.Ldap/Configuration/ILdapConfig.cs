@@ -24,6 +24,7 @@
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal interface ILdapConfig {
+		string Name { get; }
 		IServerConfig Server { get; }
 		IUsersConfig Users { get; }
 		IGroupsConfig Groups { get; }
