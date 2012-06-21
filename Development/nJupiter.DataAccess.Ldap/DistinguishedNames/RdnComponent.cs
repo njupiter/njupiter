@@ -24,7 +24,7 @@
 
 using System.Text;
 
-namespace nJupiter.DataAccess.Ldap.NameParser {
+namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 
 	// based on http://www.codeproject.com/KB/IP/dnparser.aspx?msg=1758400 by by (C) 2005 Pete Everett (pete@CynicalPirate.com)
 	// Code will be cleaned up later

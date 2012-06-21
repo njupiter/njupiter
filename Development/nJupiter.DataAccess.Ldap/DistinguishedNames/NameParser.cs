@@ -24,7 +24,7 @@
 
 using System;
 
-namespace nJupiter.DataAccess.Ldap.NameParser {
+namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 	internal class NameParser : INameParser {
 
 		public string GetCn(string name) {

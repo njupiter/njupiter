@@ -28,7 +28,7 @@ using NUnit.Framework;
 
 using nJupiter.DataAccess.Ldap.DirectoryServices;
 
-namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices.Abstraction {
+namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 	[TestFixture]
 	public class PropertyValueParserTests {
 

@@ -24,7 +24,7 @@
 
 using System.Collections.Generic;
 
-using nJupiter.DataAccess.Ldap.NameParser;
+using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal interface IUsersConfig {

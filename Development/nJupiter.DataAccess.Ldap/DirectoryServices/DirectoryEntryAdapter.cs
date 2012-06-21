@@ -23,13 +23,13 @@
 #endregion
 
 using System;
-using System.Configuration.Provider;
 
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
-using nJupiter.DataAccess.Ldap.NameParser;
+using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
+	
 	internal class DirectoryEntryAdapter : IDirectoryEntryAdapter {
 
 		private readonly IServerConfig serverConfig;
@@ -63,28 +63,31 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			}
 
 			var dn = nameParser.GetDnObject(attributeValue);
-			if(dn != null && dn.Rdns.Count > 1) {
-				var uri = new Uri(serverConfig.Url, dn.ToString());
+			var dnValue = dn != null;
+			if(dnValue && dn.Rdns.Count > 1) {
+				var uri = new Uri(new Uri(path), dn.ToString());
 				return GetEntry(uri, serverConfig.Username, serverConfig.Password);
 			}
 
 			var entry = GetEntry(path);
 			if(entry.IsBound()) {
 				var directorySearcher = searcherFactory(entry);
-				if(dn != null) {
-					directorySearcher.Filter = filterBuilder.AttachRdnFilter(attributeValue, defaultFilter);
-				} else {
-					directorySearcher.Filter = filterBuilder.AttachFilter(attribute, attributeValue, defaultFilter);
-				}
-
-				foreach(var result in directorySearcher.FindAll()) {
-					if(directoryEntry != null) {
-						throw new ProviderException(String.Format("More than one entry with value {0} for attribute {1} was found.", attributeValue, attribute));
-					}
-					directoryEntry = result.GetDirectoryEntry();
-				}
+				directorySearcher.Filter = CreateFilter(dnValue, attribute, attributeValue, defaultFilter);
+				directoryEntry = GetEntry(directorySearcher);
 			}
 			return directoryEntry;
+		}
+
+		private string CreateFilter(bool dnValue, string attribute, string attributeValue, string defaultFilter) {
+			if(dnValue) {
+				return filterBuilder.AttachRdnFilter(attributeValue, defaultFilter);
+			}
+			return filterBuilder.AttachFilter(attribute, attributeValue, defaultFilter);
+		}
+
+		private IDirectoryEntry GetEntry(IDirectorySearcher directorySearcher) {
+			var result = directorySearcher.FindOne();
+			return result != null ? result.GetDirectoryEntry() : null;			
 		}
 
 		private IDirectoryEntry GetEntry(string path, string username, string password) {

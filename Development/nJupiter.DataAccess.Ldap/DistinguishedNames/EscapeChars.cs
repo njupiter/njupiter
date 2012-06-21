@@ -1,6 +1,6 @@
 using System;
 
-namespace nJupiter.DataAccess.Ldap.NameParser {
+namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 	[Flags]
 	internal enum EscapeChars {
 		None = 0,

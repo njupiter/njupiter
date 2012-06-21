@@ -24,10 +24,9 @@
 
 using System.Collections.Generic;
 
-namespace nJupiter.DataAccess.Ldap.NameParser {
-	internal interface IRdn {
-		List<IRdnComponent> Components { get; }
+namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
+	internal interface IDn {
+		List<IRdn> Rdns { get; }
 		string ToString();
-		string ToString(EscapeChars escapeChars);
 	}
 }

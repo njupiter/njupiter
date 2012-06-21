@@ -22,14 +22,12 @@
 // 
 #endregion
 
-namespace nJupiter.DataAccess.Ldap.NameParser {
-	internal interface INameParser {
-		string GetCn(string name);
-		string GetRdn(string name);
-		string GetDn(string name);
-		string GetDn(string name, string attribute, string basePath);
-		IDn GetDnObject(string name);
-		string GetName(NameType nameType, string entryName);
-		bool NamesEqual(string name, string nameToMatch, string attribute, string basePath);
+using System.Collections.Generic;
+
+namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
+	internal interface IRdn {
+		List<IRdnComponent> Components { get; }
+		string ToString();
+		string ToString(EscapeChars escapeChars);
 	}
 }

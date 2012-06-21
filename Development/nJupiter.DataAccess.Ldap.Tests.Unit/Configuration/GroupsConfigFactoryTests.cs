@@ -30,7 +30,7 @@ using NUnit.Framework;
 
 using nJupiter.Configuration;
 using nJupiter.DataAccess.Ldap.Configuration;
-using nJupiter.DataAccess.Ldap.NameParser;
+using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 	

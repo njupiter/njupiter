@@ -25,7 +25,7 @@
 using nJupiter.Abstraction.Logging;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
-using nJupiter.DataAccess.Ldap.NameParser;
+using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal interface IContainer {

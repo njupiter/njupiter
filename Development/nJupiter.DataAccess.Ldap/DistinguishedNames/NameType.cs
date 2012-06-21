@@ -22,7 +22,7 @@
 */
 #endregion
 
-namespace nJupiter.DataAccess.Ldap.NameParser {
+namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 	internal enum NameType {
 		Dn = 0,
 		Rdn = 1,

@@ -25,7 +25,7 @@
 using nJupiter.Abstraction.Logging;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
-using nJupiter.DataAccess.Ldap.NameParser;
+using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class Container : IContainer {
@@ -47,7 +47,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public ILogManager LogManager { get { return LogManagerFactory.GetLogManager(); } }
 
 		public Container(ILdapConfig configuration) {
-			nameParser = new NameParser.NameParser();
+			nameParser = new NameParser();
 			directoryEntryFactory = new DirectoryEntryFactory();
 			filterBuilder = new FilterBuilder(configuration.Server);
 			searcherFactory = new SearcherFactory(configuration.Server, filterBuilder);
