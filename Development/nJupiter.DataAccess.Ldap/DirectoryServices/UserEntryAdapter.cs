@@ -74,7 +74,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public string GetUserName(string entryName) {
-			if(configuration.Groups.MembershipAttributeNameType != configuration.Users.NameType) {
+			if(!configuration.Users.RdnInPath) {
 				using(var entry = GetUserDirectoryEntry(entryName)) {
 					entryName = entry.GetProperties<string>(configuration.Users.RdnAttribute).First();
 				}
@@ -123,9 +123,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				}
 				var searcher = CreateSearcher(entry);
 				searcher.Filter = filter;
-				if(configuration.Server.PageSize > 0) {
-					searcher.PageSize = pageSize;
-				}
 				using(var users = searcher.FindAll()) {
 					totalRecords = users.Count();
 					return users.GetPaged(pageIndex, pageSize);

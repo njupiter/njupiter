@@ -22,10 +22,6 @@
 // 
 #endregion
 
-using nJupiter.DataAccess.Ldap.DistinguishedNames;
-
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IGroupsConfig : IEntryConfig {
-		NameType MembershipAttributeNameType { get; }
-	}
+	internal interface IGroupsConfig : IEntryConfig {}
 }

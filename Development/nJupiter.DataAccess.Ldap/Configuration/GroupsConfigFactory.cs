@@ -37,8 +37,8 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetFilter(configSection, groups);
 			SetBase(configSection, groups);
 			SetRdnAttribute(configSection, groups);
+			SetRdnInPath(configSection, groups);
 			SetMembershipAttribute(configSection, groups);
-			SetMembershipAttributeNameType(configSection, groups);
 			SetNameType(configSection, groups);
 			SetPath(configSection, groups);
 			SetAttributeDefinitionList(configSection, groups);
@@ -63,10 +63,9 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			}
 		}
 
-		private static void SetMembershipAttributeNameType(IConfig configSection, GroupsConfig groups) {
-			if(configSection.ContainsKey("groups", "membershipAttributeNameType")) {
-				var nameType = configSection.GetValue("groups", "membershipAttributeNameType");
-				groups.MembershipAttributeNameType = (NameType)Enum.Parse(typeof(NameType), nameType, true);
+		private void SetRdnInPath(IConfig configSection, GroupsConfig groups) {
+			if(configSection.ContainsKey("groups", "rdnInPath")) {
+				groups.RdnInPath = configSection.GetValue<bool>("groups", "rdnInPath");
 			}
 		}
 

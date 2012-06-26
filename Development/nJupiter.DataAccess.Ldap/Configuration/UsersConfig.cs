@@ -32,9 +32,9 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public UsersConfig() {
 			Filter = "(objectClass=person)";
 			RdnAttribute = "cn";
+			RdnInPath = true;
 			Attributes = new List<IAttributeDefinition>();
 			Attributes.Add(new AttributeDefinition("cn"));
-			MembershipAttribute = "memberOf";
 			EmailAttribute = "mail";
 			NameType = NameType.Cn;
 		}
@@ -43,6 +43,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public string Base { get; internal set; }
 		public string Path { get; internal set; }
 		public string RdnAttribute { get; internal set; }
+		public bool RdnInPath {  get; internal set; }
 		public List<IAttributeDefinition> Attributes { get; internal set; }
 		public string MembershipAttribute { get; internal set; }
 		public string EmailAttribute { get; internal set; }

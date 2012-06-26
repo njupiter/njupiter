@@ -96,7 +96,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit {
 			A.CallTo(() => roleEntry.Name).Returns("role");
 			roleEntries.Add(roleEntry);
 			A.CallTo(() => providerConfig.LdapConfig.Groups.MembershipAttribute).Returns("rdnattribute");
-			A.CallTo(() => container.GroupEntryAdapter.GetAllRoleEntries()).Returns(roleEntries);
+			A.CallTo(() => container.GroupEntryAdapter.GetGroupsWithEntryAsMemebership(A<IEntry>.Ignored)).Returns(roleEntries);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupEntry("role", true)).Returns(roleEntry);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupName(A<IEntry>.Ignored)).ReturnsLazily(c => c.GetArgument<IEntry>(0).Name);
 			A.CallTo(() => container.UserEntryAdapter.GetUsersFromEntry(roleEntry, "rdnattribute")).Returns(new[]{ "username" });
@@ -116,7 +116,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit {
 			roleEntries.Add(roleEntry1);
 			roleEntries.Add(roleEntry2);
 			A.CallTo(() => providerConfig.LdapConfig.Groups.MembershipAttribute).Returns("rdnattribute");
-			A.CallTo(() => container.GroupEntryAdapter.GetAllRoleEntries()).Returns(roleEntries);
+			A.CallTo(() => container.GroupEntryAdapter.GetGroupsWithEntryAsMemebership(A<IEntry>.Ignored)).Returns(roleEntries);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupEntry("role z", true)).Returns(roleEntry1);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupEntry("role a", true)).Returns(roleEntry2);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupName(A<IEntry>.Ignored)).ReturnsLazily(c => c.GetArgument<IEntry>(0).Name);

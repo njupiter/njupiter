@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			                                                  directoryEntryFactory,
 			                                                  filterBuilder,
 			                                                  nameParser);
-			groupEntryAdapter = new GroupEntryAdapter(configuration.Groups, directoryEntryAdapter, searcherFactory, nameParser);
+			groupEntryAdapter = new GroupEntryAdapter(configuration.Groups, directoryEntryAdapter, searcherFactory, filterBuilder, nameParser);
 			userEntryAdapter = new UserEntryAdapter(configuration,
 			                                        directoryEntryAdapter,
 			                                        searcherFactory,

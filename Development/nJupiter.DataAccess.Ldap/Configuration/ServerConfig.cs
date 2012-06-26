@@ -34,6 +34,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			AuthenticationTypes = AuthenticationTypes.None;
 			RangeRetrievalSupport = true;
 			PropertySortingSupport = true;
+			AllowWildcardSearch = true;
 		}
 
 		public Uri Url { get; internal set; }

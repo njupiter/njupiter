@@ -45,6 +45,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 		private ISearcherFactory searcherFactory;
 		private IDirectoryEntryAdapter directoryEntryAdapter;
 		private IGroupsConfig groupConfig;
+		private IFilterBuilder filterBuilder;
 		private IGroupEntryAdapter adapter;
 
 		[SetUp]
@@ -53,7 +54,8 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 			searcherFactory = A.Fake<ISearcherFactory>();
 			directoryEntryAdapter = A.Fake<IDirectoryEntryAdapter>();
 			groupConfig = A.Fake<IGroupsConfig>();
-			adapter = new GroupEntryAdapter(groupConfig, directoryEntryAdapter, searcherFactory, nameParser);
+			filterBuilder = new FilterBuilder(A.Fake<IServerConfig>());
+			adapter = new GroupEntryAdapter(groupConfig, directoryEntryAdapter, searcherFactory, filterBuilder, nameParser);
 		}
 
 		[Test]
@@ -138,6 +140,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_CnNameType_ReturnsPlayGroupName() {
+			A.CallTo(() => groupConfig.RdnInPath).Returns(true);
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Cn);
 
 			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
@@ -148,6 +151,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_RdnNameType_ReturnsCnPartOfDn() {
+			A.CallTo(() => groupConfig.RdnInPath).Returns(true);
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Rdn);
 
 			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
@@ -157,7 +161,64 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_RdnNameType_ReturnsFullGroupName() {
+			A.CallTo(() => groupConfig.RdnInPath).Returns(true);
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Dn);
+
+			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
+
+			Assert.AreEqual("cn=groupname,dn=domain,o=organistaion", groupName);
+		}
+
+		[Test]
+		public void GetGroupName_CnNameTypeWhenRdnNotInPath_ReturnsPlayGroupName() {
+			A.CallTo(() => groupConfig.RdnInPath).Returns(false);
+			A.CallTo(() => groupConfig.RdnAttribute).Returns("rdnattribute");
+			A.CallTo(() => groupConfig.NameType).Returns(NameType.Cn);
+
+			var entry = A.Fake<IDirectoryEntry>();
+			var properties = new Dictionary<string, IEnumerable>();
+			properties.Add("rdnattribute", new [] { "cn=groupname,dn=domain,o=organistaion" });
+			A.CallTo(() => entry.Properties).Returns(properties);
+
+			A.CallTo(() => directoryEntryAdapter.GetEntry("cn=groupname,dn=domain,o=organistaion", groupConfig, A<Func<IEntry ,IDirectorySearcher>>.Ignored)).Returns(entry);
+
+	
+			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
+
+			Assert.AreEqual("groupname", groupName);
+		}
+
+
+		[Test]
+		public void GetGroupName_RdnNameTypeWhenRdnNotInPath_ReturnsCnPartOfDn() {
+			A.CallTo(() => groupConfig.RdnInPath).Returns(false);
+			A.CallTo(() => groupConfig.RdnAttribute).Returns("rdnattribute");
+			A.CallTo(() => groupConfig.NameType).Returns(NameType.Rdn);
+
+			var entry = A.Fake<IDirectoryEntry>();
+			var properties = new Dictionary<string, IEnumerable>();
+			properties.Add("rdnattribute", new [] { "cn=groupname, dn=domain, o=organistaion" });
+			A.CallTo(() => entry.Properties).Returns(properties);
+
+			A.CallTo(() => directoryEntryAdapter.GetEntry("cn=groupname,dn=domain,o=organistaion", groupConfig, A<Func<IEntry ,IDirectorySearcher>>.Ignored)).Returns(entry);
+
+			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
+
+			Assert.AreEqual("cn=groupname", groupName);
+		}
+
+		[Test]
+		public void GetGroupName_RdnNameTypeWhenRdnNotInPath_ReturnsFullGroupName() {
+			A.CallTo(() => groupConfig.RdnInPath).Returns(false);
+			A.CallTo(() => groupConfig.RdnAttribute).Returns("rdnattribute");
+			A.CallTo(() => groupConfig.NameType).Returns(NameType.Dn);
+
+			var entry = A.Fake<IDirectoryEntry>();
+			var properties = new Dictionary<string, IEnumerable>();
+			properties.Add("rdnattribute", new [] { "cn=groupname, dn=domain, o=organistaion" });
+			A.CallTo(() => entry.Properties).Returns(properties);
+
+			A.CallTo(() => directoryEntryAdapter.GetEntry("cn=groupname,dn=domain,o=organistaion", groupConfig, A<Func<IEntry ,IDirectorySearcher>>.Ignored)).Returns(entry);
 
 			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
 
@@ -179,6 +240,24 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 			var result = adapter.GetGroupName(entry);
 
 			Assert.AreEqual("groupname", result);	
+		}
+
+		[Test]
+		public void GetGroupsWithEntryAsMemebership_GetTheDnFromEntryAndSearchForItInGrups_ReturnsResultFromSearcher() {
+			var entry = A.Fake<IEntry>();
+			A.CallTo(() => groupConfig.Filter).Returns("(objectClass=group)");
+			A.CallTo(() => groupConfig.MembershipAttribute).Returns("member");
+			A.CallTo(()=> entry.Path).Returns("ldap://server/cn=username, dn=domain, o=organistaion");
+			
+			var searcher = A.Fake<IDirectorySearcher>();
+			var entryCollection = A.Fake<IEntryCollection>();
+			A.CallTo(() => searcherFactory.CreateSearcher(A<IEntry>.Ignored , SearchScope.Subtree, groupConfig)).Returns(searcher);
+			A.CallTo(() => searcher.FindAll()).Returns(entryCollection);
+
+			var result = adapter.GetGroupsWithEntryAsMemebership(entry);
+
+			Assert.AreEqual("(&(objectClass=group)(member=cn=username,dn=domain,o=organistaion))", searcher.Filter);
+			Assert.AreSame(entryCollection, result);
 		}
 	}
 }

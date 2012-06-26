@@ -32,5 +32,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		IEntryCollection GetAllRoleEntries();
 		string GetGroupName(IEntry entry);
 		string GetGroupName(string entryName);
+		IEntryCollection GetGroupsWithEntryAsMemebership(IEntry membershipEntry);
 	}
 }

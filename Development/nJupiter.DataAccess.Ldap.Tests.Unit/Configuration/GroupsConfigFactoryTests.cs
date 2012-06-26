@@ -67,10 +67,23 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 			Assert.AreEqual("attributename", config.RdnAttribute);
 		}
 
+
 		[Test]
 		public void Create_RdnAttributeIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateGroupConfigWithServerConfig();
 			Assert.AreEqual("cn", config.RdnAttribute);
+		}
+
+		[Test]
+		public void Create_SetRdnInPathIsDefiendedInConfig_SetToConfigValue() {
+			var config = CreateGroupConfigWithServerConfig("<groups><rdnInPath value='false'/></groups>");
+			Assert.IsFalse(config.RdnInPath);
+		}
+
+		[Test]
+		public void Create_SetRdnInPathIsNotDefiendedInConfig_SetToDefaultValue() {
+			var config = CreateGroupConfigWithServerConfig();
+			Assert.IsTrue(config.RdnInPath);
 		}
 
 		[Test]
@@ -83,18 +96,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		public void Create_MembershipAttributeIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateGroupConfigWithServerConfig();
 			Assert.AreEqual("member", config.MembershipAttribute);
-		}
-
-		[Test]
-		public void Create_MembershipAttributeNameTypeIsDefiendedInConfig_SetToConfigValue() {
-			var config = CreateGroupConfigWithServerConfig("<groups><membershipAttributeNameType value='rdn'/></groups>");
-			Assert.AreEqual(NameType.Rdn, config.MembershipAttributeNameType);
-		}
-
-		[Test]
-		public void Create_MembershipAttributeNameTypeIsNotDefiendedInConfig_SetToDefaultValue() {
-			var config = CreateGroupConfigWithServerConfig();
-			Assert.AreEqual(NameType.Cn, config.MembershipAttributeNameType);
 		}
 
 		[Test]

@@ -103,15 +103,20 @@ namespace nJupiter.DataAccess.Ldap {
 
 		private IEnumerable<string> GetRolesForUserWithMembershipAttribute(string username) {
 			using(var user = userEntryAdapter.GetUserEntry(username)) {
-				return GetRoleNamesFromEntry(user);
+				return GetRoleNamesFromUserEntry(user);
 			}			
 		}
 
 		private IEnumerable<string> GetRolesForUserWithoutMembershipAttribute(string username) {
-			return GetAllRoles().Where(role => GetUsersInRole(role).Contains(username));
+			using(var entry = userEntryAdapter.GetUserEntry(username)) {
+				var results = groupEntryAdapter.GetGroupsWithEntryAsMemebership(entry);
+				foreach(var result in results) {
+					yield return groupEntryAdapter.GetGroupName(result);
+				}
+			}
 		}
 
-		private IEnumerable<string> GetRoleNamesFromEntry(IEntry entry) {
+		private IEnumerable<string> GetRoleNamesFromUserEntry(IEntry entry) {
 			var roles = entry.GetProperties<string>(ldapConfig.Users.MembershipAttribute);
 			return roles.Select(group => groupEntryAdapter.GetGroupName(group));
 		}

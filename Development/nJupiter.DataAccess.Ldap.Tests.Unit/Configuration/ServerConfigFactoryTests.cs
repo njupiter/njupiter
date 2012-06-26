@@ -73,14 +73,14 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 
 		[Test]
 		public void Create_AllowWildcardSearchDefiendedInConfig_SetToConfigValue() {
-			var config = CreateServerConfigWithServerConfig("<allowWildcardSearch value='true'/>");
-			Assert.IsTrue(config.AllowWildcardSearch);
+			var config = CreateServerConfigWithServerConfig("<allowWildcardSearch value='false'/>");
+			Assert.IsFalse(config.AllowWildcardSearch);
 		}
 
 		[Test]
 		public void Create_AllowWildcardSearchNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateServerConfigWithServerConfig();
-			Assert.IsFalse(config.AllowWildcardSearch);
+			Assert.IsTrue(config.AllowWildcardSearch);
 		}
 
 		[Test]

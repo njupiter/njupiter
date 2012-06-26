@@ -8,6 +8,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		string Base { get; }
 		string Path { get; }
 		string RdnAttribute { get; }
+		bool RdnInPath { get; }
 		List<IAttributeDefinition> Attributes { get; }
 		string MembershipAttribute { get; }
 		NameType NameType { get; }

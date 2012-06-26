@@ -73,15 +73,21 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		}
 
 		[Test]
-		public void Create_MembershipAttributeIsDefiendedInConfig_SetToConfigValue() {
-			var config = CreateUserConfigWithServerConfig("<users><membershipAttribute value='attributename'/></users>");
-			Assert.AreEqual("attributename", config.MembershipAttribute);
+		public void Create_SetRdnInPathIsDefiendedInConfig_SetToConfigValue() {
+			var config = CreateUserConfigWithServerConfig("<users><rdnInPath value='false'/></users>");
+			Assert.IsFalse(config.RdnInPath);
 		}
 
 		[Test]
-		public void Create_MembershipAttributeIsNotDefiendedInConfig_SetToDefaultValue() {
+		public void Create_SetRdnInPathIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateUserConfigWithServerConfig();
-			Assert.AreEqual("memberOf", config.MembershipAttribute);
+			Assert.IsTrue(config.RdnInPath);
+		}
+
+		[Test]
+		public void Create_MembershipAttributeIsDefiendedInConfig_SetToConfigValue() {
+			var config = CreateUserConfigWithServerConfig("<users><membershipAttribute value='attributename'/></users>");
+			Assert.AreEqual("attributename", config.MembershipAttribute);
 		}
 
 		[Test]
@@ -196,7 +202,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 
 		[Test]
 		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeContainsTwoAttributes() {
-			const int defaultNumberOfAttributes = 2;
+			const int defaultNumberOfAttributes = 1;
 			var config =
 				CreateUserConfigWithServerConfig(
 				                                 "<users><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></users>");
@@ -205,7 +211,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 
 		[Test]
 		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsOneDefaultAttribute() {
-			const int defaultNumberOfAttributes = 2;
+			const int defaultNumberOfAttributes = 1;
 			var config = CreateUserConfigWithServerConfig();
 			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count);
 		}
@@ -214,13 +220,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsCnAttributeByDefault() {
 			var config = CreateUserConfigWithServerConfig();
 			Assert.IsTrue(config.Attributes.Any(c => c.Name == "cn"));
-		}
-
-
-		[Test]
-		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsMemberattributeButItIsExcludedFromSearch() {
-			var config = CreateUserConfigWithServerConfig();
-			Assert.IsTrue(config.Attributes.Any(c => c.Name == "memberOf" && c.ExcludeFromNameSearch));
 		}
 
 		[Test]
