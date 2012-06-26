@@ -123,7 +123,16 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				}
 				var searcher = CreateSearcher(entry);
 				searcher.Filter = filter;
+				if(configuration.Server.VirtualListViewSupport) {
+					var offset = pageIndex * pageSize + 1;
+					var afterCount = pageSize - 1;
+					searcher.VirtualListView = new DirectoryVirtualListView(0, afterCount, offset);
+				}
 				using(var users = searcher.FindAll()) {
+					if(configuration.Server.VirtualListViewSupport) {
+						totalRecords = searcher.VirtualListView.ApproximateTotal;
+						return users;
+					}
 					totalRecords = users.Count();
 					return users.GetPaged(pageIndex, pageSize);
 				}

@@ -29,7 +29,6 @@ using nJupiter.DataAccess.Ldap.DistinguishedNames;
 namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class GroupsConfig : IGroupsConfig {
 		public GroupsConfig() {
-			Filter = "(objectClass=groupOfNames)";
 			RdnAttribute = "cn";
 			RdnInPath = true;
 			Attributes = new List<IAttributeDefinition>();

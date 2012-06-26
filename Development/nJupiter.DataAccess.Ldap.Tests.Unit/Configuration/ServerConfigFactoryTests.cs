@@ -109,28 +109,53 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 			Assert.AreEqual(0, config.PageSize);
 		}
 
+
+		[Test]
+		public void Create_SizeLimitDefiendedInConfig_SetToConfigValue() {
+			var config = CreateServerConfigWithServerConfig("<sizeLimit value='1'/>");
+			Assert.AreEqual(1, config.SizeLimit);
+		}
+
+		[Test]
+		public void Create_SizeLimitNotDefiendedInConfig_SetToDefaultValue() {
+			var config = CreateServerConfigWithServerConfig();
+			Assert.AreEqual(1000, config.SizeLimit);
+		}
+
 		[Test]
 		public void Create_RangeRetrievalSupportDefiendedInConfig_SetToConfigValue() {
-			var config = CreateServerConfigWithServerConfig("<rangeRetrievalSupport value='false'/>");
-			Assert.IsFalse(config.RangeRetrievalSupport);
+			var config = CreateServerConfigWithServerConfig("<rangeRetrievalSupport value='true'/>");
+			Assert.IsTrue(config.RangeRetrievalSupport);
 		}
 
 		[Test]
 		public void Create_RangeRetrievalSupportNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateServerConfigWithServerConfig();
-			Assert.IsTrue(config.RangeRetrievalSupport);
+			Assert.IsFalse(config.RangeRetrievalSupport);
 		}
 
 		[Test]
 		public void Create_PropertySortingSupportDefiendedInConfig_SetToConfigValue() {
-			var config = CreateServerConfigWithServerConfig("<propertySortingSupport value='false'/>");
-			Assert.IsFalse(config.PropertySortingSupport);
+			var config = CreateServerConfigWithServerConfig("<propertySortingSupport value='true'/>");
+			Assert.IsTrue(config.PropertySortingSupport);
 		}
 
 		[Test]
 		public void Create_PropertySortingSupportNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateServerConfigWithServerConfig();
-			Assert.IsTrue(config.PropertySortingSupport);
+			Assert.IsFalse(config.PropertySortingSupport);
+		}
+
+		[Test]
+		public void Create_VirtualListViewSupportDefiendedInConfig_SetToConfigValue() {
+			var config = CreateServerConfigWithServerConfig("<virtualListViewSupport value='true'/>");
+			Assert.IsTrue(config.VirtualListViewSupport);
+		}
+
+		[Test]
+		public void Create_VirtualListViewSupportNotDefiendedInConfig_SetToDefaultValue() {
+			var config = CreateServerConfigWithServerConfig();
+			Assert.IsFalse(config.VirtualListViewSupport);
 		}
 
 		[Test]

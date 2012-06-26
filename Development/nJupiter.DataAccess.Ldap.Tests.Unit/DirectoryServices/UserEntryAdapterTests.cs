@@ -1,4 +1,4 @@
-#region Copyright & License
+﻿#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -22,31 +22,12 @@
 // 
 #endregion
 
-using System;
-using System.DirectoryServices;
+using NUnit.Framework;
 
-namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal class ServerConfig : IServerConfig {
-
-		public ServerConfig() {
-			TimeLimit = TimeSpan.FromSeconds(30);
-			PageSize = 0;
-			AuthenticationTypes = AuthenticationTypes.None;
-			AllowWildcardSearch = true;
-			SizeLimit = 1000;
-		}
-
-		public Uri Url { get; internal set; }
-		public string Username { get; internal set; }
-		public string Password { get; internal set; }
-		public AuthenticationTypes AuthenticationTypes { get; internal set; }
-		public TimeSpan TimeLimit { get; internal set; }
-		public int PageSize { get; internal set; }
-		public int SizeLimit { get; internal set; }
-		public bool AllowWildcardSearch { get; internal set; }
-		public bool PropertySortingSupport { get; internal set; }
-		public bool RangeRetrievalSupport { get; internal set; }
-		public bool VirtualListViewSupport { get; internal set; }
-		
+namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
+	
+	[TestFixture]
+	public class UserEntryAdapterTests {
+		 
 	}
 }

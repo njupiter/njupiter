@@ -74,6 +74,7 @@
     <Compile Include="DirectoryServices\DirectoryEntryAdapterTests.cs" />
     <Compile Include="DirectoryServices\GroupEntryAdapterTests.cs" />
     <Compile Include="DirectoryServices\PropertyValueParserTests.cs" />
+    <Compile Include="DirectoryServices\UserEntryAdapterTests.cs" />
     <Compile Include="LdapMembershipProviderTests.cs" />
     <Compile Include="LdapMembershipUserFactoryTests.cs" />
     <Compile Include="LdapPathHandlerTests.cs" />

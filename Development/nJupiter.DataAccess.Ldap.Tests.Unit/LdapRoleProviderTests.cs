@@ -77,7 +77,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit {
 		public void GetRolesForUser_UsersMembershipAttributeIsConfigured_RetrunsRolesFromUserEntry() {
 			var entry = A.Fake<IEntry>();
 			A.CallTo(() => providerConfig.LdapConfig.Users.MembershipAttribute).Returns("rdnattribute");
-			A.CallTo(() => container.UserEntryAdapter.GetUserEntry("username")).Returns(entry);
+			A.CallTo(() => container.UserEntryAdapter.GetUserEntryAndLoadProperties("username")).Returns(entry);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupName(A<string>.Ignored)).ReturnsLazily(c => c.GetArgument<string>(0));
 			var properties = new Dictionary<string, IEnumerable>();
 			var propertyValues = new [] { "rolename" };
@@ -133,7 +133,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit {
 		public void IsUserInRole_GetRolesForUserWhereRoleExistsAndCheckIfUserInRole_ReturnsTrue() {
 			var entry = A.Fake<IEntry>();
 			A.CallTo(() => providerConfig.LdapConfig.Users.MembershipAttribute).Returns("rdnattribute");
-			A.CallTo(() => container.UserEntryAdapter.GetUserEntry("username")).Returns(entry);
+			A.CallTo(() => container.UserEntryAdapter.GetUserEntryAndLoadProperties("username")).Returns(entry);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupName(A<string>.Ignored)).ReturnsLazily(c => c.GetArgument<string>(0));
 			var properties = new Dictionary<string, IEnumerable>();
 			var propertyValues = new [] { "rolename" };
@@ -149,7 +149,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit {
 		public void IsUserInRole_GetRolesForUserWhereRoleDoesNotExistAndCheckIfUserInRole_ReturnsFalse() {
 			var entry = A.Fake<IEntry>();
 			A.CallTo(() => providerConfig.LdapConfig.Users.MembershipAttribute).Returns("rdnattribute");
-			A.CallTo(() => container.UserEntryAdapter.GetUserEntry("username")).Returns(entry);
+			A.CallTo(() => container.UserEntryAdapter.GetUserEntryAndLoadProperties("username")).Returns(entry);
 			A.CallTo(() => container.GroupEntryAdapter.GetGroupName(A<string>.Ignored)).ReturnsLazily(c => c.GetArgument<string>(0));
 			var properties = new Dictionary<string, IEnumerable>();
 			var propertyValues = new [] { "anotherrolename" };

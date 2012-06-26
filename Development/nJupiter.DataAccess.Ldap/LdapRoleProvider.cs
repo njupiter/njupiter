@@ -102,7 +102,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 
 		private IEnumerable<string> GetRolesForUserWithMembershipAttribute(string username) {
-			using(var user = userEntryAdapter.GetUserEntry(username)) {
+			using(var user = userEntryAdapter.GetUserEntryAndLoadProperties(username)) {
 				return GetRoleNamesFromUserEntry(user);
 			}			
 		}
@@ -132,8 +132,10 @@ namespace nJupiter.DataAccess.Ldap {
 			return users.Select(user => userEntryAdapter.GetUserName(user));
 		}
 
-		private static string[] ToOrderedArray(IEnumerable<string> strings) {
-			strings = strings.OrderBy(s => s);
+		private string[] ToOrderedArray(IEnumerable<string> strings) {
+			if(!ldapConfig.Server.PropertySortingSupport) {
+				strings = strings.OrderBy(s => s);
+			}
 			return strings.ToArray();
 		}
 

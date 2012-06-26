@@ -41,8 +41,10 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetAllowWildcardSearch(configSection, server);
 			SetTimeLimit(configSection, server); 
 			SetPageSize(configSection, server);
+			SetSizeLimit(configSection, server);
 			SetRangeRetrievalSupport(configSection, server);
 			SetPropertySortingSupport(configSection, server);
+			SetVirtualListViewSupport(configSection, server);
 			SetAuthenticationTypes(configSection, server);
 
 			return server;
@@ -84,6 +86,13 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			}
 		}
 
+		private static void SetSizeLimit(IConfig configSection, ServerConfig server) {
+			if(configSection.ContainsKey("sizeLimit")) {
+				var sizeLimit = configSection.GetValue<int>("sizeLimit");
+				server.SizeLimit = sizeLimit;
+			}
+		}
+
 		private static void SetRangeRetrievalSupport(IConfig configSection, ServerConfig server) {
 			if(configSection.ContainsKey("rangeRetrievalSupport")) {
 				server.RangeRetrievalSupport = configSection.GetValue<bool>("rangeRetrievalSupport");
@@ -93,6 +102,12 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		private static void SetPropertySortingSupport(IConfig configSection, ServerConfig server) {
 			if(configSection.ContainsKey("propertySortingSupport")) {
 				server.PropertySortingSupport = configSection.GetValue<bool>("propertySortingSupport");
+			}
+		}
+
+		private static void SetVirtualListViewSupport(IConfig configSection, ServerConfig server) {
+			if(configSection.ContainsKey("virtualListViewSupport")) {
+				server.VirtualListViewSupport = configSection.GetValue<bool>("virtualListViewSupport");
 			}
 		}
 

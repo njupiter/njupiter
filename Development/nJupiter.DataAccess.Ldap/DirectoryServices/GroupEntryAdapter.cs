@@ -62,6 +62,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
 			using(var entry = GetGroupEntry(name)) {
+				if(!entry.IsBound()) {
+					return new string[0];
+				}
 				var searcher = GetGroupSearcher(entry, SearchScope.Base);
 				return searcher.GetPropertiesByRangedFilter<string>(groupConfig.MembershipAttribute);
 			}

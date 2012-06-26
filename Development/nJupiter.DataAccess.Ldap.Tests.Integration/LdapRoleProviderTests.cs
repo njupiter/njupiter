@@ -46,7 +46,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 			var roles = provider.GetRolesForUser(ExistingUserName);
 			foreach(var role in roles) {
 				IEnumerable<string> users = provider.GetUsersInRole(role);
-				Assert.IsTrue(users.Contains(ExistingUserName));
+				Assert.IsTrue(users.Contains(ExistingUserName), string.Format("User '{0}' not in role '{1}'", ExistingUserName, role));
 			}
 		}
 
@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 			var roles = provider.GetAllRoles();
 			var rolesForUsers = provider.GetRolesForUser(ExistingUserName);
 			foreach(var userRole in rolesForUsers) {
-				Assert.IsTrue(roles.Contains(userRole));
+				Assert.IsTrue(roles.Contains(userRole), "Can not find role '" + userRole + "' in roles.");
 			}
 		}
 

@@ -33,8 +33,11 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		AuthenticationTypes AuthenticationTypes { get; }
 		TimeSpan TimeLimit { get; }
 		int PageSize { get; }
+		int SizeLimit { get; }
 		bool AllowWildcardSearch { get; }
 		bool PropertySortingSupport { get; }
 		bool RangeRetrievalSupport { get; }
+		bool VirtualListViewSupport { get; }
+		
 	}
 }

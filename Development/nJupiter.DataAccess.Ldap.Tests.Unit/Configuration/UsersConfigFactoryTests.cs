@@ -45,7 +45,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		[Test]
 		public void Create_FilterIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateUserConfigWithServerConfig();
-			Assert.AreEqual("(objectClass=person)", config.Filter);
+			Assert.AreEqual(null, config.Filter);
 		}
 
 		[Test]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.Web.Security;
 
@@ -48,15 +49,21 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 		[Test]
 		public void GetAllUsers_GetAllUsers_ReturnsCollectionWithUsers() {
 			int totalRecords;
-			var result = provider.GetAllUsers(0, 1000, out totalRecords);
+			var result = provider.GetAllUsers(0, 10, out totalRecords);
+
+			foreach(var user in result) {
+				Console.WriteLine(user);
+			}
+			Console.WriteLine("Count:{0}", result.Count);
 
 			Assert.IsTrue(result.Count > 0);
+
 		}
 
 		[Test]
 		public void FindUsersByName_FindUsersByExistingUserName_ReturnsCollectionWithUser() {
 			int totalRecords;
-			var result = provider.FindUsersByName(ExistingUserName, 0, 1000, out totalRecords);
+			var result = provider.FindUsersByName(ExistingUserName, 0, 1, out totalRecords);
 
 			Assert.IsNotNull(result[ExistingUserName]);
 		}
@@ -64,7 +71,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Integration {
 		[Test]
 		public void FindUsersByEmail_FindUsersByExistingEmail_ReturnsCollectionWithUser() {
 			int totalRecords;
-			var result = provider.FindUsersByEmail(ExistingEmailAdress, 0, 1000, out totalRecords);
+			var result = provider.FindUsersByEmail(ExistingEmailAdress, 0, 1, out totalRecords);
 
 			Assert.IsNotNull(result[ExistingUserName]);
 		}

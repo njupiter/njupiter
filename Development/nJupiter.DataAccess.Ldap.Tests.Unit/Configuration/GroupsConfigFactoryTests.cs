@@ -46,7 +46,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		[Test]
 		public void Create_FilterIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateGroupConfigWithServerConfig();
-			Assert.AreEqual("(objectClass=groupOfNames)", config.Filter);
+			Assert.AreEqual(null, config.Filter);
 		}
 
 		[Test]

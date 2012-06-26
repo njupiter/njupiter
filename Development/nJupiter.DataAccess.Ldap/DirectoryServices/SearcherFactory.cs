@@ -41,7 +41,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, IEntryConfig entryConfig) {
 			var searcher = CreateSearcher(entry, searchScope, entryConfig.RdnAttribute);
-			searcher.PropertiesToLoad.Clear();
 			searcher.PropertiesToLoad.Add(entryConfig.RdnAttribute);
 			foreach(var attribute in entryConfig.Attributes) {
 				searcher.PropertiesToLoad.Add(attribute.Name);
@@ -66,6 +65,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			if(serverConfig.PageSize > 0) {
 				searcher.PageSize = serverConfig.PageSize;
 			}
+			searcher.SizeLimit = serverConfig.SizeLimit;
 			searcher.PropertiesToLoad.Clear();
 			return searcher;
 		}
