@@ -51,16 +51,16 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		protected override IEntryConfig Config { get { return groupConfig; } }
 
-		public IEntry GetGroupEntry(string groupname, bool loadProperties) {
+		public virtual IEntry GetGroupEntry(string groupname, bool loadProperties) {
 			var entry = GetGroupEntry(groupname);
 			return GetSearchedGroupEntry(entry);
 		}
 
-		public IEntry GetGroupEntry(string groupname) {
+		public virtual IEntry GetGroupEntry(string groupname) {
 			return directoryEntryAdapter.GetEntry(groupname, groupConfig, CreateSearcher);
 		}
 
-		public IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
+		public virtual IEnumerable<string> GetGroupMembersByRangedRetrival(string name) {
 			using(var entry = GetGroupEntry(name)) {
 				if(!entry.IsBound()) {
 					return new string[0];
@@ -70,19 +70,19 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			}
 		}
 
-		public IEntryCollection GetAllRoleEntries() {
+		public virtual IEntryCollection GetAllRoleEntries() {
 			using(var entry = GetGroupEntry()) {
 				var searcher = GetGroupSearcher(entry, SearchScope.Subtree);
 				return searcher.FindAll();
 			}
 		}
 
-		public string GetGroupName(IEntry entry) {
+		public virtual string GetGroupName(IEntry entry) {
 			var name = entry.GetProperties<string>(groupConfig.RdnAttribute).First();
 			return GetGroupName(name, true);
 		}
 
-		public string GetGroupName(string entryName) {
+		public virtual string GetGroupName(string entryName) {
 			return GetGroupName(entryName, false);
 		}
 
@@ -95,7 +95,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return nameParser.GetName(groupConfig.NameType, entryName);
 		}
 
-		public IEntryCollection GetGroupsWithEntryAsMemebership(IEntry membershipEntry) {
+		public virtual IEntryCollection GetGroupsWithEntryAsMemebership(IEntry membershipEntry) {
 			using(var entry = GetGroupEntry()) {
 				var searcher = GetGroupSearcher(entry, SearchScope.Subtree);
 				var mebershipValue = nameParser.GetDn(membershipEntry.Path);

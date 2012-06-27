@@ -32,8 +32,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			this.filterBuilder = filterBuilder;
 		}
 
-		public IEnumerable<T> GetPropertiesByRangedFilter<T>(string propertyName) {
-			uint rangeLow = 0;
+		public virtual IEnumerable<T> GetPropertiesByRangedFilter<T>(string propertyName) {
+			var rangeLow = 0;
 			var rangeHigh = rangeLow;
 			var isLastQuery = false;
 			var endOfRange = false;
@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			} while(!endOfRange);
 		}
 
-		public IEntry FindOne(string propertyToLoad) {
+		public virtual IEntry FindOne(string propertyToLoad) {
 			NewPropertyToLoad(propertyToLoad);
 			return FindOne();
 		}

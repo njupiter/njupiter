@@ -36,116 +36,116 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			return this;
 		}
 
-		public DirectoryEntry WrappedEntry { get { return directoryEntry; } }
-
 		public DirectoryEntryWrapper(DirectoryEntry directoryEntry) {
 			this.directoryEntry = directoryEntry;
 		}
 
-		public AuthenticationTypes AuthenticationType { get { return directoryEntry.AuthenticationType; } set { directoryEntry.AuthenticationType = value; } }
+		public virtual DirectoryEntry WrappedEntry { get { return directoryEntry; } }
 
-		public DirectoryEntries Children { get { return directoryEntry.Children; } }
+		public virtual AuthenticationTypes AuthenticationType { get { return directoryEntry.AuthenticationType; } set { directoryEntry.AuthenticationType = value; } }
 
-		public void Close() {
+		public virtual DirectoryEntries Children { get { return directoryEntry.Children; } }
+
+		public virtual void Close() {
 			directoryEntry.Close();
 		}
 
-		public void CommitChanges() {
+		public virtual void CommitChanges() {
 			directoryEntry.CommitChanges();
 		}
 
-		public IContainer Container { get { return directoryEntry.Container; } }
+		public virtual IContainer Container { get { return directoryEntry.Container; } }
 
-		public IEntry CopyTo(IEntry newParent) {
+		public virtual IEntry CopyTo(IEntry newParent) {
 			return directoryEntry.CopyTo(newParent.UnWrap()).Wrap();
 		}
 
-		public IEntry CopyTo(IEntry newParent, string newName) {
+		public virtual IEntry CopyTo(IEntry newParent, string newName) {
 			return directoryEntry.CopyTo(newParent.UnWrap(), newName).Wrap();
 		}
 
-		public ObjRef CreateObjRef(Type requestedType) {
+		public virtual ObjRef CreateObjRef(Type requestedType) {
 			return directoryEntry.CreateObjRef(requestedType);
 		}
 
-		public void DeleteTree() {
+		public virtual void DeleteTree() {
 			directoryEntry.DeleteTree();
 		}
 
-		public void Dispose() {
+		public virtual void Dispose() {
 			directoryEntry.Dispose();
 		}
 
-		public event EventHandler Disposed { add { directoryEntry.Disposed += value; } remove { directoryEntry.Disposed -= value; } }
+		public virtual event EventHandler Disposed { add { directoryEntry.Disposed += value; } remove { directoryEntry.Disposed -= value; } }
 
-		public object GetLifetimeService() {
+		public virtual object GetLifetimeService() {
 			return directoryEntry.GetLifetimeService();
 		}
 
-		public Guid Guid { get { return directoryEntry.Guid; } }
+		public virtual Guid Guid { get { return directoryEntry.Guid; } }
 
-		public object InitializeLifetimeService() {
+		public virtual object InitializeLifetimeService() {
 			return directoryEntry.InitializeLifetimeService();
 		}
 
-		public object Invoke(string methodName, params object[] args) {
+		public virtual object Invoke(string methodName, params object[] args) {
 			return directoryEntry.Invoke(methodName, args);
 		}
 
-		public object InvokeGet(string propertyName) {
+		public virtual object InvokeGet(string propertyName) {
 			return directoryEntry.InvokeGet(propertyName);
 		}
 
-		public void InvokeSet(string propertyName, params object[] args) {
+		public virtual void InvokeSet(string propertyName, params object[] args) {
 			directoryEntry.InvokeSet(propertyName, args);
 		}
 
-		public void MoveTo(IEntry newParent) {
+		public virtual void MoveTo(IEntry newParent) {
 			directoryEntry.MoveTo(newParent.UnWrap());
 		}
 
-		public void MoveTo(IEntry newParent, string newName) {
+		public virtual void MoveTo(IEntry newParent, string newName) {
 			directoryEntry.MoveTo(newParent.UnWrap(), newName);
 		}
 
-		public string Name { get { return directoryEntry.Name; } }
+		public virtual string Name { get { return directoryEntry.Name; } }
 
-		public string NativeGuid { get { return directoryEntry.NativeGuid; } }
+		public virtual string NativeGuid { get { return directoryEntry.NativeGuid; } }
 
-		public object NativeObject { get { return directoryEntry.NativeObject; } }
+		public virtual object NativeObject { get { return directoryEntry.NativeObject; } }
 
-		public ActiveDirectorySecurity ObjectSecurity { get { return directoryEntry.ObjectSecurity; } set { directoryEntry.ObjectSecurity = value; } }
+		public virtual ActiveDirectorySecurity ObjectSecurity { get { return directoryEntry.ObjectSecurity; } set { directoryEntry.ObjectSecurity = value; } }
 
-		public DirectoryEntryConfiguration Options { get { return directoryEntry.Options; } }
+		public virtual DirectoryEntryConfiguration Options { get { return directoryEntry.Options; } }
 
-		public IEntry Parent { get { return directoryEntry.Parent.Wrap(); } }
+		public virtual IEntry Parent { get { return directoryEntry.Parent.Wrap(); } }
 
-		public string Password { set { directoryEntry.Password = value; } }
+		public virtual string Password { set { directoryEntry.Password = value; } }
 
-		public string Path { get { return directoryEntry.Path; } set { directoryEntry.Path = value; } }
+		public virtual string Path { get { return directoryEntry.Path; } set { directoryEntry.Path = value; } }
 
-		public IDictionary Properties { get { return directoryEntry.Properties; } }
+		public virtual IDictionary Properties { get { return directoryEntry.Properties; } }
 
-		public void RefreshCache() {
+		public virtual void RefreshCache() {
 			directoryEntry.RefreshCache();
 		}
 
-		public void RefreshCache(string[] propertyNames) {
+		public virtual void RefreshCache(string[] propertyNames) {
 			directoryEntry.RefreshCache(propertyNames);
 		}
 
-		public void Rename(string newName) {
+		public virtual void Rename(string newName) {
 			directoryEntry.Rename(newName);
 		}
 
-		public string SchemaClassName { get { return directoryEntry.SchemaClassName; } }
+		public virtual string SchemaClassName { get { return directoryEntry.SchemaClassName; } }
 
-		public IEntry SchemaEntry { get { return directoryEntry.SchemaEntry.Wrap(); } }
+		public virtual IEntry SchemaEntry { get { return directoryEntry.SchemaEntry.Wrap(); } }
 
-		public ISite Site { get { return directoryEntry.Site; } set { directoryEntry.Site = value; } }
+		public virtual ISite Site { get { return directoryEntry.Site; } set { directoryEntry.Site = value; } }
 
-		public bool UsePropertyCache { get { return directoryEntry.UsePropertyCache; } set { directoryEntry.UsePropertyCache = value; } }
+		public virtual bool UsePropertyCache { get { return directoryEntry.UsePropertyCache; } set { directoryEntry.UsePropertyCache = value; } }
 
-		public string Username { get { return directoryEntry.Username; } set { directoryEntry.Username = value; } }
+		public virtual string Username { get { return directoryEntry.Username; } set { directoryEntry.Username = value; } }
 	}
 }

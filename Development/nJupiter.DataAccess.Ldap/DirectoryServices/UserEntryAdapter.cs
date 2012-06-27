@@ -51,21 +51,21 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		protected override IEntryConfig Config { get { return configuration.Users; } }
 
-		public IEntry GetUserEntry(string username) {
+		public virtual IEntry GetUserEntry(string username) {
 			return GetUserEntry(username, false);
 		}
 
-		public IEntry GetUserEntryAndLoadProperties(string username) {
+		public virtual IEntry GetUserEntryAndLoadProperties(string username) {
 			return GetUserEntry(username, true);
 		}
 
-		public IEntry GetUserEntryByEmail(string email) {
+		public virtual IEntry GetUserEntryByEmail(string email) {
 			using(var entry = directoryEntryAdapter.GetEntry(configuration.Users.Path)) {
 				return GetUserEntryFromSearcher(entry, CreateUserEmailFilter(email), SearchScope.Subtree);
 			}
 		}
 
-		public string GetUserName(string entryName) {
+		public virtual string GetUserName(string entryName) {
 			if(!configuration.Users.RdnInPath) {
 				using(var entry = GetUserDirectoryEntry(entryName)) {
 					entryName = entry.GetProperties<string>(configuration.Users.RdnAttribute).First();
@@ -74,12 +74,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return nameHandler.GetName(configuration.Users.NameType, entryName);
 		}
 
-		public IEnumerable<string> GetUsersFromEntry(IEntry entry, string propertyName) {
+		public virtual IEnumerable<string> GetUsersFromEntry(IEntry entry, string propertyName) {
 			var properties = entry.GetProperties<string>(propertyName);
 			return properties.Select(GetUserName);
 		}
 
-		public IEntry GetUserEntry(string username, string password) {
+		public virtual IEntry GetUserEntry(string username, string password) {
 			using(var user = GetUserEntry(username)) {
 				if(!user.IsBound()) {
 					return null;
@@ -91,15 +91,15 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			}
 		}
 
-		public IEntryCollection GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
+		public virtual IEntryCollection GetAllUserEntries(int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(configuration.Users.Filter, pageIndex, pageSize, out totalRecords);
 		}
 
-		public IEntryCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
+		public virtual IEntryCollection FindUsersByName(string usernameToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(CreateUserNameFilter(usernameToMatch), pageIndex, pageSize, out totalRecords);
 		}
 
-		public IEntryCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
+		public virtual IEntryCollection FindUsersByEmail(string emailToMatch, int pageIndex, int pageSize, out int totalRecords) {
 			return GetUserEntries(CreateUserEmailFilter(emailToMatch), pageIndex, pageSize, out totalRecords);
 		}
 

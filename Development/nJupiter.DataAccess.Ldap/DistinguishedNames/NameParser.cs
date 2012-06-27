@@ -28,7 +28,7 @@ using System.Linq;
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 	public class NameParser : INameParser {
 
-		public string GetCn(string name) {
+		public virtual string GetCn(string name) {
 			var dn = GetDnObject(name);
 			if(dn == null) {
 				return name;
@@ -36,7 +36,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return dn.Rdns.First().Components.First().ComponentValue;
 		}
 
-		public string GetRdn(string name) {
+		public virtual string GetRdn(string name) {
 			var dn = GetDnObject(name);
 			if(dn == null) {
 				return null;
@@ -44,7 +44,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return dn.Rdns.First().ToString();
 		}
 
-		public string GetDn(string name) {
+		public virtual string GetDn(string name) {
 			var dn = GetDnObject(name);
 			if(dn == null) {
 				return null;
@@ -52,7 +52,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return dn.ToString();
 		}
 
-		public string GetDn(string name, string attribute, string basePath) {
+		public virtual string GetDn(string name, string attribute, string basePath) {
 			var dn = GetDnObject(name);
 			var type = GetNameType(dn);
 			switch(type) {
@@ -66,7 +66,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return dn.ToString();
 		}
 
-		public IDn GetDnObject(string name) {
+		public virtual IDn GetDnObject(string name) {
 			name = LdapPathHandler.GetDistinguishedNameFromPath(name);
 			if(name.Contains("=")) {
 				return CreateDnObject(name);
@@ -74,7 +74,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return null;
 		}
 
-		public string GetName(NameType nameType, string entryName) {
+		public virtual string GetName(NameType nameType, string entryName) {
 			switch(nameType) {
 				case NameType.Cn:
 				return GetCn(entryName);
@@ -87,7 +87,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			}
 		}
 
-		public bool NamesEqual(string name, string nameToMatch, string attribute, string basePath) {
+		public virtual bool NamesEqual(string name, string nameToMatch, string attribute, string basePath) {
 			name = GetDn(name, attribute, basePath);
 			nameToMatch = GetDn(nameToMatch, attribute, basePath);
 			return string.Equals(name, nameToMatch, StringComparison.InvariantCultureIgnoreCase);

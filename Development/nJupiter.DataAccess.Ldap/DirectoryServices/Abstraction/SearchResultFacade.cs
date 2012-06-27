@@ -34,18 +34,18 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 			this.searchResult = searchResult;
 		}
 
-		public IDirectoryEntry GetDirectoryEntry() {
+		public virtual IDirectoryEntry GetDirectoryEntry() {
 			return internalEntry ?? (internalEntry = searchResult.GetDirectoryEntry().Wrap());
 		}
 
-		public string Path { get { return searchResult.Path; } }
+		public virtual string Path { get { return searchResult.Path; } }
 
-		public IDictionary Properties { get { return searchResult.Properties; } }
+		public virtual IDictionary Properties { get { return searchResult.Properties; } }
 
-		public object NativeObject { get { return GetDirectoryEntry().NativeObject; } }
-		public string Name { get { return GetDirectoryEntry().Name; } }
+		public virtual object NativeObject { get { return GetDirectoryEntry().NativeObject; } }
+		public virtual string Name { get { return GetDirectoryEntry().Name; } }
 
-		public void Dispose() {
+		public virtual void Dispose() {
 			if(internalEntry != null) {
 				internalEntry.Dispose();
 			}

@@ -37,25 +37,25 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			this.serverConfig = serverConfig;
 		}
 
-		public string CreatePropertyRangeFilter(string propertyName, uint rangeLow, uint rangeHigh, bool isLastQuery) {
-			rangeHigh = isLastQuery ? uint.MaxValue: rangeHigh;
+		public virtual string CreatePropertyRangeFilter(string propertyName, int rangeLow, int rangeHigh, bool isLastQuery) {
+			rangeHigh = isLastQuery ? int.MaxValue: rangeHigh;
 			return CreatePropertyRangeFilter(propertyName, rangeLow, rangeHigh);
 		}
 
-		public string CreatePropertyRangeFilter(string propertyName, uint startIndex, uint endIndex) {
-			if(endIndex < startIndex || UInt32.MaxValue.Equals(endIndex)) {
+		public virtual string CreatePropertyRangeFilter(string propertyName, int startIndex, int endIndex) {
+			if(endIndex < startIndex || int.MaxValue.Equals(endIndex)) {
 				return String.Format("{0};range={1}-*", propertyName, startIndex);
 			}
 			return String.Format("{0};range={1}-{2}", propertyName, startIndex, endIndex);
 		}
 
-		public string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
+		public virtual string AttachFilter(string attributeToMatch, string valueToMatch, string defaultFilter) {
 			var escapedValue = EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}={2}))", defaultFilter, attributeToMatch, escapedValue);
 		}
 
 
-		public string AttachAttributeFilters(string nameToMatch, string defaultFilter, string rdnAttribute, IEnumerable<IAttributeDefinition> attributeDefinitinon) {
+		public virtual string AttachAttributeFilters(string nameToMatch, string defaultFilter, string rdnAttribute, IEnumerable<IAttributeDefinition> attributeDefinitinon) {
 			var escapedName = EscapeSearchFilter(nameToMatch);
 			var builder = new StringBuilder();
 			foreach(var attributes in attributeDefinitinon) {
@@ -66,7 +66,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return String.Format("(&{0}(|({1}={2}){3}))", defaultFilter, rdnAttribute, escapedName, builder);
 		}
 
-		public string AttachRdnFilter(string valueToMatch, string defaultFilter) {
+		public virtual string AttachRdnFilter(string valueToMatch, string defaultFilter) {
 			var escapedValue = EscapeSearchFilter(valueToMatch);
 			return String.Format("(&{0}({1}))", defaultFilter, escapedValue);
 		}

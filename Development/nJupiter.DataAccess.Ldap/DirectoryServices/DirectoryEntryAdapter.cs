@@ -48,16 +48,16 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			this.nameParser = nameParser;
 		}
 
-		public IDirectoryEntry GetEntry(string path) {
+		public virtual IDirectoryEntry GetEntry(string path) {
 			return GetEntry(path, serverConfig.Username, serverConfig.Password);
 		}
 
-		public IDirectoryEntry GetEntry(Uri uri, string username, string password) {
+		public virtual IDirectoryEntry GetEntry(Uri uri, string username, string password) {
 			var path = LdapPathHandler.UriToPath(uri);
 			return GetEntry(path, username, password);
 		}
 
-		public IDirectoryEntry GetEntry(string attributeValue, IEntryConfig entryConfig, Func<IEntry, IDirectorySearcher> searcherFactory) {
+		public virtual IDirectoryEntry GetEntry(string attributeValue, IEntryConfig entryConfig, Func<IEntry, IDirectorySearcher> searcherFactory) {
 			IDirectoryEntry directoryEntry = null;
 			if(attributeValue == null) {
 				return null;

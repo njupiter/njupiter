@@ -39,12 +39,23 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			this.filterBuilder = filterBuilder;
 		}
 
-		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, IEntryConfig entryConfig) {
+		public virtual IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, IEntryConfig entryConfig) {
 			var searcher = CreateSearcher(entry, searchScope, entryConfig.RdnAttribute);
 			searcher.PropertiesToLoad.Add(entryConfig.RdnAttribute);
 			foreach(var attribute in entryConfig.Attributes) {
 				searcher.PropertiesToLoad.Add(attribute.Name);
 			}
+			return searcher;
+		}
+
+		public virtual IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
+			var searcher = new DirectorySearcherAdapter(entry, filterBuilder);
+			searcher.SearchRoot = entry.GetDirectoryEntry();
+			searcher.SearchScope = searchScope;
+			searcher.ServerTimeLimit = serverConfig.TimeLimit;
+			SetPageSizeIfNotDefault(searcher);
+			SetSizeLimitIfNotDefault(searcher);
+			searcher.PropertiesToLoad.Clear();
 			return searcher;
 		}
 
@@ -54,17 +65,6 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				searcher.Sort.PropertyName = rdnAttribute;
 				searcher.Sort.Direction = SortDirection.Ascending;
 			}
-			return searcher;
-		}
-
-		public IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope) {
-			var searcher = new DirectorySearcherAdapter(entry, filterBuilder);
-			searcher.SearchRoot = entry.GetDirectoryEntry();
-			searcher.SearchScope = searchScope;
-			searcher.ServerTimeLimit = serverConfig.TimeLimit;
-			SetPageSizeIfNotDefault(searcher);
-			SetSizeLimitIfNotDefault(searcher);
-			searcher.PropertiesToLoad.Clear();
 			return searcher;
 		}
 

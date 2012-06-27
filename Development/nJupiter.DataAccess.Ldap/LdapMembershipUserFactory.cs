@@ -44,7 +44,7 @@ namespace nJupiter.DataAccess.Ldap {
 			this.providerName = providerName;
 		}
 
-		public MembershipUserCollection CreateCollection(IEnumerable<IEntry> entries) {
+		public virtual MembershipUserCollection CreateCollection(IEnumerable<IEntry> entries) {
 			var users = new MembershipUserCollection();
 			foreach(var result in entries) {
 				var user = Create(result);
@@ -55,7 +55,7 @@ namespace nJupiter.DataAccess.Ldap {
 			return users;
 		}
 
-		public MembershipUser Create(IEntry entry) {
+		public virtual MembershipUser Create(IEntry entry) {
 			if(!entry.IsBound()) {
 				return null;
 			}

@@ -32,7 +32,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			this.ldapConfigFactory = ldapConfigFactory;
 		}
 
-		public IProviderConfig Create<T>(string name, NameValueCollection config) {
+		public virtual IProviderConfig Create<T>(string name, NameValueCollection config) {
 			var appName = GetStringConfigValue(config, "applicationName", typeof(T).Name);
 			var providerName = !string.IsNullOrEmpty(name) ? name : appName;
 			var ldapServer = GetStringConfigValue(config, "ldapServer", string.Empty);

@@ -37,7 +37,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			innerCollection = new List<IEntry>(entries);
 		}
 
-		public IEnumerator<IEntry> GetEnumerator() {
+		public virtual IEnumerator<IEntry> GetEnumerator() {
 			return innerCollection.GetEnumerator();
 		}
 
@@ -45,13 +45,13 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			return GetEnumerator();
 		}
 
-		public void Dispose() {
+		public virtual void Dispose() {
 			foreach(var entry in this) {
 				entry.Dispose();
 			}
 		}
 
-		public void Add(IEntry entry) {
+		public virtual void Add(IEntry entry) {
 			innerCollection.Add(entry);
 		}
 	}

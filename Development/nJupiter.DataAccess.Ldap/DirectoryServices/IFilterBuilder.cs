@@ -28,8 +28,8 @@ using nJupiter.DataAccess.Ldap.Configuration;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	public interface IFilterBuilder {
-		string CreatePropertyRangeFilter(string propertyName, uint rangeLow, uint rangeHigh, bool isLastQuery);
-		string CreatePropertyRangeFilter(string propertyName, uint startIndex, uint endIndex);
+		string CreatePropertyRangeFilter(string propertyName, int rangeLow, int rangeHigh, bool isLastQuery);
+		string CreatePropertyRangeFilter(string propertyName, int startIndex, int endIndex);
 
 		string AttachAttributeFilters(string nameToMatch,
 		                              string defaultFilter,

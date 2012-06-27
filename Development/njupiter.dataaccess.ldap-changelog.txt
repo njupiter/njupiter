@@ -9,6 +9,23 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V5.0.0.424 - 2012-06-27
+===============================================================================
+
+ENH: The component are completely refactored and cleaned up so it shall be
+     easier to make changes and add new functionality in the future.
+NEW: Now supports paged loading via Virtual List View for servers that supports
+     it.
+NEW: Now supports servers that do not cross refer members in both group entry
+     and user entry but only store membership in groups.
+NEW: Can now debug log to any supported logger via nJupiter.Abstaction.Logging
+BUG: The Attributes property on the LdapMembershipUser is now an interface
+     instead of a concrete class.
+ENH: DirectoryServices facades and abstractions are now public so they can be
+     used externaly.
+ENH: Config objects are now public so it can be used externaly.
+
+===============================================================================
 Changes for V4.0.2.322 - 2012-01-11
 ===============================================================================
 
