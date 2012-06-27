@@ -74,37 +74,35 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		private string EscapeSearchFilter(string searchFilter) {
 			//http://stackoverflow.com/questions/649149/how-to-escape-a-string-in-c-for-use-in-an-ldap-query
 			var escape = new StringBuilder();
-			for(var i = 0; i < searchFilter.Length; ++i) {
-				var current = searchFilter[i];
+			foreach(var current in searchFilter) {
 				switch(current) {
 					case '\\':
-					escape.Append(@"\5c");
-					break;
+						escape.Append(@"\5c");
+						break;
 					case '*':
-					if(serverConfig.AllowWildcardSearch) {
-						escape.Append(current);
-					} else {
-						escape.Append(@"\2a");
-					}
-					break;
+						if(serverConfig.AllowWildcardSearch) {
+							escape.Append(current);
+						} else {
+							escape.Append(@"\2a");
+						}
+						break;
 					case '(':
-					escape.Append(@"\28");
-					break;
+						escape.Append(@"\28");
+						break;
 					case ')':
-					escape.Append(@"\29");
-					break;
+						escape.Append(@"\29");
+						break;
 					case '\u0000':
-					escape.Append(@"\00");
-					break;
+						escape.Append(@"\00");
+						break;
 					case '/':
-					escape.Append(@"\2f");
-					break;
+						escape.Append(@"\2f");
+						break;
 					default:
-					escape.Append(current);
-					break;
+						escape.Append(current);
+						break;
 				}
 			}
-
 			return escape.ToString();
 		}
 

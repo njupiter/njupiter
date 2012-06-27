@@ -73,14 +73,6 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return null;
 		}
 
-		private NameType GetNameType(IDn dn) {
-			if(dn == null) {
-				return NameType.Cn;
-			}
-			return dn.Rdns.Count > 1 ? NameType.Dn : NameType.Rdn;
-		}
-
-
 		public string GetName(NameType nameType, string entryName) {
 			switch(nameType) {
 				case NameType.Cn:
@@ -102,6 +94,13 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 
 		protected virtual IDn CreateDnObject(string name) {
 			return new Dn(name);
+		}
+
+		private NameType GetNameType(IDn dn) {
+			if(dn == null) {
+				return NameType.Cn;
+			}
+			return dn.Rdns.Count > 1 ? NameType.Dn : NameType.Rdn;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class AttributeDefinition : IAttributeDefinition {
 		readonly string name;
 		readonly bool excludeFromNameSearch;

@@ -27,7 +27,15 @@ using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	internal class EntryCollection : IEntryCollection {
-		private readonly List<IEntry> innerCollection = new List<IEntry>();
+		private readonly List<IEntry> innerCollection;
+
+		public EntryCollection() {
+			innerCollection = new List<IEntry>();
+		}
+
+		public EntryCollection(IEnumerable<IEntry> entries) {
+			innerCollection = new List<IEntry>(entries);
+		}
 
 		public IEnumerator<IEntry> GetEnumerator() {
 			return innerCollection.GetEnumerator();

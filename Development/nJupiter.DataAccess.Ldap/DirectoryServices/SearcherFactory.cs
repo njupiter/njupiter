@@ -62,13 +62,22 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 			searcher.SearchRoot = entry.GetDirectoryEntry();
 			searcher.SearchScope = searchScope;
 			searcher.ServerTimeLimit = serverConfig.TimeLimit;
-			if(serverConfig.PageSize > 0) {
-				searcher.PageSize = serverConfig.PageSize;
-			}
-			searcher.SizeLimit = serverConfig.SizeLimit;
+			SetPageSizeIfNotDefault(searcher);
+			SetSizeLimitIfNotDefault(searcher);
 			searcher.PropertiesToLoad.Clear();
 			return searcher;
 		}
 
+		private void SetPageSizeIfNotDefault(DirectorySearcherAdapter searcher) {
+			if(serverConfig.PageSize > 0) {
+				searcher.PageSize = serverConfig.PageSize;
+			}
+		}
+
+		private void SetSizeLimitIfNotDefault(DirectorySearcherAdapter searcher) {
+			if(serverConfig.SizeLimit != 1000) {
+				searcher.SizeLimit = serverConfig.SizeLimit;
+			}
+		}
 	}
 }

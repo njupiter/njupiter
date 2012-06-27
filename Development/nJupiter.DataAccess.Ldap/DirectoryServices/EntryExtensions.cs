@@ -43,14 +43,11 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public static IEnumerable<object> GetProperties(this IEntry entry, string propertyName) {
-			var properties = new List<object>();
 			propertyName = FormatPropertyName(propertyName);
 			if(entry.ContainsPropertyInternal(propertyName)) {
-				foreach(var group in entry.GetPropertyCollection(propertyName)) {
-					properties.Add(group);
-				}
+				return entry.GetPropertyCollection(propertyName).Cast<object>();
 			}
-			return properties;
+			return new object[0];
 		}
 
 		private static bool ContainsPropertyInternal(this IEntry entry, string propertyName) {

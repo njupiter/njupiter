@@ -31,8 +31,9 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public GroupsConfig() {
 			RdnAttribute = "cn";
 			RdnInPath = true;
-			Attributes = new List<IAttributeDefinition>();
-			Attributes.Add(new AttributeDefinition("cn"));
+			var attributes = new List<IAttributeDefinition>();
+			attributes.Add(new AttributeDefinition("cn"));
+			Attributes = attributes;
 			MembershipAttribute = "member";
 			NameType = NameType.Cn;
 		}
@@ -42,7 +43,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public string Path { get; internal set; }
 		public string RdnAttribute { get; internal set; }
 		public bool RdnInPath {  get; internal set; }
-		public List<IAttributeDefinition> Attributes { get; internal set; }
+		public IEnumerable<IAttributeDefinition> Attributes { get; internal set; }
 		public string MembershipAttribute { get; internal set; }
 		public NameType NameType { get; internal set; }
 

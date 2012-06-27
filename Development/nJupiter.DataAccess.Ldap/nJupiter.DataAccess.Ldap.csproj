@@ -54,10 +54,11 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AttributeCollection.cs" />
-    <Compile Include="AttributeDefinition.cs" />
-    <Compile Include="AttributeDefinitionExtensions.cs" />
     <Compile Include="AttributeValueCollection.cs" />
+    <Compile Include="Configuration\AttributeDefinition.cs" />
+    <Compile Include="Configuration\AttributeDefinitionExtensions.cs" />
     <Compile Include="Configuration\Container.cs" />
+    <Compile Include="Configuration\IAttributeDefinition.cs" />
     <Compile Include="Configuration\IContainer.cs" />
     <Compile Include="Configuration\IGroupConfigFactory.cs" />
     <Compile Include="Configuration\IGroupsConfig.cs" />
@@ -104,7 +105,6 @@
     <Compile Include="DirectoryServices\SearcherFactory.cs" />
     <Compile Include="DirectoryServices\UserEntryAdapter.cs" />
     <Compile Include="IAttributeCollection.cs" />
-    <Compile Include="IAttributeDefinition.cs" />
     <Compile Include="IAttributeValueCollection.cs" />
     <Compile Include="IMembershipUserFactory.cs" />
     <Compile Include="Configuration\IProviderConfig.cs" />

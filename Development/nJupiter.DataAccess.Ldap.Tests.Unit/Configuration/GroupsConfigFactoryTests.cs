@@ -143,7 +143,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		public void Create_AttributeDefinitionListWithTwoAttributesDefiendedInConfig_AttributeContainsTwoAttributesPlusDefaultAttributes() {
 			const int defaultNumberOfAttributes = 1;
 			var config = CreateGroupConfigWithServerConfig("<groups><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></groups>");
-			Assert.AreEqual(2 + defaultNumberOfAttributes, config.Attributes.Count);
+			Assert.AreEqual(2 + defaultNumberOfAttributes, config.Attributes.Count());
 		}
 
 		[Test]
@@ -174,7 +174,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsOneDefaultAttributePlusDefaultAttributes() {
 			const int defaultNumberOfAttributes = 1;
 			var config = CreateGroupConfigWithServerConfig();
-			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count);
+			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count());
 		}
 
 		[Test]

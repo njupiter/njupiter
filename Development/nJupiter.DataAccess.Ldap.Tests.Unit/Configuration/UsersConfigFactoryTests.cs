@@ -206,14 +206,14 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 			var config =
 				CreateUserConfigWithServerConfig(
 				                                 "<users><attributes><attribute value='attribute1'/><attribute value='attribute2'/></attributes></users>");
-			Assert.AreEqual(2 + defaultNumberOfAttributes, config.Attributes.Count);
+			Assert.AreEqual(2 + defaultNumberOfAttributes, config.Attributes.Count());
 		}
 
 		[Test]
 		public void Create_NoAttributeDefinitionListDefiendedInConfig_AttributeContainsOneDefaultAttribute() {
 			const int defaultNumberOfAttributes = 1;
 			var config = CreateUserConfigWithServerConfig();
-			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count);
+			Assert.AreEqual(1 + defaultNumberOfAttributes, config.Attributes.Count());
 		}
 
 		[Test]

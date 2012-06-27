@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace nJupiter.DataAccess.Ldap {
+namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal static class AttributeDefinitionExtensions {
 		public static void Attach(this IList<IAttributeDefinition> attributes, string attributeName, bool excludeFromNameSearch) {
 			if(!string.IsNullOrEmpty(attributeName)) {

@@ -23,8 +23,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 using nJupiter.Configuration;
+using nJupiter.DataAccess.Ldap.DirectoryServices;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
@@ -92,21 +94,23 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 
 		private static void SetAttributeDefinitionList(IConfig configSection, GroupsConfig groups) {
 			var containsCustomAttributes = configSection.ContainsKey("groups", "attributes");
+			var attributes = new List<IAttributeDefinition>(groups.Attributes);
 			if(containsCustomAttributes) {
-				groups.Attributes.Clear();
+				attributes.Clear();
 			}
-			groups.Attributes.Attach(groups.MembershipAttribute, true);
+			attributes.Attach(groups.MembershipAttribute, true);
 			if(containsCustomAttributes) {
-				var attributes = configSection.GetValueArray("groups/attributes", "attribute");
-				foreach(var attribute in attributes) {
+				var attributeValues = configSection.GetValueArray("groups/attributes", "attribute");
+				foreach(var attribute in attributeValues) {
 					var excludeFromNameSearch = false;
 					var attributeKey = String.Format("groups/attributes/attribute[@value='{0}']", attribute);
 					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
 						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
 					}
-					groups.Attributes.Attach(attribute, excludeFromNameSearch);
+					attributes.Attach(attribute, excludeFromNameSearch);
 				}
 			}
+			groups.Attributes = attributes;
 		}
 	}
 }

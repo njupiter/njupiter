@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 using nJupiter.Configuration;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
@@ -129,27 +130,28 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 
 		private static void SetAttributeDefinitionList(IConfig configSection, UsersConfig users) {
 			var containsCustomAttributes = configSection.ContainsKey("users", "attributes");
+			var attributes = new List<IAttributeDefinition>(users.Attributes);
 			if(containsCustomAttributes) {
-				users.Attributes.Clear();
+				attributes.Clear();
 			}
-			users.Attributes.Attach(users.EmailAttribute, true);
-			users.Attributes.Attach(users.CreationDateAttribute, true);
-			users.Attributes.Attach(users.LastLoginDateAttribute, true);
-			users.Attributes.Attach(users.LastPasswordChangedDateAttribute, true);
-			users.Attributes.Attach(users.DescriptionAttribute, true);
-			users.Attributes.Attach(users.MembershipAttribute, true);
+			attributes.Attach(users.EmailAttribute, true);
+			attributes.Attach(users.CreationDateAttribute, true);
+			attributes.Attach(users.LastLoginDateAttribute, true);
+			attributes.Attach(users.LastPasswordChangedDateAttribute, true);
+			attributes.Attach(users.DescriptionAttribute, true);
+			attributes.Attach(users.MembershipAttribute, true);
 			if(containsCustomAttributes) {
-				var attributes = configSection.GetValueArray("users/attributes", "attribute");
-				foreach(var attribute in attributes) {
+				var attributeValues = configSection.GetValueArray("users/attributes", "attribute");
+				foreach(var attribute in attributeValues) {
 					var excludeFromNameSearch = false;
 					var attributeKey = String.Format("users/attributes/attribute[@value='{0}']", attribute);
 					if(configSection.ContainsAttribute(attributeKey, "excludeFromNameSearch")) {
 						excludeFromNameSearch = configSection.GetAttribute<bool>(attributeKey, "excludeFromNameSearch");
 					}
-					users.Attributes.Attach(attribute, excludeFromNameSearch);
+					attributes.Attach(attribute, excludeFromNameSearch);
 				}
-				users.Attributes = users.Attributes;
 			}
+			users.Attributes = attributes;
 		}
 
 	}
