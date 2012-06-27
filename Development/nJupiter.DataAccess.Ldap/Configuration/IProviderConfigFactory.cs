@@ -25,7 +25,7 @@
 using System.Collections.Specialized;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IProviderConfigFactory {
+	public interface IProviderConfigFactory {
 		IProviderConfig Create<T>(string name, NameValueCollection config);
 	}
 }

@@ -38,7 +38,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 		private readonly List<IRdn> rdns;
 		private readonly EscapeChars escapeChars;
 
-		public List<IRdn> Rdns {
+		public IEnumerable<IRdn> Rdns {
 			get {
 				return rdns;
 			}

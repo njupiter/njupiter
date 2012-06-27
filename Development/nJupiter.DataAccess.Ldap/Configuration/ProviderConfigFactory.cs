@@ -25,10 +25,10 @@
 using System.Collections.Specialized;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal class ProviderConfigFactory : IProviderConfigFactory {
+	public class ProviderConfigFactory : IProviderConfigFactory {
 		private readonly ILdapConfigFactory ldapConfigFactory;
 
-		public ProviderConfigFactory(ILdapConfigFactory ldapConfigFactory) {
+		internal ProviderConfigFactory(ILdapConfigFactory ldapConfigFactory) {
 			this.ldapConfigFactory = ldapConfigFactory;
 		}
 

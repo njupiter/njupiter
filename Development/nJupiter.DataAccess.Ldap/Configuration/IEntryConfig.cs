@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IEntryConfig {
+	public interface IEntryConfig {
 		string Filter { get; }
 		string Base { get; }
 		string Path { get; }

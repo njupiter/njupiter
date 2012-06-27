@@ -23,7 +23,7 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
-	internal interface INameParser {
+	public interface INameParser {
 		string GetCn(string name);
 		string GetRdn(string name);
 		string GetDn(string name);

@@ -25,8 +25,8 @@
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
-	internal interface IRdn {
-		List<IRdnComponent> Components { get; }
+	public interface IRdn {
+		IEnumerable<IRdnComponent> Components { get; }
 		string ToString();
 		string ToString(EscapeChars escapeChars);
 	}

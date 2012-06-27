@@ -23,7 +23,7 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IProviderConfig {
+	public interface IProviderConfig {
 		string Name { get; }
 		string ApplicationName { get; }
 		ILdapConfig LdapConfig { get; }

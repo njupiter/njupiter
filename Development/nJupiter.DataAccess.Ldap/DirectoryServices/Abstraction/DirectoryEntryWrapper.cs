@@ -29,7 +29,7 @@ using System.DirectoryServices;
 using System.Runtime.Remoting;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
-	internal class DirectoryEntryWrapper : IDirectoryEntry {
+	public class DirectoryEntryWrapper : IDirectoryEntry {
 		private readonly DirectoryEntry directoryEntry;
 
 		public IDirectoryEntry GetDirectoryEntry() {

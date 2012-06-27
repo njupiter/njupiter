@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface IUserEntryAdapter {
+	public interface IUserEntryAdapter {
 		IEntry GetUserEntry(string username);
 		IEntry GetUserEntryAndLoadProperties(string username);
 		string GetUserName(string entryName);

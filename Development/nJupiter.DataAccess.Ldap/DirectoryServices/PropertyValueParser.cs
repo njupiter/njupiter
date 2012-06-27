@@ -27,7 +27,7 @@ using System.ComponentModel;
 using System.Text;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class PropertyValueParser {
+	public class PropertyValueParser {
 		public static T Parse<T>(object value) {
 			if(value == null) {
 				return default(T);	

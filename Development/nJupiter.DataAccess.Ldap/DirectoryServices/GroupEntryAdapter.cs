@@ -32,7 +32,7 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class GroupEntryAdapter : EntryAdapterBase, IGroupEntryAdapter {
+	public class GroupEntryAdapter : EntryAdapterBase, IGroupEntryAdapter {
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly IGroupsConfig groupConfig;
 		private readonly INameParser nameParser;

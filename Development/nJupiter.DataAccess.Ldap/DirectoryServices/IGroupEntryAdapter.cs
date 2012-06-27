@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface IGroupEntryAdapter {
+	public interface IGroupEntryAdapter {
 		IEntry GetGroupEntry(string groupname, bool loadProperties);
 		IEntry GetGroupEntry(string groupname);
 		IEnumerable<string> GetGroupMembersByRangedRetrival(string name);

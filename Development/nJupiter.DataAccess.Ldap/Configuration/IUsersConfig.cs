@@ -23,7 +23,7 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IUsersConfig : IEntryConfig {
+	public interface IUsersConfig : IEntryConfig {
 		string EmailAttribute { get; }
 		string CreationDateAttribute { get; }
 		string LastLoginDateAttribute { get; }

@@ -50,7 +50,7 @@ namespace nJupiter.DataAccess.Ldap {
 
 		public override string ApplicationName { get { return providerConfig.ApplicationName; } set { } }
 		public override string Name { get { return providerConfig.Name; } }
-		private IProviderConfigFactory ConfigFactory { get { return providerConfigFactory ?? ProviderConfigFactory.Instance; } }
+		protected virtual IProviderConfigFactory ConfigFactory { get { return providerConfigFactory ?? ProviderConfigFactory.Instance; } }
 
 		public override void Initialize(string name, NameValueCollection config) {
 			providerConfig = ConfigFactory.Create<LdapMembershipProvider>(name, config);

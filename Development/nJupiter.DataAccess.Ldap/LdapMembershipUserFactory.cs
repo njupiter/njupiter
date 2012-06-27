@@ -32,7 +32,7 @@ using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices;
 
 namespace nJupiter.DataAccess.Ldap {
-	internal class LdapMembershipUserFactory : IMembershipUserFactory {
+	public class LdapMembershipUserFactory : IMembershipUserFactory {
 		
 		private readonly ILdapConfig config;
 		private readonly string providerName;

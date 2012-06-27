@@ -25,7 +25,7 @@
 using System.DirectoryServices;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
-	internal static class SearchResultExtensions {
+	public static class SearchResultExtensions {
 		public static IEntryCollection Wrap(this SearchResultCollection wrapped) {
 			var result = new EntryCollection();
 			if(wrapped != null) {

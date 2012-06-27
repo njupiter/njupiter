@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
-	internal class DirectorySearcherAdapter : DirectorySearcherWrapper, IDirectorySearcher {
+	public class DirectorySearcherAdapter : DirectorySearcherWrapper, IDirectorySearcher {
 		private readonly IFilterBuilder filterBuilder;
 
 		public DirectorySearcherAdapter(IEntry directoryEntry, IFilterBuilder filterBuilder) : base(directoryEntry) {

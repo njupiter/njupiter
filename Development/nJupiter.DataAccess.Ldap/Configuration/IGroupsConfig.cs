@@ -23,5 +23,5 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IGroupsConfig : IEntryConfig {}
+	public interface IGroupsConfig : IEntryConfig {}
 }

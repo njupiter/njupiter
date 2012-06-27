@@ -23,6 +23,7 @@
 #endregion
 
 using System;
+using System.Linq;
 
 using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
@@ -30,7 +31,7 @@ using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	
-	internal class DirectoryEntryAdapter : IDirectoryEntryAdapter {
+	public class DirectoryEntryAdapter : IDirectoryEntryAdapter {
 
 		private readonly IServerConfig serverConfig;
 		private readonly IFilterBuilder filterBuilder;
@@ -64,7 +65,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 			var dn = nameParser.GetDnObject(attributeValue);
 			var dnValue = dn != null;
-			if(dnValue && dn.Rdns.Count > 1) {
+			if(dnValue && dn.Rdns.Count() > 1) {
 				var uri = new Uri(new Uri(entryConfig.Path), dn.ToString());
 				return GetEntry(uri, serverConfig.Username, serverConfig.Password);
 			}

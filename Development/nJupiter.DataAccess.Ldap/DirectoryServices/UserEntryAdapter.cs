@@ -32,7 +32,7 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class UserEntryAdapter : EntryAdapterBase, IUserEntryAdapter {
+	public class UserEntryAdapter : EntryAdapterBase, IUserEntryAdapter {
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly ILdapConfig configuration;
 		private readonly INameParser nameHandler;

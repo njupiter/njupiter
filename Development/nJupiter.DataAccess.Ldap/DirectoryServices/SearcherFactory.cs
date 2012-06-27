@@ -28,7 +28,7 @@ using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class SearcherFactory : ISearcherFactory {
+	public class SearcherFactory : ISearcherFactory {
 
 		private readonly IServerConfig serverConfig;
 

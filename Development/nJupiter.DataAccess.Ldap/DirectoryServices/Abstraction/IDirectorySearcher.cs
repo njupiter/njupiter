@@ -30,7 +30,7 @@ using System.DirectoryServices;
 using System.Runtime.Remoting;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
-	internal interface IDirectorySearcher {
+	public interface IDirectorySearcher {
 		bool Asynchronous { get; set; }
 		string AttributeScopeQuery { get; set; }
 		bool CacheResults { get; set; }

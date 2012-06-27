@@ -28,7 +28,7 @@ using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface IDirectoryEntryAdapter {
+	public interface IDirectoryEntryAdapter {
 		IDirectoryEntry GetEntry(string path);
 		IDirectoryEntry GetEntry(Uri uri, string username, string password);
 

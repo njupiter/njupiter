@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using nJupiter.DataAccess.Ldap.Configuration;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface IFilterBuilder {
+	public interface IFilterBuilder {
 		string CreatePropertyRangeFilter(string propertyName, uint rangeLow, uint rangeHigh, bool isLastQuery);
 		string CreatePropertyRangeFilter(string propertyName, uint startIndex, uint endIndex);
 

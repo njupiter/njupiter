@@ -23,16 +23,17 @@
 #endregion
 
 using System;
+using System.Linq;
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
-	internal class NameParser : INameParser {
+	public class NameParser : INameParser {
 
 		public string GetCn(string name) {
 			var dn = GetDnObject(name);
 			if(dn == null) {
 				return name;
 			}
-			return dn.Rdns[0].Components[0].ComponentValue;
+			return dn.Rdns.First().Components.First().ComponentValue;
 		}
 
 		public string GetRdn(string name) {
@@ -40,7 +41,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			if(dn == null) {
 				return null;
 			}
-			return dn.Rdns[0].ToString();
+			return dn.Rdns.First().ToString();
 		}
 
 		public string GetDn(string name) {
@@ -100,7 +101,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			if(dn == null) {
 				return NameType.Cn;
 			}
-			return dn.Rdns.Count > 1 ? NameType.Dn : NameType.Rdn;
+			return dn.Rdns.Count() > 1 ? NameType.Dn : NameType.Rdn;
 		}
 	}
 }

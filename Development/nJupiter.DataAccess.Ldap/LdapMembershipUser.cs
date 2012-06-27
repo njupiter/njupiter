@@ -4,9 +4,9 @@ using System.Web.Security;
 
 namespace nJupiter.DataAccess.Ldap {
 	public class LdapMembershipUser : MembershipUser {
-		internal LdapMembershipUser() {}
+		public LdapMembershipUser() {}
 
-		internal LdapMembershipUser(string providerName,
+		public LdapMembershipUser(string providerName,
 									string name,
 									object providerUserKey,
 									string email,

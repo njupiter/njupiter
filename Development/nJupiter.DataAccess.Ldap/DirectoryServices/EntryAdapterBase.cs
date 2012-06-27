@@ -28,7 +28,7 @@ using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal abstract class EntryAdapterBase {
+	public abstract class EntryAdapterBase {
 		private readonly ISearcherFactory searcherFactory;
 
 		protected EntryAdapterBase(ISearcherFactory searcherFactory) {

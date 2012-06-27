@@ -23,7 +23,7 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface ILdapConfig {
+	public interface ILdapConfig {
 		string Name { get; }
 		IServerConfig Server { get; }
 		IUsersConfig Users { get; }

@@ -29,7 +29,7 @@ using System.Globalization;
 using System.Linq;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal static class EntryExtensions {
+	public static class EntryExtensions {
 		public static bool IsBound(this IEntry entry) {
 			return entry != null && entry.NativeObject != null;
 		}

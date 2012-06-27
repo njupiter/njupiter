@@ -36,17 +36,17 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SizeLimit = 1000;
 		}
 
-		public Uri Url { get; internal set; }
-		public string Username { get; internal set; }
-		public string Password { get; internal set; }
-		public AuthenticationTypes AuthenticationTypes { get; internal set; }
-		public TimeSpan TimeLimit { get; internal set; }
-		public int PageSize { get; internal set; }
-		public int SizeLimit { get; internal set; }
-		public bool AllowWildcardSearch { get; internal set; }
-		public bool PropertySortingSupport { get; internal set; }
-		public bool RangeRetrievalSupport { get; internal set; }
-		public bool VirtualListViewSupport { get; internal set; }
+		public Uri Url { get; set; }
+		public string Username { get; set; }
+		public string Password { get; set; }
+		public AuthenticationTypes AuthenticationTypes { get; set; }
+		public TimeSpan TimeLimit { get; set; }
+		public int PageSize { get; set; }
+		public int SizeLimit { get; set; }
+		public bool AllowWildcardSearch { get; set; }
+		public bool PropertySortingSupport { get; set; }
+		public bool RangeRetrievalSupport { get; set; }
+		public bool VirtualListViewSupport { get; set; }
 		
 	}
 }

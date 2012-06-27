@@ -38,14 +38,14 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			NameType = NameType.Cn;
 		}
 
-		public string Filter { get; internal set; }
-		public string Base { get; internal set; }
-		public string Path { get; internal set; }
-		public string RdnAttribute { get; internal set; }
-		public bool RdnInPath {  get; internal set; }
-		public IEnumerable<IAttributeDefinition> Attributes { get; internal set; }
-		public string MembershipAttribute { get; internal set; }
-		public NameType NameType { get; internal set; }
+		public string Filter { get; set; }
+		public string Base { get; set; }
+		public string Path { get; set; }
+		public string RdnAttribute { get; set; }
+		public bool RdnInPath {  get; set; }
+		public IEnumerable<IAttributeDefinition> Attributes { get; set; }
+		public string MembershipAttribute { get; set; }
+		public NameType NameType { get; set; }
 
 	}
 }

@@ -26,7 +26,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class EntryCollection : IEntryCollection {
+	public class EntryCollection : IEntryCollection {
 		private readonly List<IEntry> innerCollection;
 
 		public EntryCollection() {

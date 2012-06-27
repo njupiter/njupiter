@@ -39,18 +39,18 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			NameType = NameType.Cn;
 		}
 
-		public string Filter { get; internal set; }
-		public string Base { get; internal set; }
-		public string Path { get; internal set; }
-		public string RdnAttribute { get; internal set; }
-		public bool RdnInPath {  get; internal set; }
-		public IEnumerable<IAttributeDefinition> Attributes { get; internal set; }
-		public string MembershipAttribute { get; internal set; }
-		public string EmailAttribute { get; internal set; }
-		public string CreationDateAttribute { get; internal set; }
-		public string LastLoginDateAttribute { get; internal set; }
-		public string LastPasswordChangedDateAttribute { get; internal set; }
-		public string DescriptionAttribute { get; internal set; }
-		public NameType NameType { get; internal set; }
+		public string Filter { get; set; }
+		public string Base { get; set; }
+		public string Path { get; set; }
+		public string RdnAttribute { get; set; }
+		public bool RdnInPath {  get; set; }
+		public IEnumerable<IAttributeDefinition> Attributes { get; set; }
+		public string MembershipAttribute { get; set; }
+		public string EmailAttribute { get; set; }
+		public string CreationDateAttribute { get; set; }
+		public string LastLoginDateAttribute { get; set; }
+		public string LastPasswordChangedDateAttribute { get; set; }
+		public string DescriptionAttribute { get; set; }
+		public NameType NameType { get; set; }
 	}
 }

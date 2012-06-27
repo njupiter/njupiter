@@ -41,7 +41,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			components = ParseRdn(rdnString);
 		}
 
-		public List<IRdnComponent> Components {
+		public IEnumerable<IRdnComponent> Components {
 			get {
 				return components;
 			}

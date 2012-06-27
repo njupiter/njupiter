@@ -23,7 +23,7 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
-	internal interface IRdnComponent {
+	public interface IRdnComponent {
 		string ComponentType { get; }
 		string ComponentValue { get; }
 		string ToString();

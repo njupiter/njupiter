@@ -25,8 +25,8 @@
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
-	internal interface IDn {
-		List<IRdn> Rdns { get; }
+	public interface IDn {
+		IEnumerable<IRdn> Rdns { get; }
 		string ToString();
 	}
 }

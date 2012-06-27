@@ -29,7 +29,7 @@ using System.DirectoryServices;
 using System.Runtime.Remoting;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
-	internal class DirectorySearcherWrapper {
+	public class DirectorySearcherWrapper {
 		private readonly DirectorySearcher directorySearcher;
 
 		public DirectorySearcherWrapper(IEntry directoryEntry) {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace nJupiter.DataAccess.Ldap {
-	public class AttributeCollection : IAttributeCollection {
+	internal class AttributeCollection : IAttributeCollection {
 		private readonly Dictionary<string, IAttributeValueCollection> attributeCollection;
 
 		internal AttributeCollection(IDictionary propertyCollection) {

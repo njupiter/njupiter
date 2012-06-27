@@ -29,7 +29,7 @@ using System.Text;
 using nJupiter.DataAccess.Ldap.Configuration;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal class FilterBuilder : IFilterBuilder {
+	public class FilterBuilder : IFilterBuilder {
 
 		private readonly IServerConfig serverConfig;
 

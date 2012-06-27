@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 
 using nJupiter.Configuration;
-using nJupiter.DataAccess.Ldap.DirectoryServices;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {

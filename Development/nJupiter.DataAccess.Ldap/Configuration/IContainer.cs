@@ -28,7 +28,7 @@ using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 using nJupiter.DataAccess.Ldap.DistinguishedNames;
 
 namespace nJupiter.DataAccess.Ldap.Configuration {
-	internal interface IContainer {
+	public interface IContainer {
 		INameParser NameParser { get; }
 		IDirectoryEntryFactory DirectoryEntryFactory { get; }
 		ISearcherFactory SearcherFactory { get; }

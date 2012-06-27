@@ -28,7 +28,7 @@ using nJupiter.DataAccess.Ldap.Configuration;
 using nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction;
 
 namespace nJupiter.DataAccess.Ldap.DirectoryServices {
-	internal interface ISearcherFactory {
+	public interface ISearcherFactory {
 		IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope);
 		IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, IEntryConfig entryConfig);
 	}

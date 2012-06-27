@@ -23,7 +23,7 @@
 #endregion
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
-	internal enum NameType {
+	public enum NameType {
 		Dn = 0,
 		Rdn = 1,
 		Cn = 2
