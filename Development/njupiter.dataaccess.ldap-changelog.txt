@@ -9,7 +9,7 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for V5.0.1.434 - 2012-06-29
+Changes for V5.0.1.446 - 2012-06-29
 ===============================================================================
 
 ENH: Made the "rdn in path" functionality automatic.
