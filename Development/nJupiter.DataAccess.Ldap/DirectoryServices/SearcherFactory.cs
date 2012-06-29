@@ -61,7 +61,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 
 		private IDirectorySearcher CreateSearcher(IEntry entry, SearchScope searchScope, string rdnAttribute) {
 			var searcher = CreateSearcher(entry, searchScope);
-			if(serverConfig.PropertySortingSupport) {
+			if(serverConfig.PropertySortingSupport || serverConfig.VirtualListViewSupport) {
 				searcher.Sort.PropertyName = rdnAttribute;
 				searcher.Sort.Direction = SortDirection.Ascending;
 			}

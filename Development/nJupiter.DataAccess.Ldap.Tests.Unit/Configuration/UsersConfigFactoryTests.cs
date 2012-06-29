@@ -45,7 +45,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		[Test]
 		public void Create_FilterIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateUserConfigWithServerConfig();
-			Assert.AreEqual(null, config.Filter);
+			Assert.AreEqual("(objectClass=*)", config.Filter);
 		}
 
 		[Test]
@@ -70,18 +70,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		public void Create_RdnAttributeIsNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateUserConfigWithServerConfig();
 			Assert.AreEqual("cn", config.RdnAttribute);
-		}
-
-		[Test]
-		public void Create_SetRdnInPathIsDefiendedInConfig_SetToConfigValue() {
-			var config = CreateUserConfigWithServerConfig("<users><rdnInPath value='false'/></users>");
-			Assert.IsFalse(config.RdnInPath);
-		}
-
-		[Test]
-		public void Create_SetRdnInPathIsNotDefiendedInConfig_SetToDefaultValue() {
-			var config = CreateUserConfigWithServerConfig();
-			Assert.IsTrue(config.RdnInPath);
 		}
 
 		[Test]

@@ -87,7 +87,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		private string GetGroupName(string entryName, bool nameFromEntry) {
-			if(!groupConfig.RdnInPath && !nameFromEntry) {
+			if(!nameFromEntry && !nameParser.RdnInName(entryName, groupConfig.RdnAttribute, groupConfig.Base)) {
 				using(var entry = GetGroupEntry(entryName)) {
 					entryName = entry.GetProperties<string>(groupConfig.RdnAttribute).First();
 				}

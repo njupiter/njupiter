@@ -30,6 +30,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 		string GetDn(string name, string attribute, string basePath);
 		IDn GetDnObject(string name);
 		string GetName(NameType nameType, string entryName);
+		bool RdnInName(string name, string attribute, string basePath);
 		bool NamesEqual(string name, string nameToMatch, string attribute, string basePath);
 	}
 }

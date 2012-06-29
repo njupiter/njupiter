@@ -150,7 +150,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUserName_CnNameType_ReturnsPlayUserName() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(true);
+			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("cn");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Cn);
 
 			var userName = adapter.GetUserName("cn=username,dn=domain,o=organistaion");
@@ -161,7 +161,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUserName_RdnNameType_ReturnsCnPartOfDn() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(true);
+			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("cn");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Rdn);
 
 			var userName = adapter.GetUserName("cn=username,dn=domain,o=organistaion");
@@ -171,7 +171,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUserName_RdnNameType_ReturnsFullUserName() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(true);
+			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("cn");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Dn);
 
 			var userName = adapter.GetUserName("cn=username,dn=domain,o=organistaion");
@@ -181,7 +181,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUserName_CnNameTypeWhenRdnNotInPath_ReturnsPlayUserName() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(false);
 			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("rdnattribute");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Cn);
 
@@ -201,7 +200,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUserName_RdnNameTypeWhenRdnNotInPath_ReturnsCnPartOfDn() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(false);
 			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("rdnattribute");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Rdn);
 
@@ -219,7 +217,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUserName_RdnNameTypeWhenRdnNotInPath_ReturnsFullUserName() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(false);
 			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("rdnattribute");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Dn);
 
@@ -237,7 +234,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetUsersFromEntry_SendInAnEntryWithMembershipAttributeWhenRdnInPath_ExtractUserNameFromMembershipProperty() {
-			A.CallTo(() => ldapConfig.Users.RdnInPath).Returns(true);
+			A.CallTo(() => ldapConfig.Users.RdnAttribute).Returns("cn");
 			A.CallTo(() => ldapConfig.Users.NameType).Returns(NameType.Cn);
 
 			var entry = A.Fake<IEntry>();
@@ -476,7 +473,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 	}
 
 	internal class TestableUserEntryAdapter : UserEntryAdapter {
-		public TestableUserEntryAdapter(ILdapConfig configuration, IDirectoryEntryAdapter directoryEntryAdapter, ISearcherFactory searcherFactory, IFilterBuilder filterBuilder, INameParser nameHandler) : base(configuration, directoryEntryAdapter, searcherFactory, filterBuilder, nameHandler) {}
+		public TestableUserEntryAdapter(ILdapConfig configuration, IDirectoryEntryAdapter directoryEntryAdapter, ISearcherFactory searcherFactory, IFilterBuilder filterBuilder, INameParser nameParser) : base(configuration, directoryEntryAdapter, searcherFactory, filterBuilder, nameParser) {}
 
 		public int VirtualListViewTotalCount { get; set; }
 

@@ -35,17 +35,17 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 	public class UserEntryAdapter : EntryAdapterBase, IUserEntryAdapter {
 		private readonly IDirectoryEntryAdapter directoryEntryAdapter;
 		private readonly ILdapConfig configuration;
-		private readonly INameParser nameHandler;
+		private readonly INameParser nameParser;
 		private readonly IFilterBuilder filterBuilder;
 
 		public UserEntryAdapter(ILdapConfig configuration,
 		                        IDirectoryEntryAdapter directoryEntryAdapter,
 		                        ISearcherFactory searcherFactory,
 		                        IFilterBuilder filterBuilder,
-		                        INameParser nameHandler) : base(searcherFactory) {
+		                        INameParser nameParser) : base(searcherFactory) {
 			this.configuration = configuration;
 			this.directoryEntryAdapter = directoryEntryAdapter;
-			this.nameHandler = nameHandler;
+			this.nameParser = nameParser;
 			this.filterBuilder = filterBuilder;
 		}
 
@@ -66,12 +66,12 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public virtual string GetUserName(string entryName) {
-			if(!configuration.Users.RdnInPath) {
+			if(!nameParser.RdnInName(entryName, configuration.Users.RdnAttribute, configuration.Users.Base)) {
 				using(var entry = GetUserDirectoryEntry(entryName)) {
 					entryName = entry.GetProperties<string>(configuration.Users.RdnAttribute).First();
 				}
 			}
-			return nameHandler.GetName(configuration.Users.NameType, entryName);
+			return nameParser.GetName(configuration.Users.NameType, entryName);
 		}
 
 		public virtual IEnumerable<string> GetUsersFromEntry(IEntry entry, string propertyName) {
@@ -84,7 +84,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 				if(!user.IsBound()) {
 					return null;
 				}
-				var userAsDn = nameHandler.GetDn(user.Path);
+				var userAsDn = nameParser.GetDn(user.Path);
 				var uri = new Uri(configuration.Server.Url, userAsDn);
 				var authenticatedUser = directoryEntryAdapter.GetEntry(uri, userAsDn, password);
 				return GetUserEntryFromSearcher(authenticatedUser);

@@ -30,6 +30,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 	internal class UsersConfig : IUsersConfig {
 
 		public UsersConfig() {
+			Filter = "(objectClass=*)";
 			RdnAttribute = "cn";
 			RdnInPath = true;
 			var attributes = new List<IAttributeDefinition>();

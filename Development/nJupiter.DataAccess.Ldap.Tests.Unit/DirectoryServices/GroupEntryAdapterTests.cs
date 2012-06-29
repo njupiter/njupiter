@@ -140,7 +140,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_CnNameType_ReturnsPlayGroupName() {
-			A.CallTo(() => groupConfig.RdnInPath).Returns(true);
+			A.CallTo(() => groupConfig.RdnAttribute).Returns("cn");
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Cn);
 
 			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
@@ -151,7 +151,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_RdnNameType_ReturnsCnPartOfDn() {
-			A.CallTo(() => groupConfig.RdnInPath).Returns(true);
+			A.CallTo(() => groupConfig.RdnAttribute).Returns("cn");
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Rdn);
 
 			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
@@ -161,7 +161,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_RdnNameType_ReturnsFullGroupName() {
-			A.CallTo(() => groupConfig.RdnInPath).Returns(true);
+			A.CallTo(() => groupConfig.RdnAttribute).Returns("cn");
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Dn);
 
 			var groupName = adapter.GetGroupName("cn=groupname,dn=domain,o=organistaion");
@@ -171,7 +171,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_CnNameTypeWhenRdnNotInPath_ReturnsPlayGroupName() {
-			A.CallTo(() => groupConfig.RdnInPath).Returns(false);
 			A.CallTo(() => groupConfig.RdnAttribute).Returns("rdnattribute");
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Cn);
 
@@ -191,7 +190,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_RdnNameTypeWhenRdnNotInPath_ReturnsCnPartOfDn() {
-			A.CallTo(() => groupConfig.RdnInPath).Returns(false);
 			A.CallTo(() => groupConfig.RdnAttribute).Returns("rdnattribute");
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Rdn);
 
@@ -209,7 +207,6 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 		[Test]
 		public void GetGroupName_RdnNameTypeWhenRdnNotInPath_ReturnsFullGroupName() {
-			A.CallTo(() => groupConfig.RdnInPath).Returns(false);
 			A.CallTo(() => groupConfig.RdnAttribute).Returns("rdnattribute");
 			A.CallTo(() => groupConfig.NameType).Returns(NameType.Dn);
 

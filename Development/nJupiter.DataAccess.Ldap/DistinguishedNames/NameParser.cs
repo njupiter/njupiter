@@ -52,7 +52,18 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 			return dn.ToString();
 		}
 
+		public virtual bool RdnInName(string name, string attribute, string basePath) {
+			var dn = GetDnObject(name, attribute, basePath);
+			var cnType = dn.Rdns.First().Components.First().ComponentType;
+			return string.Equals(attribute, cnType, StringComparison.InvariantCultureIgnoreCase);
+		}
+
 		public virtual string GetDn(string name, string attribute, string basePath) {
+			var dn = GetDnObject(name, attribute, basePath);
+			return dn.ToString();
+		}
+
+		private IDn GetDnObject(string name, string attribute, string basePath) {
 			var dn = GetDnObject(name);
 			var type = GetNameType(dn);
 			switch(type) {
@@ -63,7 +74,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 				dn = GetDnObject(String.Format("{0},{1}", name, basePath));
 				break;
 			}
-			return dn.ToString();
+			return dn;
 		}
 
 		public virtual IDn GetDnObject(string name) {
