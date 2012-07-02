@@ -14,7 +14,7 @@ Changes for V1.1.0.392 - 2012-06-14
 
 NEW: Added support for asynchronous evalutation of log messages via message
      callbacks. These callbacks are added via an extenmethods to ILog in
-	 nJupiter.Abstraction.Logging.LogExtensions
+     nJupiter.Abstraction.Logging.LogExtensions
 
 ===============================================================================
 Changes for V1.0.0.377 - 2012-06-08

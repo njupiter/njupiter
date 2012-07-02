@@ -44,8 +44,8 @@ Changes for V4.0.1.308 - 2011-12-14
 
 ENH: nJupiter is now on NuGet and after this release all projects will be
      splitted up in separate solutions to more easly handle separate releases
-	 of the packages. All components will be released in separate packages in
-	 the future so every project will get its own changelog.
+     of the packages. All components will be released in separate packages in
+     the future so every project will get its own changelog.
 
 ===============================================================================
 Changes for V3.16.0.0  - 2011-01-27

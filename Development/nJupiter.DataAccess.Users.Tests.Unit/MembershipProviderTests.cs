@@ -19,14 +19,14 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		public void ChangePassword_PasswordWithNonAlphaCharacters_ThrowsArgumentException() {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
-			Assert.Throws<ArgumentException>(() => provider.ChangePassword("modhelius", "oldpassword", "newpassword"));
+			Assert.Throws<ArgumentException>(() => provider.ChangePassword("username", "oldpassword", "newpassword"));
 		}
 
 		[Test]
 		public void ChangePassword_PasswordLenghtToShort_ThrowsArgumentException() {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
-			Assert.Throws<ArgumentException>(() => provider.ChangePassword("modhelius", "oldpassword", "a"));
+			Assert.Throws<ArgumentException>(() => provider.ChangePassword("username", "oldpassword", "a"));
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var config = new NameValueCollection();
 			config.Add("passwordStrengthRegularExpression", "password123\\.");
 			var provider = GetProvider(userRepository, config);
-			Assert.Throws<ArgumentException>(() => provider.ChangePassword("modhelius", "oldpassword", "password321;"));
+			Assert.Throws<ArgumentException>(() => provider.ChangePassword("username", "oldpassword", "password321;"));
 		}
 
 		[Test]
@@ -46,12 +46,12 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var originalUser = A.Fake<IUser>();
 			var clonedUser = A.Fake<IUser>();
 
-			A.CallTo(() => userRepository.GetUserByUserName("modhelius", null)).Returns(originalUser);
+			A.CallTo(() => userRepository.GetUserByUserName("username", null)).Returns(originalUser);
 			A.CallTo(() => originalUser.IsReadOnly).Returns(true);
 			A.CallTo(() => originalUser.CreateWritable()).Returns(clonedUser);
 
 			A.CallTo(() => userRepository.CheckPassword(A<IUser>.Ignored, "oldpassword")).Returns(true);
-			Assert.IsTrue(provider.ChangePassword("modhelius", "oldpassword", "password321;"));
+			Assert.IsTrue(provider.ChangePassword("username", "oldpassword", "password321;"));
 
 			A.CallTo(() => userRepository.SetPassword(A<IUser>.Ignored, "password321;")).MustHaveHappened(Repeated.Exactly.Once);
 			A.CallTo(() => userRepository.SaveUser(A<IUser>.Ignored)).MustHaveHappened(Repeated.Exactly.Once);
@@ -62,7 +62,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
 			A.CallTo(() => userRepository.CheckPassword(A<IUser>.Ignored, "wrongoldpassword")).Returns(false);
-			Assert.IsFalse(provider.ChangePassword("modhelius", "wrongoldpassword", "password321;"));
+			Assert.IsFalse(provider.ChangePassword("username", "wrongoldpassword", "password321;"));
 
 		}
 
@@ -72,7 +72,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
 			A.CallTo(() => userRepository.GetUserByUserName(A<string>.Ignored, A<string>.Ignored)).Returns(null);
-			Assert.IsFalse(provider.ChangePassword("modhelius", "oldpassword", "password321;"));
+			Assert.IsFalse(provider.ChangePassword("username", "oldpassword", "password321;"));
 		}
 
 		[Test]
@@ -90,12 +90,12 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var clonedUser = A.Fake<IUser>();
 
 			user.Properties.LastLoginDate = DateTime.MinValue;
-			A.CallTo(() => userRepository.GetUserByUserName("modhelius", "njupiter")).Returns(user);
+			A.CallTo(() => userRepository.GetUserByUserName("username", "njupiter")).Returns(user);
 			A.CallTo(() => user.IsReadOnly).Returns(true);
 			A.CallTo(() => user.CreateWritable()).Returns(clonedUser);
 
 			A.CallTo(() => userRepository.CheckPassword(user, "password")).Returns(true);
-			Assert.IsTrue(provider.ValidateUser("njupiter\\modhelius", "password"));
+			Assert.IsTrue(provider.ValidateUser("njupiter\\username", "password"));
 			Assert.AreEqual(DateTime.UtcNow.DayOfYear, clonedUser.Properties.LastLoginDate.DayOfYear);
 			A.CallTo(() => userRepository.SaveUser(clonedUser)).MustHaveHappened(Repeated.Exactly.Once);
 		}
@@ -112,7 +112,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var userRepository = A.Fake<IUserRepository>();
 			var provider = GetProvider(userRepository);
 			A.CallTo(() => userRepository.GetUserByUserName(A<string>.Ignored, A<string>.Ignored)).Returns(null);
-			Assert.IsFalse(provider.ValidateUser("modhelius", "password"));
+			Assert.IsFalse(provider.ValidateUser("username", "password"));
 		}
 
 

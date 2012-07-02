@@ -31,7 +31,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		string CreatePropertyRangeFilter(string propertyName, int rangeLow, int rangeHigh, bool isLastQuery);
 		string CreatePropertyRangeFilter(string propertyName, int startIndex, int endIndex);
 
-		string AttachAttributeFilters(string nameToMatch,
+		string AttachAttributeFilters(string valueToMatch,
 		                              string defaultFilter,
 		                              string rdnAttribute,
 		                              IEnumerable<IAttributeDefinition> attributeDefinitinon);

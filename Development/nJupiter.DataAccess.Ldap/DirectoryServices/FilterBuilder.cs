@@ -55,8 +55,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 
-		public virtual string AttachAttributeFilters(string nameToMatch, string defaultFilter, string rdnAttribute, IEnumerable<IAttributeDefinition> attributeDefinitinon) {
-			var escapedName = EscapeSearchFilter(nameToMatch);
+		public virtual string AttachAttributeFilters(string valueToMatch, string defaultFilter, string rdnAttribute, IEnumerable<IAttributeDefinition> attributeDefinitinon) {
+			var escapedName = EscapeSearchFilter(valueToMatch);
 			var builder = new StringBuilder();
 			foreach(var attributes in attributeDefinitinon) {
 				if(!attributes.ExcludeFromNameSearch) {

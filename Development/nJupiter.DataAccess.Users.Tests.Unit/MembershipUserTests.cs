@@ -15,18 +15,18 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		[Test]
 		public void UserName_CreateUserWithDomain_CreateUsernameWithDomain() {
 			var user = A.Fake<IUser>();
-			A.CallTo(() => user.UserName).Returns("modhelius");
+			A.CallTo(() => user.UserName).Returns("username");
 			A.CallTo(() => user.Domain).Returns("njupiter");
 			var memebershipUser = new MembershipUser(user, "provider");
-			Assert.AreEqual("njupiter\\modhelius", memebershipUser.UserName);
+			Assert.AreEqual("njupiter\\username", memebershipUser.UserName);
 		}
 
 		[Test]
 		public void UserName_CreateUserWithDomain_CreateUsernameWithoutDomain() {
 			var user = A.Fake<IUser>();
-			A.CallTo(() => user.UserName).Returns("modhelius");
+			A.CallTo(() => user.UserName).Returns("username");
 			var memebershipUser = new MembershipUser(user, "provider");
-			Assert.AreEqual("modhelius", memebershipUser.UserName);
+			Assert.AreEqual("username", memebershipUser.UserName);
 		}
 
 		[Test]

@@ -222,38 +222,38 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void DisplayName_FullNameSet_ReturnsFullname() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
-			prophandler.FirstName = "Martin";
-			prophandler.LastName = "Odhelius";
-			prophandler.FullName = "Mr. Martin Odhelius";
-			Assert.AreEqual("Mr. Martin Odhelius", prophandler.DisplayName);
+			var prophandler = DummyFactory.GetPropertyHandler("username");
+			prophandler.FirstName = "John";
+			prophandler.LastName = "Doe";
+			prophandler.FullName = "Mr. John Doe";
+			Assert.AreEqual("Mr. John Doe", prophandler.DisplayName);
 		}
 
 		[Test]
 		public void DisplayName_FullNameNotSet_ReturnsFirstnameAndLastname() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
-			prophandler.FirstName = "Martin";
-			prophandler.LastName = "Odhelius";
-			Assert.AreEqual("Martin Odhelius", prophandler.DisplayName);
+			var prophandler = DummyFactory.GetPropertyHandler("username");
+			prophandler.FirstName = "John";
+			prophandler.LastName = "Doe";
+			Assert.AreEqual("John Doe", prophandler.DisplayName);
 		}
 
 		[Test]
 		public void DisplayName_LastNameNotSet_ReturnsFirstnameAndUsername() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
-			prophandler.FirstName = "Martin";
-			Assert.AreEqual("Martin (modhelius)", prophandler.DisplayName);
+			var prophandler = DummyFactory.GetPropertyHandler("username");
+			prophandler.FirstName = "John";
+			Assert.AreEqual("John (username)", prophandler.DisplayName);
 		}
 
 		[Test]
 		public void DisplayName_OnlyLastNameSet_ReturnsUsername() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
-			prophandler.LastName = "Odhelius";
-			Assert.AreEqual("modhelius", prophandler.DisplayName);
+			var prophandler = DummyFactory.GetPropertyHandler("username");
+			prophandler.LastName = "Doe";
+			Assert.AreEqual("username", prophandler.DisplayName);
 		}
 
 		[Test]
 		public void MakeReadOnly_CheckObjectAndDefaultProperties_ReturnsTrue() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			var prophandler = DummyFactory.GetPropertyHandler("username");
 			prophandler.MakeReadOnly();
 			Assert.IsTrue(prophandler.IsReadOnly);
 			Assert.IsTrue(prophandler.GetProperties().IsReadOnly);
@@ -262,7 +262,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void MakeReadOnly_SetAPropertyAfterReadOnly_ThrowsReadOnlyException() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			var prophandler = DummyFactory.GetPropertyHandler("username");
 
 			var anotherContext = new Context("AnotherContext");
 			var attachedProperties = DummyFactory.GetPropertyCollection(12, anotherContext);
@@ -275,7 +275,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void MakeReadOnly_AttachContextAfterReadonly_AttachContextBecomesReadonly() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			var prophandler = DummyFactory.GetPropertyHandler("username");
 			prophandler.MakeReadOnly();
 
 			var anotherContext = new Context("AnotherContext");
@@ -288,7 +288,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void Clone_AttachContextAfterReadonly_AttachContextBecomesReadonly() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			var prophandler = DummyFactory.GetPropertyHandler("username");
 			prophandler.MakeReadOnly();
 
 			var anotherContext = new Context("AnotherContext");
@@ -311,7 +311,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void CreateWritable_AttachContextAfterReadonly_AttachContextBecomesReadonly() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			var prophandler = DummyFactory.GetPropertyHandler("username");
 			prophandler.MakeReadOnly();
 
 			var anotherContext = new Context("AnotherContext");
@@ -334,7 +334,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void CommonNameProperties_SetAndGetSameValue() {
-			var prophandler = DummyFactory.GetPropertyHandler("modhelius");
+			var prophandler = DummyFactory.GetPropertyHandler("username");
 			prophandler.FullName = "fullname";
 			prophandler.FirstName = "firstname";
 			prophandler.LastName = "lastname";
