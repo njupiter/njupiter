@@ -21,7 +21,6 @@ ENH: nJupiter is now on NuGet and after this release all projects will be
 Changes for V4.0.0.0 - 2011-12-13
 ===============================================================================
 
-**** nJupiter.Globalization
 BCH: This component has been totally refactored and now make use of
      interfaces rather than concrete types throughout the whole component
      and has thereby better support for unit testing and IoC-containers.
@@ -33,7 +32,6 @@ BCH: This component has been totally refactored and now make use of
 Changes for V3.2.0.0  - 2008-02-18
 ===============================================================================
 
-**** nJupiter.Globalization
 ENH: nJupiter.Globalization.CultureHandler does now have shortcuts for 
      CurrentCulture and CurrentUICulture
 
@@ -41,6 +39,5 @@ ENH: nJupiter.Globalization.CultureHandler does now have shortcuts for
 Changes for V3.1.0.0  - 2007-11-15
 ===============================================================================
 
-**** nJupiter.Globalization
 BCH: DateHandler is moved from the namespace nJupiter.Date to
      nJupiter.Globalization
