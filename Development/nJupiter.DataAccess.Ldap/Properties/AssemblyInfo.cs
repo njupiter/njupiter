@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 // Increment AssemblyVersion only on major and minor releases
 [assembly: AssemblyVersion("5.0.0.424")]
 // Increment AssemblyFileVersion on every release
-[assembly: AssemblyFileVersion("5.0.2.453")]
+[assembly: AssemblyFileVersion("5.0.2.456")]
 
 #if DEBUG
 [assembly: InternalsVisibleTo("nJupiter.DataAccess.Ldap.Tests.Unit")]

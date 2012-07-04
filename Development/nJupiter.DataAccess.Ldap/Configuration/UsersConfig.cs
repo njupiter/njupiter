@@ -37,7 +37,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			Attributes = attributes;
 			EmailAttribute = "mail";
 			NameType = NameType.Cn;
-			MemershipUserWrappingEnabled = true;
+			MembershipUserWrappingEnabled = true;
 		}
 
 		public string Filter { get; set; }
@@ -52,7 +52,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public string LastPasswordChangedDateAttribute { get; set; }
 		public string DescriptionAttribute { get; set; }
 		public NameType NameType { get; set; }
-		public bool MemershipUserWrappingEnabled { get; set; }
+		public bool MembershipUserWrappingEnabled { get; set; }
 
 	}
 }

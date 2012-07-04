@@ -157,15 +157,15 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		}
 
 		[Test]
-		public void Create_MemershipUserWrappingEnabledDefiendedInConfig_SetToConfigValue() {
-			var config = CreateUserConfigWithServerConfig("<memershipUserWrappingEnabled value='false'/>");
-			Assert.IsFalse(config.MemershipUserWrappingEnabled);
+		public void Create_MembershipUserWrappingEnabledDefiendedInConfig_SetToConfigValue() {
+			var config = CreateUserConfigWithServerConfig("<membershipUserWrappingEnabled value='false'/>");
+			Assert.IsFalse(config.MembershipUserWrappingEnabled);
 		}
 
 		[Test]
-		public void Create_MemershipUserWrappingEnabledNotDefiendedInConfig_SetToDefaultValue() {
+		public void Create_MembershipUserWrappingEnabledNotDefiendedInConfig_SetToDefaultValue() {
 			var config = CreateUserConfigWithServerConfig();
-			Assert.IsTrue(config.MemershipUserWrappingEnabled);
+			Assert.IsTrue(config.MembershipUserWrappingEnabled);
 		}
 
 		[Test]

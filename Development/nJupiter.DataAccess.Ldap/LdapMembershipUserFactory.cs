@@ -89,7 +89,7 @@ namespace nJupiter.DataAccess.Ldap {
 		}
 
 		protected virtual MembershipUser CreateMembershipUser(string name, string providerUserKey, string email, string description, DateTime lastActivitiyDate, DateTime lastLoginDate, DateTime lastLockoutDate, DateTime lastPasswordChangedDate, DateTime creationDate, IDictionary properties, string path) {
-			if(config.Users.MemershipUserWrappingEnabled) {
+			if(config.Users.MembershipUserWrappingEnabled) {
 				return new LdapMembershipUser(providerName,
 				                              name,
 				                              providerUserKey,

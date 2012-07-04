@@ -9,12 +9,12 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for V5.0.2.453 - 2012-07-04
+Changes for V5.0.2.456 - 2012-07-04
 ===============================================================================
 
 BUG: LdapMembershipUser is now set to Serializable
 ENH: It is now possible to turn off the wrapping of the MembershipUser by
-     setting the element memershipUserWrappingEnabled to false in the users
+     setting the element membershipUserWrappingEnabled to false in the users
 	 config. By doing this no LdapMembershipUser will ever be returned, but a
 	 generic MembershipUser will be returned instead. By doing this you can for
 	 example use the ASP.NET Web Site Administration Tools without putting the
