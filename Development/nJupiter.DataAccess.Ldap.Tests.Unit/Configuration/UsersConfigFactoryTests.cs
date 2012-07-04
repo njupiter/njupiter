@@ -158,7 +158,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 
 		[Test]
 		public void Create_MembershipUserWrappingEnabledDefiendedInConfig_SetToConfigValue() {
-			var config = CreateUserConfigWithServerConfig("<membershipUserWrappingEnabled value='false'/>");
+			var config = CreateUserConfigWithServerConfig("<users><membershipUserWrappingEnabled value='false'/></users>");
 			Assert.IsFalse(config.MembershipUserWrappingEnabled);
 		}
 

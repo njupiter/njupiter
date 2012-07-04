@@ -90,23 +90,36 @@ namespace nJupiter.DataAccess.Ldap {
 
 		protected virtual MembershipUser CreateMembershipUser(string name, string providerUserKey, string email, string description, DateTime lastActivitiyDate, DateTime lastLoginDate, DateTime lastLockoutDate, DateTime lastPasswordChangedDate, DateTime creationDate, IDictionary properties, string path) {
 			if(config.Users.MembershipUserWrappingEnabled) {
-				return new LdapMembershipUser(providerName,
-				                              name,
-				                              providerUserKey,
-				                              email,
-				                              String.Empty,
-				                              description,
-				                              true,
-				                              false,
-				                              creationDate,
-				                              lastLoginDate,
-				                              lastActivitiyDate,
-				                              lastPasswordChangedDate,
-				                              lastLockoutDate,
-				                              properties,
-				                              path);
+			return new LdapMembershipUser(providerName,
+				                            name,
+				                            providerUserKey,
+				                            email,
+				                            String.Empty,
+				                            description,
+				                            true,
+				                            false,
+				                            creationDate,
+				                            lastLoginDate,
+				                            lastActivitiyDate,
+				                            lastPasswordChangedDate,
+				                            lastLockoutDate,
+				                            properties,
+				                            path);
 			}
-			return new MembershipUser(providerName, name, providerUserKey, email, String.Empty, description, true, false, creationDate, lastLockoutDate, lastActivitiyDate, lastPasswordChangedDate, lastLockoutDate);
+			return new MembershipUser(providerName,
+				                        name,
+				                        providerUserKey,
+				                        email,
+				                        String.Empty,
+				                        description,
+				                        true,
+				                        false,
+				                        creationDate,
+				                        lastLockoutDate,
+				                        lastActivitiyDate,
+				                        lastPasswordChangedDate,
+				                        lastLockoutDate);
+
 
 		}
 	}

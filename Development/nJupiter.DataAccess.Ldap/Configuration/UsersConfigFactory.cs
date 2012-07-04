@@ -123,8 +123,8 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		}
 
 		private static void SetMemershipUserWrappingEnabled(IConfig configSection, UsersConfig users) {
-			if(configSection.ContainsKey("membershipUserWrappingEnabled")) {
-				users.MembershipUserWrappingEnabled = configSection.GetValue<bool>("membershipUserWrappingEnabled");
+			if(configSection.ContainsKey("users", "membershipUserWrappingEnabled")) {
+				users.MembershipUserWrappingEnabled = configSection.GetValue<bool>("users", "membershipUserWrappingEnabled");
 			}
 		}
 
