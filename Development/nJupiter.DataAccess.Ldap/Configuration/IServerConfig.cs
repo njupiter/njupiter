@@ -38,6 +38,5 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		bool PropertySortingSupport { get; }
 		bool RangeRetrievalSupport { get; }
 		bool VirtualListViewSupport { get; }
-		
 	}
 }

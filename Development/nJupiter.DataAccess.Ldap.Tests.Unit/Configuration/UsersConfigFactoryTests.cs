@@ -157,6 +157,18 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		}
 
 		[Test]
+		public void Create_MemershipUserWrappingEnabledDefiendedInConfig_SetToConfigValue() {
+			var config = CreateUserConfigWithServerConfig("<memershipUserWrappingEnabled value='false'/>");
+			Assert.IsFalse(config.MemershipUserWrappingEnabled);
+		}
+
+		[Test]
+		public void Create_MemershipUserWrappingEnabledNotDefiendedInConfig_SetToDefaultValue() {
+			var config = CreateUserConfigWithServerConfig();
+			Assert.IsTrue(config.MemershipUserWrappingEnabled);
+		}
+
+		[Test]
 		public void Create_PathIsNotDefiendedInConfig_ThrowsConfigValueNotFoundException() {
 			Assert.Throws<ConfigValueNotFoundException>(() => CreateUserConfig("<ldapServer />"));
 		}

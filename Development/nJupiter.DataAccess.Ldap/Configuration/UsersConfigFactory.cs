@@ -39,7 +39,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetFilter(configSection, users);
 			SetBase(configSection, users);
 			SetRdnAttribute(configSection, users);
-			SetRdnInPath(configSection, users);
 			SetMembershipAttribute(configSection, users);
 			SetEmailAttribute(configSection, users);
 			SetCreationDateAttribute(configSection, users);
@@ -48,6 +47,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetDescriptionAttribute(configSection, users);
 			SetNameType(configSection, users);
 			SetPath(configSection, users);
+			SetMemershipUserWrappingEnabled(configSection, users);
 			SetAttributeDefinitionList(configSection, users);
 
 			return users;
@@ -75,12 +75,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			if(configSection.ContainsKey("users", "rdnAttribute")) {
 				users.RdnAttribute = configSection.GetValue("users", "rdnAttribute");
 			}
-		}
-
-		private void SetRdnInPath(IConfig configSection, UsersConfig users) {
-			if(configSection.ContainsKey("users", "rdnInPath")) {
-				users.RdnInPath = configSection.GetValue<bool>("users", "rdnInPath");
-			}		
 		}
 
 		private static void SetMembershipAttribute(IConfig configSection, UsersConfig users) {
@@ -126,6 +120,12 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 				userUri = new Uri(userUri, users.Base);
 			}
 			users.Path = LdapPathHandler.UriToPath(userUri);
+		}
+
+		private static void SetMemershipUserWrappingEnabled(IConfig configSection, UsersConfig users) {
+			if(configSection.ContainsKey("memershipUserWrappingEnabled")) {
+				users.MemershipUserWrappingEnabled = configSection.GetValue<bool>("memershipUserWrappingEnabled");
+			}
 		}
 
 		private static void SetAttributeDefinitionList(IConfig configSection, UsersConfig users) {

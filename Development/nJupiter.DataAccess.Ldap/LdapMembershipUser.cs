@@ -3,6 +3,8 @@ using System.Collections;
 using System.Web.Security;
 
 namespace nJupiter.DataAccess.Ldap {
+
+	[Serializable]
 	public class LdapMembershipUser : MembershipUser {
 		public LdapMembershipUser() {}
 

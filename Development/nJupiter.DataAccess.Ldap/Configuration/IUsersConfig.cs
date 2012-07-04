@@ -29,5 +29,6 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		string LastLoginDateAttribute { get; }
 		string LastPasswordChangedDateAttribute { get; }
 		string DescriptionAttribute { get; }
+		bool MemershipUserWrappingEnabled { get; }
 	}
 }

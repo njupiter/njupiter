@@ -32,19 +32,18 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public UsersConfig() {
 			Filter = "(objectClass=*)";
 			RdnAttribute = "cn";
-			RdnInPath = true;
 			var attributes = new List<IAttributeDefinition>();
 			attributes.Add(new AttributeDefinition("cn"));
 			Attributes = attributes;
 			EmailAttribute = "mail";
 			NameType = NameType.Cn;
+			MemershipUserWrappingEnabled = true;
 		}
 
 		public string Filter { get; set; }
 		public string Base { get; set; }
 		public string Path { get; set; }
 		public string RdnAttribute { get; set; }
-		public bool RdnInPath {  get; set; }
 		public IEnumerable<IAttributeDefinition> Attributes { get; set; }
 		public string MembershipAttribute { get; set; }
 		public string EmailAttribute { get; set; }
@@ -53,5 +52,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 		public string LastPasswordChangedDateAttribute { get; set; }
 		public string DescriptionAttribute { get; set; }
 		public NameType NameType { get; set; }
+		public bool MemershipUserWrappingEnabled { get; set; }
+
 	}
 }

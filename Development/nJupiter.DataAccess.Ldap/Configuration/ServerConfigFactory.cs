@@ -46,7 +46,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			SetPropertySortingSupport(configSection, server);
 			SetVirtualListViewSupport(configSection, server);
 			SetAuthenticationTypes(configSection, server);
-
+			
 			return server;
 		}
 
