@@ -178,7 +178,7 @@ namespace nJupiter.Drawing.Imaging {
 					originalImage.Save(memoryStream, new ImageFormat(originalImage.RawFormat.Guid));
 				} else {
 					// Create new pic.
-					using(Bitmap bitmap = new Bitmap(newSize.Width, newSize.Height, originalImage.PixelFormat)) {
+					using(Bitmap bitmap = new Bitmap(newSize.Width, newSize.Height)) {
 						bitmap.SetResolution(originalImage.HorizontalResolution, originalImage.VerticalResolution);
 						using(Graphics graphics = Graphics.FromImage(bitmap)) {
 							graphics.SmoothingMode = smoothingMode;
