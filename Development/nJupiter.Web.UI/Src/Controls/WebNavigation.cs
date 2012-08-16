@@ -63,6 +63,8 @@ namespace nJupiter.Web.UI.Controls {
 		private int visibleLevels;
 		private readonly NavigationPageCollection selectedNavigationPath = new NavigationPageCollection();
 		private IncludeChildrenOfRemovedNodesMode includeChildrenOfRemovedNodesMode = IncludeChildrenOfRemovedNodesMode.Never;
+		private int headingLevel = 3; // Previously the default value, set here for backward compatibility
+		private bool headingInnerSpan = true; // Previously the default value, set here for backward compatibility
 		private bool hideSelectedPage;
 		private int numberOfLevels = -1;
 		private int startLevelFromRoot = -1;
@@ -88,6 +90,9 @@ namespace nJupiter.Web.UI.Controls {
 		public virtual INavigationPage SelectedNavigationPage { get; set; }
 		public IncludeChildrenOfRemovedNodesMode IncludeChildrenOfRemovedNodesMode { get { return this.includeChildrenOfRemovedNodesMode; } set { this.includeChildrenOfRemovedNodesMode = value; } }
 		public bool SelectedPageClickable { get; set; }
+
+		public int HeadingLevel { get { return this.headingLevel; } set { this.headingLevel = value; } }
+		public bool HeadingInnerSpan { get { return this.headingInnerSpan; } set { this.headingInnerSpan = value; } }
 		public bool HeadingVisible { get; set; }
 		public bool HeadingAlwaysVisible { get; set; }
 		public bool HeadingClickable { get; set; }
@@ -190,11 +195,10 @@ namespace nJupiter.Web.UI.Controls {
 		/// </summary>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		protected override void OnInit(EventArgs e) {
-			hedHeadline.InnerSpan = true;
-			hedHeadline.Controls.Add(ancHeadline);
-			this.Controls.Add(hedHeadline);
-			this.Controls.Add(rptNavigation);
-			rptNavigation.ItemDataBound += this.ItemDataBound;
+			this.hedHeadline.Controls.Add(this.ancHeadline);
+			this.Controls.Add(this.hedHeadline);
+			this.Controls.Add(this.rptNavigation);
+			this.rptNavigation.ItemDataBound += ItemDataBound;
 			base.OnInit(e);
 		}
 
@@ -329,6 +333,9 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		public override void DataBind() {
+			
+			this.hedHeadline.InnerSpan = this.HeadingInnerSpan;
+			this.hedHeadline.Level = this.HeadingLevel;
 
 			if(this.HeaderTemplate == null)
 				this.HeaderTemplate = new DefaultHeaderTemplate(this.RenderId ? this.ID : null, this.CssClass);
