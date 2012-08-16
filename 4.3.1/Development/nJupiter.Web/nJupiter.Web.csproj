@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nJupiter.Web</RootNamespace>
+    <AssemblyName>nJupiter.Web</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
+    <NoWarn>1699</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="HttpContextHandler.cs" />
+    <Compile Include="IHttpContextHandler.cs" />
+    <Compile Include="IUrlHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IMimeType.cs" />
+    <Compile Include="IMimeTypeHandler.cs" />
+    <Compile Include="IndenterModule.cs" />
+    <Compile Include="IResponseHandler.cs" />
+    <Compile Include="MimeType.cs" />
+    <Compile Include="MimeTypeHandler.cs" />
+    <Compile Include="ResponseHandler.cs" />
+    <Compile Include="Security\AuthenticationConfiguration.cs" />
+    <Compile Include="Security\AuthenticationConfigurationLoader.cs" />
+    <Compile Include="Security\FormsAuthenticationConfigurationWrapper.cs" />
+    <Compile Include="Security\FormsAuthenticationUnauthorizedStrategy.cs" />
+    <Compile Include="Security\FormsAuthenticationWrapper.cs" />
+    <Compile Include="Security\GenericUnauthorizedStrategy.cs" />
+    <Compile Include="Security\IAuthenticationConfiguration.cs" />
+    <Compile Include="Security\IAuthenticationConfigurationLoader.cs" />
+    <Compile Include="Security\IFormsAuthentication.cs" />
+    <Compile Include="Security\IFormsAuthenticationConfiguration.cs" />
+    <Compile Include="Security\IUnauthorizedStrategy.cs" />
+    <Compile Include="Security\IUnauthorizedStrategyFactory.cs" />
+    <Compile Include="Security\UnauthorizedStrategyFactory.cs" />
+    <Compile Include="UrlHandler.cs" />
+    <Compile Include="UrlHandlerImpl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
+      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+</Project>
