@@ -41,9 +41,10 @@ namespace nJupiter.Web.UI.Controls {
 		private const string TrailingLinefeedKey = "v_TrailingLinefeed";
 		private const string TrailingBreakKey = "v_TrailingBreak";
 		private const string StreamPagePathKey = "v_StreamingPath";
-		private const string StreamPagePath = "/nJupiter/nJupiter.Web.UI/Web/StreamImage.aspx";
 
-		public WebImage() : base(HtmlTextWriterTag.Img) { }
+		public WebImage() : base(HtmlTextWriterTag.Img) {
+			WebImageResourceRegistrator.Register();
+		}
 	
 		public bool RenderId {
 			get {
@@ -145,7 +146,7 @@ namespace nJupiter.Web.UI.Controls {
 				if(streamingPath != null) {
 					return streamingPath;
 				}
-				return StreamPagePath;
+				return WebImageResourceRegistrator.StreamPagePath;
 			}
 			set {
 				this.ViewState[StreamPagePathKey] = value;

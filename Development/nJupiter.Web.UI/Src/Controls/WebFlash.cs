@@ -62,7 +62,7 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Constants
 		private const string SwfObjectKey = "swfobject";
-		private const string SwfObjectInclude = "<script type=\"text/javascript\" src=\"/nJupiter/nJupiter.Web.UI/Web/Scripts/SwfObject.js\"></script><script type=\"text/javascript\">var so;</script>";
+		private const string SwfObjectInclude = "<script type=\"text/javascript\" src=\"" + WebFlashResourceRegistrator.SwfObjectJsPath + "\"></script><script type=\"text/javascript\">var so;</script>";
 		// 0 = constructor, 1 = params, 2 = variables, 3 = div id
 		private const string SwfScriptTag =
 		@"<script type=""text/javascript"">
@@ -80,11 +80,11 @@ namespace nJupiter.Web.UI.Controls {
 		private const string SwfAddParam = "so.addVariable(\"{0}\", \"{1}\");"; // 0 = key, 1 = value
 		private const string SwfAutoinstall = "so.useExpressInstall(\"{0}\")";
 		private const string SwfMovieNameSuffix = "movie";
-		private const string SwfExpressinstall = "/nJupiter/nJupiter.Web.UI/Web/Scripts/SwfObject.swf";
+		private const string SwfExpressinstall = WebFlashResourceRegistrator.SwfObjectSwfPath;
 
 		private const string UfoKey = "ufoobject";
-		private const string UfoExpressinstall = "/nJupiter/nJupiter.Web.UI/Web/Scripts/ufo.swf";
-		private const string UfoInclude = "<script type=\"text/javascript\" src=\"/nJupiter/nJupiter.Web.UI/Web/Scripts/ufo.js\"></script>";
+		private const string UfoExpressinstall = WebFlashResourceRegistrator.UfoSwfPath;
+		private const string UfoInclude = "<script type=\"text/javascript\" src=\"" + WebFlashResourceRegistrator.UfoJsPath + "\"></script>";
 		private const string UfoScriptTag =
 		@"<script type=""text/javascript""{15}>
 		<!--//--><![CDATA[//><!--
@@ -98,8 +98,8 @@ namespace nJupiter.Web.UI.Controls {
 		</style>";
 
 		private const string SwffixKey = "swfobject2";
-		private const string SwffixExpressinstall = "/nJupiter/nJupiter.Web.UI/Web/Scripts/swfobject2.swf";
-		private const string SwffixInclude = "<script type=\"text/javascript\" src=\"/nJupiter/nJupiter.Web.UI/Web/Scripts/swfobject2.js\"></script>";
+		private const string SwffixExpressinstall = WebFlashResourceRegistrator.SwfObject2SwfPath;
+		private const string SwffixInclude = "<script type=\"text/javascript\" src=\""+ WebFlashResourceRegistrator.SwfObject2JsPath + "\"></script>";
 		private const string SwffixScriptTag =
 		@"<script type=""text/javascript"">
 		<!--//--><![CDATA[//><!--
@@ -142,32 +142,33 @@ namespace nJupiter.Web.UI.Controls {
 		#endregion
 
 		#region Properties
-		public NameValueCollection FlashParams { get { return this.flashParams; } }
-		public string FlashUrl { get { return this.flashUrl; } set { this.flashUrl = value; } }
-		public int Width { get { return this.width; } set { this.width = value; } }
-		public int Height { get { return this.height; } set { this.height = value; } }
-		public DimensionUnit Unit { get { return this.unit; } set { this.unit = value; } }
-		public string Scale { get { return this.scale; } set { this.scale = value; } }
-		public string SAlign { get { return this.sAlign; } set { this.sAlign = value; } }
+		public NameValueCollection FlashParams { get { return flashParams; } }
+		public string FlashUrl { get { return flashUrl; } set { flashUrl = value; } }
+		public int Width { get { return width; } set { width = value; } }
+		public int Height { get { return height; } set { height = value; } }
+		public DimensionUnit Unit { get { return unit; } set { unit = value; } }
+		public string Scale { get { return scale; } set { scale = value; } }
+		public string SAlign { get { return sAlign; } set { sAlign = value; } }
 		[Obsolete("Use WindowMode instead", false)]
-		public bool Transparent { get { return this.transparent; } set { this.transparent = value; } }
-		public int RequiredVersion { get { return this.requiredVersion; } set { this.requiredVersion = value; } }
-		public Mode RenderMode { get { return this.renderMode; } set { this.renderMode = value; } }
-		public WindowMode WMode { get { return this.wMode; } set { this.wMode = value; } }
-		public bool AutoInstall { get { return this.autoInstall; } set { this.autoInstall = value; } }
-		public string AutoInstallMovie { get { return this.autoInstallMovie; } set { this.autoInstallMovie = value; } }
+		public bool Transparent { get { return transparent; } set { transparent = value; } }
+		public int RequiredVersion { get { return requiredVersion; } set { requiredVersion = value; } }
+		public Mode RenderMode { get { return renderMode; } set { renderMode = value; } }
+		public WindowMode WMode { get { return wMode; } set { wMode = value; } }
+		public bool AutoInstall { get { return autoInstall; } set { autoInstall = value; } }
+		public string AutoInstallMovie { get { return autoInstallMovie; } set { autoInstallMovie = value; } }
 		public bool DisableScripts { get; set; }
 		public bool DisableMainScript { get; set; }
 		[Obsolete("Use TargetPreference instead")]
-		public ControlHandler.RegisterTargetPreference ScriptRegisterTargetPreference { get { return ControlHandler.GetOldTargetPreference(this.scriptRegisterTargetPreference); } set { this.scriptRegisterTargetPreference = ControlHandler.GetNewTargetPreference(value); } }
-		public RegisterTargetPreference TargetPreference { get { return this.scriptRegisterTargetPreference; } set { this.scriptRegisterTargetPreference = value; } }
+		public ControlHandler.RegisterTargetPreference ScriptRegisterTargetPreference { get { return ControlHandler.GetOldTargetPreference(scriptRegisterTargetPreference); } set { scriptRegisterTargetPreference = ControlHandler.GetNewTargetPreference(value); } }
+		public RegisterTargetPreference TargetPreference { get { return scriptRegisterTargetPreference; } set { scriptRegisterTargetPreference = value; } }
 		#endregion
 
 		#region Constructors
 		public WebFlash() {
-			this.TagName = HtmlTag.Div;
-			this.RenderOriginalId = true;
-			this.flashParams = new NameValueCollection();
+			WebFlashResourceRegistrator.Register();
+			TagName = HtmlTag.Div;
+			RenderOriginalId = true;
+			flashParams = new NameValueCollection();
 		}
 
 #pragma warning disable 168
@@ -182,32 +183,32 @@ namespace nJupiter.Web.UI.Controls {
 
 		#region Methods
 		protected override void CreateChildControls() {
-			if(!this.DisableScripts) {
-				switch(this.RenderMode) {
+			if(!DisableScripts) {
+				switch(RenderMode) {
 					case Mode.SWFObject:
-					if(!this.DisableMainScript) {
-						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), SwfObjectKey, SwfObjectInclude, this.TargetPreference);
+					if(!DisableMainScript) {
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), SwfObjectKey, SwfObjectInclude, TargetPreference);
 					}
 					break;
 					case Mode.SWFObject2:
-					if(!this.DisableMainScript) {
-						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), SwffixKey, SwffixInclude, this.TargetPreference);
+					if(!DisableMainScript) {
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), SwffixKey, SwffixInclude, TargetPreference);
 					}
-					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildSWFFixScript(), this.TargetPreference);
+					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), ClientID, BuildSWFFixScript(), TargetPreference);
 					break;
 					case Mode.SWFObject2Embedded:
-					if(!this.DisableMainScript) {
-						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), SwffixKey, SwffixInclude, this.TargetPreference);
+					if(!DisableMainScript) {
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), SwffixKey, SwffixInclude, TargetPreference);
 					}
-					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildSWFFixEmbeddedScript(), this.TargetPreference);
+					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), ClientID, BuildSWFFixEmbeddedScript(), TargetPreference);
 					break;
 					default:
-					if(!this.DisableMainScript) {
-						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), UfoKey, UfoInclude, this.TargetPreference);
+					if(!DisableMainScript) {
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), UfoKey, UfoInclude, TargetPreference);
 					}
-					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID, this.BuildUFOScript(), this.TargetPreference);
+					ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), ClientID, BuildUFOScript(), TargetPreference);
 					if(UserAgent.Instance.IsIE) {
-						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(this.GetType(), this.ClientID + "css", this.BuildUFOCss(), this.TargetPreference);
+						ClientScriptRegistrator.Instance.RegisterClientScriptBlock(GetType(), ClientID + "css", BuildUFOCss(), TargetPreference);
 					}
 					break;
 				}
@@ -216,8 +217,8 @@ namespace nJupiter.Web.UI.Controls {
 
 		protected override void RenderEndTag(HtmlTextWriter writer) {
 			base.RenderEndTag(writer);
-			if(this.RenderMode.Equals(Mode.SWFObject)) {
-				writer.Write(this.BuildSwfObjectScript());
+			if(RenderMode.Equals(Mode.SWFObject)) {
+				writer.Write(BuildSwfObjectScript());
 			}
 		}
 
@@ -236,12 +237,12 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		protected override void RenderChildren(HtmlTextWriter writer) {
-			if(this.RenderMode.Equals(Mode.SWFObject2)) {
-				writer.Write(this.BuildSWFFixBeginTag());
+			if(RenderMode.Equals(Mode.SWFObject2)) {
+				writer.Write(BuildSWFFixBeginTag());
 				base.RenderChildren(writer);
 				writer.Write(SwffixEndTag);
-			} else if(this.RenderMode.Equals(Mode.SWFObject2Embedded)) {
-				writer.Write("<div id=\"" + this.ClientID + "_inner\">");
+			} else if(RenderMode.Equals(Mode.SWFObject2Embedded)) {
+				writer.Write("<div id=\"" + ClientID + "_inner\">");
 				base.RenderChildren(writer);
 				writer.Write("</div>");
 			} else {
@@ -255,23 +256,23 @@ namespace nJupiter.Web.UI.Controls {
 			return string.Format(
 				CultureInfo.InvariantCulture,
 				UfoScriptTag,
-				this.flashUrl,
-				this.width, GetUnitString(this.unit),
-				this.height, GetUnitString(this.unit),
-				this.requiredVersion, 0,
-				(this.scale ?? string.Empty),
-				(this.sAlign ?? string.Empty),
-				this.GetWModeString(),
-				UrlHandler.Instance.GetQueryString(this.FlashParams, false),
-				(this.autoInstall ? "true" : "false"),
-				(string.IsNullOrEmpty(this.autoInstallMovie) ? UfoExpressinstall : this.autoInstallMovie),
+				flashUrl,
+				width, GetUnitString(unit),
+				height, GetUnitString(unit),
+				requiredVersion, 0,
+				(scale ?? string.Empty),
+				(sAlign ?? string.Empty),
+				GetWModeString(),
+				UrlHandler.Instance.GetQueryString(FlashParams, false),
+				(autoInstall ? "true" : "false"),
+				(string.IsNullOrEmpty(autoInstallMovie) ? UfoExpressinstall : autoInstallMovie),
 				(UserAgent.Instance.IsIE ? ", setcontainercss:\"true\"" : string.Empty),
-				this.ClientID,
+				ClientID,
 				(UserAgent.Instance.IsIE ? " defer=\"true\"" : string.Empty));
 		}
 
 		private string BuildUFOCss() {
-			return string.Format(CultureInfo.InvariantCulture, UfoCssTag, this.ClientID, this.width, GetUnitString(this.unit, true), this.height, GetUnitString(this.unit, true));
+			return string.Format(CultureInfo.InvariantCulture, UfoCssTag, ClientID, width, GetUnitString(unit, true), height, GetUnitString(unit, true));
 		}
 		#endregion
 
@@ -280,24 +281,24 @@ namespace nJupiter.Web.UI.Controls {
 			return string.Format(
 				CultureInfo.InvariantCulture,
 				SwffixScriptTag,
-				this.ClientID + "_inner",
-				this.requiredVersion,
-				(this.AutoInstall ? "\"" + (string.IsNullOrEmpty(this.autoInstallMovie) ? SwffixExpressinstall : this.autoInstallMovie) + "\"" : "null"));
+				ClientID + "_inner",
+				requiredVersion,
+				(AutoInstall ? "\"" + (string.IsNullOrEmpty(autoInstallMovie) ? SwffixExpressinstall : autoInstallMovie) + "\"" : "null"));
 		}
 
 		private string BuildSWFFixBeginTag() {
-			string wmode = this.GetWModeString();
+			var wmode = GetWModeString();
 
 			return string.Format(
 				CultureInfo.InvariantCulture,
 				SwffixBeginTag,
-				this.ClientID + "_inner",
-				this.width, GetUnitString(this.unit),
-				this.height, GetUnitString(this.unit),
-				this.flashUrl,
-				HttpUtility.HtmlEncode(UrlHandler.Instance.GetQueryString(this.FlashParams, false)),
-				(!string.IsNullOrEmpty(this.scale) ? string.Format(@"<param name=""scale"" value=""{0}"" />", this.scale) : string.Empty),
-				(!string.IsNullOrEmpty(this.sAlign) ? string.Format(@"<param name=""sAlign"" value=""{0}"" />", this.sAlign) : string.Empty),
+				ClientID + "_inner",
+				width, GetUnitString(unit),
+				height, GetUnitString(unit),
+				flashUrl,
+				HttpUtility.HtmlEncode(UrlHandler.Instance.GetQueryString(FlashParams, false)),
+				(!string.IsNullOrEmpty(scale) ? string.Format(@"<param name=""scale"" value=""{0}"" />", scale) : string.Empty),
+				(!string.IsNullOrEmpty(sAlign) ? string.Format(@"<param name=""sAlign"" value=""{0}"" />", sAlign) : string.Empty),
 				(!string.IsNullOrEmpty(wmode) ? string.Format(@"<param name=""wmode"" value=""{0}"" />", wmode) : string.Empty));
 		}
 
@@ -305,33 +306,33 @@ namespace nJupiter.Web.UI.Controls {
 			return string.Format(
 				CultureInfo.InvariantCulture,
 				SwffixEmbeddedScriptTag,
-				UrlHandler.Instance.GetQueryString(this.FlashParams, false),
-				(this.scale ?? string.Empty),
-				(this.sAlign ?? string.Empty),
-				this.GetWModeString(),
-				this.flashUrl,
-				this.ClientID + "_inner",
-				this.width, GetUnitString(this.unit),
-				this.height, GetUnitString(this.unit),
-				this.requiredVersion,
-				(this.AutoInstall ? "\"" + (string.IsNullOrEmpty(this.autoInstallMovie) ? SwffixExpressinstall : this.autoInstallMovie) + "\"" : "null"));
+				UrlHandler.Instance.GetQueryString(FlashParams, false),
+				(scale ?? string.Empty),
+				(sAlign ?? string.Empty),
+				GetWModeString(),
+				flashUrl,
+				ClientID + "_inner",
+				width, GetUnitString(unit),
+				height, GetUnitString(unit),
+				requiredVersion,
+				(AutoInstall ? "\"" + (string.IsNullOrEmpty(autoInstallMovie) ? SwffixExpressinstall : autoInstallMovie) + "\"" : "null"));
 		}
 		#endregion
 
 		#region SWFObject Helper Methods
 		private string BuildSwfObjectScript() {
-			string constructor = string.Format(CultureInfo.InvariantCulture, SwfConstructor, this.flashUrl, this.ClientID, SwfMovieNameSuffix, this.width, GetUnitString(this.unit), this.height, GetUnitString(this.unit), this.requiredVersion, string.Empty);
-			string script = string.Format(CultureInfo.InvariantCulture, SwfScriptTag, constructor, BuildSwfAttributesScript(), BuildSwfPropertiesScript(), BuildSwfParamScript(), this.ClientID);
+			var constructor = string.Format(CultureInfo.InvariantCulture, SwfConstructor, flashUrl, ClientID, SwfMovieNameSuffix, width, GetUnitString(unit), height, GetUnitString(unit), requiredVersion, string.Empty);
+			var script = string.Format(CultureInfo.InvariantCulture, SwfScriptTag, constructor, BuildSwfAttributesScript(), BuildSwfPropertiesScript(), BuildSwfParamScript(), ClientID);
 
 			return script;
 		}
 
 		private string BuildSwfAttributesScript() {
-			StringBuilder attributes = new StringBuilder();
+			var attributes = new StringBuilder();
 
 			if(AutoInstall) {
-				string path = (string.IsNullOrEmpty(this.AutoInstallMovie) ? SwfExpressinstall : this.AutoInstallMovie);
-				string install = string.Format(SwfAutoinstall, path);
+				var path = (string.IsNullOrEmpty(AutoInstallMovie) ? SwfExpressinstall : AutoInstallMovie);
+				var install = string.Format(SwfAutoinstall, path);
 				attributes.Append(install);
 			}
 
@@ -339,7 +340,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		private string BuildSwfParamScript() {
-			StringBuilder parameters = new StringBuilder();
+			var parameters = new StringBuilder();
 
 			foreach(string key in FlashParams.Keys) {
 				parameters.AppendFormat(SwfAddParam, key, FlashParams[key]);
@@ -349,17 +350,17 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		private string BuildSwfPropertiesScript() {
-			StringBuilder props = new StringBuilder();
+			var props = new StringBuilder();
 
-			if(this.scale != null) {
-				props.AppendFormat(SwfAddProperty, "scale", this.scale);
+			if(scale != null) {
+				props.AppendFormat(SwfAddProperty, "scale", scale);
 			}
 
-			if(this.sAlign != null) {
-				props.AppendFormat(SwfAddProperty, "salign", this.sAlign);
+			if(sAlign != null) {
+				props.AppendFormat(SwfAddProperty, "salign", sAlign);
 			}
 
-			string wmode = GetWModeString();
+			var wmode = GetWModeString();
 			if(!wmode.Length.Equals(0)) {
 				props.AppendFormat(SwfAddProperty, "wmode", wmode);
 			}
@@ -368,7 +369,7 @@ namespace nJupiter.Web.UI.Controls {
 		}
 
 		private string GetWModeString() {
-			switch(this.WMode) {
+			switch(WMode) {
 				case (WindowMode.Window):
 				return string.Empty;
 				case (WindowMode.Opaque):
@@ -378,7 +379,7 @@ namespace nJupiter.Web.UI.Controls {
 				case WindowMode.Direct:
 				return "direct";
 				default:
-				return !this.transparent ? string.Empty : "transparent";
+				return !transparent ? string.Empty : "transparent";
 			}
 		}
 		#endregion

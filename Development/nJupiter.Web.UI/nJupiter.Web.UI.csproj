@@ -71,6 +71,9 @@
     <Compile Include="Src\ControlHandlerImpl.cs" />
     <Compile Include="Src\ControlLoader.cs" />
     <Compile Include="Src\Controls\Listings\ListItems\ListItemCollection.cs" />
+    <Compile Include="Src\Controls\WebFlashResourceRegistrator.cs" />
+    <Compile Include="Src\Controls\WebImageResourceRegistrator.cs" />
+    <Compile Include="Src\Hosting\VirtualResourceFile.cs" />
     <Compile Include="Src\HtmlStyleUnit.cs" />
     <Compile Include="Src\HtmlEntity.cs" />
     <Compile Include="Src\HtmlLink.cs" />
@@ -164,6 +167,7 @@
     <Compile Include="Src\IControlFinder.cs" />
     <Compile Include="Src\IUserAgent.cs" />
     <Compile Include="Src\RegisterTargetPreference.cs" />
+    <Compile Include="Src\Hosting\VirtualResourcePathProvider.cs" />
     <Compile Include="Src\UserAgent.cs" />
     <Compile Include="Web\StreamImage.aspx.cs">
       <DependentUpon>StreamImage.aspx</DependentUpon>
@@ -172,15 +176,15 @@
     <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
       <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
     </Content>
-    <Content Include="Web\Scripts\swfobject2.js" />
-    <Content Include="Web\Scripts\swfobject2.swf" />
-    <Content Include="Web\Scripts\SwfObject.js" />
-    <Content Include="Web\Scripts\SwfObject.swf" />
-    <Content Include="Web\Scripts\ufo.js" />
-    <Content Include="Web\Scripts\ufo.swf" />
-    <Content Include="Web\StreamImage.aspx">
+    <EmbeddedResource Include="Web\Scripts\swfobject2.js" />
+    <EmbeddedResource Include="Web\Scripts\swfobject2.swf" />
+    <EmbeddedResource Include="Web\Scripts\SwfObject.js" />
+    <EmbeddedResource Include="Web\Scripts\SwfObject.swf" />
+    <EmbeddedResource Include="Web\Scripts\ufo.js" />
+    <EmbeddedResource Include="Web\Scripts\ufo.swf" />
+    <EmbeddedResource Include="Web\StreamImage.aspx">
       <SubType>ASPXCodeBehind</SubType>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
