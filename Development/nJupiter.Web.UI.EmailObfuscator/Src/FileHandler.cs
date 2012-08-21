@@ -33,19 +33,19 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 		public void ProcessRequest(HttpContext context) {
 			if(context == null)
 				throw new ArgumentNullException("context");
-			string encstr = context.Request["encstr"];
+			var encstr = context.Request["encstr"];
 			//string encimage	= context.Request["encimage"];
 			//string encanchor	= context.Request["encanchor"];
 
 			if(encstr != null) {
 				// See if client has a cached version of the image
-				string ifModifiedSince = context.Request.Headers.Get("If-Modified-Since");
+				var ifModifiedSince = context.Request.Headers.Get("If-Modified-Since");
 				// If so, always let the client use the cached version cause this image shall not change ever.
 				if(ifModifiedSince != null) {
 					context.Response.StatusCode = 304;
 					context.Response.End();
 				}
-				using(EmailImage image = new EmailImage()) {
+				using(var image = new EmailImage()) {
 					image.Email = Encoding.UTF8.GetString(Convert.FromBase64String(encstr));
 					image.RenderImage(context.Response.OutputStream); //Render image to output stream
 				}
@@ -60,7 +60,7 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 			}
 		}
 
-		bool System.Web.IHttpHandler.IsReusable {
+		bool IHttpHandler.IsReusable {
 			get {
 				return true;
 			}

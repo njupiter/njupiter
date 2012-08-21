@@ -33,13 +33,12 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 	internal sealed class EmailImage : IDisposable {
 
 		private readonly Font font = new Font(FontFamily.GenericSerif, 16, FontStyle.Underline, GraphicsUnit.Pixel);
-		private readonly Color fontColor = System.Drawing.ColorTranslator.FromHtml("#0000ff");
+		private readonly Color fontColor = ColorTranslator.FromHtml("#0000ff");
 		private string text;
 		private bool disposed;
 
-		public string Email { get { return this.text; } set { this.text = value; } }
+		public string Email { get { return text; } set { text = value; } }
 
-		#region Methods
 		public void RenderImage(Stream stream) {
 
 			Bitmap bmp;
@@ -47,22 +46,22 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 			int height;
 
 			using(bmp = new Bitmap(1, 1, PixelFormat.Format32bppArgb)) { //Create a 1x1 bitmap to use to messure the size of a string
-				Graphics g = Graphics.FromImage(bmp);
+				var g = Graphics.FromImage(bmp);
 				g.PageUnit = GraphicsUnit.Pixel;
-				SizeF textSize = g.MeasureString(this.text, this.font);
+				var textSize = g.MeasureString(text, font);
 				width = (int)textSize.Width;
 				height = (int)textSize.Height;
 			}
 
 			using(bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb)) { //Create the real bitmap and render the string
-				using(Graphics g = Graphics.FromImage(bmp)) {
-					Rectangle rectangle = new Rectangle(0, 0, width, height);
+				using(var g = Graphics.FromImage(bmp)) {
+					var rectangle = new Rectangle(0, 0, width, height);
 					g.SmoothingMode = SmoothingMode.None;
 					g.PageUnit = GraphicsUnit.Pixel;
 					g.FillRectangle(Brushes.White, rectangle); // We make the background white, which is going to be transparent later
-					g.DrawString(this.text, this.font, Brushes.Black, 0, 0, StringFormat.GenericDefault); // Since the text has only one color and we rerender the image later we can write it in black
+					g.DrawString(text, font, Brushes.Black, 0, 0, StringFormat.GenericDefault); // Since the text has only one color and we rerender the image later we can write it in black
 				}
-				using(Bitmap final = MakeTransparent(bmp)) { //Convert bitmap to transparent gif
+				using(var final = MakeTransparent(bmp)) { //Convert bitmap to transparent gif
 					final.Save(stream, ImageFormat.Gif); //And save to stream
 				}
 			}
@@ -72,33 +71,33 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 		private Bitmap MakeTransparent(Image image) {
 
 			const int nColors = 2;
-			int width = image.Width;
-			int height = image.Height;
+			var width = image.Width;
+			var height = image.Height;
 
-			Bitmap bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed); //Create a bitmap with Format8bppIndexed witch is the color table for GIF-images
+			var bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed); //Create a bitmap with Format8bppIndexed witch is the color table for GIF-images
 
 			ColorPalette pal;
-			using(Bitmap b = new Bitmap(1, 1, PixelFormat.Format1bppIndexed)) { //Make a 2 colored indexed palette
+			using(var b = new Bitmap(1, 1, PixelFormat.Format1bppIndexed)) { //Make a 2 colored indexed palette
 				pal = b.Palette;
 			}
 
-			pal.Entries[0] = Color.FromArgb(255, this.fontColor);
+			pal.Entries[0] = Color.FromArgb(255, fontColor);
 			pal.Entries[1] = Color.FromArgb(0, 255, 255, 255); //Set the last color to alpha 0 to make it transparent
 
 			bitmap.Palette = pal; //Set the palette to our new bitmap
 
-			using(Bitmap bmpCopy = new Bitmap(width, height, PixelFormat.Format32bppArgb)) { //Copy the original bitmap into an indexed bitmap and use the palette above
+			using(var bmpCopy = new Bitmap(width, height, PixelFormat.Format32bppArgb)) { //Copy the original bitmap into an indexed bitmap and use the palette above
 
-				using(Graphics g = Graphics.FromImage(bmpCopy)) {
+				using(var g = Graphics.FromImage(bmpCopy)) {
 					g.SmoothingMode = SmoothingMode.None;
 					g.PageUnit = GraphicsUnit.Pixel;
 					g.DrawImage(image, 0, 0, width, height);
 				}
 
-				Rectangle rectangle = new Rectangle(0, 0, width, height);
-				BitmapData bitmapData = bitmap.LockBits(rectangle, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+				var rectangle = new Rectangle(0, 0, width, height);
+				var bitmapData = bitmap.LockBits(rectangle, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
-				IntPtr pixels = bitmapData.Scan0;
+				var pixels = bitmapData.Scan0;
 
 				unsafe {
 					byte* pBits;
@@ -107,13 +106,13 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 					else
 						pBits = (byte*)pixels.ToPointer() + bitmapData.Stride * (height - 1);
 
-					uint stride = (uint)Math.Abs(bitmapData.Stride);
+					var stride = (uint)Math.Abs(bitmapData.Stride);
 
 					for(uint row = 0; row < height; ++row) {
 						for(uint col = 0; col < width; ++col) {
-							byte* p8BppPixel = pBits + row * stride + col;
-							Color pixel = bmpCopy.GetPixel((int)col, (int)row);
-							double luminance = (pixel.R * 0.299) +
+							var p8BppPixel = pBits + row * stride + col;
+							var pixel = bmpCopy.GetPixel((int)col, (int)row);
+							var luminance = (pixel.R * 0.299) +
 								(pixel.G * 0.587) +
 								(pixel.B * 0.114);
 							*p8BppPixel = (byte)(luminance * (nColors - 1) / 255 + 0.5);
@@ -124,32 +123,29 @@ namespace nJupiter.Web.UI.EmailObfuscator {
 			}
 			return bitmap;
 		}
-		#endregion
 
-
-		#region IDisposable Members
 		public void Dispose() {
 			Dispose(true);
 		}
 
 		private void Dispose(bool disposing) {
-			if(!this.disposed) {
+			if(!disposed) {
 
-				if(this.font != null) {
-					this.font.Dispose();
+				if(font != null) {
+					font.Dispose();
 				}
 
 				// Suppress finalization of this disposed instance.
 				if(disposing)
 					GC.SuppressFinalize(this);
 
-				this.disposed = true;
+				disposed = true;
 			}
 		}
 
 		~EmailImage() {
 			Dispose(false);
 		}
-		#endregion
+
 	}
 }

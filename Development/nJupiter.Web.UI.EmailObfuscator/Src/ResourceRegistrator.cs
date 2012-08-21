@@ -22,31 +22,20 @@
 // 
 #endregion
 
-using System.Collections.Generic;
 using System.Web.Hosting;
 
 using nJupiter.Configuration;
 using nJupiter.Web.UI.Hosting;
 
-namespace nJupiter.Web.UI.Controls {
-	internal static class WebFlashResourceRegistrator {
+namespace nJupiter.Web.UI.EmailObfuscator {
+	internal static class ResourceRegistrator {
 
 		private static bool registered;
 		private static readonly object padLock = new object();
 		private const string section = "disableEmbededResources";
 		
-		public const string SwfObjectJsPath =  "/nJupiter/nJupiter.Web.UI/Web/Scripts/SwfObject.js";
-		public const string SwfObjectJsResourceName =  "nJupiter.Web.UI.Web.Scripts.SwfObject.js";
-		public const string SwfObjectSwfPath =  "/nJupiter/nJupiter.Web.UI/Web/Scripts/SwfObject.swf";
-		public const string SwfObjectSwfResourceName =  "nJupiter.Web.UI.Web.Scripts.SwfObject.swf";
-		public const string UfoJsPath =  "/nJupiter/nJupiter.Web.UI/Web/Scripts/ufo.js";
-		public const string UfoJsResourceName =  "nJupiter.Web.UI.Web.Scripts.ufo.js";
-		public const string UfoSwfPath =  "/nJupiter/nJupiter.Web.UI/Web/Scripts/ufo.swf";
-		public const string UfoSwfResourceName =  "nJupiter.Web.UI.Web.Scripts.ufo.swf";
-		public const string SwfObject2JsPath =  "/nJupiter/nJupiter.Web.UI/Web/Scripts/swfobject2.js";
-		public const string SwfObject2JsResourceName =  "nJupiter.Web.UI.Web.Scripts.swfobject2.js";
-		public const string SwfObject2SwfPath =  "/nJupiter/nJupiter.Web.UI/Web/Scripts/swfobject2.swf";
-		public const string SwfObject2SwfResourceName =  "nJupiter.Web.UI.Web.Scripts.swfobject2.swf";
+		public const string ScriptPath = @"/nJupiter/nJupiter.Web.UI.EmailObfuscator/Web/Scripts/EmailObfuscator.js";
+		public const string ScriptResourceName = "nJupiter.Web.UI.EmailObfuscator.Web.Scripts.EmailObfuscator.js";
 
 		public static void Register() {
 			if(HttpContextHandler.Instance.Current == null || registered || DisableEmbeddedResources) {
@@ -54,30 +43,16 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			lock(padLock) {
 				if(!registered) {
-					var resources = GetResources();
-					var pathProvider = new VirtualResourcePathProvider(resources);
+					var resource = new VirtualResourceFile(ScriptPath, ScriptResourceName, typeof(ResourceRegistrator).Assembly);
+					var pathProvider = new VirtualResourcePathProvider(new[] { resource });
 					HostingEnvironment.RegisterVirtualPathProvider(pathProvider);
 					registered = true;
 				}
 			}
 		}
 
-		private static IEnumerable<VirtualResourceFile> GetResources() {
-			var assembly = typeof(WebImageResourceRegistrator).Assembly;
-
-			return new List<VirtualResourceFile> {
-				new VirtualResourceFile(SwfObjectJsPath, SwfObjectJsResourceName, assembly),
-				new VirtualResourceFile(SwfObjectSwfPath, SwfObjectSwfResourceName, assembly),
-				new VirtualResourceFile(UfoJsPath, UfoJsResourceName, assembly),
-				new VirtualResourceFile(UfoSwfPath, UfoSwfResourceName, assembly),
-				new VirtualResourceFile(SwfObject2JsPath, SwfObject2JsResourceName, assembly),
-				new VirtualResourceFile(SwfObject2SwfPath, SwfObject2SwfResourceName, assembly)
-			};
-		}
-
 		private static bool DisableEmbeddedResources {
 			get {
-				
 				var config = ConfigRepository.Instance.GetConfig(true);
 				if(config != null && config.ContainsKey(section)) {
 					return config.GetValue<bool>(section);
