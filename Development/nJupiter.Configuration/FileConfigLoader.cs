@@ -63,13 +63,13 @@ namespace nJupiter.Configuration {
 
 		public void InitializeCollection(ConfigCollection configs) {
 			if(LoadAllFilesOnInit) {
-				this.LoadConfigsIntoCollection("*", configs);
+				LoadConfigsIntoCollection("*", configs);
 			}
 		}
 
 		public IConfig Load(string configKey) {
 			var configs = new ConfigCollection();
-			this.LoadConfigsIntoCollection(configKey, configs);
+			LoadConfigsIntoCollection(configKey, configs);
 			if(configs.Contains(configKey)) {
 				return configs[configKey];
 			}
@@ -78,7 +78,7 @@ namespace nJupiter.Configuration {
 
 		private void LoadConfigsIntoCollection(string pattern, ConfigCollection configs) {
 			try {
-				this.LoadConfigsIntoCollectionFromFiles(pattern, configs);
+				LoadConfigsIntoCollectionFromFiles(pattern, configs);
 			}catch(Exception ex){
 				throw new ConfiguratorException(string.Format("Error while loading XML configuration for the config with pattern '{0}'", pattern), ex);
 			}
@@ -88,7 +88,7 @@ namespace nJupiter.Configuration {
 			if(pattern.IndexOfAny(IllegalPathCharacters) < 0) {
 				var files = GetFiles(pattern);
 				foreach(var file in files) {
-					var configFromFile = FileConfigFactory.Create(file, this.AddFileWatchers);
+					var configFromFile = FileConfigFactory.Create(file, AddFileWatchers);
 					if(!configs.Contains(configFromFile.ConfigKey)) {
 						configs.Add(configFromFile);
 					}
@@ -98,10 +98,10 @@ namespace nJupiter.Configuration {
 
 		private IEnumerable<FileInfo> GetFiles(string pattern) {
 			var files = new List<FileInfo>();
-			foreach(var path in this.ConfigPaths) {
+			foreach(var path in ConfigPaths) {
 				var dir = GetDirectory(path);
 				if(dir.Exists) {
-					var fileArray = this.GetFiles(pattern, dir);
+					var fileArray = GetFiles(pattern, dir);
 					files.AddRange(fileArray);
 				}
 			}
@@ -110,7 +110,7 @@ namespace nJupiter.Configuration {
 
 		private IEnumerable<FileInfo> GetFiles(string pattern, DirectoryInfo dir) {
 			try {
-				return dir.GetFiles(string.Format("{0}{1}", pattern, this.ConfigSuffix));
+				return dir.GetFiles(string.Format("{0}{1}", pattern, ConfigSuffix));
 			} catch(IOException) {
 				// Ignore IOException in case of incorrect syntax
 			}

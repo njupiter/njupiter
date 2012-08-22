@@ -36,7 +36,7 @@ namespace nJupiter.Configuration {
 		private readonly object padLock = new object();
 
 		public string SystemConfigKey { get { return systemConfigKey; } }
-		public string AppConfigKey { get { return this.appConfigKey; } }
+		public string AppConfigKey { get { return appConfigKey; } }
 
 		/// <summary>
 		/// Returns the default instance of IConfigRepository
@@ -44,19 +44,19 @@ namespace nJupiter.Configuration {
 		public static IConfigRepository Instance { get { return NestedSingleton.instance; } }
 
 		public ConfigRepository(IConfigLoader configLoader) : this(configLoader, "System", null) {
-			this.appConfigKey = GetAppConfigKey();
+			appConfigKey = GetAppConfigKey();
 		}
 
 		public ConfigRepository(IConfigLoader configLoader, string systemConfigKey, string appConfigKey) {
 			this.configLoader = configLoader;
-			this.configurations = configLoader.LoadOnInit();
+			configurations = configLoader.LoadOnInit();
 			this.systemConfigKey = systemConfigKey;
 			this.appConfigKey = appConfigKey;
 		}
 
 		public ConfigCollection Configurations {
 			get {
-				return this.configurations;
+				return configurations;
 			}
 		}
 
@@ -92,19 +92,19 @@ namespace nJupiter.Configuration {
 		}
 
 		public IConfig GetConfig(string configKey, bool suppressMissingConfigException) {
-			if(this.configurations.Contains(configKey)){
-				return this.configurations[configKey];
+			if(configurations.Contains(configKey)){
+				return configurations[configKey];
 			}
 			try {
 				lock(padLock) {
-					if(this.configurations.Contains(configKey)){
-						return this.configurations[configKey];
+					if(configurations.Contains(configKey)){
+						return configurations[configKey];
 					}
-					var config = this.configLoader.Load(configKey);
+					var config = configLoader.Load(configKey);
 					if(config == null) {
 						throw new ConfigurationException(string.Format("The config with the config key '{0}' was not found", configKey));
 					}
-					this.configurations.Add(config);
+					configurations.Add(config);
 					return config;
 				}
 			} catch(Exception ex) {

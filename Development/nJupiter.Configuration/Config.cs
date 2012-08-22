@@ -41,12 +41,12 @@ namespace nJupiter.Configuration {
 
 		private const string DefaultAttribute = "value";
 
-		public string ConfigKey { get { return this.configKey; } }
-		public XmlElement ConfigXml { get { return this.configXml; } }
+		public string ConfigKey { get { return configKey; } }
+		public XmlElement ConfigXml { get { return configXml; } }
 		public IConfigSource ConfigSource { get{ return source; } }
 
 		public event EventHandler Discarded;
-		public bool IsDiscarded { get{ return this.isDiscarded; } }
+		public bool IsDiscarded { get{ return isDiscarded; } }
 
 		internal Config(string configKey, XmlElement element)
 			: this(configKey, element, null) {
@@ -60,10 +60,10 @@ namespace nJupiter.Configuration {
 				throw new ArgumentNullException("element");
 			}
 			this.configKey = configKey;
-			this.configXml = element;
+			configXml = element;
 			this.source = source ?? new ConfigSource(element);
 			if(this.source.Watcher != null){
-				this.source.Watcher.ConfigSourceUpdated += this.Discard;
+				this.source.Watcher.ConfigSourceUpdated += Discard;
 			}
 		}
 
@@ -80,27 +80,27 @@ namespace nJupiter.Configuration {
 		}
 
 		public T GetAttribute<T>(string key, string attribute) {
-			return this.GetAttribute<T>(null, key, attribute);
+			return GetAttribute<T>(null, key, attribute);
 		}
 
 		public T GetAttribute<T>(string section, string key, string attribute) {
-			var node = this.GetKey(section, key);
+			var node = GetKey(section, key);
 			if(node != null && (attribute == null || AttributeExistsInNode(attribute, node))) {
-				return this.GetValueFromXmlNode<T>(section, key, attribute, node);
+				return GetValueFromXmlNode<T>(section, key, attribute, node);
 			}
-			throw new ConfigValueNotFoundException(string.Format("Value '{0}' was not found in the config with key '{1}'", GetXPath(section, key, attribute), this.ConfigKey));
+			throw new ConfigValueNotFoundException(string.Format("Value '{0}' was not found in the config with key '{1}'", GetXPath(section, key, attribute), ConfigKey));
 		}
 
 		public T[] GetValueArray<T>(string section, string key) {
-			return this.GetAttributeArray<T>(section, key, null);
+			return GetAttributeArray<T>(section, key, null);
 		}
 
 		public T[] GetAttributeArray<T>(string section, string key, string attribute) {
-			string xpath = GetXPath(section, key, attribute);
-			var nodeList = this.ConfigXml.SelectNodes(xpath);
+			var xpath = GetXPath(section, key, attribute);
+			var nodeList = ConfigXml.SelectNodes(xpath);
 			var result = new T[nodeList.Count];
-			for(int i = 0; i < nodeList.Count; i++) {
-				result[i] = this.GetValueFromXmlNode<T>(section, key, attribute, nodeList[i]);
+			for(var i = 0; i < nodeList.Count; i++) {
+				result[i] = GetValueFromXmlNode<T>(section, key, attribute, nodeList[i]);
 			}
 			return result;
 		}
@@ -122,7 +122,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public string[] GetAttributeArray(string section, string key, string attribute) {
-			return this.GetAttributeArray<string>(section, key, attribute);
+			return GetAttributeArray<string>(section, key, attribute);
 		}
 
 		public XmlNode GetKey(string key) {
@@ -130,30 +130,30 @@ namespace nJupiter.Configuration {
 		}
 
 		public XmlNode GetKey(string section, string key) {
-			string xpath = GetXPath(section, key);
-			return this.ConfigXml.SelectSingleNode(xpath);
+			var xpath = GetXPath(section, key);
+			return ConfigXml.SelectSingleNode(xpath);
 		}
 
 		public IConfig GetConfigSection(string section) {
-			string key = string.Format("{0}:{1}", this.ConfigKey, section);
-			if(this.innerConfigurations.Contains(key))
-				return this.innerConfigurations[key];
+			var key = string.Format("{0}:{1}", ConfigKey, section);
+			if(innerConfigurations.Contains(key))
+				return innerConfigurations[key];
 			lock(padlock) {
-				if(!this.innerConfigurations.Contains(key)) {
-					var node = this.ConfigXml.SelectSingleNode(section);
+				if(!innerConfigurations.Contains(key)) {
+					var node = ConfigXml.SelectSingleNode(section);
 					var configElement = node as XmlElement;
 
 					if(configElement == null)
 						return null;
 
-					this.innerConfigurations.Add(new Config(key, configElement));
+					innerConfigurations.Add(new Config(key, configElement));
 				}
 			}
-			return this.innerConfigurations[key];
+			return innerConfigurations[key];
 		}
 
 		public bool ContainsKey(string section, string key) {
-			return this.GetKey(section, key) != null;
+			return GetKey(section, key) != null;
 		}
 
 		public bool ContainsKey(string key) {
@@ -161,7 +161,7 @@ namespace nJupiter.Configuration {
 		}
 
 		public bool ContainsAttribute(string section, string key, string attribute) {
-			var node = this.GetKey(section, key);
+			var node = GetKey(section, key);
 			if(node == null) {
 				return false;
 			}
@@ -173,21 +173,21 @@ namespace nJupiter.Configuration {
 		}
 
 		public object GetConfigurationSectionHandler(string section, Type configurationSectionHandlerType) {
-			if(!this.configRepositories.ContainsKey(section)) {
+			if(!configRepositories.ContainsKey(section)) {
 				lock(padlock) {
-					if(!this.configRepositories.ContainsKey(section)) {
-						var result = this.GetConfigurationSectionHandlerInternal(section, configurationSectionHandlerType);
-						this.configRepositories.Add(section, result);
+					if(!configRepositories.ContainsKey(section)) {
+						var result = GetConfigurationSectionHandlerInternal(section, configurationSectionHandlerType);
+						configRepositories.Add(section, result);
 					}
 				}
 			}
-			return this.configRepositories[section];
+			return configRepositories[section];
 		}
 
 		private object GetConfigurationSectionHandlerInternal(string section, Type configurationSectionHandlerType) {
 			var result = System.Configuration.ConfigurationManager.GetSection(section);
 			if(result == null) {
-				var node = this.configXml.SelectSingleNode(section);
+				var node = configXml.SelectSingleNode(section);
 				if(node != null) {
 					result = CreateConfigurationSectionHandler(node, configurationSectionHandlerType);
 				}
@@ -207,7 +207,7 @@ namespace nJupiter.Configuration {
 			try {
 				return StringParser.Instance.Parse<T>(value, culture);
 			}catch(Exception ex) {
-				throw new InvalidConfigValueException(string.Format("Error wile parsing value '{0}' with key '{1}' in config with key '{2}' of expected type '{3}' with culture '{4}'.", value, GetXPath(section, key, attribute), this.ConfigKey, typeof(T).Name, culture.Name), ex);
+				throw new InvalidConfigValueException(string.Format("Error wile parsing value '{0}' with key '{1}' in config with key '{2}' of expected type '{3}' with culture '{4}'.", value, GetXPath(section, key, attribute), ConfigKey, typeof(T).Name, culture.Name), ex);
 			}
 		}
 
@@ -217,19 +217,19 @@ namespace nJupiter.Configuration {
 
 		private T GetValueFromXmlNode<T>(string section, string key, string attribute, XmlNode node) {
 			attribute = GetAttributeName(attribute);
-			string value = GetAttributeValueFromXmlNode(attribute, node);
+			var value = GetAttributeValueFromXmlNode(attribute, node);
 			if(value == null && DefaultAttribute.Equals(attribute)){
 				value = node.InnerText;
 			}
 			var nodeCulture = GetCultureFromNode(node);
 
-			return this.ParseValue<T>(section, key, attribute, value, nodeCulture);
+			return ParseValue<T>(section, key, attribute, value, nodeCulture);
 		}
 
 		private static CultureInfo GetCultureFromNode(XmlNode node) {
 			var nodeReader = new XmlNodeReader(node);
 			nodeReader.Read();
-			string lang = nodeReader.XmlLang;
+			var lang = nodeReader.XmlLang;
 			if(!string.IsNullOrEmpty(lang)) {
 				return CultureInfo.CreateSpecificCulture(lang);
 			}
@@ -258,23 +258,23 @@ namespace nJupiter.Configuration {
 		}
 
 		public void Discard(object source, EventArgs e) {
-			this.Dispose();
+			Dispose();
 		}
 
 		public void Discard() {
-			this.Dispose();
+			Dispose();
 		}
 
 		private void Dispose(bool disposing) {
-			if(!this.isDiscarded) {
+			if(!isDiscarded) {
 				lock(padlock){
-					if(!this.isDiscarded) {
-						this.isDiscarded = true;
-						if(this.source != null && this.source.Watcher != null) {
-							this.source.Watcher.ConfigSourceUpdated -= this.Discard;
+					if(!isDiscarded) {
+						isDiscarded = true;
+						if(source != null && source.Watcher != null) {
+							source.Watcher.ConfigSourceUpdated -= Discard;
 						}
-						if(disposing && this.Discarded != null) {
-							this.Discarded(this, EventArgs.Empty);
+						if(disposing && Discarded != null) {
+							Discarded(this, EventArgs.Empty);
 						}
 					}
 				}
@@ -289,7 +289,7 @@ namespace nJupiter.Configuration {
 		}
 
 		~Config() {
-			this.Dispose(false);
+			Dispose(false);
 		}
 	}
 }

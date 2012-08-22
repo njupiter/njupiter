@@ -37,55 +37,55 @@ namespace nJupiter.Configuration {
 
 		public FileConfigSourceWatcher(FileInfo configFile) {
 
-			this.watcher = new FileSystemWatcher();
+			watcher = new FileSystemWatcher();
 
-			this.watcher.Path = configFile.DirectoryName;
-			this.watcher.Filter = configFile.Name;
+			watcher.Path = configFile.DirectoryName;
+			watcher.Filter = configFile.Name;
 
-			this.watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
+			watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
 
-			this.watcher.Changed += this.WatchedConfigOnChanged;
-			this.watcher.Created += this.WatchedConfigOnChanged;
-			this.watcher.Deleted += this.WatchedConfigOnChanged;
-			this.watcher.Renamed += this.WatchedConfigOnRenamed;
+			watcher.Changed += WatchedConfigOnChanged;
+			watcher.Created += WatchedConfigOnChanged;
+			watcher.Deleted += WatchedConfigOnChanged;
+			watcher.Renamed += WatchedConfigOnRenamed;
 
-			this.watcher.EnableRaisingEvents = true;
+			watcher.EnableRaisingEvents = true;
 		}
 
 		private void WatchedConfigOnChanged(object source, FileSystemEventArgs e) {
-			this.OnWatchedFileChange();
+			OnWatchedFileChange();
 		}
 		
 		private void WatchedConfigOnRenamed(object source, RenamedEventArgs e) {
-			this.OnWatchedFileChange();
+			OnWatchedFileChange();
 		}
 
 		private void OnWatchedFileChange() {
-			if(this.eventTriggered)
+			if(eventTriggered)
 				return;
-			lock(this.padLock) {
-				if(!this.eventTriggered) {
-					this.eventTriggered = true;
-					if(this.ConfigSourceUpdated != null) {
-						this.ConfigSourceUpdated(this, EventArgs.Empty);
+			lock(padLock) {
+				if(!eventTriggered) {
+					eventTriggered = true;
+					if(ConfigSourceUpdated != null) {
+						ConfigSourceUpdated(this, EventArgs.Empty);
 					}
-					this.watcher.EnableRaisingEvents = false;
+					watcher.EnableRaisingEvents = false;
 				}
 			}
 		}
 
 		#region IDisposable Members
 		private void Dispose(bool disposing) {
-			if(!this.disposed) {
-				this.disposed = true;
+			if(!disposed) {
+				disposed = true;
 
-				if(this.watcher != null) {
-					this.watcher.EnableRaisingEvents = false;
-					this.watcher.Changed -= this.WatchedConfigOnChanged;
-					this.watcher.Created -= this.WatchedConfigOnChanged;
-					this.watcher.Deleted -= this.WatchedConfigOnChanged;
-					this.watcher.Renamed -= this.WatchedConfigOnRenamed;
-					this.watcher.Dispose();
+				if(watcher != null) {
+					watcher.EnableRaisingEvents = false;
+					watcher.Changed -= WatchedConfigOnChanged;
+					watcher.Created -= WatchedConfigOnChanged;
+					watcher.Deleted -= WatchedConfigOnChanged;
+					watcher.Renamed -= WatchedConfigOnRenamed;
+					watcher.Dispose();
 				}
 
 				// Suppress finalization of this disposed instance.

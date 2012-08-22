@@ -22,7 +22,6 @@
 */
 #endregion
 
-using System;
 using System.IO;
 
 namespace nJupiter.Configuration {
