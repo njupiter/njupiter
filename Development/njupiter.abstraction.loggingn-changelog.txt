@@ -20,4 +20,4 @@ NEW: Added support for asynchronous evalutation of log messages via message
 Changes for V1.0.0.377 - 2012-06-08
 ===============================================================================
 
-NEW: Initial releae
+NEW: Initial release
