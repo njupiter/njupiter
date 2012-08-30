@@ -9,18 +9,11 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for V5.0.2.459 - 2012-07-04
+Changes for V5.1.0.490 - 2012-08-30
 ===============================================================================
 
-BUG: LdapMembershipUser is now set to Serializable
-ENH: It is now possible to turn off the wrapping of the MembershipUser by
-     setting the element membershipUserWrappingEnabled to false in the users
-     config. By doing this no LdapMembershipUser will ever be returned, but a
-     generic MembershipUser will be returned instead. By doing this you can for
-     example use the ASP.NET Web Site Administration Tools without putting the
-     nJupiter.DataAccess.Ldap.dll file in the GAC. The downside though is that
-     you by doing this not can access specific LdapMembershipUser functionality
-     like the Attributes and Path property.
+NEW: Support for serverless binding added. Set the url element in the
+     configuration to just "LDAP://" to activate.
 
 ===============================================================================
 Changes for V5.0.1.446 - 2012-06-29

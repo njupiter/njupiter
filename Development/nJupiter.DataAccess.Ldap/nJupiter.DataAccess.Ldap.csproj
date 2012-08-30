@@ -109,7 +109,6 @@
     <Compile Include="IMembershipUserFactory.cs" />
     <Compile Include="Configuration\IProviderConfig.cs" />
     <Compile Include="LdapMembershipUser.cs" />
-    <Compile Include="LdapPathHandler.cs" />
     <Compile Include="DistinguishedNames\EscapeChars.cs" />
     <Compile Include="DistinguishedNames\IDn.cs" />
     <Compile Include="DistinguishedNames\IRdn.cs" />

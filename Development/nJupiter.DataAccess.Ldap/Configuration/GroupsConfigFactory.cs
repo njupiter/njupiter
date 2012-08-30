@@ -88,7 +88,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			if(!String.IsNullOrEmpty(groups.Base)) {
 				groupUri = new Uri(groupUri, groups.Base);
 			}
-			groups.Path = LdapPathHandler.UriToPath(groupUri);
+			groups.Path = groupUri.OriginalString;
 		}
 
 		private static void SetAttributeDefinitionList(IConfig configSection, GroupsConfig groups) {

@@ -77,7 +77,6 @@
     <Compile Include="DirectoryServices\UserEntryAdapterTests.cs" />
     <Compile Include="LdapMembershipProviderTests.cs" />
     <Compile Include="LdapMembershipUserFactoryTests.cs" />
-    <Compile Include="LdapPathHandlerTests.cs" />
     <Compile Include="LdapRoleProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

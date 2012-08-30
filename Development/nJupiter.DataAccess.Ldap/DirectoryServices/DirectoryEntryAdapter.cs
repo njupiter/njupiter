@@ -53,8 +53,7 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public virtual IDirectoryEntry GetEntry(Uri uri, string username, string password) {
-			var path = LdapPathHandler.UriToPath(uri);
-			return GetEntry(path, username, password);
+			return GetEntry(uri.OriginalString, username, password);
 		}
 
 		public virtual IDirectoryEntry GetEntry(string attributeValue, IEntryConfig entryConfig, Func<IEntry, IDirectorySearcher> searcherFactory) {

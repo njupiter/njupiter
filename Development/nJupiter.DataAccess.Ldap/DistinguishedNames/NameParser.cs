@@ -24,9 +24,12 @@
 
 using System;
 using System.Linq;
+using System.Web;
 
 namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 	public class NameParser : INameParser {
+
+		private const string LdapScheme = "LDAP://";
 
 		public virtual string GetCn(string name) {
 			var dn = GetDnObject(name);
@@ -78,7 +81,7 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 		}
 
 		public virtual IDn GetDnObject(string name) {
-			name = LdapPathHandler.GetDistinguishedNameFromPath(name);
+			name = GetDistinguishedNameFromPath(name);
 			if(name.Contains("=")) {
 				return CreateDnObject(name);
 			}
@@ -113,6 +116,25 @@ namespace nJupiter.DataAccess.Ldap.DistinguishedNames {
 				return NameType.Cn;
 			}
 			return dn.Rdns.Count() > 1 ? NameType.Dn : NameType.Rdn;
+		}
+
+		private static string GetDistinguishedNameFromPath(string path) {
+			if(path.StartsWith(LdapScheme, StringComparison.InvariantCultureIgnoreCase)) {
+				Uri uri;
+				var schemelessPath = path.Substring(7);
+				// If path contain a slash after we removed the scheme we take for granted that the path contain a server
+				if(schemelessPath.Contains("/")) {
+					uri = new Uri(path);
+				} else {
+					// Uri object can not handle serverless LDAP Uri:s so therefor this hack
+					uri = new Uri(new Uri(LdapScheme), schemelessPath);
+				}
+				path = HttpUtility.UrlDecode(uri.PathAndQuery);
+			}
+			if(path.StartsWith("/")) {
+				return path.Substring(1);
+			}
+			return path;
 		}
 	}
 }

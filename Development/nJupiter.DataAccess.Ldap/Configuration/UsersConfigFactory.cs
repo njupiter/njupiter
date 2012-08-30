@@ -119,7 +119,7 @@ namespace nJupiter.DataAccess.Ldap.Configuration {
 			if(!String.IsNullOrEmpty(users.Base)) {
 				userUri = new Uri(userUri, users.Base);
 			}
-			users.Path = LdapPathHandler.UriToPath(userUri);
+			users.Path = userUri.OriginalString;
 		}
 
 		private static void SetMemershipUserWrappingEnabled(IConfig configSection, UsersConfig users) {

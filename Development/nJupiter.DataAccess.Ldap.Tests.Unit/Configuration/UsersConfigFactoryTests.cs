@@ -153,7 +153,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.Configuration {
 		[Test]
 		public void Create_PathIsDefiendedInConfig_SetToConfigValue() {
 			var config = CreateUserConfigWithServerConfig();
-			Assert.AreEqual("LDAP://server/", config.Path);
+			Assert.AreEqual("ldap://server/", config.Path);
 		}
 
 		[Test]

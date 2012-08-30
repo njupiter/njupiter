@@ -22,6 +22,7 @@
 // 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.DirectoryServices;
@@ -96,6 +97,9 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices {
 		}
 
 		public virtual IEntryCollection GetGroupsWithEntryAsMemebership(IEntry membershipEntry) {
+			if(membershipEntry == null) {
+				throw new ArgumentNullException("membershipEntry");
+			}
 			using(var entry = GetGroupEntry()) {
 				var searcher = GetGroupSearcher(entry, SearchScope.Subtree);
 				var mebershipValue = nameParser.GetDn(membershipEntry.Path);

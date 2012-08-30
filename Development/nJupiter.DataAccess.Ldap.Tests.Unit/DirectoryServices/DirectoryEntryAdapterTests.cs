@@ -68,7 +68,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 			adapter.GetEntry(uri, "username", "password");
 
-			A.CallTo(()  => directoryEntryFactory.Create(	"LDAP://anyuri/",
+			A.CallTo(()  => directoryEntryFactory.Create(	"ldap://anyuri/",
 															"username",
 															"password",
 															serverConfig.AuthenticationTypes)).MustHaveHappened(Repeated.Exactly.Once);
@@ -166,7 +166,7 @@ namespace nJupiter.DataAccess.Ldap.Tests.Unit.DirectoryServices {
 
 			adapter.GetEntry("cn=any,o=distinguished,dc=name", config, e => searcher);
 
-			A.CallTo(()  => directoryEntryFactory.Create(	"LDAP://anypath/cn=any,o=distinguished,dc=name",
+			A.CallTo(()  => directoryEntryFactory.Create(	"ldap://anypath/cn=any,o=distinguished,dc=name",
 															serverConfig.Username,
 															serverConfig.Password,
 															serverConfig.AuthenticationTypes)).MustHaveHappened(Repeated.Exactly.Once);
