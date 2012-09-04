@@ -244,6 +244,7 @@ namespace nJupiter.Web.UI.Controls {
 				bool isSelected = IsPageSelected(this.RootPage, pageData, this.SelectedNavigationPage);
 				bool isInSelectedPath = IsPageInSelectedPath(this.RootPage, pageData, this.SelectedNavigationPage);
 				bool isChildOfRemovedNode = this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never &&
+					(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.Always) || isInSelectedPath) &&
 					this.IsPageChildOfRemovedNode(this.RootPage, pageData);
 				Control liListItem = this.GetNavigationItemDelegate(e);
 
@@ -423,16 +424,7 @@ namespace nJupiter.Web.UI.Controls {
 
 				if(!this.IncludeRootLevelInList && 
 					this.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never) {
-					NavigationPageCollection nonRemovedDescendants = GetNonRemovedDescendants(removedChildNodes);
-					if(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.OnlyInSelectedPath)) {
-						foreach(INavigationPage descendant in nonRemovedDescendants) {
-							if(this.IsPageInSelectedPath(this.RootPage, descendant, this.SelectedNavigationPage)) {
-								childNodes.Add(descendant);
-							}
-						}
-					} else {
-						childNodes.AddRange(nonRemovedDescendants);
-					}
+					childNodes.AddRange(GetNonRemovedDescendants(removedChildNodes));
 				}
 				rptNavigation.DataSource = childNodes;
 				rptNavigation.DataBind();
@@ -473,16 +465,7 @@ namespace nJupiter.Web.UI.Controls {
 				children = args.ParentNavigation.FilterNavigation(children, removedChildren);
 
 				if(args.ParentNavigation.IncludeChildrenOfRemovedNodesMode > IncludeChildrenOfRemovedNodesMode.Never) {
-					NavigationPageCollection nonRemovedDescendants = args.ParentNavigation.GetNonRemovedDescendants(removedChildren);
-					if(args.ParentNavigation.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.OnlyInSelectedPath)) {
-						foreach(INavigationPage descendant in nonRemovedDescendants) {
-							if(args.ParentNavigation.IsPageInSelectedPath(args.ParentNavigation.RootPage, descendant, args.ParentNavigation.SelectedNavigationPage)) {
-								children.Add(descendant);
-							}
-						}
-					} else {
-						children.AddRange(nonRemovedDescendants);
-					}
+					children.AddRange(args.ParentNavigation.GetNonRemovedDescendants(removedChildren));
 				}
 				if(children.Count > 0) {
 					liClass = liClass + (liClass.Length > 0 ? " " : string.Empty) + "has-children";
@@ -638,11 +621,18 @@ namespace nJupiter.Web.UI.Controls {
 			}
 			NavigationPageCollection nonRemovedDescendants = new NavigationPageCollection();
 			foreach(INavigationPage removedNode in removedNodes) {
-				NavigationPageCollection removedChildNodes = new NavigationPageCollection();
-				nonRemovedDescendants.AddRange(this.GetChildren(removedNode));
-				nonRemovedDescendants = this.FilterNavigation(nonRemovedDescendants, removedChildNodes);
-
-				nonRemovedDescendants.AddRange(GetNonRemovedDescendants(removedChildNodes));
+				if(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.Always) ||
+					this.IsPageInSelectedPath(this.RootPage, removedNode, this.SelectedNavigationPage)) {
+					foreach(INavigationPage child in this.GetChildren(removedNode)) {
+						if(this.IncludeChildrenOfRemovedNodesMode.Equals(IncludeChildrenOfRemovedNodesMode.Always) ||
+						this.IsPageInSelectedPath(this.RootPage, child, this.SelectedNavigationPage)) {
+							nonRemovedDescendants.Add(child);
+						}
+					}
+					NavigationPageCollection removedChildNodes = new NavigationPageCollection();
+					nonRemovedDescendants = this.FilterNavigation(nonRemovedDescendants, removedChildNodes);
+					nonRemovedDescendants.AddRange(GetNonRemovedDescendants(removedChildNodes));
+				}
 			}
 			return nonRemovedDescendants;
 		}
