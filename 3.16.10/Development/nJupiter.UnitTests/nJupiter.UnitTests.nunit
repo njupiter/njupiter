@@ -1,6 +1,0 @@
-﻿<NUnitProject>
-  <Settings activeconfig="Default" appbase="C:\Projects\nJupiter\Build\bin\Debug" />
-  <Config name="Default" configfile="nJupiter.UnitTests.config" binpathtype="Auto">
-    <assembly path="nJupiter.UnitTests.dll" />
-  </Config>
-</NUnitProject>
