@@ -258,7 +258,7 @@ namespace nJupiter.DataAccess.Users.DirectoryService {
 			foreach(PropertyDefinition pd in schema) {
 				string propertyValue = (doUser != null && doUser.Contains(pd.PropertyName)) ? doUser[pd.PropertyName] : null;
 				string propertyName = pd.PropertyName;
-				IProperty property = new Property<string>(propertyName, null, CultureInfo.InvariantCulture);
+				IProperty property = new Property<string>(propertyName, Context.DefaultContext, CultureInfo.InvariantCulture);
 				property.Value = propertyValue;
 				propertyList.Add(property);
 			}
