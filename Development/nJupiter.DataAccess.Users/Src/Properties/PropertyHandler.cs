@@ -213,11 +213,11 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		private static T GetValue<T>(IProperty porperty) {
-			if(porperty == null) {
+		private static T GetValue<T>(IProperty property) {
+			if(property == null) {
 				return default(T);
 			}
-			return (T)porperty.Value;
+			return (T)property.Value;
 		}
 
 		private static bool IsPropertiesConsistantToSchema(IPropertyCollection properties) {
