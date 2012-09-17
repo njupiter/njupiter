@@ -9,8 +9,11 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Upcomming version
+Changes for V4.1.0.505 - 2012-09-17
 ===============================================================================
+
+BUG: Send in DefaultContext instead of null in
+     nJupiter.DataAccess.Users.DirectoryService
 
 BUG: Hard coded property names removed from nJupiter.DataAccess.Users.Sql, and
      default property names for password and passwordSalt added so the provider
