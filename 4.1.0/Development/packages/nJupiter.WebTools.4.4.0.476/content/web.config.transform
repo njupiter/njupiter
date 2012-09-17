@@ -1,0 +1,12 @@
+<configuration>
+    <system.webServer>
+		<handlers>
+			<add name="nJupiterSwfObject-JS" path="/nJupiter/nJupiter.Web.UI/Web/Scripts/SwfObject.js" verb="GET,HEAD" type="System.Web.StaticFileHandler"/>
+			<add name="nJupiterSwfObject-SWF" path="/nJupiter/nJupiter.Web.UI/Web/Scripts/SwfObject.swf" verb="GET,HEAD" type="System.Web.StaticFileHandler"/>			
+			<add name="nJupiterUfo-JS" path="/nJupiter/nJupiter.Web.UI/Web/Scripts/ufo.js" verb="GET,HEAD" type="System.Web.StaticFileHandler"/>
+			<add name="nJupiterUfo-SWF" path="/nJupiter/nJupiter.Web.UI/Web/Scripts/ufo.swf" verb="GET,HEAD" type="System.Web.StaticFileHandler"/>			
+			<add name="nJupiterSwfObject2-JS" path="/nJupiter/nJupiter.Web.UI/Web/Scripts/swfobject2.js" verb="GET,HEAD" type="System.Web.StaticFileHandler"/>
+			<add name="nJupiterSwfObject2-SWF" path="/nJupiter/nJupiter.Web.UI/Web/Scripts/swfobject2.swf" verb="GET,HEAD" type="System.Web.StaticFileHandler"/>			
+		</handlers>
+    </system.webServer>
+</configuration>
