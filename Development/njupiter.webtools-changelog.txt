@@ -9,6 +9,13 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V4.4.1.508 - 2012-10-01
+===============================================================================
+
+BUG: Correct bug in ControlAdapterBase where using the exclude path feature and
+     not excluding with the * control adapter name results in a crash
+
+===============================================================================
 Changes for V4.4.1.503 - 2012-09-17
 ===============================================================================
 

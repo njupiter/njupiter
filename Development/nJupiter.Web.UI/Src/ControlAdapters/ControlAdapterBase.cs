@@ -86,7 +86,7 @@ namespace nJupiter.Web.UI.ControlAdapters {
 				string[] adapters = { "*", this.GetType().FullName };
 				foreach(var adapter in adapters) {
 					if(excludedPathArray.ContainsKey(adapter)) {
-						var excludedPaths = excludedPathArray["*"];
+						var excludedPaths = excludedPathArray[adapter];
 						foreach(var excludedPath in excludedPaths) {
 							if(this.Page.Request.Path.StartsWith(excludedPath, StringComparison.OrdinalIgnoreCase)) {
 								return false;
