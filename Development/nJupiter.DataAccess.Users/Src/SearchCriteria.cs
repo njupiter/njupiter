@@ -38,14 +38,14 @@ namespace nJupiter.DataAccess.Users {
 		public SearchCriteria(IProperty property, string domain, CompareCondition condition) : this(property, domain, condition, false) { }
 		public SearchCriteria(IProperty property, string domain, bool required) : this(property, domain, CompareCondition.Equal, required) { }
 		public SearchCriteria(IProperty property, string domain, CompareCondition condition, bool required) {
-			this.InitCriteria(property, domain, condition, required);
+			InitCriteria(property, domain, condition, required);
 		}
 
 		public SearchCriteria(IProperty property) : this(property, CompareCondition.Equal, false) { }
 		public SearchCriteria(IProperty property, CompareCondition condition) : this(property, condition, false) { }
 		public SearchCriteria(IProperty property, bool required) : this(property, CompareCondition.Equal, required) { }
 		public SearchCriteria(IProperty property, CompareCondition condition, bool required) {
-			this.InitCriteria(property, null, condition, required);
+			InitCriteria(property, null, condition, required);
 		}
 
 		public SearchCriteria(string propertyName, string propertyValue, string domain) : this(propertyName, propertyValue, domain, null, CompareCondition.Equal, false) { }
@@ -70,39 +70,39 @@ namespace nJupiter.DataAccess.Users {
 			}
 			var stringProperty = new Property<string>(propertyName, context, CultureInfo.InvariantCulture);
 			stringProperty.Value = propertyValue;
-			this.InitCriteria(stringProperty, domain, condition, required);
+			InitCriteria(stringProperty, domain, condition, required);
 		}
 
 		public IProperty Property {
-			get { return this.property; }
+			get { return property; }
 			set {
 				if(value == null) {
 					throw new ArgumentNullException("value");
 				}
-				this.SetPropertyValueAndCondition(value, this.Condition);
+				SetPropertyValueAndCondition(value, Condition);
 			}
 		}
 		
 		public CompareCondition Condition {
-			get { return this.condition; }
+			get { return condition; }
 			set {
-				this.SetPropertyValueAndCondition(this.Property, value);
+				SetPropertyValueAndCondition(Property, value);
 			}
 		}
 
-		public bool Required { get { return this.required; } set { this.required = value; } }
-		public string Domain { get { return this.domain; } set { this.domain = value; } }
+		public bool Required { get { return required; } set { required = value; } }
+		public string Domain { get { return domain; } set { domain = value; } }
 
-		private void InitCriteria(IProperty property, string domain, CompareCondition condition, bool required) {
-			this.SetPropertyValueAndCondition(property, condition);
-			this.domain = domain;
-			this.required = required;
+		private void InitCriteria(IProperty p, string d, CompareCondition c, bool r) {
+			SetPropertyValueAndCondition(p, c);
+			domain = d;
+			required = r;
 		}
 
-		private void SetPropertyValueAndCondition(IProperty property, CompareCondition condition) {
-			CheckPropertyCompareCondition(property, condition);
-			this.property = property;
-			this.condition = condition;
+		private void SetPropertyValueAndCondition(IProperty p, CompareCondition c) {
+			CheckPropertyCompareCondition(p, c);
+			property = p;
+			condition = c;
 		}
 
 		private static void CheckPropertyCompareCondition(IProperty property, CompareCondition condition) {
@@ -122,7 +122,7 @@ namespace nJupiter.DataAccess.Users {
 				case CompareCondition.NotEndsWith:
 				case CompareCondition.StartsWith:
 				case CompareCondition.NotStartsWith:
-				if(!property.Type.Equals(typeof(string))) {
+				if(property.Type != typeof(string)) {
 					throw new InvalidOperationException("Can not use string comparisons on a property whose underlying type is not a string.");
 				}
 				break;

@@ -1,25 +1,25 @@
 #region Copyright & License
-/*
-	Copyright (c) 2005-2011 nJupiter
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
 #endregion
 
 using System;
@@ -30,9 +30,7 @@ using System.Linq;
 using nJupiter.Configuration;
 
 namespace nJupiter.DataAccess.Users.Caching {
-
 	public class GenericUserCache : UserCacheBase {
-
 		private const int DefaultCacheSize = 1000;
 		private const int MinimumCacheSize = 100;
 		private const int CacheTruncateFactor = 10; // The precentage to truncate the cache when max users has been reched
@@ -43,50 +41,50 @@ namespace nJupiter.DataAccess.Users.Caching {
 		private int minutesInCache = -1; // If zero, caching is turned off
 		private int maxUsersInCache = -1; // If zero, then the cache can grow unrestrainedly
 
-		public GenericUserCache(IConfig config) : base(config){}
+		public GenericUserCache(IConfig config) : base(config) {}
 
 		private int MinutesInCache {
 			get {
-				if(this.minutesInCache < 0) {
-					if(this.Config.ContainsKey("cache", "minutesToCacheUser"))
-						this.minutesInCache = this.Config.GetValue<int>("cache", "minutesToCacheUser");
-					else
-						this.minutesInCache = 0;
+				if(minutesInCache < 0) {
+					if(Config.ContainsKey("cache", "minutesToCacheUser")) {
+						minutesInCache = Config.GetValue<int>("cache", "minutesToCacheUser");
+					} else {
+						minutesInCache = 0;
+					}
 				}
-				return this.minutesInCache;
+				return minutesInCache;
 			}
 		}
 
 		private int MaxUsersInCache {
 			get {
-				if(this.maxUsersInCache < 0) {
-					if(this.Config.ContainsKey("cache", "maxUsersInCache")) {
-						this.maxUsersInCache = this.Config.GetValue<int>("cache", "maxUsersInCache");
-						if(this.maxUsersInCache < MinimumCacheSize && this.maxUsersInCache != 0)
-							this.maxUsersInCache = MinimumCacheSize;
+				if(maxUsersInCache < 0) {
+					if(Config.ContainsKey("cache", "maxUsersInCache")) {
+						maxUsersInCache = Config.GetValue<int>("cache", "maxUsersInCache");
+						if(maxUsersInCache < MinimumCacheSize && maxUsersInCache != 0) {
+							maxUsersInCache = MinimumCacheSize;
+						}
 					} else {
-						this.maxUsersInCache = DefaultCacheSize;
+						maxUsersInCache = DefaultCacheSize;
 					}
 				}
 				return 10000;
 			}
 		}
 
-		private static int CacheTruncationFactor {
-			get {
-				return CacheTruncateFactor;
-			}
-		}
+		private static int CacheTruncationFactor { get { return CacheTruncateFactor; } }
 
 		public override IUser GetUserById(string userId) {
-			if(userId == null || this.MinutesInCache == 0)
+			if(userId == null || MinutesInCache == 0) {
 				return null;
+			}
 			return GetUserFromCacheMap(userId);
 		}
 
 		public override IUser GetUserByUserName(string userName, string domain) {
-			if(userName == null || this.MinutesInCache == 0)
+			if(userName == null || MinutesInCache == 0) {
 				return null;
+			}
 			return GetUserFromCacheMap(userName, domain);
 		}
 
@@ -99,35 +97,37 @@ namespace nJupiter.DataAccess.Users.Caching {
 		public override void RemoveUsersFromCache(IList<IUser> users) {
 			if(users != null) {
 				foreach(var user in users) {
-					this.RemoveUserFromCache(user);
+					RemoveUserFromCache(user);
 				}
 			}
 		}
 
 		public override void AddUserToCache(IUser user) {
-			if(user != null && this.MinutesInCache > 0) {
+			if(user != null && MinutesInCache > 0) {
 				lock(padlock) {
-					if(this.cachedUsers.Contains(user))
-						this.RemoveUserFromCache(user);
+					if(cachedUsers.Contains(user)) {
+						RemoveUserFromCache(user);
+					}
 
 					// Truncate cache if it has grown out of size.
-					if(this.MaxUsersInCache != 0 && this.cachedUsers.Count >= this.MaxUsersInCache)
+					if(MaxUsersInCache != 0 && cachedUsers.Count >= MaxUsersInCache) {
 						TruncateCache();
+					}
 
 					user.MakeReadOnly();
-					
+
 					var cacheMapId = new CacheMapId(user.UserName, user.Domain);
 					var cachedUser = new CachedUser(user);
-					this.cachedMap.Add(cacheMapId, cachedUser);
-					this.cachedUsers.Add(user);
+					cachedMap.Add(cacheMapId, cachedUser);
+					cachedUsers.Add(user);
 				}
 			}
 		}
 
 		public override void AddUsersToCache(IList<IUser> users) {
-			if(users != null && this.MinutesInCache > 0) {
+			if(users != null && MinutesInCache > 0) {
 				foreach(var user in users) {
-					this.AddUserToCache(user);
+					AddUserToCache(user);
 				}
 			}
 		}
@@ -135,8 +135,8 @@ namespace nJupiter.DataAccess.Users.Caching {
 		private void RemoveUserFromCache(IUser user, CacheMapId cacheMapId) {
 			if(user != null) {
 				lock(padlock) {
-					this.cachedUsers.Remove(user);
-					this.cachedMap.Remove(cacheMapId);
+					cachedUsers.Remove(user);
+					cachedMap.Remove(cacheMapId);
 				}
 			}
 		}
@@ -153,7 +153,7 @@ namespace nJupiter.DataAccess.Users.Caching {
 		}
 
 		private IUser GetUser(string userId) {
-			return this.cachedUsers.FirstOrDefault(u => u.Id.Equals(userId));
+			return cachedUsers.FirstOrDefault(u => u.Id.Equals(userId));
 		}
 
 		private IUser GetUserFromCacheMap(string userName, string domain) {
@@ -164,15 +164,16 @@ namespace nJupiter.DataAccess.Users.Caching {
 		}
 
 		private IUser GetUserFromCacheMap(CacheMapId cacheMapId) {
-			lock(this.cachedMap.SyncRoot) {
-				if(!this.cachedMap.Contains(cacheMapId))
+			lock(cachedMap.SyncRoot) {
+				if(!cachedMap.Contains(cacheMapId)) {
 					return null;
+				}
 
-				var cachedUser = (CachedUser)this.cachedMap[cacheMapId];
+				var cachedUser = (CachedUser)cachedMap[cacheMapId];
 
 				// Remove user from cache if the cache time has expired
-				if(cachedUser.DateCreated > DateTime.Now.AddMinutes(this.MinutesInCache)) {
-					this.RemoveUserFromCache(cachedUser.User, cacheMapId);
+				if(cachedUser.DateCreated > DateTime.Now.AddMinutes(MinutesInCache)) {
+					RemoveUserFromCache(cachedUser.User, cacheMapId);
 					return null;
 				}
 				return cachedUser.User;
@@ -188,103 +189,24 @@ namespace nJupiter.DataAccess.Users.Caching {
 		}
 
 		private void TruncateCache() {
-
-			var truncateList = new ArrayList(this.cachedMap);
+			var truncateList = new ArrayList(cachedMap);
 			truncateList.Sort(CachedUserComparer.Instance);
-			int itemsToRemove = ((this.MaxUsersInCache * CacheTruncationFactor) / 100) + (truncateList.Count - this.MaxUsersInCache);
-			var cacheTime = DateTime.Now.AddMinutes(this.MinutesInCache);
+			int itemsToRemove = ((MaxUsersInCache * CacheTruncationFactor) / 100) + (truncateList.Count - MaxUsersInCache);
+			var cacheTime = DateTime.Now.AddMinutes(MinutesInCache);
 
 			// Remove users from cahce, remove atleast a factor of [CacheTruncationFactor] from the cache
 			// If not enough users has a cache time that has expired the oldest cached objects will be removed
 			foreach(DictionaryEntry dicEntry in truncateList) {
 				var cachedUser = (CachedUser)dicEntry.Value;
 				if(cachedUser.User != null) {
-					if(itemsToRemove <= 0 && cachedUser.DateCreated < cacheTime)
+					if(itemsToRemove <= 0 && cachedUser.DateCreated < cacheTime) {
 						break;
+					}
 					RemoveUserFromCache(cachedUser.User);
 					itemsToRemove--;
 				}
 			}
 		}
-
-		// Sort cached users and put the oldest first
-		private sealed class CachedUserComparer : IComparer {
-
-			#region Members
-			private static readonly CachedUserComparer instance = new CachedUserComparer();
-			#endregion
-
-			#region Constructors
-			private CachedUserComparer() { }
-			#endregion
-
-			#region Singelton Instance
-			public static CachedUserComparer Instance {
-				get {
-					return instance;
-				}
-			}
-			#endregion
-
-			#region IComparer Members
-			public int Compare(object x, object y) {
-				var xEntry = (DictionaryEntry)x;
-				var yEntry = (DictionaryEntry)y;
-
-				if(xEntry.Value == null || yEntry.Value == null)
-					return 0;
-
-				var xCachedUser = (CachedUser)xEntry.Value;
-				var yCachedUser = (CachedUser)yEntry.Value;
-
-				if(xCachedUser.User == null || yCachedUser.User == null)
-					return 0;
-
-				return xCachedUser.DateCreated.CompareTo(yCachedUser.DateCreated);
-			}
-			#endregion
-		}
-
-		private struct CachedUser {
-
-			public readonly IUser User;
-			public readonly DateTime DateCreated;
-
-			public CachedUser(IUser user) {
-				User = user;
-				DateCreated = DateTime.Now;
-			}
-		}
-
-		private struct CacheMapId {
-
-			private const int InitialPrime = 17;
-			private const int MultiplierPrime = 37;
-
-			private readonly string userName;
-			private readonly string domain;
-
-			public CacheMapId(string userName, string domain) {
-				this.userName = userName;
-				this.domain = domain ?? string.Empty;
-			}
-
-			public override bool Equals(object obj) {
-				var map = (CacheMapId)obj;
-				if(map.userName == null)
-					return false;
-				return map.userName.Equals(this.userName) && map.domain.Equals(this.domain);
-			}
-
-			public override int GetHashCode() {
-				// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
-				int hash = InitialPrime;
-				hash = (MultiplierPrime * hash) + this.userName.GetHashCode();
-				hash = (MultiplierPrime * hash) + this.domain.GetHashCode();
-				return hash;
-			}
-		}
-
 
 	}
 }

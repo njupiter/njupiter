@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Xml;
 
 using nJupiter.Configuration;
-using nJupiter.DataAccess.Users;
 
 namespace nJupiter.DataAccess.Users.Tests.Unit {
 	public class DummyFactory{
@@ -36,8 +35,8 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		internal static IList<IProperty> GetPropertyList(int count, IContext context) {
 			IList<IProperty> properties = new List<IProperty>();
-			for(int i = 0; i < count; i++) {
-				string name = String.Format("property{0}", i);
+			for(var i = 0; i < count; i++) {
+				var name = String.Format("property{0}", i);
 				var prop = new Property<string>(name, context, CultureInfo.InvariantCulture);
 				prop.Value = String.Format("Value for {0}", name);
 				properties.Add(prop);
@@ -47,7 +46,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		internal static ContextSchema GetSchema<T>(string namePrefix, int count) {
 			IList<PropertyDefinition> propertyDefinitions = new List<PropertyDefinition>();
-			for(int i = 0; i < count; i++) {
+			for(var i = 0; i < count; i++) {
 				var propDef = new PropertyDefinition(namePrefix + i, typeof(Property<T>));
 				propertyDefinitions.Add(propDef);
 			}
@@ -138,7 +137,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		}
 
 		internal static IPredefinedNames GetDummyCommonNames() {
-			var settings =	@"<settings>
+			const string settings = @"<settings>
 									<predefinedProperties>
 										<userName value=""userName"" />
 										<firstName value=""firstName"" />
@@ -172,7 +171,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 									</predefinedProperties>			
 								</settings>";
 
-			XmlDocument xmlDocument = new XmlDocument();
+			var xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(settings);
 			var config = ConfigFactory.Create("config", xmlDocument.DocumentElement);
 			return PredefinedNamesFactory.Create(config);

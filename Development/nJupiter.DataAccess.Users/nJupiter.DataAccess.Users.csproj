@@ -69,7 +69,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Src\Caching\CachedUser.cs" />
+    <Compile Include="Src\Caching\CachedUserComparer.cs" />
+    <Compile Include="Src\Caching\CacheMapId.cs" />
     <Compile Include="Src\Caching\UserCacheBase.cs" />
+    <Compile Include="Src\Caching\UserIdCacheKey.cs" />
+    <Compile Include="Src\Caching\UsernameCacheKey.cs" />
     <Compile Include="Src\Context.cs" />
     <Compile Include="Src\ContextSchema.cs" />
     <Compile Include="Src\CompareCondition.cs" />

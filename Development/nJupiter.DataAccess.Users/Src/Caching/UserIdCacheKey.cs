@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -22,11 +22,40 @@
 // 
 #endregion
 
-using System.Collections.Generic;
+using System;
 
-namespace nJupiter.DataAccess.Users {
-	public interface IPropertyCollection : IEnumerable<IProperty>, ILockable<IPropertyCollection> {
-		ContextSchema Schema { get; }
-		int Count { get; }
+namespace nJupiter.DataAccess.Users.Caching {
+	internal struct UserIdCacheKey {
+		private const int InitialPrime = 17;
+		private const int MultiplierPrime = 37;
+
+		private readonly string userProvider;
+		private readonly string userId;
+		private readonly string cacheKey;
+
+		public UserIdCacheKey(string userProvider, string id) {
+			userId = id ?? String.Empty;
+			this.userProvider = userProvider;
+
+			cacheKey = String.Format("nJupiter.DataAccess.Users.userRepository:{0}:userId:{1}", userProvider, id);
+		}
+
+		public override bool Equals(object obj) {
+			var map = (UserIdCacheKey)obj;
+			if(map.userId == null) {
+				return false;
+			}
+			return map.userId.Equals(userId) && map.userProvider.Equals(userProvider);
+		}
+
+		public string CacheKey { get { return cacheKey; } }
+
+		public override int GetHashCode() {
+			// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
+			var hash = InitialPrime;
+			hash = (MultiplierPrime * hash) + userId.GetHashCode();
+			hash = (MultiplierPrime * hash) + userProvider.GetHashCode();
+			return hash;
+		}
 	}
 }

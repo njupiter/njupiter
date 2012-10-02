@@ -15,28 +15,28 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void GetRepository_CreateDefaultInstanceFromConfig_ReturnsRepositorySetToDefault() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			var repository = userRepositoryManager.GetRepository();
 			Assert.AreEqual("SQLRepository", repository.Name);
 		}
 
 		[Test]
 		public void GetRepository_GetInstanceByName_ReturnsInstance() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			var repository = userRepositoryManager.GetRepository("TestRepository");
 			Assert.IsTrue(repository is UserRepositoryAdapter);
 		}
 
 		[Test]
 		public void GetRepository_GetInstanceWithoutCacheConfigured_ReturnsInstanceWithGenericCache() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			var repository = userRepositoryManager.GetRepository("TestRepository") as UserRepositoryBase;
 			Assert.IsTrue(repository.UserCache is GenericUserCache);
 		}
 
 		[Test]
 		public void GetRepository_GetInstanceWithCacheConfigured_ReturnsInstanceWithCorrectCache() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			var repository = userRepositoryManager.GetRepository("SQLRepository") as UserRepositoryBase;
 			Assert.IsTrue(repository.UserCache is HttpRuntimeUserCache);
 		}
@@ -44,7 +44,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void GetRepository_PassingEmptyString_ReturnsDefaultContext() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			var defaultRepository = userRepositoryManager.GetRepository();
 			var repository = userRepositoryManager.GetRepository(string.Empty);
 			Assert.AreEqual(defaultRepository, repository);
@@ -52,21 +52,21 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 		[Test]
 		public void GetRepository_GetRepositoryNonExistingCache_ThrowsApplicationException() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			Assert.Throws<ApplicationException>(() => userRepositoryManager.GetRepository("RepositoryNonExistingCache"));
 		}
 
 
 		[Test]
 		public void GetRepository_GetNonExistingInstance_ThrowsApplicationException() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			Assert.Throws<ApplicationException>(() => userRepositoryManager.GetRepository("NonExistingRepository"));
 
 		}
 
 		[Test]
 		public void GetRepository_GetDefaultInstanceTwice_ReturnsSameInstance() {
-			UserRepositoryManager userRepositoryManager = GetUserRepositoryManager();
+			var userRepositoryManager = GetUserRepositoryManager();
 			var repository1 = userRepositoryManager.GetRepository();
 			var repository2 = userRepositoryManager.GetRepository();
 			Assert.AreSame(repository1, repository2);
@@ -94,7 +94,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		}
 
 		private static IConfig GetConfig() {
-			XmlDocument xmlDocument = new XmlDocument();
+			var xmlDocument = new XmlDocument();
 			xmlDocument.LoadXml(string.Format(testConfig));
 			return ConfigFactory.Create("testConfig", xmlDocument.DocumentElement);
 		}

@@ -1,4 +1,28 @@
-﻿using System;
+﻿#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,7 +32,6 @@ using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
 	public class UserRepositoryManager : IUserRepositoryManager {
-
 		private readonly IList<IUserRepository> userRepositories = new List<IUserRepository>();
 
 		private const string UsersRepositorySection = "userRepositories/userRepository";
@@ -26,15 +49,18 @@ namespace nJupiter.DataAccess.Users {
 		private IConfig Config {
 			get {
 				if(config == null) {
-					lock(this.padlock) {
-						if(config == null) {
-							config = this.configRepository.GetConfig();
-							config.Discarded += this.ConfigDiscarded;
-						}
+					lock(padlock) {
+						config = config ?? GetConfig();
 					}
 				}
 				return config;
 			}
+		}
+
+		private IConfig GetConfig() {
+			var c = configRepository.GetConfig();
+			c.Discarded += ConfigDiscarded;
+			return c;
 		}
 
 		private void ConfigDiscarded(object sender, EventArgs e) {
@@ -55,7 +81,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public IUserRepository GetRepository() {
-			return this.GetRepositoryFromSection(UsersRepositoryDefaultSection);
+			return GetRepositoryFromSection(UsersRepositoryDefaultSection);
 		}
 
 		public IUserRepository GetRepository(string name) {
@@ -63,16 +89,14 @@ namespace nJupiter.DataAccess.Users {
 			if(!string.IsNullOrEmpty(name)) {
 				section = string.Format(CultureInfo.InvariantCulture, UsersRepositorySectionFormat, name);
 			}
-			return this.GetRepositoryFromSection(section);
-		
-		
+			return GetRepositoryFromSection(section);
 		}
 
 		private IUserRepository GetRepositoryFromSection(string section) {
 			try {
-				string name = this.Config.GetAttribute(section, NameAttribute);
-				return this.GetRepositoryFromCacheOrCreate(section, name);
-			}catch(Exception ex) {
+				string name = Config.GetAttribute(section, NameAttribute);
+				return GetRepositoryFromCacheOrCreate(section, name);
+			} catch(Exception ex) {
 				throw new ApplicationException(string.Format("Error while creating UserRepository with section '{0}'", section), ex);
 			}
 		}
@@ -80,11 +104,11 @@ namespace nJupiter.DataAccess.Users {
 		private IUserRepository GetRepositoryFromCacheOrCreate(string section, string name) {
 			var userRepository = GetRepositoryFromCache(name);
 			if(userRepository == null) {
-				lock(this.padlock) {
+				lock(padlock) {
 					userRepository = GetRepositoryFromCache(name);
 					if(userRepository == null) {
-						userRepository = this.CreateRepository(name, section);
-						this.userRepositories.Add(userRepository);
+						userRepository = CreateRepository(name, section);
+						userRepositories.Add(userRepository);
 					}
 				}
 			}
@@ -92,12 +116,12 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		private IUserRepository GetRepositoryFromCache(string name) {
-			return this.userRepositories.FirstOrDefault(userProvider => userProvider.Name == name);
+			return userRepositories.FirstOrDefault(userProvider => userProvider.Name == name);
 		}
 
 		private IUserRepository CreateRepository(string name, string section) {
-			var typeName = this.Config.GetAttribute(section, QualifiedNameAttribute);
-			var repositoryConfig = this.Config.GetConfigSection(string.Format("{0}/settings", section));
+			var typeName = Config.GetAttribute(section, QualifiedNameAttribute);
+			var repositoryConfig = Config.GetConfigSection(string.Format("{0}/settings", section));
 			var predifinedNames = PredefinedNamesFactory.Create(repositoryConfig);
 			var cache = GetUserCache(repositoryConfig);
 
@@ -128,7 +152,5 @@ namespace nJupiter.DataAccess.Users {
 			// ReSharper restore EmptyConstructor
 			internal static readonly IUserRepositoryManager instance = new UserRepositoryManager(ConfigRepository.Instance);
 		}
-
-
 	}
 }

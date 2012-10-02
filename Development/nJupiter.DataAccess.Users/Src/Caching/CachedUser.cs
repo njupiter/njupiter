@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -22,11 +22,16 @@
 // 
 #endregion
 
-using System.Collections.Generic;
+using System;
 
-namespace nJupiter.DataAccess.Users {
-	public interface IPropertyCollection : IEnumerable<IProperty>, ILockable<IPropertyCollection> {
-		ContextSchema Schema { get; }
-		int Count { get; }
+namespace nJupiter.DataAccess.Users.Caching {
+	internal struct CachedUser {
+		public readonly IUser User;
+		public readonly DateTime DateCreated;
+
+		public CachedUser(IUser user) {
+			User = user;
+			DateCreated = DateTime.Now;
+		}
 	}
 }

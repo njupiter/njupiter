@@ -2,7 +2,6 @@
 
 using FakeItEasy;
 
-using nJupiter.DataAccess.Users;
 using nJupiter.DataAccess.Users.Web;
 
 using NUnit.Framework;

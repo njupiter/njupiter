@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -22,11 +22,35 @@
 // 
 #endregion
 
-using System.Collections.Generic;
+using System;
 
-namespace nJupiter.DataAccess.Users {
-	public interface IPropertyCollection : IEnumerable<IProperty>, ILockable<IPropertyCollection> {
-		ContextSchema Schema { get; }
-		int Count { get; }
+namespace nJupiter.DataAccess.Users.Caching {
+	internal struct CacheMapId {
+		private const int InitialPrime = 17;
+		private const int MultiplierPrime = 37;
+
+		private readonly string userName;
+		private readonly string domain;
+
+		public CacheMapId(string userName, string domain) {
+			this.userName = userName;
+			this.domain = domain ?? String.Empty;
+		}
+
+		public override bool Equals(object obj) {
+			var map = (CacheMapId)obj;
+			if(map.userName == null) {
+				return false;
+			}
+			return map.userName.Equals(userName) && map.domain.Equals(domain);
+		}
+
+		public override int GetHashCode() {
+			// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
+			int hash = InitialPrime;
+			hash = (MultiplierPrime * hash) + userName.GetHashCode();
+			hash = (MultiplierPrime * hash) + domain.GetHashCode();
+			return hash;
+		}
 	}
 }

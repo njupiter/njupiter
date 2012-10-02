@@ -1,25 +1,25 @@
 #region Copyright & License
-/*
-	Copyright (c) 2005-2011 nJupiter
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
 #endregion
 
 using System;
@@ -30,9 +30,7 @@ using nJupiter.Configuration;
 using nJupiter.DataAccess.Users.Caching;
 
 namespace nJupiter.DataAccess.Users {
-	
 	public abstract class UserRepositoryBase : IUserRepository {
-
 		protected readonly string DefaultDomain = string.Empty;
 
 		private readonly string name;
@@ -86,7 +84,7 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public IUser GetUserByUserName(string userName, bool loadAllContexts) {
-			return this.GetUserByUserName(userName, this.DefaultDomain, loadAllContexts);
+			return GetUserByUserName(userName, DefaultDomain, loadAllContexts);
 		}
 
 		public IUser CreateUserInstance(string userName) {
@@ -94,55 +92,56 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public IUser CreateUserInstance(string userName, bool loadAllContexts) {
-			return CreateUserInstance(userName, this.DefaultDomain, loadAllContexts);
+			return CreateUserInstance(userName, DefaultDomain, loadAllContexts);
 		}
 
 		public virtual IUser GetUserById(string userId, bool loadAllContexts) {
-			var user = this.GetUserById(userId);
-			if(loadAllContexts){
-				this.LoadAndAttachAllContextsForUser(user);
+			var user = GetUserById(userId);
+			if(loadAllContexts) {
+				LoadAndAttachAllContextsForUser(user);
 			}
 			return user;
 		}
 
 		public virtual IUser GetUserByUserName(string userName, string domain, bool loadAllContexts) {
-			var user = this.GetUserByUserName(userName, domain);
-			if(loadAllContexts){
-				this.LoadAndAttachAllContextsForUser(user);
+			var user = GetUserByUserName(userName, domain);
+			if(loadAllContexts) {
+				LoadAndAttachAllContextsForUser(user);
 			}
 			return user;
 		}
 
-		public virtual IList<IUser> GetUsersBySearchCriteria(IEnumerable<SearchCriteria> searchCriteriaCollection, bool loadAllContexts) {
+		public virtual IList<IUser> GetUsersBySearchCriteria(IEnumerable<SearchCriteria> searchCriteriaCollection,
+		                                                     bool loadAllContexts) {
 			var users = GetUsersBySearchCriteria(searchCriteriaCollection);
-			if(loadAllContexts){
-				this.LoadAndAttachAllContextsForUsers(users);
+			if(loadAllContexts) {
+				LoadAndAttachAllContextsForUsers(users);
 			}
 			return users;
 		}
 
 		public virtual IList<IUser> GetUsersByDomain(string domain, bool loadAllContexts) {
 			var users = GetUsersByDomain(domain);
-			if(loadAllContexts){
-				this.LoadAndAttachAllContextsForUsers(users);
+			if(loadAllContexts) {
+				LoadAndAttachAllContextsForUsers(users);
 			}
 			return users;
 		}
 
 		public virtual IList<IUser> GetAllUsers(int pageIndex, int pageSize, out int totalRecords) {
-			var users = this.GetUsersBySearchCriteria((SearchCriteria)null);
+			var users = GetUsersBySearchCriteria((SearchCriteria)null);
 			totalRecords = users.Count;
 			var pagedUsers = new List<IUser>();
-			for(int i = pageIndex * pageSize; (i < ((pageIndex * pageSize) + pageSize)) && (i < users.Count); i++) {
+			for(var i = pageIndex * pageSize; (i < ((pageIndex * pageSize) + pageSize)) && (i < users.Count); i++) {
 				pagedUsers.Add(users[i]);
 			}
 			return pagedUsers;
 		}
 
 		public virtual IUser CreateUserInstance(string userName, string domain, bool loadAllContexts) {
-			var user = this.CreateUserInstance(userName, domain);
-			if(loadAllContexts){
-				this.LoadAndAttachAllContextsForUser(user);
+			var user = CreateUserInstance(userName, domain);
+			if(loadAllContexts) {
+				LoadAndAttachAllContextsForUser(user);
 			}
 			return user;
 		}
@@ -157,17 +156,17 @@ namespace nJupiter.DataAccess.Users {
 
 		public virtual IList<IUser> GetUsersBySearchCriteria(SearchCriteria searchCriteria, bool loadAllContexts) {
 			var users = GetUsersBySearchCriteria(searchCriteria);
-			if(loadAllContexts){
-				this.LoadAndAttachAllContextsForUsers(users);
+			if(loadAllContexts) {
+				LoadAndAttachAllContextsForUsers(users);
 			}
 			return users;
 		}
 
 		protected void LoadAndAttachAllContextsForUser(IUser user) {
-			if(user != null){
-				foreach(var context in this.GetContexts()) {
-					if(!user.Properties.AttachedContexts.Contains(context)){
-						var properties = this.GetProperties(user, context);
+			if(user != null) {
+				foreach(var context in GetContexts()) {
+					if(!user.Properties.AttachedContexts.Contains(context)) {
+						var properties = GetProperties(user, context);
 						user.Properties.AttachProperties(properties);
 					}
 				}
@@ -176,9 +175,8 @@ namespace nJupiter.DataAccess.Users {
 
 		protected void LoadAndAttachAllContextsForUsers(IList<IUser> users) {
 			foreach(var user in users) {
-				this.LoadAndAttachAllContextsForUser(user);
+				LoadAndAttachAllContextsForUser(user);
 			}
 		}
-
 	}
 }

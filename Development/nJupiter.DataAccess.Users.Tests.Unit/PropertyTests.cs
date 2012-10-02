@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 
-using nJupiter.DataAccess.Users;
-
 using NUnit.Framework;
 
 namespace nJupiter.DataAccess.Users.Tests.Unit {
@@ -190,10 +188,10 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			}
 
 			class MyTypeConverter : TypeConverter {
-				public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType) {
+				public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
 					return true;
 				}
-				public override bool CanConvertTo(ITypeDescriptorContext context, System.Type destinationType) {
+				public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
 					return true;
 				}
 
@@ -205,7 +203,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 					return base.ConvertFrom(context, culture, value);
 				}
 
-				public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, System.Type destinationType) {
+				public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
 					var dummy = value as MyDummyClass1;
 					if(dummy != null) {
 						return dummy.MyString;

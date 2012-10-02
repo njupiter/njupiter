@@ -1,4 +1,4 @@
-﻿#region Copyright & License
+#region Copyright & License
 // 
 // 	Copyright (c) 2005-2012 nJupiter
 // 
@@ -22,11 +22,32 @@
 // 
 #endregion
 
-using System.Collections.Generic;
+using System.Collections;
 
-namespace nJupiter.DataAccess.Users {
-	public interface IPropertyCollection : IEnumerable<IProperty>, ILockable<IPropertyCollection> {
-		ContextSchema Schema { get; }
-		int Count { get; }
+namespace nJupiter.DataAccess.Users.Caching {
+	internal sealed class CachedUserComparer : IComparer {
+		private static readonly CachedUserComparer instance = new CachedUserComparer();
+
+		private CachedUserComparer() {}
+
+		public static CachedUserComparer Instance { get { return instance; } }
+
+		public int Compare(object x, object y) {
+			var xEntry = (DictionaryEntry)x;
+			var yEntry = (DictionaryEntry)y;
+
+			if(xEntry.Value == null || yEntry.Value == null) {
+				return 0;
+			}
+
+			var xCachedUser = (CachedUser)xEntry.Value;
+			var yCachedUser = (CachedUser)yEntry.Value;
+
+			if(xCachedUser.User == null || yCachedUser.User == null) {
+				return 0;
+			}
+
+			return xCachedUser.DateCreated.CompareTo(yCachedUser.DateCreated);
+		}
 	}
 }

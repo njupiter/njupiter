@@ -4,8 +4,6 @@ using System.Web.Security;
 
 using FakeItEasy;
 
-using nJupiter.DataAccess.Users;
-
 using NUnit.Framework;
 
 using MembershipProvider = nJupiter.DataAccess.Users.Web.MembershipProvider;

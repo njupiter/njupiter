@@ -2,8 +2,6 @@
 
 using FakeItEasy;
 
-using nJupiter.DataAccess.Users;
-
 using NUnit.Framework;
 
 namespace nJupiter.DataAccess.Users.Tests.Unit {
@@ -93,9 +91,9 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		public void GetAllUsers_PageUserCollection_ReturnTheCorrectUusers() {
 			var innerProvider = A.Fake<IUserRepository>();
 			var users = A.CollectionOfFake<IUser>(256);
-			int i = 1;
+			var i = 1;
 			foreach(var user in users) {
-				IUser u = user;
+				var u = user;
 				A.CallTo(() => u.Id).Returns(i++.ToString());
 			}
 			A.CallTo(() => innerProvider.GetUsersBySearchCriteria(A<IEnumerable<SearchCriteria>>.That.IsEmpty())).Returns(users);
@@ -112,9 +110,9 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 		public void GetAllUsers_PageUserCollectionInEnd_ReturnTheCorrectUusers() {
 			var innerProvider = A.Fake<IUserRepository>();
 			var users = A.CollectionOfFake<IUser>(256);
-			int i = 1;
+			var i = 1;
 			foreach(var user in users) {
-				IUser u = user;
+				var u = user;
 				A.CallTo(() => u.Id).Returns(i++.ToString());
 			}
 			A.CallTo(() => innerProvider.GetUsersBySearchCriteria(A<IEnumerable<SearchCriteria>>.That.IsEmpty())).Returns(users);

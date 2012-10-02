@@ -23,7 +23,7 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			var profileProvider = GetProfileProvider(userRepository);
 			var context  = new SettingsContext();
 			var settings = new SettingsPropertyCollection();
-			SettingsProperty settingsProperty = GetSettingsProperty<string>("name");
+			var settingsProperty = GetSettingsProperty<string>("name");
 			settings.Add(settingsProperty);
 			context.Add("UserName", "njupiter\\username");
 			A.CallTo(() => userRepository.GetUserByUserName("username", "njupiter")).Returns(null);
@@ -44,10 +44,10 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 			A.CallTo(() => clonedUser.Properties.GetProperty("propertyName", Context.DefaultContext)).Returns(genericproperty);
 			var profileProvider = GetProfileProvider(userRepository);
 			var settings = new SettingsPropertyValueCollection();
-			SettingsPropertyValue settingProperyValue = GetSettingProperyValue("propertyName", "propertyValue");
+			var settingProperyValue = GetSettingProperyValue("propertyName", "propertyValue");
 			settings.Add(settingProperyValue);
 
-			SettingsContext context = GetContext("username");
+			var context = GetContext("username");
 
 			profileProvider.SetPropertyValues(context, settings);
 
@@ -65,10 +65,10 @@ namespace nJupiter.DataAccess.Users.Tests.Unit {
 
 			var profileProvider = GetProfileProvider(userRepository);
 			var settings = new SettingsPropertyValueCollection();
-			SettingsPropertyValue settingProperyValue = GetSettingProperyValue("propertyName", "propertyValue");
+			var settingProperyValue = GetSettingProperyValue("propertyName", "propertyValue");
 			settings.Add(settingProperyValue);
 
-			SettingsContext context = GetContext("username");
+			var context = GetContext("username");
 
 			Assert.Throws<ProviderException>(() => profileProvider.SetPropertyValues(context, settings));
 		}

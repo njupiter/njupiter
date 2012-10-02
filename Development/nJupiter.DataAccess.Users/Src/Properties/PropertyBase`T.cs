@@ -1,32 +1,31 @@
 #region Copyright & License
-/*
-	Copyright (c) 2005-2011 nJupiter
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
 #endregion
 
 using System;
 using System.Data;
 
 namespace nJupiter.DataAccess.Users {
-	
 	[Serializable]
 	public abstract class PropertyBase<T> : IProperty {
 		private readonly string name;
@@ -41,16 +40,16 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public virtual bool IsEmpty() {
-			return Equals(value, this.DefaultValue) || (value is string && value == null);
+			return Equals(value, DefaultValue) || (value is string && value == null);
 		}
 
 		public abstract string ToSerializedString();
 
 		public abstract T DeserializePropertyValue(string value);
 
-		public string Name { get { return this.name; } }
+		public string Name { get { return name; } }
 		public Type Type { get { return typeof(T); } }
-		public IContext Context { get { return this.context; } }
+		public IContext Context { get { return context; } }
 		protected virtual bool SetDirtyOnTouch { get { return false; } }
 		protected T ValueUntouched { get { return value; } }
 
@@ -64,54 +63,46 @@ namespace nJupiter.DataAccess.Users {
 			}
 		}
 
-		public bool IsDirty {
-			get {
-				return isDirty;
-			}
-			set {
-				isDirty = value;
-			}
-		}
+		public bool IsDirty { get { return isDirty; } set { isDirty = value; } }
 
 		public T Value {
 			get {
-				if(this.SetDirtyOnTouch) {
-					this.IsDirty = true;
+				if(SetDirtyOnTouch) {
+					IsDirty = true;
 				}
-				return this.value;
+				return value;
 			}
 			set {
 				if(isReadOnly) {
 					throw new ReadOnlyException();
 				}
 				if(CheckIfDirty(value)) {
-					this.IsDirty = true;
+					IsDirty = true;
 				}
-				if(this.IsDirty) {
+				if(IsDirty) {
 					this.value = value;
 				}
 			}
 		}
 
 		private bool CheckIfDirty(T v) {
-			if(this.SetDirtyOnTouch || !Equals(v, value)) {
+			if(SetDirtyOnTouch || !Equals(v, value)) {
 				return true;
 			}
 			return false;
 		}
 
-		
+		object IProperty.DefaultValue { get { return DefaultValue; } }
+		object IProperty.Value { get { return Value; } set { Value = (T)value; } }
 
-		object IProperty.DefaultValue { get { return this.DefaultValue; } }		
-		object IProperty.Value { get { return Value; }  set { this.Value = (T)value; } }
 		object IProperty.DeserializePropertyValue(string v) {
-			return this.DeserializePropertyValue(v);
+			return DeserializePropertyValue(v);
 		}
 
 		public IProperty CreateWritable() {
-			var newProperty = (PropertyBase<T>)this.MemberwiseClone();
-			if(!this.Type.IsPrimitive){
-				newProperty.value = DeserializePropertyValue(this.ToSerializedString());
+			var newProperty = (PropertyBase<T>)MemberwiseClone();
+			if(!Type.IsPrimitive) {
+				newProperty.value = DeserializePropertyValue(ToSerializedString());
 			}
 			newProperty.isReadOnly = false;
 			newProperty.isDirty = false;

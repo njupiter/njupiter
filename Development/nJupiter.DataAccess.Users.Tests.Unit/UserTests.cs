@@ -2,8 +2,6 @@
 
 using FakeItEasy;
 
-using nJupiter.DataAccess.Users;
-
 using NUnit.Framework;
 
 namespace nJupiter.DataAccess.Users.Tests.Unit {

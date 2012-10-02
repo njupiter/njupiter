@@ -1,8 +1,32 @@
-﻿using System;
+﻿#region Copyright & License
+// 
+// 	Copyright (c) 2005-2012 nJupiter
+// 
+// 	Permission is hereby granted, free of charge, to any person obtaining a copy
+// 	of this software and associated documentation files (the "Software"), to deal
+// 	in the Software without restriction, including without limitation the rights
+// 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// 	copies of the Software, and to permit persons to whom the Software is
+// 	furnished to do so, subject to the following conditions:
+// 
+// 	The above copyright notice and this permission notice shall be included in
+// 	all copies or substantial portions of the Software.
+// 
+// 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// 	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// 	THE SOFTWARE.
+// 
+#endregion
+
+using System;
 
 namespace nJupiter.DataAccess.Users {
 	[Serializable]
-	public sealed class PredefinedNames : IPredefinedNames {
+	public class PredefinedNames : IPredefinedNames {
 		private readonly string userName;
 		private readonly string fullName;
 		private readonly string firstName;
@@ -72,76 +96,75 @@ namespace nJupiter.DataAccess.Users {
 			string password,
 			string passwordSalt,
 			IPredefinedNames contextNames) {
-			
-			this.userName					= username;
-			this.fullName					= fullname;
-			this.firstName					= firstname;
-			this.lastName					= lastname;
-			this.description				= description;
-			this.email						= email;
-			this.homePage					= homepage;
-			this.streetAddress				= streetaddress;
-			this.company					= company;
-			this.department					= department;
-			this.city						= city;
-			this.telephone					= telephone;
-			this.fax						= fax;
-			this.homeTelephone				= hometelephone;
-			this.mobileTelephone			= mobiletelephone;
-			this.postOfficeBox				= postofficebox;
-			this.postalCode					= postalcode;
-			this.country					= country;
-			this.title						= title;
-			this.active						= active;
-			this.passwordQuestion			= passwordQuestion;
-			this.passwordAnswer				= passwordAnswer;
-			this.lastActivityDate			= lastActivityDate;
-			this.creationDate				= creationDate;
-			this.lastLockoutDate			= lastLockoutDate;
-			this.lastLoginDate				= lastLoginDate;
-			this.lastPasswordChangedDate	= lastPasswordChangedDate;
-			this.locked						= locked;
-			this.lastUpdatedDate			= lastUpdatedDate;
-			this.isAnonymous				= isAnonymous;
-			this.password					= password;
-			this.passwordSalt				= passwordSalt;
-			this.contextNames				= contextNames;
+			userName = username;
+			fullName = fullname;
+			firstName = firstname;
+			lastName = lastname;
+			this.description = description;
+			this.email = email;
+			homePage = homepage;
+			streetAddress = streetaddress;
+			this.company = company;
+			this.department = department;
+			this.city = city;
+			this.telephone = telephone;
+			this.fax = fax;
+			homeTelephone = hometelephone;
+			mobileTelephone = mobiletelephone;
+			postOfficeBox = postofficebox;
+			postalCode = postalcode;
+			this.country = country;
+			this.title = title;
+			this.active = active;
+			this.passwordQuestion = passwordQuestion;
+			this.passwordAnswer = passwordAnswer;
+			this.lastActivityDate = lastActivityDate;
+			this.creationDate = creationDate;
+			this.lastLockoutDate = lastLockoutDate;
+			this.lastLoginDate = lastLoginDate;
+			this.lastPasswordChangedDate = lastPasswordChangedDate;
+			this.locked = locked;
+			this.lastUpdatedDate = lastUpdatedDate;
+			this.isAnonymous = isAnonymous;
+			this.password = password;
+			this.passwordSalt = passwordSalt;
+			this.contextNames = contextNames;
 		}
 
-		public string		UserName				{ get { return this.userName;					} }
-		public string		FullName				{ get { return this.fullName;					} }
-		public string		FirstName				{ get { return this.firstName;					} }
-		public string		LastName				{ get { return this.lastName;					} }
-		public string		Description				{ get { return this.description;				} }
-		public string		Email					{ get { return this.email;						} }
-		public string		HomePage				{ get { return this.homePage;					} }
-		public string		StreetAddress			{ get { return this.streetAddress;				} }
-		public string		Company					{ get { return this.company;					} }
-		public string		Department				{ get { return this.department;					} }
-		public string		City					{ get { return this.city;						} }
-		public string		Telephone				{ get { return this.telephone;					} }
-		public string		Fax						{ get { return this.fax;						} }
-		public string		HomeTelephone			{ get { return this.homeTelephone;				} }
-		public string		MobileTelephone			{ get { return this.mobileTelephone;			} }
-		public string		PostOfficeBox			{ get { return this.postOfficeBox;				} }
-		public string		PostalCode				{ get { return this.postalCode;					} }
-		public string		Country					{ get { return this.country;					} }
-		public string		Title					{ get { return this.title;						} }
-		public string		Active					{ get { return this.active;						} }
-		public string		PasswordQuestion		{ get { return this.passwordQuestion;			} }
-		public string		PasswordAnswer			{ get { return this.passwordAnswer;				} }
-		public string		LastActivityDate		{ get { return this.lastActivityDate;			} }
-		public string		CreationDate			{ get { return this.creationDate;				} }
-		public string		LastLockoutDate			{ get { return this.lastLockoutDate;			} }
-		public string		LastLoginDate			{ get { return this.lastLoginDate;				} }
-		public string		LastPasswordChangedDate	{ get { return this.lastPasswordChangedDate;	} }
-		public string		Locked					{ get { return this.locked;						} }
-		public string		LastUpdatedDate			{ get { return this.lastUpdatedDate;			} }
-		public string		IsAnonymous				{ get { return this.isAnonymous;				} }
-		public string		Password				{ get { return this.password;					} }
-		public string		PasswordSalt			{ get { return this.passwordSalt;				} }
-		
-		public IPredefinedNames	ContextNames		{ get { return this.contextNames;				} }
+		public string UserName { get { return userName; } }
+		public string FullName { get { return fullName; } }
+		public string FirstName { get { return firstName; } }
+		public string LastName { get { return lastName; } }
+		public string Description { get { return description; } }
+		public string Email { get { return email; } }
+		public string HomePage { get { return homePage; } }
+		public string StreetAddress { get { return streetAddress; } }
+		public string Company { get { return company; } }
+		public string Department { get { return department; } }
+		public string City { get { return city; } }
+		public string Telephone { get { return telephone; } }
+		public string Fax { get { return fax; } }
+		public string HomeTelephone { get { return homeTelephone; } }
+		public string MobileTelephone { get { return mobileTelephone; } }
+		public string PostOfficeBox { get { return postOfficeBox; } }
+		public string PostalCode { get { return postalCode; } }
+		public string Country { get { return country; } }
+		public string Title { get { return title; } }
+		public string Active { get { return active; } }
+		public string PasswordQuestion { get { return passwordQuestion; } }
+		public string PasswordAnswer { get { return passwordAnswer; } }
+		public string LastActivityDate { get { return lastActivityDate; } }
+		public string CreationDate { get { return creationDate; } }
+		public string LastLockoutDate { get { return lastLockoutDate; } }
+		public string LastLoginDate { get { return lastLoginDate; } }
+		public string LastPasswordChangedDate { get { return lastPasswordChangedDate; } }
+		public string Locked { get { return locked; } }
+		public string LastUpdatedDate { get { return lastUpdatedDate; } }
+		public string IsAnonymous { get { return isAnonymous; } }
+		public string Password { get { return password; } }
+		public string PasswordSalt { get { return passwordSalt; } }
+
+		public IPredefinedNames ContextNames { get { return contextNames; } }
 
 		public string GetName(string name) {
 			var propertyInfo = typeof(IPredefinedNames).GetProperty(name);
@@ -156,104 +179,104 @@ namespace nJupiter.DataAccess.Users {
 		}
 
 		public string GetContextName(string name) {
-			if(this.ContextNames == null || name == null) {
+			if(ContextNames == null || name == null) {
 				return Context.DefaultContext.Name;
 			}
-			if(AreEqual(name, this.UserName)) {
-				return this.ContextNames.UserName;
+			if(AreEqual(name, UserName)) {
+				return ContextNames.UserName;
 			}
-			if(AreEqual(name, this.FullName)) {
-				return this.ContextNames.FullName;
+			if(AreEqual(name, FullName)) {
+				return ContextNames.FullName;
 			}
-			if(AreEqual(name, this.FirstName)) {
-				return this.ContextNames.FirstName;
+			if(AreEqual(name, FirstName)) {
+				return ContextNames.FirstName;
 			}
-			if(AreEqual(name, this.LastName)) {
-				return this.ContextNames.LastName;
+			if(AreEqual(name, LastName)) {
+				return ContextNames.LastName;
 			}
-			if(AreEqual(name, this.Description)) {
-				return this.ContextNames.Description;
+			if(AreEqual(name, Description)) {
+				return ContextNames.Description;
 			}
-			if(AreEqual(name, this.Email)) {
-				return this.ContextNames.Email;
+			if(AreEqual(name, Email)) {
+				return ContextNames.Email;
 			}
-			if(AreEqual(name, this.HomePage)) {
-				return this.ContextNames.HomePage;
+			if(AreEqual(name, HomePage)) {
+				return ContextNames.HomePage;
 			}
-			if(AreEqual(name, this.StreetAddress)) {
-				return this.ContextNames.StreetAddress;
+			if(AreEqual(name, StreetAddress)) {
+				return ContextNames.StreetAddress;
 			}
-			if(AreEqual(name, this.Company)) {
-				return this.ContextNames.Company;
+			if(AreEqual(name, Company)) {
+				return ContextNames.Company;
 			}
-			if(AreEqual(name, this.Department)) {
-				return this.ContextNames.Department;
+			if(AreEqual(name, Department)) {
+				return ContextNames.Department;
 			}
-			if(AreEqual(name, this.City)) {
-				return this.ContextNames.City;
+			if(AreEqual(name, City)) {
+				return ContextNames.City;
 			}
-			if(AreEqual(name, this.Telephone)) {
-				return this.ContextNames.Telephone;
+			if(AreEqual(name, Telephone)) {
+				return ContextNames.Telephone;
 			}
-			if(AreEqual(name, this.Fax)) {
-				return this.ContextNames.Fax;
+			if(AreEqual(name, Fax)) {
+				return ContextNames.Fax;
 			}
-			if(AreEqual(name, this.HomeTelephone)) {
-				return this.ContextNames.HomeTelephone;
+			if(AreEqual(name, HomeTelephone)) {
+				return ContextNames.HomeTelephone;
 			}
-			if(AreEqual(name, this.MobileTelephone)) {
-				return this.ContextNames.MobileTelephone;
+			if(AreEqual(name, MobileTelephone)) {
+				return ContextNames.MobileTelephone;
 			}
-			if(AreEqual(name, this.PostOfficeBox)) {
-				return this.ContextNames.PostOfficeBox;
+			if(AreEqual(name, PostOfficeBox)) {
+				return ContextNames.PostOfficeBox;
 			}
-			if(AreEqual(name, this.PostalCode)) {
-				return this.ContextNames.PostalCode;
+			if(AreEqual(name, PostalCode)) {
+				return ContextNames.PostalCode;
 			}
-			if(AreEqual(name, this.Country)) {
-				return this.ContextNames.Country;
+			if(AreEqual(name, Country)) {
+				return ContextNames.Country;
 			}
-			if(AreEqual(name, this.Title)) {
-				return this.ContextNames.Title;
+			if(AreEqual(name, Title)) {
+				return ContextNames.Title;
 			}
-			if(AreEqual(name, this.Active)) {
-				return this.ContextNames.Active;
+			if(AreEqual(name, Active)) {
+				return ContextNames.Active;
 			}
-			if(AreEqual(name, this.PasswordQuestion)) {
-				return this.ContextNames.PasswordQuestion;
+			if(AreEqual(name, PasswordQuestion)) {
+				return ContextNames.PasswordQuestion;
 			}
-			if(AreEqual(name, this.PasswordAnswer)) {
-				return this.ContextNames.PasswordAnswer;
+			if(AreEqual(name, PasswordAnswer)) {
+				return ContextNames.PasswordAnswer;
 			}
-			if(AreEqual(name, this.LastActivityDate)) {
-				return this.ContextNames.LastActivityDate;
+			if(AreEqual(name, LastActivityDate)) {
+				return ContextNames.LastActivityDate;
 			}
-			if(AreEqual(name, this.CreationDate)) {
-				return this.ContextNames.CreationDate;
+			if(AreEqual(name, CreationDate)) {
+				return ContextNames.CreationDate;
 			}
-			if(AreEqual(name, this.LastLockoutDate)) {
-				return this.ContextNames.LastLockoutDate;
+			if(AreEqual(name, LastLockoutDate)) {
+				return ContextNames.LastLockoutDate;
 			}
-			if(AreEqual(name, this.LastLoginDate)) {
-				return this.ContextNames.LastLoginDate;
+			if(AreEqual(name, LastLoginDate)) {
+				return ContextNames.LastLoginDate;
 			}
-			if(AreEqual(name, this.LastPasswordChangedDate)) {
-				return this.ContextNames.LastPasswordChangedDate;
+			if(AreEqual(name, LastPasswordChangedDate)) {
+				return ContextNames.LastPasswordChangedDate;
 			}
-			if(AreEqual(name, this.Locked)) {
-				return this.ContextNames.Locked;
+			if(AreEqual(name, Locked)) {
+				return ContextNames.Locked;
 			}
-			if(AreEqual(name, this.Password)) {
-				return this.ContextNames.Password;
+			if(AreEqual(name, Password)) {
+				return ContextNames.Password;
 			}
-			if(AreEqual(name, this.PasswordSalt)) {
-				return this.ContextNames.PasswordSalt;
+			if(AreEqual(name, PasswordSalt)) {
+				return ContextNames.PasswordSalt;
 			}
-			if(AreEqual(name, this.LastUpdatedDate)) {
-				return this.ContextNames.LastUpdatedDate;
+			if(AreEqual(name, LastUpdatedDate)) {
+				return ContextNames.LastUpdatedDate;
 			}
-			if(AreEqual(name, this.IsAnonymous)) {
-				return this.ContextNames.IsAnonymous;
+			if(AreEqual(name, IsAnonymous)) {
+				return ContextNames.IsAnonymous;
 			}
 			return Context.DefaultContext.Name;
 		}

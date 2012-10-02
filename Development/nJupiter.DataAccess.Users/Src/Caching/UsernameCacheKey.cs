@@ -24,41 +24,41 @@
 
 using System;
 
-namespace nJupiter.DataAccess.Users {
-	[Serializable]
-	public class PropertyDefinition {
-		private const int InitialPrime = 17;
-		private const int MultiplierPrime = 37;
-		private readonly string propertyName;
-		private readonly Type type;
+namespace nJupiter.DataAccess.Users.Caching {
+	internal struct UsernameCacheKey {
+		private readonly string userProvider;
+		private readonly string userName;
+		private readonly string domain;
+		private readonly int hash;
+		private readonly string cacheKey;
 
-		public PropertyDefinition(string propertyName, Type propertyType) {
-			if(propertyName == null) {
-				throw new ArgumentNullException("propertyName");
-			}
-			if(propertyType == null) {
-				throw new ArgumentNullException("propertyType");
-			}
-			this.propertyName = propertyName;
-			type = propertyType;
-		}
+		public UsernameCacheKey(string userProvider, string userName, string domain) {
+			this.userName = userName;
+			this.domain = domain ?? String.Empty;
+			this.userProvider = userProvider;
 
-		public string PropertyName { get { return propertyName; } }
-		public Type PropertyType { get { return type; } }
+			// Calculate a unique hash that will match all id:s with the same user name and domain
+			var result = 17;
+			result = (37 * result) + this.userName.GetHashCode();
+			result = (37 * result) + this.domain.GetHashCode();
+			result = (37 * result) + this.userProvider.GetHashCode();
 
-		public override int GetHashCode() {
-			// Refer to Effective Java 1st ed page 34 for an good explanation of this hash code implementation
-			int hash = InitialPrime;
-			hash = (MultiplierPrime * hash) + propertyName.GetHashCode();
-			hash = (MultiplierPrime * hash) + type.GetHashCode();
-			return hash;
+			hash = result;
+			cacheKey = String.Format("nJupiter.DataAccess.Users.userRepository:{0}:UsernameCacheKey:{1}", this.userProvider, hash);
 		}
 
 		public override bool Equals(object obj) {
-			var propertyDefinition = obj as PropertyDefinition;
-			return propertyDefinition != null &&
-			       propertyDefinition.PropertyName.Equals(PropertyName) &&
-			       propertyDefinition.PropertyType.Equals(PropertyType);
+			var map = (UsernameCacheKey)obj;
+			if(map.userName == null) {
+				return false;
+			}
+			return map.userName.Equals(userName) && map.domain.Equals(domain) && map.userProvider.Equals(userProvider);
+		}
+
+		public string CacheKey { get { return cacheKey; } }
+
+		public override int GetHashCode() {
+			return hash;
 		}
 	}
 }
