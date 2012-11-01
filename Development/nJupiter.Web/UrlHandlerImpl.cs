@@ -114,6 +114,7 @@ namespace nJupiter.Web {
 			return AddQueryParams(url, queryStringCollection, false);
 		}
 
+		//TODO: does not handle query params with equal signs in them correctly
 		public NameValueCollection GetQueryString(string url) {
 			if(url == null) {
 				throw new ArgumentNullException("url");

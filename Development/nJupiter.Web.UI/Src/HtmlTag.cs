@@ -28,25 +28,36 @@ namespace nJupiter.Web.UI {
 		public const string Abbr			= "abbr";
 		public const string Acronym			= "acronym";
 		public const string Address			= "address";
+		public const string Applet			= "applet";
 		public const string Area			= "area";
+		public const string Article			= "article";
+		public const string Aside			= "aside";
+		public const string Audio			= "audio";
 		public const string B				= "b";
 		public const string Base			= "base";
 		public const string Basefont		= "basefont";
+		public const string Bdi				= "bdi";
 		public const string Bdo				= "bdo";
 		public const string Bgsound			= "bgsound";
 		public const string Big				= "big";
+		public const string Blink			= "blink";
 		public const string Blockquote		= "blockquote";
 		public const string Body			= "body";
 		public const string Br				= "br";
 		public const string Button			= "button";
+		public const string Canvas			= "canvas";
 		public const string Caption			= "caption";
 		public const string Center			= "center";
 		public const string Cite			= "cite";
 		public const string Code			= "code";
 		public const string Col				= "col";
 		public const string Colgroup		= "colgroup";
+		public const string Command			= "command";
+		public const string Data			= "data";
+		public const string Datalist		= "datalist";
 		public const string Dd				= "dd";
 		public const string Del				= "del";
+		public const string Details			= "details";
 		public const string Dfn				= "dfn";
 		public const string Dir				= "dir";
 		public const string Div				= "div";
@@ -55,6 +66,8 @@ namespace nJupiter.Web.UI {
 		public const string Em				= "em";
 		public const string Embed			= "embed";
 		public const string Fieldset		= "fieldset";
+		public const string Figcaption		= "figcaption";
+		public const string Figure			= "figure";
 		public const string Font			= "font";
 		public const string Footer			= "footer";
 		public const string Form			= "form";
@@ -67,6 +80,8 @@ namespace nJupiter.Web.UI {
 		public const string H5				= "h5";
 		public const string H6				= "h6";
 		public const string Head			= "head";
+		public const string Header			= "header";
+		public const string Hgroup			= "hgroup";
 		public const string Hr				= "hr";
 		public const string Html			= "html";
 		public const string I				= "i";
@@ -76,14 +91,19 @@ namespace nJupiter.Web.UI {
 		public const string Ins				= "ins";
 		public const string Isindex			= "isindex";
 		public const string Kbd				= "kbd";
+		public const string Keygen			= "keygen";
 		public const string Label			= "label";
 		public const string Legend			= "legend";
 		public const string Li				= "li";
 		public const string Link			= "link";
+		public const string Listing			= "listing";
 		public const string Map				= "map";
+		public const string Mark			= "mark";
 		public const string Marquee			= "marquee";
 		public const string Menu			= "menu";
 		public const string Meta			= "meta";
+		public const string Meter			= "meter";
+		public const string Nav				= "nav";
 		public const string Nobr			= "nobr";
 		public const string Noframes		= "noframes";
 		public const string Noscript		= "noscript";
@@ -91,22 +111,30 @@ namespace nJupiter.Web.UI {
 		public const string Ol				= "ol";
 		public const string Optgroup		= "optgroup";
 		public const string Option			= "option";
+		public const string Output			= "output";
 		public const string P				= "p";
 		public const string Param			= "param";
+		public const string Plaintext		= "plaintext";
 		public const string Pre				= "pre";
+		public const string Progress		= "progress";
 		public const string Q				= "q";
+		public const string Rp				= "rp";
 		public const string Rt				= "rt";
 		public const string Ruby			= "ruby";
 		public const string S				= "s";
 		public const string Samp			= "samp";
 		public const string Script			= "script";
+		public const string Section			= "section";
 		public const string Select			= "select";
 		public const string Small			= "small";
+		public const string Source			= "source";
+		public const string Spacer			= "spacer";
 		public const string Span			= "span";
 		public const string Strike			= "strike";
 		public const string Strong			= "strong";
 		public const string Style			= "style";
 		public const string Sub				= "sub";
+		public const string Summary			= "summary";
 		public const string Sup				= "sup";
 		public const string Table			= "table";
 		public const string Tbody			= "tbody";
@@ -118,42 +146,58 @@ namespace nJupiter.Web.UI {
 		public const string Time			= "time";
 		public const string Title			= "title";
 		public const string Tr				= "tr";
+		public const string Track			= "track";
 		public const string Tt				= "tt";
 		public const string U				= "u";
 		public const string Ul				= "ul";
-		public const string Unknown			= "unknown";
+		public const string Unknown			= "unknown"; //
 		public const string Var				= "var";
+		public const string Video			= "video";
 		public const string Wbr				= "wbr";
-		public const string Xml				= "xml";
+		public const string Xml				= "xml"; //
+		public const string Xmp				= "xmp";
 
 		public static bool IsBlockElement(string tagName){
 			if(tagName == null)
 				return false;
 			if(	tagName.Equals(Address) ||
+				tagName.Equals(Article) ||
+				tagName.Equals(Aside) ||
+				tagName.Equals(Audio) ||
 				tagName.Equals(Blockquote) ||
+				tagName.Equals(Canvas) ||
 				tagName.Equals(Center) ||
+				tagName.Equals(Dd) ||
 				tagName.Equals(Dir) ||
 				tagName.Equals(Div) ||
 				tagName.Equals(Dl) ||
 				tagName.Equals(Fieldset) ||
-				tagName.Equals(Form) ||
+				tagName.Equals(Figcaption) ||
+				tagName.Equals(Figure) ||
 				tagName.Equals(Footer) ||
+				tagName.Equals(Form) ||
 				tagName.Equals(H1) ||
 				tagName.Equals(H2) ||
 				tagName.Equals(H3) ||
 				tagName.Equals(H4) ||
 				tagName.Equals(H5) ||
 				tagName.Equals(H6) ||
+				tagName.Equals(Header) ||
+				tagName.Equals(Hgroup) ||
 				tagName.Equals(Hr) ||
 				tagName.Equals(Isindex) ||
 				tagName.Equals(Menu) ||
 				tagName.Equals(Noframes) ||
 				tagName.Equals(Noscript) ||
 				tagName.Equals(Ol) ||
+				tagName.Equals(Output) ||
 				tagName.Equals(P) ||
 				tagName.Equals(Pre) ||
+				tagName.Equals(Section) ||
 				tagName.Equals(Table) ||
-				tagName.Equals(Ul)){
+				tagName.Equals(Tfoot) ||
+				tagName.Equals(Ul) ||
+				tagName.Equals(Video)) {
 				return true;
 			}
 			return false;

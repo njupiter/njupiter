@@ -9,7 +9,13 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for V4.4.1.508 - 2012-10-01
+Changes for V4.4.3.512 - 2012-11-01
+===============================================================================
+
+ENH: HtmlTag class now contains all recognized tags
+
+===============================================================================
+Changes for V4.4.2.509 - 2012-10-01
 ===============================================================================
 
 BUG: Correct bug in ControlAdapterBase where using the exclude path feature and
