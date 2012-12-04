@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{8462D595-4A2D-46A5-848C-3D6A3A3CED04}</ProjectGuid>
+    <RootNamespace>nJupiter.Web.Syndication</RootNamespace>
+    <AssemblyName>nJupiter.Web.Syndication</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AtomWriter.cs" />
+    <Compile Include="Author.cs" />
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedImage.cs" />
+    <Compile Include="FeedItem.cs" />
+    <Compile Include="FeedReader.cs" />
+    <Compile Include="FeedType.cs" />
+    <Compile Include="FeedWriter.cs" />
+    <Compile Include="IAuthor.cs" />
+    <Compile Include="IFeed.cs" />
+    <Compile Include="IFeedImage.cs" />
+    <Compile Include="IFeedItem.cs" />
+    <Compile Include="RssWriter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
