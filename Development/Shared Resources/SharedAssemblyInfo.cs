@@ -12,8 +12,6 @@ using System.Security.Permissions;
 [assembly: AssemblyTrademark("\x00a9 2005-2011 nJupiter. Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php")]
 [assembly: AssemblyCulture("")]
 
-[assembly: SecurityTransparent]
-
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else

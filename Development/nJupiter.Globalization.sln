@@ -10,17 +10,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Globalization", "n
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release Signed|Any CPU = Release Signed|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug 2.0|Any CPU = Debug 2.0|Any CPU
+		Debug 4.0|Any CPU = Debug 4.0|Any CPU
+		Release 2.0|Any CPU = Release 2.0|Any CPU
+		Release 4.0|Any CPU = Release 4.0|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release Signed|Any CPU.ActiveCfg = Release Signed|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release Signed|Any CPU.Build.0 = Release Signed|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug 2.0|Any CPU.ActiveCfg = Debug 2.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug 2.0|Any CPU.Build.0 = Debug 2.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug 4.0|Any CPU.ActiveCfg = Debug 4.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Debug 4.0|Any CPU.Build.0 = Debug 4.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release 2.0|Any CPU.ActiveCfg = Release 2.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release 2.0|Any CPU.Build.0 = Release 2.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+		{37BF44F7-41D3-4343-B217-B98034DB1F2D}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

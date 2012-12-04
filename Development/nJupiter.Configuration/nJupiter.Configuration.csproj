@@ -1,36 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+    <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+    <DebugType Condition="'$(DebugType)'==''">full</DebugType>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
     <ProjectGuid>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>nJupiter.Configuration</AssemblyName>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
     <RootNamespace>nJupiter.Configuration</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DocumentationFile>..\..\Build\bin\Debug\nJupiter.Configuration.XML</DocumentationFile>
-    <NoWarn>1699 1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -77,9 +58,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FileConfigSourceWatcher.cs" />
-    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
-      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
-    </Content>
   </ItemGroup>
-  <Import Project="..\nJupiter.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

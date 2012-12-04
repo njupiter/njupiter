@@ -1,50 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+    <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+    <DebugType Condition="'$(DebugType)'==''">full</DebugType>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
     <ProjectGuid>{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>nJupiter.DataAccess.Users</AssemblyName>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
     <RootNamespace>nJupiter.DataAccess.Users</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <PublishUrl>http://localhost/nJupiter.DataAccess.Users/</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
@@ -59,6 +26,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -165,10 +133,12 @@
   <ItemGroup>
     <None Include="Src\packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
-      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
-    </Content>
-  </ItemGroup>
-  <Import Project="..\nJupiter.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

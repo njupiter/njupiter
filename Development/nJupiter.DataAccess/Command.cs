@@ -109,7 +109,9 @@ namespace nJupiter.DataAccess {
 		private void Dispose(bool disposing) {
 			if(!this.disposed) {
 				this.disposed = true;
-				dbCommand.Dispose();
+				if(dbCommand != null) {
+					dbCommand.Dispose();
+				}
 				if(disposing)
 					GC.SuppressFinalize(this);
 			}

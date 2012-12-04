@@ -1,36 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+    <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+    <DebugType Condition="'$(DebugType)'==''">full</DebugType>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
     <ProjectGuid>{DB95442D-CB1A-4C20-9650-4FEC39E3314D}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <AssemblyName>nJupiter.Web.UI</AssemblyName>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
     <RootNamespace>nJupiter.Web.UI</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Signed|AnyCPU' ">
-    <NoWarn>1699</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
@@ -173,9 +154,6 @@
       <DependentUpon>StreamImage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
-      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
-    </Content>
     <EmbeddedResource Include="Web\Scripts\swfobject2.js" />
     <EmbeddedResource Include="Web\Scripts\swfobject2.swf" />
     <EmbeddedResource Include="Web\Scripts\SwfObject.js" />
@@ -195,5 +173,12 @@
       <Name>nJupiter.Web</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\nJupiter.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
