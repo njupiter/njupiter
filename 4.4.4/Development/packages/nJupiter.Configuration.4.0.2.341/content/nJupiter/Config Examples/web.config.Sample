@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+	Here is an example how to configure nJupiter.Configuration in your web.config or app.config
+	Notice that this config only is necessary if you explictly want to specify in which folders
+	nJupiter.Configuration shall be looking for config files. Read more about it here:
+	http://code.google.com/p/njupiter/wiki/nJupiterConfiguration
+-->
+<configuration>
+    <configSections>
+		<section name="nJupiterConfiguration" type="nJupiter.Configuration.nJupiterConfigurationSectionHandler, nJupiter.Configuration" />
+    </configSections>
+    <appSettings/>
+    <connectionStrings/>
+	<nJupiterConfiguration>
+		<configDirectories configSuffix=".config">
+			<!--
+				The path to the configuration files that shall be read by nJupiter.Configuration.
+				If the application is run in a Http Context this path can be relative from the web
+				root, else the path has to be an aboslute path on disk to the folder that contains
+				the configuration files. If the path is relative it has to start with an ~ character.
+			-->
+			<configDirectory value="~/Config"/>
+		</configDirectories>
+	</nJupiterConfiguration>	
+    <system.web>
+        <compilation debug="true" />
+        <authentication mode="Windows" />
+    </system.web>
+ </configuration>
