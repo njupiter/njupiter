@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+    <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+    <DebugType Condition="'$(DebugType)'==''">full</DebugType>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{01104FAA-4C0C-4BD9-BE43-CF89DA601F3D}</ProjectGuid>
+    <AssemblyName>nJupiter.DataAccess.Users</AssemblyName>
+    <RootNamespace>nJupiter.DataAccess.Users</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.1.309\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Caching\CachedUser.cs" />
+    <Compile Include="Src\Caching\CachedUserComparer.cs" />
+    <Compile Include="Src\Caching\CacheMapId.cs" />
+    <Compile Include="Src\Caching\UserCacheBase.cs" />
+    <Compile Include="Src\Caching\UserIdCacheKey.cs" />
+    <Compile Include="Src\Caching\UsernameCacheKey.cs" />
+    <Compile Include="Src\Context.cs" />
+    <Compile Include="Src\ContextSchema.cs" />
+    <Compile Include="Src\CompareCondition.cs" />
+    <Compile Include="Src\ILockable%27T.cs" />
+    <Compile Include="Src\ILockable.cs" />
+    <Compile Include="Src\IUserRepository.cs" />
+    <Compile Include="Src\IUserRepositoryManager.cs" />
+    <Compile Include="Src\Properties\Property`T.cs" />
+    <Compile Include="Src\Properties\IPredefinedProperties.cs" />
+    <Compile Include="Src\Properties\IPropertyCollection.cs" />
+    <Compile Include="Src\Properties\IPropertyHandler.cs" />
+    <Compile Include="Src\UserRepositoryManager.cs" />
+    <Compile Include="Src\Properties\IProperty.cs" />
+    <Compile Include="Src\PredefinedNamesFactory.cs" />
+    <Compile Include="Src\IPredefinedNames.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Comparers\NameComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\IContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\PredefinedNames.cs" />
+    <Compile Include="Src\Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Caching\GenericUserCache.cs" />
+    <Compile Include="Src\Web\HybridMembershipProvider.cs" />
+    <Compile Include="Src\Web\HybridMembershipUser.cs" />
+    <Compile Include="Src\IUser.cs" />
+    <Compile Include="Src\Caching\IUserCache.cs" />
+    <Compile Include="Src\Web\MembershipProvider.cs" />
+    <Compile Include="Src\Web\MembershipUser.cs" />
+    <Compile Include="Src\Properties\PropertyHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Properties\PropertyBase`T.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Properties\PropertyCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Properties\PropertyDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\SearchCriteria.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\UserRepositoryBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Src\Web\ProfileProvider.cs" />
+    <Compile Include="Src\Caching\HttpRuntimeUserCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

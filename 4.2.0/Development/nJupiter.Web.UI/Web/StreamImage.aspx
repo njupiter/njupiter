@@ -1,0 +1,1 @@
+<%@ Page language="c#" Codebehind="StreamImage.aspx.cs" AutoEventWireup="false" Inherits="nJupiter.Web.UI.StreamImage" %>
