@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+    <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+    <DebugType Condition="'$(DebugType)'==''">full</DebugType>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{74B74C77-BBD5-4161-A4E7-633F486D52BF}</ProjectGuid>
+    <RootNamespace>nJupiter.DataAccess.Ldap.Tests.Integration</RootNamespace>
+    <AssemblyName>nJupiter.DataAccess.Ldap.Tests.Integration</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net35\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.7.4507.61\lib\NET35\FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.Abstraction.Logging">
+      <HintPath>..\packages\nJupiter.Abstraction.Logging.1.1.0.392\lib\nJupiter.Abstraction.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
+      <HintPath>..\packages\nJupiter.Configuration.4.0.3.401\lib\nJupiter.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LdapMembershipProviderTests.cs" />
+    <Compile Include="LdapRoleProviderTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\nJupiter.DataAccess.Ldap.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nJupiter.DataAccess.Ldap\nJupiter.DataAccess.Ldap.csproj">
+      <Project>{6D989F7A-87CA-4CFC-B17D-21D486102C8D}</Project>
+      <Name>nJupiter.DataAccess.Ldap</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
