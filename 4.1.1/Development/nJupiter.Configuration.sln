@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Configuration", "nJupiter.Configuration\nJupiter.Configuration.csproj", "{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Configuration.Tests.Unit", "nJupiter.Configuration.Tests.Unit\nJupiter.Configuration.Tests.Unit.csproj", "{7C70DBD3-1220-4A17-9265-C1BCA80EA371}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nJupiter.Configuration.Tests.Integration", "nJupiter.Configuration.Tests.Integration\nJupiter.Configuration.Tests.Integration.csproj", "{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30B69177-8EA6-4E21-BD4F-F14A9A1E5930}"
+	ProjectSection(SolutionItems) = preProject
+		njupiter.configuration-changelog.txt = njupiter.configuration-changelog.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug 2.0|Any CPU = Debug 2.0|Any CPU
+		Debug 4.0|Any CPU = Debug 4.0|Any CPU
+		Release 2.0|Any CPU = Release 2.0|Any CPU
+		Release 4.0|Any CPU = Release 4.0|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Debug 2.0|Any CPU.ActiveCfg = Debug 2.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Debug 2.0|Any CPU.Build.0 = Debug 2.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Debug 4.0|Any CPU.ActiveCfg = Debug 4.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Debug 4.0|Any CPU.Build.0 = Debug 4.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Release 2.0|Any CPU.ActiveCfg = Release 2.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Release 2.0|Any CPU.Build.0 = Release 2.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+		{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}.Release 4.0|Any CPU.Build.0 = Release 4.0|Any CPU
+		{7C70DBD3-1220-4A17-9265-C1BCA80EA371}.Debug 2.0|Any CPU.ActiveCfg = Debug 3.5|Any CPU
+		{7C70DBD3-1220-4A17-9265-C1BCA80EA371}.Debug 2.0|Any CPU.Build.0 = Debug 3.5|Any CPU
+		{7C70DBD3-1220-4A17-9265-C1BCA80EA371}.Debug 4.0|Any CPU.ActiveCfg = Debug 4.0|Any CPU
+		{7C70DBD3-1220-4A17-9265-C1BCA80EA371}.Debug 4.0|Any CPU.Build.0 = Debug 4.0|Any CPU
+		{7C70DBD3-1220-4A17-9265-C1BCA80EA371}.Release 2.0|Any CPU.ActiveCfg = Release 3.5|Any CPU
+		{7C70DBD3-1220-4A17-9265-C1BCA80EA371}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+		{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}.Debug 2.0|Any CPU.ActiveCfg = Debug 3.5|Any CPU
+		{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}.Debug 2.0|Any CPU.Build.0 = Debug 3.5|Any CPU
+		{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}.Debug 4.0|Any CPU.ActiveCfg = Debug 4.0|Any CPU
+		{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}.Debug 4.0|Any CPU.Build.0 = Debug 4.0|Any CPU
+		{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}.Release 2.0|Any CPU.ActiveCfg = Release 3.5|Any CPU
+		{A4C48157-4C8C-48BB-9A3D-E85E1E33F353}.Release 4.0|Any CPU.ActiveCfg = Release 4.0|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
