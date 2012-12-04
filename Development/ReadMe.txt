@@ -17,11 +17,6 @@ Bug reporting
 ---------------------------------------------------------------------------------
 Report bugs and enhancements at http://code.google.com/p/njupiter/issues/list
 
-Branching
----------------------------------------------------------------------------------
-Change the version number in Shared Resources\SharedAssemblyInfo.cs when
-branching
-
 Contact
 ---------------------------------------------------------------------------------
 Contact the project owners by mailing them with their username plus @gmail.com

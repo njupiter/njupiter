@@ -5,7 +5,7 @@
     <ProjectGuid>{9A550C52-006F-4814-A352-283D480835D6}</ProjectGuid>
     <RootNamespace>nJupiter.Web.UI.EmailObfuscator</RootNamespace>
     <AssemblyName>nJupiter.Web.UI.EmailObfuscator</AssemblyName>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,9 +61,6 @@
     <Compile Include="Src\ResourceRegistrator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
-      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
-    </Content>
     <Content Include="Install\ReadMe.txt" />
     <EmbeddedResource Include="Web\Scripts\EmailObfuscator.js" />
   </ItemGroup>

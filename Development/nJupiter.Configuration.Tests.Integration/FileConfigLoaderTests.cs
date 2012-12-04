@@ -50,11 +50,11 @@ namespace nJupiter.Configuration.Tests.Unit {
 
 		[Test]
 		public void Load_HasConfigToLoadConfigsWithSuffixTargets_LoadnJupiterDeploymentTargets() {
-			Assume.That(File.Exists(nJupiterDevPath + "nJupiter.Deployment.targets"));
+			Assume.That(File.Exists(nJupiterDevPath + "nJupiter.CSharp.targets"));
 
 			var c = new Config("testconfig", GetConfigXmlDocument(configForDevPath));
 			var fileConfigLoader  = new FileConfigLoader(c);
-			var config = fileConfigLoader.Load("nJupiter.Deployment");
+			var config = fileConfigLoader.Load("nJupiter.CSharp");
 
 			Assert.NotNull(config);
 		}

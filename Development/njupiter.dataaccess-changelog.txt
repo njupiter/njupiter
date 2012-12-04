@@ -9,9 +9,10 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Upcomming
+Changes for V4.1.0.516 - 2012-12-04
 ===============================================================================
 
+ENH: NuGet package does now have specific builds for .NET 2.0 and .NET 4.0
 BUG: Bug fixed in finalizer for command. Could in some situations throw a
      null reference exception when in garbage collector.
 

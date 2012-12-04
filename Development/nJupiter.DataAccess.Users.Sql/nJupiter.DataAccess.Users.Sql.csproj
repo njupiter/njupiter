@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
     <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
     <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
     <DebugType Condition="'$(DebugType)'==''">full</DebugType>
@@ -98,9 +98,6 @@
     <None Include="Install\Database\Updates\Update.DefaultDatabase.2.0.0.to.2.1.0.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Shared Resources\Libraries\nJupiter.MSBuild.Tasks\nJupiter.MSBuild.Tasks.dll">
-      <Link>Properties\nJupiter.MSBuild.Tasks.dll</Link>
-    </Content>
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.2.1.0.to.3.0.0.sql" />
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.0.0.to.3.10.0.sql" />
     <Content Include="Install\Database\Updates\Update.DefaultDatabase.3.10.0.to.Current.sql" />
