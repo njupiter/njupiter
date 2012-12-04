@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- Ncrunch do not make use of custom targets, therefor we have to set these defaults -->
+    <DefineConstants Condition="'$(DefineConstants)'==''">DEBUG;TRACE;CODE_ANALYSIS</DefineConstants>
+    <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
+    <DebugType Condition="'$(DebugType)'==''">full</DebugType>
+    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="..\nJupiter.CSharp.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{C07BD79F-4E0B-4BDD-B93C-45E897C590F8}</ProjectGuid>
+    <AssemblyName>nJupiter.Configuration</AssemblyName>
+    <RootNamespace>nJupiter.Configuration</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared Resources\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CompositeConfigLoader.cs" />
+    <Compile Include="ConfigFactory.cs" />
+    <Compile Include="ConfigRepository.cs" />
+    <Compile Include="ConfigLoaderFactory.cs" />
+    <Compile Include="FileConfigFactory.cs" />
+    <Compile Include="FileConfigLoader.cs" />
+    <Compile Include="ConfigSource.cs" />
+    <Compile Include="ConfigSourceFactory.cs" />
+    <Compile Include="IConfigRepository.cs" />
+    <Compile Include="IConfigLoader.cs" />
+    <Compile Include="IConfigSource.cs" />
+    <Compile Include="IConfigSourceWatcher.cs" />
+    <Compile Include="StringParser.cs" />
+    <Compile Include="Config.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IConfig.cs" />
+    <Compile Include="nJupiterConfigurationSectionHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileConfigSourceWatcher.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
