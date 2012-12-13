@@ -52,7 +52,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 		protected IDataSource CurrentDB { get { return DataSourceFactory.Create(Config.GetValue("dataSource")); } }
 
 		protected string PasswordPropertyName { get { return PropertyNames.Password ?? "password"; } }
-		protected string PasswordSaltPropertyName { get { return PropertyNames.Password ?? "passwordSalt"; } }
+		protected string PasswordSaltPropertyName { get { return PropertyNames.PasswordSalt ?? "passwordSalt"; } }
 		#endregion
 
 		#region Overridden Methods
@@ -602,7 +602,7 @@ namespace nJupiter.DataAccess.Users.Sql {
 			if(Config.GetValue<bool>("hashPassword")) {
 				user.Properties[PasswordSaltPropertyName].Value = GenerateSalt();
 					// Generate new salt every time password is changed
-				user.Properties[PasswordPropertyName].Value = MD5Hash(user.Properties["passwordSalt"].Value + password);
+				user.Properties[PasswordPropertyName].Value = MD5Hash(user.Properties[PasswordSaltPropertyName].Value + password);
 			} else {
 				user.Properties[PasswordSaltPropertyName].Value = string.Empty;
 				user.Properties[PasswordPropertyName].Value = password;

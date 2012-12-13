@@ -9,6 +9,14 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V4.2.1.531 - 2012-12-12
+===============================================================================
+
+BUG: Still one hard coded value left for passwordSalt in
+     nJupiter.DataAccess.Users.Sql, plus set correct value for passwordSalt if
+	 defined in config.
+
+===============================================================================
 Changes for V4.2.0.516 - 2012-12-04
 ===============================================================================
 
