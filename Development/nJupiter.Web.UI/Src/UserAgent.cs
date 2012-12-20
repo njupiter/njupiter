@@ -57,7 +57,8 @@ namespace nJupiter.Web.UI {
 					if(i > 0) {
 						i = i + 5;
 						if(CurrentUserAgent.Length > i) {
-							var versionString = CurrentUserAgent.Substring(i, 1);
+							int pointPosition = CurrentUserAgent.IndexOf('.', i);
+							var versionString = CurrentUserAgent.Substring(i, pointPosition - i);
 							try {
 								var version = int.Parse(versionString, NumberFormatInfo.InvariantInfo);
 								if(version < 7) {
