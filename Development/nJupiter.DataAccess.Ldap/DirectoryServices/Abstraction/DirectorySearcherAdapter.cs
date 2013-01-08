@@ -47,6 +47,8 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 					endOfRange = isLastQuery;
 				} else {
 					isLastQuery = true;
+					// break immediately if range filter is not found on first run, the group is empty
+					endOfRange = IsFirstQuery(rangeLow, rangeHigh); 
 				}
 				if(!isLastQuery) {
 					rangeLow = rangeHigh + 1;
@@ -63,6 +65,10 @@ namespace nJupiter.DataAccess.Ldap.DirectoryServices.Abstraction {
 		private void NewPropertyToLoad(string propertyName) {
 			PropertiesToLoad.Clear();
 			PropertiesToLoad.Add(propertyName);
+		}
+
+		private bool IsFirstQuery(int rangeLow, int rangeHigh) {
+			return rangeLow == 0 && rangeHigh == 0;
 		}
 	}
 }
