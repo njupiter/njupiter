@@ -41,16 +41,11 @@
     <Compile Include="Security\FormsAuthenticationUnauthorizedStrategy.cs" />
     <Compile Include="Security\GenericUnauthorizedStrategyTests.cs" />
     <Compile Include="Security\UnauthorizedStrategyFactoryTests.cs" />
-    <Compile Include="UI\ControlFinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nJupiter.Web.UI\nJupiter.Web.UI.csproj">
-      <Project>{DB95442D-CB1A-4C20-9650-4FEC39E3314D}</Project>
-      <Name>nJupiter.Web.UI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
       <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
       <Name>nJupiter.Web</Name>
