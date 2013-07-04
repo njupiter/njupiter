@@ -9,7 +9,13 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
-Changes for V4.4.6.TODO - 2013-07-TODO
+Changes for V4.4.6.540 - 2013-07-04
+===============================================================================
+
+BUG: Fixed nuget package icon and other meta information.
+
+===============================================================================
+Changes for V4.4.6.538 - 2013-07-04
 ===============================================================================
 
 NEW: nJupiter.WebTools split into two packages, nJupiter.Web and

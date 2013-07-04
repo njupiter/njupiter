@@ -9,7 +9,9 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<releaseNotes>http://code.google.com/p/njupiter/source/browse/trunk/Development/njupiter.web-changelog.txt</releaseNotes>
-	</metadata>
+        <licenseUrl>http://code.google.com/p/njupiter/source/browse/trunk/Development/License.txt</licenseUrl>
+        <projectUrl>http://code.google.com/p/njupiter/wiki/nJupiterWeb</projectUrl>
+        <iconUrl>http://code.google.com/p/njupiter/logo?cct=1277303232</iconUrl>	</metadata>
 	<files>
 		<file src="bin\Release 3.5\nJupiter.Web.dll" target="lib\net35" />
 		<file src="bin\Release 4.0\nJupiter.Web.dll" target="lib\net40" />
