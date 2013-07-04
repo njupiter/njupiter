@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>nJupiter.Web</title>
+		<authors>$author$</authors>
+		<owners>$author$</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<releaseNotes>http://code.google.com/p/njupiter/source/browse/trunk/Development/njupiter.web-changelog.txt</releaseNotes>
+	</metadata>
+	<files>
+		<file src="bin\Release 3.5\nJupiter.Web.dll" target="lib\net35" />
+		<file src="bin\Release 4.0\nJupiter.Web.dll" target="lib\net40" />
+	</files>
+</package>

@@ -6,6 +6,8 @@
     <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
     <DebugType Condition="'$(DebugType)'==''">full</DebugType>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
   <PropertyGroup>
