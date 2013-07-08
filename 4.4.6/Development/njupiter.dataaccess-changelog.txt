@@ -1,0 +1,88 @@
+﻿ChangeLog nJupiter.DataAccess
+===============================================================================
+
+Definitions
+BUG - Fixed bug
+CHG - Minor not breaking change
+BCH - Non interface compatible breaking change
+ENH - Enhanced feature
+NEW - New feature
+
+===============================================================================
+Changes for V4.1.0.516 - 2012-12-04
+===============================================================================
+
+ENH: NuGet package does now have specific builds for .NET 2.0 and .NET 4.0
+BUG: Bug fixed in finalizer for command. Could in some situations throw a
+     null reference exception when in garbage collector.
+
+===============================================================================
+Changes for V4.0.1.308 - 2011-12-14
+===============================================================================
+
+ENH: nJupiter is now on NuGet and after this release all projects will be
+     splitted up in separate solutions to more easly handle separate releases
+     of the packages. All components will be released in separate packages in
+     the future so every project will get its own changelog.
+
+===============================================================================
+Changes for V4.0.0.0 - 2011-12-13
+===============================================================================
+
+BCH: This componenet has been totally refactored and now make use of
+     interfaces rather than concrete types throughout the whole component
+     and has thereby better support for unit testing and IoC-containers. When
+     nJupiter where first written for .NET 1.1 there where no adapters for
+     different database connection methods available in .NET so we wrote this
+     component that contained adapters for several different database
+     connection methods (OleDB, ODBC, Oracle, Sql), since .NET 2.0 there is
+     generic support for this directly in .NET though and we have now decide
+     to completely drop our implementation of these adapters and only kept
+     facade for the System.Data API which contain simpler transaction and
+     command handling than the original API.
+
+===============================================================================
+Changes for V3.15.0.0  - 2010-05-05
+===============================================================================
+
+BUG: When parsing search strings FullTextHandler incorrectly interpreted a 
+     minus sign without a preceding space as a search operator. A minus sign
+     is now interpreted as a search operator only if it is in the beginning of
+     the search string or preceded by a space and not inside quotes.
+BUG: Fixed a bug that made the AddPostsToCollectionFromDataTables method crash 
+     when trying to get nested sorted posts for a category. Now the customized
+     view of the table (DataTable.DefaultView) is used instead of the table,
+     because it's the in the customized view where the sorted collection is to
+     be found.
+
+===============================================================================
+Changes for V3.10.0.0  - 2009-03-18
+===============================================================================
+
+ENH: DataSource can now get its connection strings from the
+     ConfigurationManager
+  
+=============================================================================== 
+Changes for V3.2.0.0  - 2008-02-18
+===============================================================================
+
+BUG: Bugfixes for datareaders.
+
+===============================================================================
+Changes for V2.1.0.0  - 2007-05-18
+===============================================================================
+ 
+ENH: Now FullTextHandler.GetContainsSearchCondition takes an ImplicitOperator 
+     parameter. The default is "And". Possible values are "And" and "Or".
+BUG: Bug fix of FullTextHandler.GetContainsSearchCondition not recognizing 
+     upper case OR, NOT and NEAR.
+
+===============================================================================
+Changes for V2.0.0.0  - 2007-02-21
+===============================================================================
+
+NEW: New utility class for translating a user entered search text to a string
+     with the format that the CONTAINS function in SQL Server requires.
+ENH: Unused exception classes has been excluded from the assembly
+BCH: Change of casing on Username to UserName to be consistent with the casing 
+     of "user name" in the rest of the namespace

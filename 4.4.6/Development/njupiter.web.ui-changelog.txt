@@ -1,0 +1,18 @@
+ChangeLog nJupiter.Web
+===============================================================================
+
+Definitions
+BUG - Fixed bug
+CHG - Minor not breaking change
+BCH - Non interface compatible breaking change
+ENH - Enhanced feature
+NEW - New feature
+
+===============================================================================
+Changes for V4.4.6.541 - 2013-07-08
+===============================================================================
+
+NEW: nJupiter.WebTools split into two packages, nJupiter.Web and
+     nJupiter.Web.UI. This is the first release of the nJupiter.Web.UI package.
+     See the change log for nJupiter.WebTools for previous changes regarding
+     the nJupiter.Web.UI namespace.

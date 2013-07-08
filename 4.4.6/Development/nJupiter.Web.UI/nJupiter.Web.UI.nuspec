@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>nJupiter.Web.UI</title>
+		<authors>nJupiter</authors>
+		<owners>modhelius,korsa</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>$description$</description>
+		<summary>Contains Control Adapters for striping ugly content that ASP.NET is generating by default (for example unnecessary id attributes), also contains a set of web controls that either is not represented in ASP.NET or that extend the functionality of the native controls. The component also have extended functionality for registering scripts to your page and to find controls by type rather than name and also a set of string constants that contains the most commonly used HTML entities.</summary>
+		<releaseNotes>http://code.google.com/p/njupiter/source/browse/trunk/Development/njupiter.web.ui-changelog.txt</releaseNotes>
+        <licenseUrl>http://code.google.com/p/njupiter/source/browse/trunk/Development/License.txt</licenseUrl>
+        <projectUrl>http://code.google.com/p/njupiter/wiki/nJupiterWebUI</projectUrl>
+        <iconUrl>http://code.google.com/p/njupiter/logo?cct=1277303232</iconUrl>	</metadata>
+	<files>
+		<file src="web.config.transform" target="content" />
+		<file src="bin\Release 3.5\nJupiter.Web.UI.dll" target="lib\net35" />
+		<file src="bin\Release 4.0\nJupiter.Web.UI.dll" target="lib\net40" />
+	</files>
+</package>

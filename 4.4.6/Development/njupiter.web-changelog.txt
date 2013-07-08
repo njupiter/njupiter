@@ -1,0 +1,24 @@
+ChangeLog nJupiter.Web
+===============================================================================
+
+Definitions
+BUG - Fixed bug
+CHG - Minor not breaking change
+BCH - Non interface compatible breaking change
+ENH - Enhanced feature
+NEW - New feature
+
+===============================================================================
+Changes for V4.4.6.540 - 2013-07-04
+===============================================================================
+
+BUG: Fixed nuget package icon and other meta information.
+
+===============================================================================
+Changes for V4.4.6.538 - 2013-07-04
+===============================================================================
+
+NEW: nJupiter.WebTools split into two packages, nJupiter.Web and
+     nJupiter.Web.UI. This is the first release of the nJupiter.Web package.
+     See the change log for nJupiter.WebTools for previous changes regarding
+     the nJupiter.Web namespace.
