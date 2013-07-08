@@ -9,6 +9,15 @@ ENH - Enhanced feature
 NEW - New feature
 
 ===============================================================================
+Changes for V4.4.6.544 - 2012-12-20
+===============================================================================
+
+CHG: New empty nuget package release with only dependencies to nJupiter.Web
+     and nJupiter.Web.UI. This is the last release of the nJupiter.WebTools
+     package, use the nJupiter.Web and nJupiter.Web.UI separately from now 
+     on.
+
+===============================================================================
 Changes for V4.4.5.533 - 2012-12-20
 ===============================================================================
 
