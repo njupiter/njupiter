@@ -6,6 +6,8 @@
     <DebugSymbols Condition="'$(DebugSymbols)'==''">true</DebugSymbols>
     <DebugType Condition="'$(DebugType)'==''">full</DebugType>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'==''">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="..\nJupiter.CSharp.targets" />
   <PropertyGroup>
@@ -17,6 +19,9 @@
     <Reference Include="nJupiter.Configuration, Version=4.0.1.308, Culture=neutral, PublicKeyToken=3d82e1eef729f753, processorArchitecture=MSIL">
       <HintPath>..\packages\nJupiter.Configuration.4.0.1.309\lib\nJupiter.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="nJupiter.Web">
+      <HintPath>..\packages\nJupiter.Web.4.4.6.540\lib\net35\nJupiter.Web.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -24,9 +29,7 @@
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
-    <Reference Include="System.Web">
-      <Name>System.Web</Name>
-    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -166,12 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\nJupiter.Web\nJupiter.Web.csproj">
-      <Project>{093D4A00-567A-4FCC-A0EE-76D00AE86335}</Project>
-      <Name>nJupiter.Web</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

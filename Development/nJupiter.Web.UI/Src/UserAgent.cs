@@ -26,6 +26,8 @@ using System;
 using System.Globalization;
 using System.Web;
 
+using nJupiter.Web;
+
 namespace nJupiter.Web.UI {
 	public class UserAgent : IUserAgent {
 		

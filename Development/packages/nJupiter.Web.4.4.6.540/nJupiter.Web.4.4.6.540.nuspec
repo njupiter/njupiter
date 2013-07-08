@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>nJupiter.Web</id>
+    <version>4.4.6.540</version>
+    <title>nJupiter.Web</title>
+    <authors>nJupiter</authors>
+    <owners>nJupiter</owners>
+    <licenseUrl>http://code.google.com/p/njupiter/source/browse/trunk/Development/License.txt</licenseUrl>
+    <projectUrl>http://code.google.com/p/njupiter/wiki/nJupiterWeb</projectUrl>
+    <iconUrl>http://code.google.com/p/njupiter/logo?cct=1277303232</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Contains methods for easier management of query strings, accepted types, mime type objects and permanent redirects.</description>
+    <releaseNotes>http://code.google.com/p/njupiter/source/browse/trunk/Development/njupiter.web-changelog.txt</releaseNotes>
+  </metadata>
+</package>
