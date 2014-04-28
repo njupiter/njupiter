@@ -33,7 +33,15 @@ namespace nJupiter.Globalization {
 
 		private readonly Dictionary<String, CultureInfo> cultureInfoCache = new Dictionary<String, CultureInfo>(StringComparer.InvariantCultureIgnoreCase);
 
-		public CultureInfo CurrentCulture {
+	    private IConfig config;
+
+	    private IConfig Config {
+	        get {
+                return this.config ?? (this.config = ConfigRepository.Instance.GetConfig(ConfigRepository.Instance.SystemConfigKey, true));
+	        }
+	    }
+
+        public CultureInfo CurrentCulture {
 			get {
 				return GetCultureInfo(System.Threading.Thread.CurrentThread.CurrentCulture);
 			}
@@ -69,14 +77,14 @@ namespace nJupiter.Globalization {
 
 			cultureInfo = new CultureInfo(name);
 
-			var config = ConfigRepository.Instance.GetConfig(ConfigRepository.Instance.SystemConfigKey, true);
-			if(config == null) {
-				return cultureInfo;
+			if(this.Config == null) {
+                cultureInfoCache[name] = cultureInfo;
+                return cultureInfo;
 			}
 
 			string dateTimeFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/dateTimeFormat", name);
-			if(config.ContainsKey(dateTimeFormatConfigKey)) {
-				IConfig dateTimeFormatConfig = config.GetConfigSection(dateTimeFormatConfigKey);
+			if(this.Config.ContainsKey(dateTimeFormatConfigKey)) {
+				IConfig dateTimeFormatConfig = this.Config.GetConfigSection(dateTimeFormatConfigKey);
 
 				string[] abbreviatedMonthGenitiveNames = dateTimeFormatConfig.GetValueArray("abbreviatedMonthGenitiveNames", "abbreviatedMonthGenitiveName");
 				if(abbreviatedMonthGenitiveNames.Length > 0) {
@@ -206,8 +214,8 @@ namespace nJupiter.Globalization {
 
 			string numberFormatConfigKey = string.Format("cultureConfig/culture[@value=\"{0}\"]/numberFormat", name);
 
-			if(config.ContainsKey(numberFormatConfigKey)) {
-				IConfig numberFormatConfig = config.GetConfigSection(numberFormatConfigKey);
+			if(this.Config.ContainsKey(numberFormatConfigKey)) {
+				IConfig numberFormatConfig = this.Config.GetConfigSection(numberFormatConfigKey);
 
 				if(numberFormatConfig.ContainsKey("currencyDecimalDigits")) {
 					cultureInfo.NumberFormat.CurrencyDecimalDigits = numberFormatConfig.GetValue<int>("currencyDecimalDigits");
