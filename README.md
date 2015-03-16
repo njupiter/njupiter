@@ -80,7 +80,7 @@ for:
 -   [Configuration](https://github.com/njupiter/njupiter/wiki/nJupiter.Configuration)
 -   [Logging Abstractions](https://github.com/njupiter/njupiter/wiki/nJupiter.Abstraction.Logging).
 -   [Generic LDAP MembershipProvider and RoleProvider](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Ldap)
--   [User Management](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccess.Users)
+-   [User Management](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Users)
 -   [Syndication](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.Syndication)
 -   [E-mail Obfuscation Filter for HTML-pages](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI.EmailObfuscator)
 -   [Data Access](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess)
