@@ -37,7 +37,7 @@ information.
 ### 30 august 2012: nJupiter.DataAccess.Ldap 5.1 released
 
 Support for serverless binding added. Set the url element in the
-configuration to just “<LDAP://>” to activate. [Read more about nJupiter.DataAccess.Ldap here](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccessLdap).
+configuration to just “<LDAP://>” to activate. [Read more about nJupiter.DataAccess.Ldap here](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Ldap).
 
 ### 27 june 2012: nJupiter.DataAccess.Ldap 5.0 released
 
@@ -55,7 +55,7 @@ operations on the LDAP server which can not be done on the providers
 directly. The Config objects are also now public, Besides that the
 component has been completely refactored and cleaned up to make it
 easier to add new functionality to it in the future.
-[Read more about nJupiter.DataAccess.Ldap here](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccessLdap).
+[Read more about nJupiter.DataAccess.Ldap here](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Ldap).
 
 ### 8 june 2012: nJupiter.Abstraction.Logging released
 
@@ -69,7 +69,7 @@ logger pattern known from log4xxx. nJupiter.Abstraction.Logging is also
 designed to be easy to use together with IoC-container where you can
 registered generically typed loggers that you easily can use via
 constructor injection. [Read more about it
-here](https://github.com/njupiter/njupiter/wiki/nJupiterAbstractionLogging).
+here](https://github.com/njupiter/njupiter/wiki/nJupiter.Abstraction.Logging).
 
 Functionality
 -------------
@@ -77,17 +77,17 @@ Functionality
 nJupiter today contains about 10 components and handles functionality
 for:
 
--   [Configuration](https://github.com/njupiter/njupiter/wiki/nJupiterConfiguration)
--   [Logging Abstractions](https://github.com/njupiter/njupiter/wiki/nJupiterAbstractionLogging).
--   [Generic LDAP MembershipProvider and RoleProvider](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccessLdap)
--   [User Management](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccessUsers)
--   [Syndication](https://github.com/njupiter/njupiter/wiki/nJupiterWebSyndication)
--   [E-mail Obfuscation Filter for HTML-pages](https://github.com/njupiter/njupiter/wiki/nJupiterWebUIEmailObfuscator)
--   [Data Access](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccess)
--   [Mail](https://github.com/njupiter/njupiter/wiki/nJupiterNetMail)
--   [Control Adapters for cleaner output](https://github.com/njupiter/njupiter/wiki/nJupiterWebUI)
--   [W3C compatible web components](https://github.com/njupiter/njupiter/wiki/nJupiterWebUI)
--   [Globalization](https://github.com/njupiter/njupiter/wiki/nJupiterGlobalization)
+-   [Configuration](https://github.com/njupiter/njupiter/wiki/nJupiter.Configuration)
+-   [Logging Abstractions](https://github.com/njupiter/njupiter/wiki/nJupiter.Abstraction.Logging).
+-   [Generic LDAP MembershipProvider and RoleProvider](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Ldap)
+-   [User Management](https://github.com/njupiter/njupiter/wiki/nJupiterDataAccess.Users)
+-   [Syndication](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.Syndication)
+-   [E-mail Obfuscation Filter for HTML-pages](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI.EmailObfuscator)
+-   [Data Access](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess)
+-   [Mail](https://github.com/njupiter/njupiter/wiki/nJupiter.Net.Mail)
+-   [Control Adapters for cleaner output](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI)
+-   [W3C compatible web components](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI)
+-   [Globalization](https://github.com/njupiter/njupiter/wiki/nJupiter.Globalization)
 -   [...and a lot more](https://github.com/njupiter/njupiter/wiki)
 
 See the [wiki](https://github.com/njupiter/njupiter/wiki) for a more detailed overview of the functionality and all the components
