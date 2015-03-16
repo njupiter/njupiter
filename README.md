@@ -14,11 +14,11 @@ only.
 
 ### [You can find nJupiter releases on NuGet](https://nuget.org/packages?q=njupiter)
 
--   Please do not send private mails with questions or issues, please do
-    this at either [Stack Overflow](http://stackoverflow.com/) or in the
-    [Issue Tracker](https://github.com/njupiter/njupiter/issues), in
-    this way your question and its answer can help other people with the
-    same problems.\*
+*Please do not send private mails with questions or issues, please do
+ this at either [Stack Overflow](http://stackoverflow.com/) or in the
+ [Issue Tracker](https://github.com/njupiter/njupiter/issues), in
+ this way your question and its answer can help other people with the
+ same problems.*
 
 News
 ----
