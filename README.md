@@ -1,5 +1,6 @@
-nJupiter - a component toolkit for development based on .NET
-============================================================
+nJupiter
+========
+### A component toolkit for development based on .NET
 
 nJupiter is a component toolkit that contains a large amount of
 functionality across a wide spectrum. nJupiter offering a set of tools
