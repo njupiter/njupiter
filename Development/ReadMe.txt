@@ -16,7 +16,6 @@ Project URL
 https://github.com/njupiter/njupiter/
 
 Contact & Bug reporting
-----------------------------------------------------------------------
------------
+------------------------------------------------------------------------
 Report bugs and enhancements or contact the owners of the project at
 https://github.com/njupiter/njupiter/issues
