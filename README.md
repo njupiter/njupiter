@@ -1,3 +1,7 @@
+# THIS PROJECT IS DEPRECATED
+
+It has happen much with .NET since this library first was released. Pretty much every feature in this library is nowadays presented directly in the core library of .NET and there are therefor no reason to use any of these components anymore. Therefor this library is deprecated and no further maintenance is intended.
+
 nJupiter
 ========
 ### A component toolkit for development based on .NET
@@ -70,31 +74,3 @@ designed to be easy to use together with IoC-container where you can
 registered generically typed loggers that you easily can use via
 constructor injection. [Read more about it
 here](https://github.com/njupiter/njupiter/wiki/nJupiter.Abstraction.Logging).
-
-Functionality
--------------
-
-nJupiter today contains about 10 components and handles functionality
-for:
-
--   [Configuration](https://github.com/njupiter/njupiter/wiki/nJupiter.Configuration)
--   [Logging Abstractions](https://github.com/njupiter/njupiter/wiki/nJupiter.Abstraction.Logging).
--   [Generic LDAP MembershipProvider and RoleProvider](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Ldap)
--   [User Management](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess.Users)
--   [Syndication](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.Syndication)
--   [E-mail Obfuscation Filter for HTML-pages](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI.EmailObfuscator)
--   [Data Access](https://github.com/njupiter/njupiter/wiki/nJupiter.DataAccess)
--   [Mail](https://github.com/njupiter/njupiter/wiki/nJupiter.Net.Mail)
--   [Control Adapters for cleaner output](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI)
--   [W3C compatible web components](https://github.com/njupiter/njupiter/wiki/nJupiter.Web.UI)
--   [Globalization](https://github.com/njupiter/njupiter/wiki/nJupiter.Globalization)
--   [...and a lot more](https://github.com/njupiter/njupiter/wiki)
-
-See the [wiki](https://github.com/njupiter/njupiter/wiki) for a more detailed overview of the functionality and all the components
-in nJupiter.
-
-Contribute
-----------
-
-If you want to contribute to this project, please feel free to contact
-one of the project owners.
